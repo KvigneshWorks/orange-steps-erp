@@ -1,0 +1,19 @@
+﻿/vendor/
+/node_modules/
+frontend/node_modules/
+/dist/
+frontend/dist/
+/assets/
+.env
+.env.*
+!.env.example
+storage/*.key
+storage/logs/*.log
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+*.sql
+*.zip
+/Claude outputs/
+.DS_Store
+Thumbs.db

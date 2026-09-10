@@ -1,0 +1,63 @@
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        # Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Pass Authorization header through (required for Bearer token auth)
+    CGIPassAuth On
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle /tesseract/ or /whitenode/ prefix rewrites for assets and images
+    RewriteRule ^(?:tesseract|whitenode)/assets/(.*)$ assets/$1 [L]
+    RewriteRule ^(?:tesseract|whitenode)/(.*(logo|Whitenode|favicon|icons).*\.(?:png|jpg|jpeg|svg|ico))$ $1 [NC,L]
+
+    # Serve existing static files directly (assets, images, css, js, etc.)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Route /api/* requests to Laravel
+    RewriteCond %{REQUEST_URI} /api/
+    RewriteRule ^ index.php [L]
+
+    # Route direct PHP files (like check-environment.php) directly if they exist
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_FILENAME} \.php$
+    RewriteRule ^ - [L]
+
+    # All other requests (root directory & SPA sub-routes) → React SPA (index.html)
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# Prevent browser caching of API/PHP responses
+<FilesMatch "\.php$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+    </IfModule>
+</FilesMatch>
+
+# Compress text-based responses (JS/CSS/HTML/JSON/SVG) so pages transfer faster
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Long-lived caching for hashed, immutable Vite build assets (safe: filenames
+# change on every rebuild, so a new deploy is never served stale from cache)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(png|jpg|jpeg|gif|svg|ico|woff2?|ttf)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+</IfModule>

@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\SubName;
+use Illuminate\Http\Request;
+
+class SubNameController extends Controller
+{
+    public function index()
+    {
+        $subNames = SubName::with('bioData')
+            ->orderBy('alternate_name')
+            ->get()
+            ->map(function ($s) {
+                $arr = $s->toArray();
+                $arr['bio_data_name'] = $s->bioData?->name ?? null;
+                return $arr;
+            });
+
+        return response()->json([
+            'success' => true,
+            'data'    => $subNames
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'bio_data_id'     => 'required|exists:bio_data,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'alternate_name'  => 'required|string|max:255',
+            'classification' => 'nullable|string|max:255',
+            'description'     => 'nullable|string',
+        ]);
+
+        $user = auth()->user();
+
+        $subName = SubName::create([
+            'bio_data_id'      => $request->bio_data_id,
+            'sub_category_id'  => $request->sub_category_id,
+            'alternate_name'   => $request->alternate_name,
+            'classification'   => $request->classification,
+            'description'      => $request->description,
+            'is_active'        => true,
+            'created_by'       => $user->id,
+            'created_by_name'  => $user->name ?? 'System',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sub-Name created successfully',
+            'data'    => $subName->load('bioData')
+        ], 201);
+    }
+
+    public function destroy($id)
+    {
+        $subName = SubName::findOrFail($id);
+        $subName->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sub-Name deleted successfully'
+        ]);
+    }
+}

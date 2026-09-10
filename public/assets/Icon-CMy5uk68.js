@@ -1,0 +1,1 @@
+import{C as e,v as t}from"./index-9Lh4Nivu.js";e();var n=t();function r({d:e,sz:t=18,c:r=`currentColor`,sw:i=1.8}){return(0,n.jsx)(`svg`,{width:t,height:t,fill:`none`,stroke:r,strokeWidth:i,viewBox:`0 0 24 24`,style:{flexShrink:0},children:(0,n.jsx)(`path`,{strokeLinecap:`round`,strokeLinejoin:`round`,d:e})})}export{r as t};

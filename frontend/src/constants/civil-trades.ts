@@ -1,0 +1,33 @@
+// Civil construction trade list — shared constant
+// Used by WorkforceRegister.tsx and any other component needing trade options
+
+export const CIVIL_TRADES: string[] = [
+  'Mason',
+  'Bar Bender',
+  'Carpenter',
+  'Painter',
+  'Electrician',
+  'Plumber',
+  'Welder',
+  'Tiler',
+  'Shuttering Carpenter',
+  'Steel Fixer',
+  'Helper / Mazdoor',
+  'Concrete Mixer Operator',
+  'Excavator Operator',
+  'Crane Operator',
+  'Tower Crane Operator',
+  'Scaffolder',
+  'Waterproofing Applicator',
+  'Glass & Glazing Fitter',
+  'False Ceiling Fixer',
+  'Marble / Granite Fitter',
+  'AC Duct Fitter',
+  'Surveyor',
+  'Foreman',
+  'Site Supervisor',
+  'Safety Officer',
+  'Quality Inspector',
+  'Civil Estimator',
+  'General Manpower',
+];

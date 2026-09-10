@@ -1,0 +1,1191 @@
+@keyframes AS-fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes AS-fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes AS-slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes AS-slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes AS-shimmerText {
+    0% {
+        background-position: -160% center;
+    }
+
+    100% {
+        background-position: 160% center;
+    }
+}
+
+@keyframes AS-underline {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes AS-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes AS-panelEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.975);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes AS-orbFloat1 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(22px, -20px) scale(1.1);
+    }
+}
+
+@keyframes AS-orbFloat2 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-18px, 22px) scale(1.12);
+    }
+}
+
+@keyframes AS-gridPan {
+    from {
+        background-position: 0 0, 0 0;
+    }
+
+    to {
+        background-position: 34px 34px, 34px 34px;
+    }
+}
+
+@keyframes AS-btnGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 2px 10px rgba(29,78,216, 0.22);
+    }
+
+    50% {
+        box-shadow: 0 6px 22px rgba(37,99,235, 0.42);
+    }
+}
+
+@keyframes AS-shakeX {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-8px);
+    }
+
+    40% {
+        transform: translateX(7px);
+    }
+
+    60% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+.A-shake {
+    animation: AS-shakeX 0.4s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.A-root em {
+    font-style: italic;
+}
+
+.A-root input,
+.A-root textarea {
+    text-transform: none;
+}
+
+/* ═══════════════════════════════════════════
+   ROOT / SHELL
+═══════════════════════════════════════════ */
+.AS-root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #FFFFFF;
+    font-family: var(--font-body);
+    display: flex;
+}
+
+.AS-root em {
+    font-style: normal;
+}
+
+.AS-root input,
+.AS-root textarea {
+    text-transform: none;
+}
+
+.AS-shell {
+    display: grid;
+    grid-template-columns: minmax(340px, 40%) 1fr;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* ═══════════════════════════════════════════
+   LEFT — BRAND PANEL
+═══════════════════════════════════════════ */
+.AS-brand {
+    position: relative;
+    background: linear-gradient(155deg, #0F172A 0%, #1D4ED8 50%, #0F172A 100%);
+    color: #F1F5F9;
+    padding: 44px 46px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    animation: AS-fadeIn 0.4s both;
+}
+
+.AS-brand-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(circle at 20% 15%, #000 0%, transparent 70%);
+    mask-image: radial-gradient(circle at 20% 15%, #000 0%, transparent 70%);
+    animation: AS-gridPan 22s linear infinite;
+}
+
+.AS-brand::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -25%;
+    width: 65%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.28) 0%, transparent 70%);
+    pointer-events: none;
+    animation: AS-orbFloat1 10s ease-in-out infinite;
+}
+
+.AS-brand::before {
+    content: '';
+    position: absolute;
+    bottom: -25%;
+    left: -15%;
+    width: 55%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,78,216, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+    animation: AS-orbFloat2 12s ease-in-out infinite;
+}
+
+.AS-brand-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    animation: AS-slideDown 0.55s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-logo {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.AS-brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Two-line brand lockup — "WHITENODE" set bold, uppercase and
+   wide-tracked (a confident tech-wordmark treatment rather than
+   the softer italic display serif used elsewhere), with "NODE"
+   carrying an ember gradient highlight, and "LABS" underneath as
+   a smaller tracked-caps line in a shimmering ember gradient plus
+   a slim animated underline that draws in on load. */
+.AS-brand-name {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.AS-brand-name-main {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 27px;
+    letter-spacing: 1px;
+    line-height: 1;
+    color: #FFFFFF;
+    text-shadow: 0 2px 18px rgba(255, 140, 0, 0.25);
+}
+
+.AS-brand-name-main .w-te {
+    color: #FFFFFF;
+}
+
+.AS-brand-name-main .w-hl {
+    background: linear-gradient(90deg, var(--ember-light, #60A5FA) 0%, #DBEAFE 40%, var(--ember-light, #60A5FA) 80%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: AS-shimmerText 5s linear infinite;
+}
+
+.AS-brand-name-sub {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1;
+    padding-bottom: 5px;
+    background: linear-gradient(90deg, var(--ember-light, #60A5FA) 0%, #DBEAFE 25%, var(--ember-light, #60A5FA) 50%, #DBEAFE 75%, var(--ember-light, #60A5FA) 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: AS-shimmerText 5s linear infinite;
+}
+
+.AS-brand-name-sub::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--ember-light, #60A5FA), transparent);
+    transform-origin: left;
+    animation: AS-underline 0.7s 0.35s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-mid {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+}
+
+.AS-brand-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: var(--ember-light, #60A5FA);
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: rgba(59,130,246, 0.12);
+    border: 1px solid rgba(59,130,246, 0.28);
+    margin-bottom: 22px;
+    animation: AS-fadeUp 0.5s 0.15s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-title {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.28;
+    letter-spacing: -0.2px;
+    color: #FFFFFF;
+    margin: 0 0 16px;
+    animation: AS-fadeUp 0.55s 0.25s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-sub {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #CBD5E1;
+    margin: 0 0 28px;
+    animation: AS-fadeUp 0.55s 0.35s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.AS-brand-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #E2E8F0;
+    font-weight: 500;
+    animation: AS-slideRight 0.5s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-features li:nth-child(1) {
+    animation-delay: 0.45s;
+}
+
+.AS-brand-features li:nth-child(2) {
+    animation-delay: 0.55s;
+}
+
+.AS-brand-features li:nth-child(3) {
+    animation-delay: 0.65s;
+}
+
+.AS-brand-check {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59,130,246, 0.16);
+    color: var(--ember-light, #60A5FA);
+}
+
+.AS-brand-foot {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    color: #64748B;
+    animation: AS-fadeIn 0.6s 0.75s both;
+}
+
+.AS-brand-foot svg {
+    color: var(--ember-light, #60A5FA);
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+/* mobile-only compact brand row shown above the form on small screens */
+.AS-mobile-brand {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.AS-mobile-brand .AS-brand-logo {
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.AS-mobile-brand .AS-brand-name-main {
+    font-size: 21px;
+    text-shadow: none;
+}
+
+.AS-mobile-brand .AS-brand-name-main .w-te {
+    color: #0F172A;
+}
+
+.AS-mobile-brand .AS-brand-name-sub {
+    font-size: 9px;
+    letter-spacing: 2.2px;
+}
+
+/* ═══════════════════════════════════════════
+   RIGHT — FORM PANEL
+═══════════════════════════════════════════ */
+.AS-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    background: #FFFFFF;
+}
+
+.AS-panel-inner {
+    width: 100%;
+    max-width: 400px;
+    animation: AS-panelEnter 0.6s 0.05s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-form-wrap-register {
+    max-width: none;
+}
+
+.AS-panel-inner:has(.AS-form-wrap-register) {
+    max-width: 540px;
+}
+
+/* Single, explicit stacking-context anchor for the whole form —
+   the open Role dropdown's z-index is compared against its sibling
+   rows right here, one shallow level up, instead of depending on
+   whatever stacking context happens to bubble up from ancestors. */
+.AS-form-wrap {
+    position: relative;
+    z-index: 0;
+}
+
+/* segmented Sign In / Create Account tabs */
+.AS-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #F1F5F9;
+    border-radius: 11px;
+    margin-bottom: 28px;
+}
+
+.AS-tab {
+    flex: 1;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #475569;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.15s;
+}
+
+.AS-tab:hover {
+    color: #334155;
+    transform: translateY(-1px);
+}
+
+.AS-tab.active {
+    background: #FFFFFF;
+    color: #0F172A;
+    box-shadow: 0 2px 8px rgba(29,78,216, 0.12);
+    animation: AS-tabPop 0.28s cubic-bezier(.34, 1.6, .5, 1) both;
+}
+
+@keyframes AS-tabPop {
+    0% {
+        transform: scale(0.94);
+    }
+
+    60% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.AS-form-title {
+    position: relative;
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F172A;
+    letter-spacing: -0.2px;
+    margin: 0 0 18px;
+    animation: AS-fadeUp 0.45s 0.08s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-t-accent {
+    background: linear-gradient(90deg, var(--ember, #2563EB) 0%, var(--ember-light, #60A5FA) 60%, var(--ember, #2563EB) 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: AS-shimmerText 4s ease-in-out infinite;
+}
+
+.AS-form-title-bar {
+    display: block;
+    width: 42px;
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--ember, #2563EB), var(--ember-light, #60A5FA));
+    transform-origin: left;
+    animation: AS-underline 0.6s 0.3s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-form-sub {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #64748B;
+    line-height: 1.5;
+    margin: 0 0 24px;
+    animation: AS-fadeUp 0.45s 0.14s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+/* ── FIELDS (shared by login + register) ──
+   Each field fades/slides up on mount with a short stagger, and
+   lifts slightly while focused so the whole form feels responsive
+   rather than static. */
+/* Entrance is opacity-only (no transform) on purpose — a lingering
+   translateY() from a "both"-filled animation creates a stacking
+   context on every field/row, which then fights the Role dropdown's
+   z-index and lets later rows paint over its open menu. Fading in
+   without a transform keeps the motion without that side effect.
+   The focus-lift below is transient (only while a field is actually
+   focused) so it doesn't leave a permanent stacking context behind. */
+.A-field {
+    position: relative;
+    margin-bottom: 16px;
+    animation: AS-fadeIn 0.4s both;
+}
+
+.A-field:nth-of-type(1) {
+    animation-delay: 0.18s;
+}
+
+.A-field:nth-of-type(2) {
+    animation-delay: 0.24s;
+}
+
+.A-field:nth-of-type(3) {
+    animation-delay: 0.30s;
+}
+
+.A-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+    animation: AS-fadeIn 0.4s both;
+}
+
+.A-field-row:nth-of-type(1) {
+    animation-delay: 0.18s;
+}
+
+.A-field-row:nth-of-type(2) {
+    animation-delay: 0.26s;
+}
+
+.A-field-row:nth-of-type(3) {
+    animation-delay: 0.34s;
+}
+
+.A-field-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    color: #334155;
+    margin-bottom: 6px;
+    transition: color 0.18s, transform 0.18s;
+}
+
+.A-field:focus-within .A-field-label {
+    color: var(--ember, #2563EB);
+    transform: translateX(1px);
+}
+
+.A-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* slim accent line under the input that draws in from the
+   center on focus, mirroring the underline motif used on the
+   headings and the brand panel */
+.A-input-wrap::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--ember, #2563EB), var(--ember-light, #60A5FA));
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(.22, .68, 0, 1.1);
+    pointer-events: none;
+}
+
+.A-field:focus-within .A-input-wrap::after {
+    transform: scaleX(1);
+}
+
+.A-input {
+    width: 100%;
+    height: 45px;
+    padding: 0 42px 0 14px;
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 9px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: #0F172A;
+    transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s cubic-bezier(.22, .68, 0, 1.1);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.A-input::placeholder {
+    color: #94A3B8;
+}
+
+/* Belt-and-suspenders: if a browser still slips a saved value into
+   an autofilled field, strip its yellow/blue highlight so it at
+   least matches the rest of the form instead of visibly flagging
+   "this came from saved data". */
+.A-input:-webkit-autofill,
+.A-input:-webkit-autofill:hover,
+.A-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0F172A;
+    -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+    box-shadow: 0 0 0 1000px #FFFFFF inset;
+    transition: background-color 9999s ease-in-out 0s;
+    /* Fires a (visually invisible) animation the instant Chrome/Safari
+       autofills this field — Auth.tsx listens for it and immediately
+       wipes the value back to empty. This is how a page can detect
+       autofill at all, since there's no other JS-visible signal for it. */
+    animation-name: AS-autofillDetect;
+    animation-duration: 0.01s;
+}
+
+@keyframes AS-autofillDetect {
+    from {}
+
+    to {}
+}
+
+.A-input:focus {
+    border-color: var(--ember-mid, #3B82F6);
+    box-shadow: 0 0 0 3px rgba(59,130,246, 0.14);
+    transform: translateY(-1px);
+}
+
+.A-input:hover:not(:focus) {
+    border-color: #CBD5E1;
+}
+
+.A-input.no-icon {
+    padding-right: 14px;
+}
+
+.A-input-icon {
+    position: absolute;
+    right: 13px;
+    width: 18px;
+    height: 18px;
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.A-field:focus-within .A-input-icon {
+    color: var(--ember, #2563EB);
+    transform: scale(1.1);
+}
+
+.A-input-toggle {
+    position: absolute;
+    right: 9px;
+    width: 27px;
+    height: 27px;
+    border-radius: 7px;
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    transition: color 0.15s, background 0.15s;
+}
+
+.A-input-toggle:hover {
+    color: var(--ember, #2563EB);
+    background: rgba(59,130,246, 0.08);
+}
+
+/* ── CUSTOM DROPDOWN (Role, register only) ── */
+.A-drop-wrap {
+    position: relative;
+    margin-bottom: 16px;
+    isolation: isolate;
+    animation: AS-fadeIn 0.4s 0.24s both;
+}
+
+.A-drop-wrap.open {
+    z-index: 999;
+}
+
+.A-drop-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+    transition: color 0.18s;
+}
+
+.A-drop-wrap.open .A-drop-label {
+    color: var(--ember, #2563EB);
+}
+
+.A-drop-trigger {
+    width: 100%;
+    height: 45px;
+    padding: 0 38px 0 10px;
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 9px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: #0F172A;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    position: relative;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.A-drop-trigger:hover {
+    border-color: #CBD5E1;
+}
+
+.A-drop-wrap.open .A-drop-trigger {
+    border-color: var(--ember-mid, #3B82F6);
+    box-shadow: 0 0 0 3px rgba(59,130,246, 0.14);
+}
+
+.A-drop-trigger-icon {
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59,130,246, 0.10);
+    color: var(--ember, #2563EB);
+    transition: transform 0.25s cubic-bezier(.34, 1.6, .5, 1), background 0.2s;
+}
+
+.A-drop-wrap.open .A-drop-trigger-icon {
+    transform: scale(1.1) rotate(-6deg);
+    background: rgba(59,130,246, 0.18);
+}
+
+.A-drop-trigger-txt {
+    flex: 1;
+    font-weight: 600;
+    color: #0F172A;
+}
+
+.A-drop-caret {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748B;
+    transition: transform 0.18s;
+    pointer-events: none;
+}
+
+.A-drop-wrap.open .A-drop-caret {
+    transform: translateY(-50%) rotate(180deg);
+    color: var(--ember, #2563EB);
+}
+
+@keyframes AS-dropPop {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.A-drop-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(20, 15, 10, 0.16);
+    overflow: hidden;
+    z-index: 999;
+    animation: AS-dropPop 0.18s cubic-bezier(.22, .68, 0, 1.2) both;
+    transform-origin: top center;
+    box-sizing: border-box;
+}
+
+/* Portalled straight onto <body> and positioned in fixed viewport
+   coordinates (measured from the trigger in Auth.tsx) — this is
+   what actually guarantees it paints above every other row on the
+   page, independent of any stacking context the form ends up with. */
+.A-drop-menu-portal {
+    z-index: 99999;
+}
+
+.A-drop-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #0F172A;
+}
+
+.A-drop-opt:last-child {
+    border-bottom: none;
+}
+
+.A-drop-opt:hover {
+    background: #F8FAFC;
+}
+
+.A-drop-opt.selected {
+    background: rgba(59,130,246, 0.09);
+    color: var(--ember, #2563EB);
+}
+
+.A-drop-opt-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59,130,246, 0.08);
+    color: var(--ember, #2563EB);
+    opacity: 0.85;
+    transition: transform 0.22s cubic-bezier(.34, 1.6, .5, 1), opacity 0.15s, background 0.15s;
+}
+
+.A-drop-opt:hover .A-drop-opt-icon,
+.A-drop-opt.selected .A-drop-opt-icon {
+    opacity: 1;
+    transform: scale(1.08);
+    background: rgba(59,130,246, 0.14);
+}
+
+.A-drop-opt-check {
+    margin-left: auto;
+    color: var(--ember, #2563EB);
+    font-size: 9px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.A-drop-opt.selected .A-drop-opt-check {
+    opacity: 1;
+}
+
+/* ── PRIMARY BUTTON ── */
+.AS-btn {
+    width: 100%;
+    height: 45px;
+    border: none;
+    border-radius: 9px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.16s, box-shadow 0.16s, transform 0.12s;
+    margin-top: 6px;
+    animation: AS-fadeIn 0.4s 0.4s both;
+}
+
+.AS-btn.primary {
+    background: var(--ember, #2563EB);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(29,78,216, 0.22);
+    animation: AS-fadeIn 0.4s 0.4s both, AS-btnGlow 2.6s ease-in-out 1s infinite;
+}
+
+.AS-btn.primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+    background-size: 220% 100%;
+    animation: AS-shimmerText 2.6s linear infinite;
+    pointer-events: none;
+}
+
+.AS-btn.primary:hover:not(:disabled) {
+    background: #2563EB;
+    box-shadow: 0 5px 16px rgba(29,78,216, 0.3);
+    transform: translateY(-1px) scale(1.012);
+}
+
+.AS-btn.primary:active:not(:disabled) {
+    transform: translateY(1px) scale(0.982);
+}
+
+.AS-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.A-btn-arrow {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.AS-btn.primary:hover:not(:disabled) .A-btn-arrow {
+    transform: translateX(3px);
+}
+
+.A-spin {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: AS-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+/* ── MESSAGE ── */
+.A-msg {
+    margin-top: 14px;
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    line-height: 1.5;
+    animation: AS-fadeIn 0.2s both;
+}
+
+.A-msg.success {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+    color: #1E9C6A;
+}
+
+.A-msg.error {
+    background: rgba(29,78,216, 0.07);
+    border: 1px solid rgba(29,78,216, 0.20);
+    color: #D93B55;
+}
+
+.A-msg-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── SWITCH LINK ── */
+.AS-switch {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #E9EEF5;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    color: #64748B;
+    text-align: center;
+    animation: AS-fadeIn 0.5s 0.5s both;
+}
+
+.AS-switch-btn {
+    color: var(--ember, #2563EB);
+    font-weight: 700;
+    font-size: 12.5px;
+    font-family: var(--font-body);
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s;
+}
+
+.AS-switch-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: var(--ember, #2563EB);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+}
+
+.AS-switch-btn:hover {
+    color: #1D4ED8;
+}
+
+.AS-switch-btn:hover::after {
+    transform: scaleX(1);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    .AS-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .AS-brand {
+        display: none;
+    }
+
+    .AS-mobile-brand {
+        display: flex;
+    }
+
+    .AS-panel {
+        padding: 32px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .A-field-row {
+        grid-template-columns: 1fr;
+    }
+
+    .AS-panel-inner:has(.AS-form-wrap-register) {
+        max-width: 380px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .AS-brand-top,
+    .AS-brand-tag,
+    .AS-brand-title,
+    .AS-brand-sub,
+    .AS-brand-features li,
+    .AS-brand-foot,
+    .AS-brand-name-sub,
+    .AS-brand-name-sub::after,
+    .AS-panel-inner,
+    .AS-form-title,
+    .AS-form-sub,
+    .AS-form-title-bar,
+    .AS-t-accent,
+    .A-field,
+    .A-field-row,
+    .A-drop-wrap,
+    .AS-btn,
+    .AS-btn.primary,
+    .AS-btn.primary::before,
+    .AS-brand::before,
+    .AS-brand::after,
+    .AS-brand-grid,
+    .AS-switch,
+    .A-drop-menu,
+    .AS-tab.active {
+        animation: none !important;
+    }
+}

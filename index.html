@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhiteNode Labs</title>
+
+  <!-- All 4 app fonts loaded ONCE, here, up front — the browser's preload
+       scanner finds this before any JS runs. Previously every page pulled
+       its own copy of these fonts via a render-blocking CSS @import
+       buried inside a JS-injected <style> tag (Dashboard.css +
+       ERPTheme.ts, the latter alone reused by ~19 page components) —
+       up to 20 redundant round trips to fonts.googleapis.com instead of
+       one shared, cached request. This is the single biggest lever for
+       perceived page-load speed across the app. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-o01vRmXM.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D-uylXzD.css">
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html> 

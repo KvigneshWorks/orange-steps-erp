@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM SCROLLBAR SYSTEM — WhiteNode Software Solutions Design System
+   Ember-branded, ultra-modern, animated — works on dark & light surfaces
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Scrollbar keyframes ── */
+@keyframes sb-glow-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(254,147,7,0.35), 0 0 10px rgba(255,107,0,0.18); }
+  50%       { box-shadow: 0 0 8px rgba(254,147,7,0.60), 0 0 18px rgba(255,107,0,0.32); }
+}
+@keyframes sb-shimmer {
+  0%   { background-position: -100% center; }
+  100% { background-position:  300% center; }
+}
+@keyframes sb-track-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sb-thumb-in {
+  from { opacity: 0; transform: scaleY(0.6); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── Firefox scrollbar ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fe9307 transparent;
+}
+
+/* ── Base (dark pages — login, dashboard) ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.50);
+  border-radius: 99px;
+  animation: sb-track-fade 0.3s ease both;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #ff9f3a 0%,
+    #fe9307 35%,
+    #FF6B00 80%,
+    #E05F00 100%
+  );
+  border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+    0 0 4px rgba(254,147,7,0.30),
+    inset 0 1px 0 rgba(255,209,130,0.25);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #fdc87a 0%,
+    #ff9f3a 25%,
+    #fe9307 60%,
+    #FF6B00 100%
+  );
+  box-shadow:
+    0 0 8px  rgba(254,147,7,0.55),
+    0 0 18px rgba(255,107,0,0.28),
+    inset 0 1px 0 rgba(255,220,150,0.30);
+  animation: sb-glow-pulse 2s ease-in-out infinite;
+}
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(
+    180deg,
+    #ffe0a0 0%,
+    #fdc87a 20%,
+    #fe9307 55%,
+    #FF6B00 100%
+  );
+  box-shadow:
+    0 0 12px rgba(254,147,7,0.70),
+    0 0 24px rgba(255,107,0,0.40),
+    inset 0 1px 0 rgba(255,230,160,0.35);
+  transform: scaleX(1.15);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* ── ERP light-surface pages override ── */
+/* Applied to any element with the ERP surface background */
+.ERP-page ::-webkit-scrollbar-track,
+.ERP-scroll ::-webkit-scrollbar-track {
+  background: rgba(212, 213, 216, 0.25);
+  border-radius: 99px;
+}
+.ERP-page ::-webkit-scrollbar-thumb,
+.ERP-scroll ::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #ff9f3a 0%,
+    #fe9307 40%,
+    #FF6B00 100%
+  );
+  border: 1.5px solid rgba(255,255,255,0.55);
+  box-shadow:
+    0 0 5px rgba(254,147,7,0.28),
+    inset 0 1px 0 rgba(255,220,150,0.45);
+}
+.ERP-page ::-webkit-scrollbar-thumb:hover,
+.ERP-scroll ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #fdc87a 0%,
+    #fe9307 45%,
+    #FF6B00 100%
+  );
+  box-shadow:
+    0 0 10px rgba(254,147,7,0.55),
+    0 0 22px rgba(255,107,0,0.25),
+    inset 0 1px 0 rgba(255,230,160,0.50);
+  animation: sb-glow-pulse 1.8s ease-in-out infinite;
+}
+
+/* ── Thin variant for compact scrollable panels ── */
+/* Sidebars, dropdown lists, modal bodies */
+.sb-thin::-webkit-scrollbar        { width: 3px; height: 3px; }
+.sb-thin::-webkit-scrollbar-track  { background: transparent; }
+.sb-thin::-webkit-scrollbar-thumb  {
+  background: linear-gradient(180deg, #fe9307, #FF6B00);
+  border-radius: 99px;
+  border: none;
+}
+.sb-thin::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fdc87a, #fe9307);
+  box-shadow: 0 0 6px rgba(254,147,7,0.50);
+}
+
+/* ── Auto-hide scrollbar (shows on hover/scroll) ── */
+.sb-auto {
+  overflow: overlay; /* Chrome: scrollbar overlays, doesn't push layout */
+}
+.sb-auto::-webkit-scrollbar-thumb {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sb-auto:hover::-webkit-scrollbar-thumb,
+.sb-auto:focus-within::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* ── Horizontal scrollbar ── */
+::-webkit-scrollbar:horizontal {
+  height: 5px;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(
+    90deg,
+    #ff9f3a 0%,
+    #fe9307 40%,
+    #FF6B00 100%
+  );
+}
+
+/* ── Aside / sidebar override (inherited from old rule, now upgraded) ── */
+aside::-webkit-scrollbar        { width: 3px; }
+aside::-webkit-scrollbar-track  { background: transparent; }
+aside::-webkit-scrollbar-thumb  {
+  background: linear-gradient(180deg, #fe9307, #FF6B00);
+  border-radius: 99px;
+}
+aside::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #fdc87a, #fe9307);
+  box-shadow: 0 0 6px rgba(254,147,7,0.45);
+}
+
+/* ════════════════════════════════════════════════════════
+   BASE STYLES
+   ════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  @apply bg-slate-950 text-white antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fade-in 0.4s ease both;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ─── Responsive container + small adaptive tweaks ─── */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (min-width: 1280px) {
+  .container { padding-left: 24px; padding-right: 24px; }
+}
+
+@media (max-width: 900px) {
+  .ERP-page { padding: 20px; }
+  .DB3-root { gap: 18px; }
+}
+
+@media (max-width: 640px) {
+  .ERP-page { padding: 14px; }
+  .ERP-subtitle { font-size: 12px; }
+  .DB3-root { gap: 12px; }
+  .DB3-panel { position: static; max-height: none; }
+}
