@@ -55,7 +55,6 @@
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
         Route::get('/me',   [AuthController::class, 'me'])->middleware('auth:sanctum');
         Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
-        // Polled by the "Waiting for approval" screen — no login yet, so public.
         Route::get('/registration-status/{id}', [AuthController::class, 'registrationStatus']);
     });
 
@@ -64,7 +63,6 @@
     // ─────────────────────────────────────────────────────────────────────────────
     Route::middleware('auth:sanctum')->group(function () {
 
-        // ── Auth user helper ────────
         Route::get('/user', fn(Request $r) => $r->user());
 
         Route::middleware('role')->prefix('dashboard')->group(function () {
@@ -73,28 +71,16 @@
             Route::get('/projects', [DashboardController::class, 'projects']);
         });
 
-        // ── Pending Approvals screen ── super_admin only. Lists/decides
-        //    account-creation requests queued by AuthController@register
-        //    for every role (user/admin/super_admin). Mirrors the public,
-        //    token-based approve/reject flow in routes/web.php, which is
-        //    what the emailed/WhatsApp'd link actually uses — this JSON
-        //    API is the in-app alternative for the MD to act from a
-        //    logged-in dashboard screen instead.
         Route::middleware('role')->prefix('approval-requests')->group(function () {
             Route::get('/',              [ApprovalController::class, 'index']);
             Route::post('/{id}/approve', [ApprovalController::class, 'approveApi']);
             Route::post('/{id}/reject',  [ApprovalController::class, 'rejectApi']);
         });
 
-        // ── Master Data lookups ── needed by Workforce Register, Attendance
-        //    and Daybook forms (category/bio-data/sub-name dropdowns), so this
-        //    combined read endpoint stays available to admin & user too.
         Route::middleware('role:admin,user')->group(function () {
             Route::get('/master-data', [MasterDataController::class, 'index']);
         });
 
-        // ── Master Data management ── admin & super_admin (Delete restricted
-        //    to super_admin only, matching every other module in the app).
         Route::middleware('role:admin')->group(function () {
             Route::apiResource('categories',     CategoryController::class)->except(['destroy']);
             Route::apiResource('sub-categories', SubCategoryController::class)->except(['destroy']);
@@ -111,9 +97,7 @@
             Route::delete('/bio-data/{id}',        [BioDataController::class, 'destroy']);
         });
 
-        // ── Legacy management (not surfaced in current nav) ── super_admin only ──
         Route::middleware('role')->group(function () {
-            // ── Management (legacy, not surfaced in current nav) ──
             Route::post('/projects',      [ProjectController::class, 'store']);
             Route::get('/projects',       [ProjectController::class, 'index']);
             Route::post('/inspections',   [InspectionController::class, 'store']);
@@ -124,8 +108,7 @@
             Route::get('/cad-revisions',  [CADRevisionController::class, 'index']);
         });
 
-        // ── Daybook ── admin & super_admin only (removed from 'user') ──
-        //    Delete is further restricted to super_admin only, below.
+
         Route::middleware('role:admin')->group(function () {
             Route::get('/daybook/all', [DaybookEntryController::class, 'allEntries']);
             Route::get('/daybook/transactions', [DaybookEntryController::class, 'transactions']);
