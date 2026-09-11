@@ -46,6 +46,20 @@ interface OverallStats {
     totalEntries: number;
     creditByMode: PaymentBreakdown[];
     debitByMode: PaymentBreakdown[];
+    /* Cash vs. Bank split, in two flavours — "Cash" mode is its own
+       bucket, every other mode (UPI, NEFT, Cheque, Bank Transfer,
+       Others) merges into "Bank" since they all settle to a bank
+       account:
+       - debitCash / debitBank: split of Total Debit only — these two
+         always add up to totalDebit (e.g. totalDebit 10k = debitCash 7k
+         + debitBank 3k).
+       - cashHolding / bankHolding: split of Net Balance — net
+         (credit − debit) per bucket; these two always add up to
+         netBalance. */
+    debitCash: number;
+    debitBank: number;
+    cashHolding: number;
+    bankHolding: number;
 }
 
 interface FormData {
@@ -325,6 +339,16 @@ function computeOverallStats(allEntries: DaybookEntry[], categories: Category[])
         }
     }
 
+    let cashHolding = 0, bankHolding = 0;
+    const allModes = new Set([...Object.keys(creditMap), ...Object.keys(debitMap)]);
+    for (const mode of allModes) {
+        const net = (creditMap[mode] || 0) - (debitMap[mode] || 0);
+        if (mode === 'Cash') cashHolding += net;
+        else bankHolding += net;
+    }
+    const debitCash = debitMap['Cash'] || 0;
+    const debitBank = totalDebit - debitCash;
+
     return {
         totalCredit,
         totalDebit,
@@ -332,6 +356,10 @@ function computeOverallStats(allEntries: DaybookEntry[], categories: Category[])
         totalEntries: allEntries.length,
         creditByMode: Object.entries(creditMap).map(([mode, amount]) => ({ mode, amount })).sort((a, b) => b.amount - a.amount),
         debitByMode: Object.entries(debitMap).map(([mode, amount]) => ({ mode, amount })).sort((a, b) => b.amount - a.amount),
+        debitCash,
+        debitBank,
+        cashHolding,
+        bankHolding,
     };
 }
 
@@ -354,6 +382,38 @@ function PayModeRow({ breakdown }: { breakdown: PaymentBreakdown[] }) {
 }
 
 const PAGE_CSS = `
+@keyframes db-hold-float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(-4deg); } }
+
+/* ── IN-CARD CASH/BANK BREAKDOWN CHIPS — sit inside the Total Debit and
+   Net Balance stat cards, under the main total, to show how much of
+   that total is Cash vs. Bank (the two chip amounts always add up to
+   the number shown above them). ── */
+.DB-stat-breakdown { display: flex; gap: 6px; margin-top: 9px; position: relative; z-index: 1; }
+.DB-stat-chip {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 5px;
+  padding: 4px 7px; border-radius: 7px; border: 1px solid;
+}
+.DB-stat-chip.cash { background: rgba(30,156,106,0.07); border-color: rgba(30,156,106,0.24); }
+.DB-stat-chip.bank { background: rgba(8,145,178,0.07); border-color: rgba(8,145,178,0.24); }
+.DB-stat-chip-icon {
+  width: 15px; height: 15px; border-radius: 5px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  animation: db-hold-float 2.8s ease-in-out infinite;
+}
+.DB-stat-chip.cash .DB-stat-chip-icon { background: rgba(30,156,106,0.16); }
+.DB-stat-chip.bank .DB-stat-chip-icon { background: rgba(8,145,178,0.16); animation-delay: .35s; }
+.DB-stat-chip-icon svg { width: 8px; height: 8px; }
+.DB-stat-chip-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.DB-stat-chip-label { font-family: var(--font-mono); font-size: 6px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-4); }
+.DB-stat-chip-val { font-family: var(--font-mono); font-size: 9.5px; font-weight: 800; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) {
+  .DB-stat-chip-label { font-size: 5.5px; }
+  .DB-stat-chip-val { font-size: 8.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .DB-stat-chip-icon { animation: none; }
+}
+
 /* ── SEARCHABLE DROPDOWN ── */
 .DB-SDD-root { position:relative; width:100%; }
 .DB-SDD-root[data-disabled="true"] { opacity:0.45; pointer-events:none; }
@@ -1535,6 +1595,8 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
     const [overallStats, setOverallStats] = useState<OverallStats>({
         totalCredit: 0, totalDebit: 0, netBalance: 0, totalEntries: 0,
         creditByMode: [], debitByMode: [],
+        debitCash: 0, debitBank: 0,
+        cashHolding: 0, bankHolding: 0,
     });
 
     const [viewDate, setViewDate] = useState(todayDate());
@@ -2003,7 +2065,8 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                     </div>
                     {/* TOTAL CREDIT END  */}
 
-                    {/* TOTAL DEBIT START */}
+                    {/* TOTAL DEBIT START — plus a Cash/Bank breakdown of that
+                       same total: debitCash + debitBank always == totalDebit. */}
                     <div className="ERP-stat">
                         <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--error),#F87171)' }} />
                         <div className="ERP-stat-label">Total Debit</div>
@@ -2011,10 +2074,28 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
                             <AnimCount value={overallStats.totalDebit} />
                         </div>
+                        <div className="DB-stat-breakdown">
+                            <div className="DB-stat-chip cash">
+                                <span className="DB-stat-chip-icon"><Icon name="cash" size={8} color="#1E9C6A" /></span>
+                                <span className="DB-stat-chip-text">
+                                    <span className="DB-stat-chip-label">Cash Holding</span>
+                                    <span className="DB-stat-chip-val">₹<AnimCount value={overallStats.debitCash} /></span>
+                                </span>
+                            </div>
+                            <div className="DB-stat-chip bank">
+                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#0891B2" /></span>
+                                <span className="DB-stat-chip-text">
+                                    <span className="DB-stat-chip-label">Bank Holding</span>
+                                    <span className="DB-stat-chip-val">₹<AnimCount value={overallStats.debitBank} /></span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     {/* TOTAL DEBIT END */}
 
-                    {/* NET BALANCE */}
+                    {/* NET BALANCE START — plus a Cash/Bank breakdown of that
+                       same net figure: cashHolding + bankHolding always ==
+                       netBalance. */}
                     <div className="ERP-stat">
                         <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
                         <div className="ERP-stat-label">Net Balance</div>
@@ -2022,8 +2103,28 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
                             <AnimCount value={Math.abs(overallStats.netBalance)} />
                         </div>
+                        <div className="DB-stat-breakdown">
+                            <div className="DB-stat-chip cash">
+                                <span className="DB-stat-chip-icon"><Icon name="cash" size={8} color="#1E9C6A" /></span>
+                                <span className="DB-stat-chip-text">
+                                    <span className="DB-stat-chip-label">Cash Holding</span>
+                                    <span className="DB-stat-chip-val" style={{ color: overallStats.cashHolding < 0 ? 'var(--error)' : 'var(--text-1)' }}>
+                                        {overallStats.cashHolding < 0 ? '-' : ''}₹<AnimCount value={Math.abs(overallStats.cashHolding)} />
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="DB-stat-chip bank">
+                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#0891B2" /></span>
+                                <span className="DB-stat-chip-text">
+                                    <span className="DB-stat-chip-label">Bank Holding</span>
+                                    <span className="DB-stat-chip-val" style={{ color: overallStats.bankHolding < 0 ? 'var(--error)' : 'var(--text-1)' }}>
+                                        {overallStats.bankHolding < 0 ? '-' : ''}₹<AnimCount value={Math.abs(overallStats.bankHolding)} />
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    {/* NET BALANCE */}
+                    {/* NET BALANCE END */}
                 </div>
                 {/* ── STAT CARDS END  ── */}
 

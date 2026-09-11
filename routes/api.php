@@ -89,6 +89,7 @@
             Route::get('/bio-data/names', [BioDataController::class, 'names']);
             Route::apiResource('bio-data', BioDataController::class)->except(['destroy']);
         });
+        
         Route::middleware('role')->group(function () {
             Route::delete('/categories/{id}',      [CategoryController::class, 'destroy']);
             Route::delete('/sub-categories/{id}',  [SubCategoryController::class, 'destroy']);

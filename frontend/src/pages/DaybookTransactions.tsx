@@ -83,6 +83,7 @@ const PATHS: Record<string, string> = {
   list: 'M4 6h16M4 10h16M4 14h16M4 18h16',
   inbox: 'M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4',
   cash: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z',
+  bank: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
   arrowUp: 'M5 10l7-7m0 0l7 7m-7-7v18',
   arrowDown: 'M19 14l-7 7m0 0l-7-7m7 7V3',
   circle: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
@@ -1002,50 +1003,34 @@ const TX_CSS = `
   color: var(--text-4);
   letter-spacing: 0.2px;
 }
-.DB-stat-pay-breakdown { margin-top: 6px; padding-top: 6px; gap: 3px; }
-/* Payment/entry breakdown rows on the Net Balance & Filtered cards — copied
-   verbatim from DaybookPage's .DB-stat-pay-* so both pages render identically. */
-.DB-stat-pay-breakdown {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 100%;
+/* Cash/Bank-Holding breakdown chips on the Total Credit, Total Debit &
+   Net Balance cards — same concept + same class names as the Daybook
+   create page's .DB-stat-chip-* so both pages render identically. */
+@keyframes db-hold-float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(-4deg); } }
+.DB-stat-breakdown { display: flex; gap: 7px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); width: 100%; }
+.DB-stat-chip {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px;
+  padding: 5px 8px; border-radius: 8px; border: 1px solid;
 }
-.DB-stat-pay-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  min-width: 0;
+.DB-stat-chip.cash { background: rgba(30,156,106,0.07); border-color: rgba(30,156,106,0.24); }
+.DB-stat-chip.bank { background: rgba(8,145,178,0.07); border-color: rgba(8,145,178,0.24); }
+.DB-stat-chip-icon {
+  width: 18px; height: 18px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  animation: db-hold-float 2.8s ease-in-out infinite;
 }
-.DB-stat-pay-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.DB-stat-chip.cash .DB-stat-chip-icon { background: rgba(30,156,106,0.16); }
+.DB-stat-chip.bank .DB-stat-chip-icon { background: rgba(8,145,178,0.16); animation-delay: .35s; }
+.DB-stat-chip-icon svg { width: 9px; height: 9px; }
+.DB-stat-chip-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.DB-stat-chip-label { font-family: var(--font-mono); font-size: 6.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-4); }
+.DB-stat-chip-val { font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) {
+  .DB-stat-chip-label { font-size: 6px; }
+  .DB-stat-chip-val { font-size: 9px; }
 }
-.DB-stat-pay-mode {
-  flex: 1;
-  min-width: 0;
-  color: var(--text-4);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-size: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.DB-stat-pay-amt {
-  font-weight: 800;
-  color: var(--text-2);
-  font-size: 8.5px;
-  flex-shrink: 0;
-  white-space: nowrap;
+@media (prefers-reduced-motion: reduce) {
+  .DB-stat-chip-icon { animation: none; }
 }
 
 /* ══ Filter Panel ══ */
@@ -5124,6 +5109,16 @@ export default function DaybookTransactions() {
     creditByMode.push(...Object.entries(creditMap).map(([mode, amount]) => ({ mode, amount })).sort((a, b) => b.amount - a.amount));
     debitByMode.push(...Object.entries(debitMap).map(([mode, amount]) => ({ mode, amount })).sort((a, b) => b.amount - a.amount));
   }
+  // Same Cash/Bank-Holding split as the Daybook create page, but scoped to
+  // whatever's currently filtered here — "Cash" mode is its own bucket,
+  // every other mode (UPI, NEFT, Cheque, Bank Transfer, Others) merges
+  // into "Bank" since they all settle to a bank account. Each pair always
+  // adds back up to the big total shown above it.
+  const modeAmt = (list: { mode: string; amount: number }[], wantCash: boolean) =>
+    list.reduce((sum, { mode, amount }) => sum + ((mode === 'Cash') === wantCash ? amount : 0), 0);
+  const creditCash = modeAmt(creditByMode, true), creditBank = modeAmt(creditByMode, false);
+  const debitCash = modeAmt(debitByMode, true), debitBank = modeAmt(debitByMode, false);
+  const netCash = creditCash - debitCash, netBank = creditBank - debitBank;
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
   const paginated = filtered.slice((page - 1) * perPage, page * perPage);
   const pageStats = computeStats(paginated, categories);
@@ -5321,14 +5316,21 @@ export default function DaybookTransactions() {
             </div>
             <div className="TX-stat-sub">{anySelectionMade ? 'CR in range' : 'to view amount'}</div>
             {anySelectionMade && creditByMode.length > 0 && (
-              <div className="DB-stat-pay-breakdown">
-                {creditByMode.map(({ mode, amount }) => (
-                  <div key={mode} className="DB-stat-pay-row">
-                    <span className="DB-stat-pay-dot" style={{ background: getChip(mode).color }} />
-                    <span className="DB-stat-pay-mode">{mode}</span>
-                    <span className="DB-stat-pay-amt">₹{amount.toLocaleString('en-IN')}</span>
-                  </div>
-                ))}
+              <div className="DB-stat-breakdown">
+                <div className="DB-stat-chip cash">
+                  <span className="DB-stat-chip-icon"><Icon name="cash" size={9} color="#1E9C6A" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Cash Holding</span>
+                    <span className="DB-stat-chip-val">₹{creditCash.toLocaleString('en-IN')}</span>
+                  </span>
+                </div>
+                <div className="DB-stat-chip bank">
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Bank Holding</span>
+                    <span className="DB-stat-chip-val">₹{creditBank.toLocaleString('en-IN')}</span>
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -5349,14 +5351,21 @@ export default function DaybookTransactions() {
             </div>
             <div className="TX-stat-sub">{anySelectionMade ? 'DR in range' : 'to view amount'}</div>
             {anySelectionMade && debitByMode.length > 0 && (
-              <div className="DB-stat-pay-breakdown">
-                {debitByMode.map(({ mode, amount }) => (
-                  <div key={mode} className="DB-stat-pay-row">
-                    <span className="DB-stat-pay-dot" style={{ background: getChip(mode).color }} />
-                    <span className="DB-stat-pay-mode">{mode}</span>
-                    <span className="DB-stat-pay-amt">₹{amount.toLocaleString('en-IN')}</span>
-                  </div>
-                ))}
+              <div className="DB-stat-breakdown">
+                <div className="DB-stat-chip cash">
+                  <span className="DB-stat-chip-icon"><Icon name="cash" size={9} color="#1E9C6A" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Cash Holding</span>
+                    <span className="DB-stat-chip-val">₹{debitCash.toLocaleString('en-IN')}</span>
+                  </span>
+                </div>
+                <div className="DB-stat-chip bank">
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Bank Holding</span>
+                    <span className="DB-stat-chip-val">₹{debitBank.toLocaleString('en-IN')}</span>
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -5379,16 +5388,24 @@ export default function DaybookTransactions() {
               {anySelectionMade ? (displayStats.balance >= 0 ? 'Net Surplus' : 'Net Deficit') : 'to view amount'}
             </div>
             {anySelectionMade && filtered.length > 0 && (
-              <div className="DB-stat-pay-breakdown">
-                <div className="DB-stat-pay-row">
-                  <span className="DB-stat-pay-dot" style={{ background: 'var(--success)' }} />
-                  <span className="DB-stat-pay-mode">Credit</span>
-                  <span className="DB-stat-pay-amt">₹{displayStats.income.toLocaleString('en-IN')}</span>
+              <div className="DB-stat-breakdown">
+                <div className="DB-stat-chip cash">
+                  <span className="DB-stat-chip-icon"><Icon name="cash" size={9} color="#1E9C6A" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Cash Holding</span>
+                    <span className="DB-stat-chip-val" style={{ color: netCash < 0 ? 'var(--error)' : 'var(--text-1)' }}>
+                      {netCash < 0 ? '-' : ''}₹{Math.abs(netCash).toLocaleString('en-IN')}
+                    </span>
+                  </span>
                 </div>
-                <div className="DB-stat-pay-row">
-                  <span className="DB-stat-pay-dot" style={{ background: 'var(--error)' }} />
-                  <span className="DB-stat-pay-mode">Debit</span>
-                  <span className="DB-stat-pay-amt">₹{displayStats.expense.toLocaleString('en-IN')}</span>
+                <div className="DB-stat-chip bank">
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-text">
+                    <span className="DB-stat-chip-label">Bank Holding</span>
+                    <span className="DB-stat-chip-val" style={{ color: netBank < 0 ? 'var(--error)' : 'var(--text-1)' }}>
+                      {netBank < 0 ? '-' : ''}₹{Math.abs(netBank).toLocaleString('en-IN')}
+                    </span>
+                  </span>
                 </div>
               </div>
             )}

@@ -1588,14 +1588,35 @@ const modeColor = (mode: string) => MODE_COLORS[mode] || '#6B6B6B';
 const STAT_ICON_PATHS: Record<string, string> = {
     trending: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
     cash: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z',
+    bank: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
     scale: 'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',
     book: 'M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z',
     people: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
     card: 'M2 7h20M2 7a2 2 0 012-2h16a2 2 0 012 2M2 7v10a2 2 0 002 2h16a2 2 0 002-2V7M6 15h4',
+    mobile: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
+    document: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+    transfer: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
+    more: 'M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z',
 };
 
-const StatIcon = ({ name, color }: { name: string; color: string }) => (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+// Mode column icon lookup — "realistic" per-mode icon instead of the
+// spelled-out Pill label, which wraps letter-by-letter in this table's
+// narrow Mode column at small widths.
+const MODE_ICON_NAME: Record<string, string> = {
+    Cash: 'cash', UPI: 'mobile', NEFT: 'bank', Cheque: 'document', 'Bank Transfer': 'transfer', Others: 'more',
+};
+const ModeIcon = ({ mode }: { mode: string }) => {
+    if (!mode || mode === '—') return <span className="T-tbl-null">—</span>;
+    const color = modeColor(mode);
+    return (
+        <span className="DB-mode-icon" style={{ background: color + '18', borderColor: color + '40' }} title={mode}>
+            <StatIcon name={MODE_ICON_NAME[mode] || 'more'} size={11} color={color} />
+        </span>
+    );
+};
+
+const StatIcon = ({ name, color, size = 17 }: { name: string; color: string; size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
         <path d={STAT_ICON_PATHS[name]} />
     </svg>
 );
@@ -2197,6 +2218,19 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         return { bySource, grand };
     }, [clientDebitRows]);
 
+    // Cash vs. Bank split of the "Total Cash Book Expenses" figure above —
+    // same Cash Holding / Bank Holding concept as the create page, scoped
+    // to just this client's Cash Book rows. "Cash" mode is its own bucket,
+    // every other mode merges into "Bank".
+    const clientCashBookCashBank = useMemo(() => {
+        let cash = 0, bank = 0;
+        clientDebitRows.forEach(r => {
+            if (r.source !== 'Cash Book') return;
+            if (r.mode === 'Cash') cash += r.amount; else bank += r.amount;
+        });
+        return { cash, bank };
+    }, [clientDebitRows]);
+
     // Per-client OUTSTANDING (unpaid) balances — a deliberately different
     // number from clientDebitRows' Wage Disbursement / Accounts Payable rows
     // above (those are actual paid transactions). "Total Unpaid Manpower"
@@ -2265,6 +2299,24 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         const toArr = (m: Record<string, number>) => Object.entries(m).map(([mode, amount]) => ({ mode, amount })).sort((a, b) => b.amount - a.amount);
         return { credit: toArr(creditMap), debit: toArr(debitMap) };
     }, [dbEntries]);
+
+    // Cash vs. Bank split of the figures above — "Cash" mode is its own
+    // bucket, every other mode (UPI, NEFT, Cheque, Bank Transfer, Others)
+    // merges into "Bank" since they all settle to a bank account. Same
+    // concept as the Daybook create page's Cash Holding / Bank Holding
+    // split, scoped to whatever's currently filtered here.
+    const dbCashBank = useMemo(() => {
+        const split = (arr: { mode: string; amount: number }[]) => arr.reduce(
+            (acc, { mode, amount }) => { if (mode === 'Cash') acc.cash += amount; else acc.bank += amount; return acc; },
+            { cash: 0, bank: 0 }
+        );
+        const cr = split(dbModeBreakdown.credit), dr = split(dbModeBreakdown.debit);
+        return {
+            creditCash: cr.cash, creditBank: cr.bank,
+            debitCash: dr.cash, debitBank: dr.bank,
+            netCash: cr.cash - dr.cash, netBank: cr.bank - dr.bank,
+        };
+    }, [dbModeBreakdown]);
 
     const fetchCredit = useCallback(async () => {
         setCrLoading(true); setServerError(false);
@@ -3845,16 +3897,74 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                 <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--success),#34D399)' }} />
                                                 <div className="ERP-stat-label">Total Credit</div>
                                                 <div className="ERP-stat-val" style={{ color: 'var(--success)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbStats.income || 0)}</div>
+                                                {dbModeBreakdown.credit.length > 0 && (
+                                                    <div className="DB-stat-breakdown">
+                                                        <div className="DB-stat-chip cash">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="cash" size={9} color="#1E9C6A" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Cash Holding</span>
+                                                                <span className="DB-stat-chip-val">{fmtFull(dbCashBank.creditCash)}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div className="DB-stat-chip bank">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Bank Holding</span>
+                                                                <span className="DB-stat-chip-val">{fmtFull(dbCashBank.creditBank)}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="ERP-stat">
                                                 <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--err),#F87171)' }} />
                                                 <div className="ERP-stat-label">Total Debit</div>
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbStats.expense || 0)}</div>
+                                                {dbModeBreakdown.debit.length > 0 && (
+                                                    <div className="DB-stat-breakdown">
+                                                        <div className="DB-stat-chip cash">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="cash" size={9} color="#1E9C6A" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Cash Holding</span>
+                                                                <span className="DB-stat-chip-val">{fmtFull(dbCashBank.debitCash)}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div className="DB-stat-chip bank">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Bank Holding</span>
+                                                                <span className="DB-stat-chip-val">{fmtFull(dbCashBank.debitBank)}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="ERP-stat">
                                                 <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
                                                 <div className="ERP-stat-label">Net Balance</div>
                                                 <div className="ERP-stat-val" style={{ color: (dbStats.balance || 0) >= 0 ? 'var(--success)' : 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(Math.abs(dbStats.balance || 0))}</div>
+                                                {dbEntries.length > 0 && (
+                                                    <div className="DB-stat-breakdown">
+                                                        <div className="DB-stat-chip cash">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="cash" size={9} color="#1E9C6A" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Cash Holding</span>
+                                                                <span className="DB-stat-chip-val" style={{ color: dbCashBank.netCash < 0 ? 'var(--err)' : 'var(--t1)' }}>
+                                                                    {dbCashBank.netCash < 0 ? '-' : ''}{fmtFull(Math.abs(dbCashBank.netCash))}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div className="DB-stat-chip bank">
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-text">
+                                                                <span className="DB-stat-chip-label">Bank Holding</span>
+                                                                <span className="DB-stat-chip-val" style={{ color: dbCashBank.netBank < 0 ? 'var(--err)' : 'var(--t1)' }}>
+                                                                    {dbCashBank.netBank < 0 ? '-' : ''}{fmtFull(Math.abs(dbCashBank.netBank))}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </>
                                     )}
@@ -3875,6 +3985,24 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                             <div className="T-client-sum-icon"><StatIcon name="book" color="var(--info)" /></div>
                                             <span className="T-client-sum-lbl">Total Cash Book Expenses</span>
                                             <span className="T-client-sum-val">{fmtFull(clientDebitTotals.bySource['Cash Book'] || 0)}</span>
+                                            {(clientDebitTotals.bySource['Cash Book'] || 0) > 0 && (
+                                                <div className="DB-stat-breakdown" style={{ marginTop: 2 }}>
+                                                    <div className="DB-stat-chip cash">
+                                                        <span className="DB-stat-chip-icon"><StatIcon name="cash" size={9} color="#1E9C6A" /></span>
+                                                        <span className="DB-stat-chip-text">
+                                                            <span className="DB-stat-chip-label">Cash Holding</span>
+                                                            <span className="DB-stat-chip-val">{fmtFull(clientCashBookCashBank.cash)}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="DB-stat-chip bank">
+                                                        <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                        <span className="DB-stat-chip-text">
+                                                            <span className="DB-stat-chip-label">Bank Holding</span>
+                                                            <span className="DB-stat-chip-val">{fmtFull(clientCashBookCashBank.bank)}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="T-client-sum-card labour" style={{ animationDelay: '90ms' }}>
                                             <div className="T-client-sum-icon"><StatIcon name="people" color="var(--purple)" /></div>
@@ -4083,7 +4211,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                         <td><span className={`T-src-badge src-${r.source.replace(/\s+/g, '-').toLowerCase()}`}>{r.source}</span></td>
                                                         <td>{r.bio_name ? <span style={{ fontWeight: 800, color: 'var(--t1)' }}>{r.bio_name}</span> : <span className="T-tbl-null">—</span>}</td>
                                                         <td>{r.sub_name ? <span className="T-tbl-subname">{r.sub_name}</span> : <span className="T-tbl-null">—</span>}</td>
-                                                        <td>{r.mode && r.mode !== '—' ? <Pill label={r.mode} /> : <span className="T-tbl-null">—</span>}</td>
+                                                        <td><ModeIcon mode={r.mode} /></td>
                                                         <td style={{ minWidth: 220, maxWidth: 360, whiteSpace: 'normal', wordBreak: 'break-word', color: 'var(--t3)', fontSize: 9.5, lineHeight: 1.5 }}>{r.narration || r.sub || '—'}</td>
                                                         <td><span className="T-tbl-null">—</span></td>
                                                         <td><span className="T-tbl-amt neutral">{fmtFull(r.amount)}</span></td>
@@ -4130,7 +4258,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                         {db('sub_category') && <td>{e.sub_category_name || <span className="T-tbl-null">—</span>}</td>}
                                                         {db('bio_name') && <td><span style={{ fontWeight: 800, color: dbFilter.bio_data_ids.includes(normId(e.bio_data_id)) ? 'var(--ember)' : 'var(--t1)' }}>{e.bio_data_name || '—'}</span></td>}
                                                         {db('sub_name') && <td>{e.sub_name_name ? <span className="T-tbl-subname">{e.sub_name_name}</span> : <span className="T-tbl-null">—</span>}</td>}
-                                                        {db('mode') && <td>{e.payment_mode ? <Pill label={e.payment_mode} /> : '—'}</td>}
+                                                        {db('mode') && <td><ModeIcon mode={e.payment_mode || ''} /></td>}
                                                         {db('narration') && <td style={{ minWidth: 220, maxWidth: 360, whiteSpace: 'normal', wordBreak: 'break-word', color: 'var(--t3)', fontSize: 9.5, lineHeight: 1.5 }}>{e.narration || '—'}</td>}
                                                         {db('amount') && <td style={{ textAlign: 'center' }}>{isIncome ? <span className="T-tbl-amt cr">₹{Number(e.amount ?? 0).toLocaleString('en-IN')}</span> : <span className="T-tbl-null">—</span>}</td>}
                                                         {db('amount') && <td style={{ textAlign: 'center' }}>{!isIncome ? <span className="T-tbl-amt dr">₹{Number(e.amount ?? 0).toLocaleString('en-IN')}</span> : <span className="T-tbl-null">—</span>}</td>}

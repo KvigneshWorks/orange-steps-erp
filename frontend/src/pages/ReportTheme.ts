@@ -278,6 +278,30 @@ export const T_CSS = `
 .T-mode-pay-row{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size: 8px;}
 .T-mode-pay-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
+/* Cash/Bank-Holding breakdown chips — same concept + same class names as
+   the Daybook create page's .DB-stat-chip-* and the Daybook Transactions
+   page, so all three Cash Book screens render identically. */
+@keyframes db-hold-float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-3px) rotate(-4deg); } }
+.DB-stat-breakdown { display: flex; gap: 7px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); width: 100%; }
+.DB-stat-chip { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 8px; border: 1px solid; }
+.DB-stat-chip.cash { background: rgba(30,156,106,0.07); border-color: rgba(30,156,106,0.24); }
+.DB-stat-chip.bank { background: rgba(8,145,178,0.07); border-color: rgba(8,145,178,0.24); }
+.DB-stat-chip-icon { width: 18px; height: 18px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; animation: db-hold-float 2.8s ease-in-out infinite; }
+.DB-stat-chip.cash .DB-stat-chip-icon { background: rgba(30,156,106,0.16); }
+.DB-stat-chip.bank .DB-stat-chip-icon { background: rgba(8,145,178,0.16); animation-delay: .35s; }
+.DB-stat-chip-icon svg { width: 9px; height: 9px; }
+.DB-stat-chip-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.DB-stat-chip-label { font-family: var(--mono); font-size: 6.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--t4); }
+.DB-stat-chip-val { font-family: var(--mono); font-size: 10.5px; font-weight: 800; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 480px) { .DB-stat-chip-label { font-size: 6px; } .DB-stat-chip-val { font-size: 9px; } }
+@media (prefers-reduced-motion: reduce) { .DB-stat-chip-icon { animation: none; } }
+
+/* ── MODE COLUMN ICON — replaces the spelled-out Mode Pill in the Cash
+   Book / client-debit tables' narrow Mode column with a small realistic
+   per-mode icon badge instead of text. ── */
+.DB-mode-icon { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 7px; border: 1px solid; flex-shrink: 0; transition: transform .18s cubic-bezier(.34,1.56,.64,1); }
+.DB-mode-icon:hover { transform: translateY(-1px) scale(1.08) rotate(-4deg); }
+
 /* ── CREDIT REPORT: compact, bold, centered, monochrome stat cards (scoped — Cash Book/Client/Manpower stat cards untouched) ── */
 .T-mode-stats-cr{gap:8px;padding:14px 22px 4px;}
 .T-mode-stats-cr .ERP-stat{padding:8px 10px 8px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform .16s ease,box-shadow .16s ease;}
