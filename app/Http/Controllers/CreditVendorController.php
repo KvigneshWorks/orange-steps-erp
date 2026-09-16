@@ -187,8 +187,8 @@ class CreditVendorController extends Controller
             $vendor = CreditVendor::with([
                 'category:id,name',
                 'subCategory:id,name',
-                'creditEntries'  => fn($q) => $q->latest('credit_date')->take(50),
-                'creditPayments' => fn($q) => $q->latest('payment_date')->take(50),
+                'creditEntries'  => fn($q) => $q->latest('credit_date'),
+                'creditPayments' => fn($q) => $q->latest('payment_date'),
             ])->findOrFail($id);
 
             $summary = $vendor->toSummaryArray();
