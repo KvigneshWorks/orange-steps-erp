@@ -28,7 +28,7 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Password::defaults()],
-            'role'     => 'required|string|in:admin,studio_owner,user,super_admin',
+            'role'     => 'required|string|in:admin,user,super_admin',
         ]);
 
         if (!config('services.approval.required')) {

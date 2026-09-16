@@ -229,7 +229,7 @@ function filterChildren(items: typeof NAV_STRUCTURE[0]['items'], allowed: Set<st
 }
 
 function getNav(role?: string) {
-    if (role === 'super_admin' || role === 'studio_owner') return NAV_STRUCTURE;
+    if (role === 'super_admin') return NAV_STRUCTURE;
     if (role === 'admin') {
         return NAV_STRUCTURE
             .filter(s => !['Clients'].includes(s.section))
@@ -2209,7 +2209,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     useEffect(() => {
         const role = user?.role ?? '';
         const allowed =
-            (role === 'super_admin' || role === 'studio_owner') ? null :
+            (role === 'super_admin') ? null :
                 role === 'admin' ? ADMIN_ALLOWED :
                     role === 'user' ? USER_ALLOWED : new Set<string>(['dashboard']);
         if (allowed && !allowed.has(activeNav)) {

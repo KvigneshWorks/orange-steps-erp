@@ -1,8 +1,9 @@
 // Central place for "who can do what" checks shared across list/table pages.
 // Mirrors the backend's CheckRole middleware (backend/app/Http/Middleware/CheckRole.php):
-// only super_admin / studio_owner can permanently delete records anywhere in
-// the app. Everyone else (admin, user) sees the record's creator name in the
-// action column instead of a Delete button.
+// only super_admin can permanently delete records anywhere in the app.
+// Everyone else (admin, user) sees the record's creator name in the
+// action column instead of a Delete button. (The legacy studio_owner role
+// has been merged into super_admin and no longer exists.)
 
 export interface StoredUser {
     id: number;
@@ -26,7 +27,7 @@ export function getStoredRole(): string {
     return getStoredUser()?.role ?? '';
 }
 
-/** Only super_admin / studio_owner may permanently delete records. */
+/** Only super_admin may permanently delete records. */
 export function canDelete(role?: string): boolean {
-    return role === 'super_admin' || role === 'studio_owner';
+    return role === 'super_admin';
 }

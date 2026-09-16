@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Usage: ->middleware('role:admin,super_admin')
  *
- * 'super_admin' and 'studio_owner' are always treated as full-access and
- * bypass this check entirely (mirrors the frontend's getNav() logic in
- * Dashboard.tsx, where super_admin/studio_owner always see every page).
+ * 'super_admin' is always treated as full-access and bypasses this check
+ * entirely (mirrors the frontend's getNav() logic in Dashboard.tsx, where
+ * super_admin always sees every page). The legacy 'studio_owner' role has
+ * been merged into 'super_admin' and no longer exists.
  * Everyone else must have a role explicitly listed in the middleware
  * parameters for the route to be reachable.
  */
@@ -29,9 +30,9 @@ class CheckRole
 
         $role = $user->role ?? '';
 
-        // Full-access roles always pass, regardless of the roles listed
+        // Full-access role always passes, regardless of the roles listed
         // for this route.
-        if (in_array($role, ['super_admin', 'studio_owner'], true)) {
+        if ($role === 'super_admin') {
             return $next($request);
         }
 

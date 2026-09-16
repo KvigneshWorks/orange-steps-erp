@@ -48,14 +48,16 @@
 
     // ─────────────────────────────────────────────────────────────────────────────
     //  PUBLIC AUTH ROUTES
+    //  NOTE: public self-registration has been removed. Account creation now
+    //  happens only from inside the app (Account Settings module — admin can
+    //  create a 'user' account pending super_admin approval, super_admin can
+    //  create either directly). See the role-gated /auth/register below.
     // ─────────────────────────────────────────────────────────────────────────────
     Route::prefix('auth')->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login',  [AuthController::class, 'login']);
         Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
         Route::get('/me',   [AuthController::class, 'me'])->middleware('auth:sanctum');
         Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
-        Route::get('/registration-status/{id}', [AuthController::class, 'registrationStatus']);
     });
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -69,6 +71,15 @@
             Route::get('/overview', [DashboardController::class, 'overview']);
             Route::get('/stats',    [DashboardController::class, 'stats']);
             Route::get('/projects', [DashboardController::class, 'projects']);
+        });
+
+        // Account creation — only admin & super_admin may reach this now
+        // (super_admin bypasses the 'admin' check via CheckRole). Public
+        // self-registration and the old email/WhatsApp "digit code" link
+        // flow are gone; this feeds the future in-app Account Settings module.
+        Route::middleware('role:admin')->prefix('auth')->group(function () {
+            Route::post('/register', [AuthController::class, 'register']);
+            Route::get('/registration-status/{id}', [AuthController::class, 'registrationStatus']);
         });
 
         Route::middleware('role')->prefix('approval-requests')->group(function () {

@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ApprovalGrantedMail;
-use App\Mail\ApprovalRejectedMail;
 use App\Models\User;
 use App\Models\UserApprovalRequest;
-use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Handles both approval surfaces:
- *  - Public, token-based (clicked from the email/WhatsApp notification —
- *    no login required, the 64-char token IS the credential).
+ *  - Public, token-based (legacy — kept only because nothing has cleaned it
+ *    up yet; no email/WhatsApp is sent anymore so nobody receives this link
+ *    in practice).
  *  - Authenticated, super_admin-only JSON API for the in-app
- *    "Pending Approvals" screen.
+ *    "Pending Approvals" / Account Settings screen — this is the live path.
  */
 class ApprovalController extends Controller
 {
@@ -152,28 +148,9 @@ class ApprovalController extends Controller
             'decided_by' => $decidedBy,
         ]);
 
-        // Best-effort heads-up to the requester that they can now log in —
-        // only if they gave a phone number (not collected by the current
-        // register form, so this is a no-op today; kept for when it is).
-        if ($approvalRequest->phone) {
-            try {
-                app(WhatsAppService::class)->sendText(
-                    $approvalRequest->phone,
-                    "✅ Your WhiteNode ERP account has been approved! You can now sign in with {$approvalRequest->email}."
-                );
-            } catch (\Exception $e) {
-                // Non-fatal — the account already exists either way.
-            }
-        }
-
-        // Email confirmation to the requester — the account already exists
-        // by this point regardless of whether this send succeeds.
-        try {
-            $loginUrl = rtrim(config('services.frontend.url'), '/') . '/login';
-            Mail::to($approvalRequest->email)->send(new ApprovalGrantedMail($approvalRequest, $loginUrl));
-        } catch (\Exception $e) {
-            Log::error('Approval-granted email failed: ' . $e->getMessage());
-        }
+        // No email/WhatsApp is sent anymore. The user finds out they've
+        // been approved simply by being able to log in — nothing to notify
+        // here; the account itself is the confirmation.
     }
 
     /**
@@ -191,10 +168,7 @@ class ApprovalController extends Controller
             'reject_reason' => $reason,
         ]);
 
-        try {
-            Mail::to($approvalRequest->email)->send(new ApprovalRejectedMail($approvalRequest));
-        } catch (\Exception $e) {
-            Log::error('Approval-rejected email failed: ' . $e->getMessage());
-        }
+        // No email is sent anymore — the requester's status simply shows
+        // as rejected wherever it's checked in-app.
     }
 }
