@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\DB;
  */
 class ApprovalController extends Controller
 {
-    // ── Public, token-based (web routes) ──────────────────────────────
-
-    /** GET /approvals/{token} — read-only review page, no side effects. */
     public function show(string $token)
     {
         $approvalRequest = UserApprovalRequest::where('approval_token', $token)->first();
@@ -31,7 +28,6 @@ class ApprovalController extends Controller
         ]);
     }
 
-    /** POST /approvals/{token}/approve — creates the real user. */
     public function approve(string $token)
     {
         $approvalRequest = UserApprovalRequest::where('approval_token', $token)->first();
@@ -49,7 +45,6 @@ class ApprovalController extends Controller
         return view('approvals.result', ['mode' => 'approved', 'req' => $approvalRequest]);
     }
 
-    /** POST /approvals/{token}/reject */
     public function reject(string $token, Request $request)
     {
         $approvalRequest = UserApprovalRequest::where('approval_token', $token)->first();
@@ -67,9 +62,6 @@ class ApprovalController extends Controller
         return view('approvals.result', ['mode' => 'rejected', 'req' => $approvalRequest]);
     }
 
-    // ── Authenticated JSON API (in-app "Pending Approvals" screen) ────
-
-    /** GET /api/approval-requests?status=pending|approved|rejected|all */
     public function index(Request $request)
     {
         $status = $request->query('status', 'pending');
@@ -85,7 +77,6 @@ class ApprovalController extends Controller
         ]);
     }
 
-    /** POST /api/approval-requests/{id}/approve */
     public function approveApi(Request $request, int $id)
     {
         $approvalRequest = UserApprovalRequest::findOrFail($id);
@@ -104,7 +95,6 @@ class ApprovalController extends Controller
         return response()->json(['success' => true, 'message' => "{$approvalRequest->name} approved and account created."]);
     }
 
-    /** POST /api/approval-requests/{id}/reject  { reason?: string } */
     public function rejectApi(Request $request, int $id)
     {
         $approvalRequest = UserApprovalRequest::findOrFail($id);
