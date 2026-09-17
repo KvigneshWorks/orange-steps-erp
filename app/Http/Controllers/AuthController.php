@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ApprovalRequestMail;
-use App\Mail\RequestReceivedMail;
 use App\Models\User;
 use App\Models\UserApprovalRequest;
-use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-
+    /**
+     * Create an account from inside the app (Account Settings module).
+     * Reachable only by an authenticated admin/super_admin (see the
+     * role:admin-gated /auth/register route) — there is no public
+     * self-registration anymore.
+     *
+     * - super_admin: creates an Admin or User account directly. Active
+     *   immediately, no approval needed.
+     * - admin: can only create a User account. The role field is ignored
+     *   and forced to 'user'. It always lands in the pending queue for
+     *   Super Admin approval (UserApprovalRequest) rather than being
+     *   created directly.
+     */
     public function register(Request $request)
     {
         $request->merge([
@@ -24,14 +31,16 @@ class AuthController extends Controller
             'email' => is_string($request->email) ? strtolower(trim($request->email)) : $request->email,
         ]);
 
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'role'     => 'required|string|in:admin,user,super_admin',
-        ]);
+        $callerRole = $request->user()->role ?? '';
 
-        if (!config('services.approval.required')) {
+        if ($callerRole === 'super_admin') {
+            $request->validate([
+                'name'     => 'required|string|max:255',
+                'email'    => 'required|string|email|max:255|unique:users',
+                'password' => ['required', 'confirmed', Password::defaults()],
+                'role'     => 'required|string|in:admin,user',
+            ]);
+
             $user = User::create([
                 'name'              => $request->name,
                 'email'             => $request->email,
@@ -40,15 +49,23 @@ class AuthController extends Controller
                 'email_verified_at' => now(),
             ]);
 
-            $token = $user->createToken('auth_token')->plainTextToken;
-
             return response()->json([
                 'success' => true,
-                'message' => 'User registered successfully',
+                'pending' => false,
+                'message' => "{$user->name}'s account has been created and can sign in now.",
                 'user'    => $user,
-                'token'   => $token,
             ], 201);
         }
+
+        // Only 'admin' can otherwise reach this route (enforced by the
+        // route's role:admin middleware). Role is always forced to 'user'
+        // regardless of what's submitted.
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+
         $existingPending = UserApprovalRequest::where('email', $request->email)
             ->where('status', 'pending')
             ->first();
@@ -58,7 +75,7 @@ class AuthController extends Controller
                 'success' => true,
                 'pending' => true,
                 'id'      => $existingPending->id,
-                'message' => 'A request for this email is already waiting for approval. Please wait for the MD to approve or reject it.',
+                'message' => 'A request for this email is already waiting for Super Admin approval.',
             ], 200);
         }
 
@@ -66,31 +83,28 @@ class AuthController extends Controller
             'name'           => $request->name,
             'email'          => $request->email,
             'password'       => Hash::make($request->password),
-            'role'           => $request->role,
+            'role'           => 'user',
             'status'         => 'pending',
             'approval_token' => Str::random(64),
             'expires_at'     => now()->addHours(24),
         ]);
 
-        $this->notifyApprover($approvalRequest);
-
-        // Best-effort confirmation to the requester that their request
-        // was received — separate from notifyApprover(), which only
-        // emails/WhatsApps the MD. Never blocks registration on failure.
-        try {
-            Mail::to($approvalRequest->email)->send(new RequestReceivedMail($approvalRequest));
-        } catch (\Exception $e) {
-            Log::error('Request-received email failed: ' . $e->getMessage());
-        }
+        // No email/WhatsApp notification — it simply shows up in the Super
+        // Admin's Pending Approvals screen.
 
         return response()->json([
             'success' => true,
             'pending' => true,
             'id'      => $approvalRequest->id,
-            'message' => 'Your account request has been sent for approval. You will be able to sign in once the MD approves it.',
+            'message' => "{$approvalRequest->name}'s account request has been sent to the Super Admin for approval.",
         ], 201);
     }
 
+    /**
+     * Lets an admin check the status of a request they submitted
+     * (not currently polled by the frontend, kept for future use /
+     * the Super Admin's Pending Approvals screen).
+     */
     public function registrationStatus(int $id)
     {
         $approvalRequest = UserApprovalRequest::find($id);
@@ -113,35 +127,21 @@ class AuthController extends Controller
         ]);
     }
 
-    private function notifyApprover(UserApprovalRequest $approvalRequest): void
+    /**
+     * "All Accounts" tab in Account Settings — super_admin only (see the
+     * bare role:-gated /users route). Read-only list, no edit/deactivate
+     * actions yet.
+     */
+    public function listAllUsers()
     {
-        $reviewUrl = url("/approvals/{$approvalRequest->approval_token}");
+        $users = User::select('id', 'name', 'email', 'role', 'created_at')
+            ->orderByDesc('created_at')
+            ->get();
 
-        $approverEmail = config('services.approver.email');
-        $approverPhone = config('services.approver.whatsapp');
-
-        if ($approverEmail) {
-            try {
-                Mail::to($approverEmail)->send(new ApprovalRequestMail($approvalRequest, $reviewUrl));
-            } catch (\Exception $e) {
-                Log::error('Approval request email failed: ' . $e->getMessage());
-            }
-        }
-
-        if ($approverPhone) {
-            try {
-                $roleLabel = ucwords(str_replace('_', ' ', $approvalRequest->role));
-                $message = "🔔 *New {$roleLabel} account request — WhiteNode ERP*\n\n"
-                    . "Name: {$approvalRequest->name}\n"
-                    . "Email: {$approvalRequest->email}\n"
-                    . "Role: {$roleLabel}\n\n"
-                    . "Review & decide: {$reviewUrl}\n\n"
-                    . "This link expires in 24 hours.";
-                app(WhatsAppService::class)->sendText($approverPhone, $message);
-            } catch (\Exception $e) {
-                Log::error('Approval request WhatsApp send failed: ' . $e->getMessage());
-            }
-        }
+        return response()->json([
+            'success' => true,
+            'data'    => $users,
+        ]);
     }
 
     /**

@@ -88,6 +88,11 @@
             Route::post('/{id}/reject',  [ApprovalController::class, 'rejectApi']);
         });
 
+        // "All Accounts" tab in Account Settings — super_admin only.
+        Route::middleware('role')->prefix('users')->group(function () {
+            Route::get('/', [AuthController::class, 'listAllUsers']);
+        });
+
         Route::middleware('role:admin,user')->group(function () {
             Route::get('/master-data', [MasterDataController::class, 'index']);
         });

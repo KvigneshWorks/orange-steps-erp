@@ -17,6 +17,9 @@ const ReportCenter = lazy(() => import('./ReportCenter'));
 const IncomeStatement = lazy(() => import('./IncomeStatement'));
 const RecycleBin = lazy(() => import('./RecycleBin'));
 const PendingApprovals = lazy(() => import('./PendingApprovals'));
+const CreateAccount = lazy(() => import('./CreateAccount'));
+const AllAccounts = lazy(() => import('./AllAccounts'));
+const RolesPermissions = lazy(() => import('./RolesPermissions'));
 const WorkforceRegister = lazy(() => import('./workforce/WorkforceRegister'));
 const AttendanceManagement = lazy(() => import('./workforce/AttendanceManagement'));
 const LabourPayment = lazy(() => import('./workforce/LabourPayment'));
@@ -196,6 +199,19 @@ const NAV_STRUCTURE = [
     },
 
     {
+        section: 'Administration', items: [
+            {
+                id: 'account-settings', label: 'Account Settings', badge: null, icon: 'shield', children: [
+                    { id: 'create-account', label: 'Create Account' },
+                    { id: 'pending-approvals', label: 'Pending Approvals' },
+                    { id: 'all-accounts', label: 'All Accounts' },
+                    { id: 'roles-permissions', label: 'Roles & Permissions' },
+                ]
+            },
+        ]
+    },
+
+    {
         section: 'System', items: [
             { id: 'recycle-bin', label: 'Deletion Log', badge: null, icon: 'trash', children: null },
         ]
@@ -209,8 +225,11 @@ const ADMIN_ALLOWED = new Set([
     'txn-credit',
     'hr', 'workforce', 'attendance', 'labour-payment',
     'report', 'report-daybook', 'report-credit', 'report-labour',
-    // 'recycle-bin' intentionally excluded — Deletion Log is Super Admin /
-    // Studio Owner only now (both the nav item and the backend trash routes).
+    // Admin can only reach "Create Account" (which always creates a pending
+    // User request) — NOT 'pending-approvals', which stays Super Admin only.
+    'account-settings', 'create-account',
+    // 'recycle-bin' intentionally excluded — Deletion Log is Super Admin
+    // only now (both the nav item and the backend trash routes).
 ]);
 
 const USER_ALLOWED = new Set([
@@ -265,6 +284,7 @@ function NavIcon({ type, active = false }: { type: string; active?: boolean }) {
         case 'report': return <svg {...s} viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><path d="M14 2v6h6M8 13h8M8 17h5" /></svg>;
         case 'trash': return <svg {...s} viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" /><path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" /></svg>;
         case 'hr': return <svg {...s} viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>;
+        case 'shield': return <svg {...s} viewBox="0 0 24 24"><path d="M12 2l8 3.5v6c0 5-3.4 8.7-8 10.5-4.6-1.8-8-5.5-8-10.5v-6L12 2z" /><path d="M9 12l2 2 4-4" /></svg>;
         default: return <svg {...s} viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>;
     }
 }
@@ -2062,7 +2082,11 @@ const PAGE_LABELS: Record<string, string> = {
     'report-daybook': 'Cash Book Report', 'report-credit': 'Accounts Payable Report',
     'report-labour': 'Manpower Report', 'report-client': 'Accounts Receivable Report', 'report-pl': 'Income Statement',
     'recycle-bin': 'Deletion Log',
+    'account-settings': 'Account Settings',
+    'create-account': 'Create Account',
     'pending-approvals': 'Pending Approvals',
+    'all-accounts': 'All Accounts',
+    'roles-permissions': 'Roles & Permissions',
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -2081,7 +2105,7 @@ const NAV_ORDER = [
     'client',
     'hr', 'workforce', 'attendance', 'labour-payment',
     'report-daybook', 'report-credit', 'report-labour', 'report-client', 'report-pl',
-    'pending-approvals', 'recycle-bin',
+    'account-settings', 'create-account', 'pending-approvals', 'all-accounts', 'roles-permissions', 'recycle-bin',
 ];
 
 /* ═══════════════════════════════════
@@ -2766,9 +2790,27 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                 )}
                             </div>
 
+                            {visibleNav === 'create-account' && (
+                                <div key={visibleNav} className="PAGE-WRAP">
+                                    <CreateAccount />
+                                </div>
+                            )}
+
                             {visibleNav === 'pending-approvals' && (
                                 <div key={visibleNav} className="PAGE-WRAP">
                                     <PendingApprovals />
+                                </div>
+                            )}
+
+                            {visibleNav === 'all-accounts' && (
+                                <div key={visibleNav} className="PAGE-WRAP">
+                                    <AllAccounts />
+                                </div>
+                            )}
+
+                            {visibleNav === 'roles-permissions' && (
+                                <div key={visibleNav} className="PAGE-WRAP">
+                                    <RolesPermissions />
                                 </div>
                             )}
 
