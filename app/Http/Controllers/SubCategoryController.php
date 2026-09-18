@@ -19,7 +19,15 @@ class SubCategoryController extends Controller
             $page = $request->input('page', 1);
             $search = $request->input('search', '');
 
-            $cacheKey = "sub_categories_page_{$page}_{$perPage}_" . md5($search);
+            // Cache key is versioned rather than enumerated: bumping the version
+            // (done by clearSubCategoryCache() below) instantly invalidates every
+            // page/perPage/search combination ever cached, instead of only the
+            // handful of default combos the old code guessed at — which meant an
+            // edited Sub-Category's new name (or its reassigned Account Head)
+            // could keep showing the stale value anywhere else it was listed
+            // from, for up to 5 minutes or longer, depending on what page/search
+            // was cached.
+            $cacheKey = "sub_categories_v" . $this->getSubCategoryCacheVersion() . "_page_{$page}_{$perPage}_" . md5($search);
 
             $result = Cache::remember($cacheKey, 300, function () use ($perPage, $search) {
                 // ✅ FIXED: Use 'creator' instead of 'createdBy'
@@ -162,14 +170,17 @@ class SubCategoryController extends Controller
         }
     }
 
+    private function getSubCategoryCacheVersion(): int
+    {
+        return (int) Cache::get('sub_categories_cache_version', 1);
+    }
+
     private function clearSubCategoryCache()
     {
+        // Bump the version instead of guessing which page/perPage/search keys
+        // might be cached — every previously-cached listing becomes
+        // unreachable on the very next request, however it was filtered.
+        Cache::forever('sub_categories_cache_version', $this->getSubCategoryCacheVersion() + 1);
         Cache::forget('sub_categories_list');
-        // Clear paginated keys for common page/perPage combos
-        foreach ([10, 20, 50, 100] as $perPage) {
-            for ($page = 1; $page <= 10; $page++) {
-                Cache::forget("sub_categories_page_{$page}_{$perPage}_" . md5(''));
-            }
-        }
     }
 }

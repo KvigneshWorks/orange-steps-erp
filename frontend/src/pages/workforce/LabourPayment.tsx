@@ -145,6 +145,7 @@ const MODE_LABELS: Record<string, string> = {
   cash: 'Cash',
   bank_transfer: 'Bank Transfer',
   upi: 'UPI',
+  neft: 'NEFT',
   cheque: 'Cheque',
   other: 'Other',
 };
@@ -156,6 +157,7 @@ interface DBSubName { id: number; alternate_name: string; bio_data_id: number; }
 const DB_MODE_MAP: Record<string, string> = {
   cash: 'Cash',
   upi: 'UPI',
+  neft: 'NEFT',
   bank_transfer: 'Bank Transfer',
   cheque: 'Cheque',
   other: 'Others',
@@ -176,6 +178,7 @@ function buildPageNumbers(total: number, current: number): (number | '…')[] {
 const MODE_META: Record<string, { label: string; color: string; icon: string }> = {
   cash: { label: 'Cash', color: '#1E9C6A', icon: 'cash' },
   upi: { label: 'UPI', color: '#2870CC', icon: 'mobile' },
+  neft: { label: 'NEFT', color: '#C47E0A', icon: 'bank' },
   bank_transfer: { label: 'Bank Transfer', color: '#0891B2', icon: 'transfer' },
   cheque: { label: 'Cheque', color: '#9B45CC', icon: 'document' },
   other: { label: 'Other', color: '#6B6B6B', icon: 'more' },
@@ -704,7 +707,7 @@ const CSS = `
 .LP-db-details-toggle:hover { background:var(--ember); color:#fff; border-color:var(--ember); }
 .LP-db-details-toggle svg { transition:transform .2s ease; }
 .LP-db-details-toggle.open svg { transform:rotate(180deg); }
-.LP-db-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; animation:wp-pick-in .25s ease both; }
+.LP-db-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 @media(max-width:760px){ .LP-db-grid { grid-template-columns:1fr; } }
 .LP-db-span { grid-column:1/-1; }
 .LP-db-warn {
@@ -1001,9 +1004,14 @@ const CSS = `
 /* ── STEP 2 CARD (matches Step 1 structure) ── */
 .LP-step2-card {
   border:1px solid var(--ember-border); border-radius:11px; background:var(--white);
-  margin-bottom:12px; animation:wp-pick-in .3s ease both; overflow:visible;
+  margin-bottom:12px; overflow:visible;
   box-shadow:0 2px 8px rgba(0,0,0,.03);
 }
+/* No entrance animation on this card: an animated container (even one whose
+   animation has already finished) creates a CSS stacking context, which
+   traps the Party/Category/Sub-Head/Associate Name dropdown panels below —
+   they stop floating above the Cash Book Entry Preview card underneath and
+   instead get painted behind/under it, reading as overlapping text. */
 .LP-step2-head {
   display:flex; align-items:center; gap:7px; padding:8px 12px;
   background:linear-gradient(135deg,rgba(37,99,235,.10),rgba(37,99,235,.04));
@@ -1313,6 +1321,7 @@ const SPATHS: Record<string, string> = {
   arrowDown: 'M19 14l-7 7m0 0l-7-7m7 7V3',
   mobile: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
   transfer: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
+  bank: 'M3 21h18M4 10h16M6 10v11m4-11v11m4-11v11m4-11v11M12 3l8 4H4l8-4z',
   document: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
   more: 'M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z',
   searchS: 'M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z',
@@ -1906,9 +1915,7 @@ export default function LabourPayment() {
     } else {
       setDbSN('');
     }
-    setDbNarration(subs.length > 0
-      ? `Wage disbursement — ${subs.map(s => s.sub_name).join(', ')} → ${selectedWorker.worker.name}`
-      : `Wage disbursement — ${selectedWorker.worker.name}`);
+    setDbNarration(`Wage payment — ${selectedWorker.worker.name}`);
   }, [selectedWorker?.worker.id, masterBios, masterCats, masterSubs, masterSNs]);
 
   const runSetup = async () => {
@@ -1941,30 +1948,32 @@ export default function LabourPayment() {
     }
   };
 
-  const resolveSubNameId = async (): Promise<number | null> => {
-    if (!dbSN) return null;
-    if (dbSN.startsWith('id:')) return +dbSN.slice(3);
-    if (!dbSN.startsWith('name:') || !dbParty) return null;
-    const name = dbSN.slice(5).trim();
+  // Resolves (and, if needed, creates) a sub_names master record for one
+  // specific person's name under a given party — used both for the manual
+  // "Associate Name" picker and for auto-resolving each Cash Book entry to
+  // the actual person who was paid, instead of one name for everyone.
+  const resolveSubNameIdByName = async (rawName: string, bioId: number): Promise<number | null> => {
+    const name = rawName.trim();
+    if (!name || !bioId) return null;
     const existing = masterSNs.find(sn =>
-      sn.bio_data_id === +dbParty && sn.alternate_name.trim().toLowerCase() === name.toLowerCase()
+      sn.bio_data_id === bioId && sn.alternate_name.trim().toLowerCase() === name.toLowerCase()
     );
     if (existing) return existing.id;
     try {
       const res = await axiosInstance.post('sub-names',
-        { alternate_name: name, bio_data_id: +dbParty },
+        { alternate_name: name, bio_data_id: bioId },
         { headers: authHeader() }
       );
       const created = res.data?.data ?? res.data;
       if (created?.id) {
-        setMasterSNs(prev => [...prev, { id: created.id, alternate_name: name, bio_data_id: +dbParty }]);
+        setMasterSNs(prev => [...prev, { id: created.id, alternate_name: name, bio_data_id: bioId }]);
         return created.id;
       }
       const listRes = await axiosInstance.get('sub-names', { headers: authHeader() });
       const raw = listRes.data?.data ?? listRes.data ?? [];
       const list: DBSubName[] = Array.isArray(raw) ? raw : [];
       const found = list.find(sn =>
-        sn.bio_data_id === +dbParty && (sn.alternate_name || '').trim().toLowerCase() === name.toLowerCase()
+        sn.bio_data_id === bioId && (sn.alternate_name || '').trim().toLowerCase() === name.toLowerCase()
       );
       if (found) {
         setMasterSNs(list);
@@ -1974,6 +1983,13 @@ export default function LabourPayment() {
     } catch {
       return null;
     }
+  };
+
+  const resolveSubNameId = async (): Promise<number | null> => {
+    if (!dbSN) return null;
+    if (dbSN.startsWith('id:')) return +dbSN.slice(3);
+    if (!dbSN.startsWith('name:') || !dbParty) return null;
+    return resolveSubNameIdByName(dbSN.slice(5), +dbParty);
   };
 
   const handlePay = async () => {
@@ -2004,17 +2020,30 @@ export default function LabourPayment() {
       const failedLabels: string[] = [];
       if (syncDaybook) {
         try {
-          const snId = dbSN ? await resolveSubNameId() : null;
-          const narrationBase = dbNarration || `Wage disbursement — ${selectedWorker.worker.name}`;
-          const subTag = (!snId && dbSN && dbSNName) ? ` · Sub: ${dbSNName}` : '';
-          const buildPayload = (amt: number, client: string | null, statusTag: string) => {
+          // Each Cash Book entry is resolved to the SPECIFIC person that
+          // allocation was actually paid to (from the backend's per-allocation
+          // sub_worker_name, or from the chosen person when the backend
+          // fallback path runs) — never the single manually-picked Associate
+          // Name applied to every entry. The manual picker is now only a
+          // fallback for legacy sessions that predate per-person tracking.
+          const manualSnId = dbSN ? await resolveSubNameId() : null;
+          const narrationBase = dbNarration || `Wage payment — ${selectedWorker.worker.name}`;
+          const personSnCache = new Map<string, number | null>();
+          const resolvePersonSn = async (person: string): Promise<number | null> => {
+            const key = person.trim().toLowerCase();
+            if (personSnCache.has(key)) return personSnCache.get(key) ?? null;
+            const id = await resolveSubNameIdByName(person, +dbParty);
+            personSnCache.set(key, id);
+            return id;
+          };
+          const buildPayload = (amt: number, client: string | null, statusTag: string, snId: number | null, personLabel: string) => {
             const pl: Record<string, unknown> = {
               transaction_date: todayStr(),
               amount: amt,
               payment_mode: DB_MODE_MAP[payMode] || 'Cash',
               category_id: +dbCat,
               bio_data_id: +dbParty,
-              narration: (client ? `${narrationBase} · ${client}${statusTag}` : `${narrationBase}${statusTag}`) + subTag,
+              narration: (client ? `${narrationBase} · ${client}${personLabel}${statusTag}` : `${narrationBase}${personLabel}${statusTag}`),
             };
             if (dbSub) pl.sub_category_id = +dbSub;
             if (snId) pl.sub_name_id = snId;
@@ -2025,20 +2054,35 @@ export default function LabourPayment() {
             (latest, s) => (!latest || s.id > latest.id) ? s : latest, null
           );
           const allocations = newSession?.allocations ?? [];
-          const entries: { amt: number; client: string | null; statusTag: string }[] = allocations
+          type PayEntry = { amt: number; client: string | null; statusTag: string; person: string | null; isOwn: boolean; knownPerson: boolean };
+          const entries: PayEntry[] = allocations
             .filter(a => a.allocated > 0.005)
-            .map(a => ({
-              amt: a.allocated,
-              client: a.client_name,
-              statusTag: a.is_closed ? ' (bill closed)' : ' (partial)',
-            }));
+            .map(a => {
+              const raw = a.sub_worker_name;
+              const isOwn = raw === '__OWN__';
+              return {
+                amt: a.allocated,
+                client: a.client_name,
+                statusTag: a.is_closed ? ' (bill closed)' : ' (partial)',
+                person: (raw && !isOwn) ? raw : null,
+                isOwn,
+                knownPerson: raw !== null && raw !== undefined,
+              };
+            });
           if (entries.length === 0) {
             const targets = chosenPersonTargets.map(p => ({ key: p.key, outstanding: p.outstanding }));
             const split = orderedSplit(targets, amount);
             for (const p of chosenPersonTargets) {
               const alloc = split[p.key];
               if (alloc && alloc.allocated > 0.005) {
-                entries.push({ amt: alloc.allocated, client: p.client_name, statusTag: alloc.is_closed ? ' (bill closed)' : ' (partial)' });
+                entries.push({
+                  amt: alloc.allocated,
+                  client: p.client_name,
+                  statusTag: alloc.is_closed ? ' (bill closed)' : ' (partial)',
+                  person: p.is_own ? null : p.person,
+                  isOwn: p.is_own,
+                  knownPerson: true,
+                });
               }
             }
           }
@@ -2046,16 +2090,27 @@ export default function LabourPayment() {
           const allocatedTotal = entries.reduce((s, e) => s + e.amt, 0);
           const leftover = parseFloat((amount - allocatedTotal).toFixed(2));
           if (leftover > 0.005) {
-            entries.push({ amt: leftover, client: null, statusTag: ' (advance / unallocated)' });
+            entries.push({ amt: leftover, client: null, statusTag: ' (advance / unallocated)', person: null, isOwn: false, knownPerson: false });
           }
 
           if (entries.length === 0) {
-            entries.push({ amt: amount, client: selectedClients.length > 0 ? selectedClients.join(', ') : null, statusTag: '' });
+            entries.push({ amt: amount, client: selectedClients.length > 0 ? selectedClients.join(', ') : null, statusTag: '', person: null, isOwn: false, knownPerson: false });
           }
 
           for (const e of entries) {
             try {
-              await axiosInstance.post('daybook', buildPayload(e.amt, e.client, e.statusTag), { headers: authHeader() });
+              let snId: number | null = null;
+              let personLabel = '';
+              if (e.isOwn) {
+                snId = null;
+              } else if (e.person) {
+                snId = await resolvePersonSn(e.person);
+                personLabel = ` (${e.person})`;
+              } else if (!e.knownPerson) {
+                snId = manualSnId;
+                if (manualSnId && dbSNName) personLabel = ` (${dbSNName})`;
+              }
+              await axiosInstance.post('daybook', buildPayload(e.amt, e.client, e.statusTag, snId, personLabel), { headers: authHeader() });
               syncedCount++;
             } catch {
               failedLabels.push(e.client ? `${e.client} (₹${fmt(e.amt)})` : `Advance ₹${fmt(e.amt)}`);
@@ -3001,7 +3056,7 @@ export default function LabourPayment() {
                             {dbDetailsOpen && (
                               <div className="LP-db-grid">
                                 <div className="WP-field">
-                                  <label className="WP-field-lbl">Party Name in Cash Book *</label>
+                                  <label className="WP-field-lbl">Party Name *</label>
                                   <LPDD
                                     options={partyOptions}
                                     value={dbParty}
@@ -3038,7 +3093,7 @@ export default function LabourPayment() {
                                   />
                                 </div>
                                 <div className="WP-field">
-                                  <label className="WP-field-lbl">Associate Name (referred / temporary worker)</label>
+                                  <label className="WP-field-lbl">Associate Name (if different from Party)</label>
                                   <LPDD
                                     options={snOptions}
                                     value={dbSN}

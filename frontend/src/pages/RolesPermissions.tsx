@@ -1,4 +1,5 @@
 import { ERP_CSS } from './ERPTheme';
+import { AS_CSS } from './AccountSettingsTheme';
 import { Ic } from '../components/Icon';
 import { PageHeader } from '../components/ui';
 
@@ -14,7 +15,12 @@ import { PageHeader } from '../components/ui';
 const RP_CSS = `
 .RP-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 @media (max-width:900px) { .RP-grid { grid-template-columns:1fr; } }
-.RP-card { position:relative; overflow:hidden; border-radius:16px; background:var(--white); border:1px solid var(--border); }
+.RP-card {
+  position:relative; overflow:hidden; border-radius:16px; background:var(--white); border:1px solid var(--border);
+  transition:transform .3s cubic-bezier(.2,.8,.3,1), box-shadow .3s ease;
+}
+.RP-card:hover { transform:translateY(-3px); box-shadow:0 18px 36px -12px rgba(15,23,42,.20); }
+@media(prefers-reduced-motion: reduce){ .RP-card { transition:none !important; } }
 .RP-topbar { height:4px; }
 .RP-hdr { display:flex; align-items:center; gap:11px; padding:18px 18px 14px; }
 .RP-ic-wrap { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -96,6 +102,7 @@ export default function RolesPermissions() {
     return (
         <div className="ERP-page">
             <style>{ERP_CSS}</style>
+            <style>{AS_CSS}</style>
             <style>{RP_CSS}</style>
 
             <PageHeader eyebrow="Account Settings" title="Roles" titleEm="& Permissions" />
@@ -107,7 +114,7 @@ export default function RolesPermissions() {
                 This is a read-only reference — it describes what each role can currently do. To change what a role can access, contact whoever maintains the software.
             </div>
 
-            <div className="RP-grid">
+            <div className="RP-grid ERP-stagger">
                 {ROLES.map(r => (
                     <div className="RP-card" key={r.role}>
                         <div className="RP-topbar" style={{ background: r.color }} />

@@ -337,7 +337,7 @@ class LabourPaymentController extends Controller
 
         $data = $request->validate([
             'amount'       => 'required|numeric|min:0.01',
-            'payment_mode' => 'nullable|in:cash,bank_transfer,upi,cheque,other',
+            'payment_mode' => 'nullable|in:cash,bank_transfer,upi,neft,cheque,other',
             'notes'        => 'nullable|string|max:500',
             'clients'      => 'required|array|min:1',
             'clients.*'    => 'string',
@@ -669,7 +669,7 @@ class LabourPaymentController extends Controller
             'payments'                => 'required|array|min:1',
             'payments.*.id'           => 'required|integer|exists:labour_weekly_payments,id',
             'payments.*.amount_paid'  => 'required|numeric|min:0',
-            'payments.*.payment_mode' => 'nullable|in:cash,bank_transfer,upi,cheque,other',
+            'payments.*.payment_mode' => 'nullable|in:cash,bank_transfer,upi,neft,cheque,other',
             'payments.*.notes'        => 'nullable|string|max:500',
         ]);
 

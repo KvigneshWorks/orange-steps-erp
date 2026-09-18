@@ -360,7 +360,13 @@ export const ERP_CSS = `
   overflow: visible;            /* ← was: hidden — changed to fix dropdown clipping */
   margin-bottom: 22px;
   box-shadow: var(--sh-card);
-  animation: erp-pop 0.4s 0.1s ease both;
+  /* No mount animation here: an element with a transform/opacity animation
+     (even one that already finished) is pinned into its own stacking
+     context by the browser for as long as it lives. That trapped every
+     SearchDD/dropdown panel opened inside this card — instead of floating
+     above everything on the page, they could render underneath later
+     content and read as garbled, overlapping text. Dropped so the
+     explicit z-index below is what actually governs stacking. */
   position: relative;
   z-index: 1;
   transition: box-shadow .3s ease;

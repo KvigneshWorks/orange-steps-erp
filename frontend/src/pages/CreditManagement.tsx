@@ -1271,7 +1271,12 @@ const CSS = `
 .CM3-billtbl tbody tr:nth-child(n+8) { animation-delay: 0.23s; }
 .CM3-billtbl tbody tr:nth-child(even) td { background: var(--surface,#F8FAFC); }
 .CM3-billtbl tbody tr:last-child td { border-bottom: none; }
-.CM3-billtbl tbody tr:hover td { background: var(--ember-ghost,#F3E8FF); box-shadow: inset 3px 0 0 var(--ember-mid,#3B82F6); }
+.CM3-billtbl tbody tr:hover td { background: var(--ember-ghost,#F3E8FF); }
+/* Was: box-shadow: inset 3px 0 0 ... on every <td> in the row — an inset
+   shadow is per-cell, so that drew a thin blue line down the LEFT edge of
+   every single column, not just the row's own left edge, which is what
+   showed up as the row being carved into vertical stripes on hover. Kept
+   the row highlight, dropped the stray lines. */
 .CM3-billtbl tbody tr.row-closed { opacity: 0.6; }
 .CM3-billtbl tbody tr.row-closed:hover td { opacity: 1; background: #f8fafc; }
 @media (max-width: 720px) {

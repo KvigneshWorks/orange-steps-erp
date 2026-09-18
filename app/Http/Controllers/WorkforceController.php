@@ -300,7 +300,7 @@ class WorkforceController extends Controller
             'from_date'    => 'required|date',
             'to_date'      => 'required|date|after_or_equal:from_date',
             'amount_paid'  => 'required|numeric|min:0.01',
-            'payment_mode' => 'required|in:cash,bank_transfer,upi,cheque,other',
+            'payment_mode' => 'required|in:cash,bank_transfer,upi,neft,cheque,other',
             'reference_no' => 'nullable|string|max:100',
             'notes'        => 'nullable|string|max:500',
             'paid_on'      => 'required|date',

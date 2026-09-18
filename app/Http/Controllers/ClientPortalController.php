@@ -483,7 +483,7 @@ class ClientPortalController extends Controller
             $data = $request->validate([
                 'amount'        => 'required|numeric|min:0.01',
                 'payment_date'  => 'required|date',
-                'payment_mode'  => 'required|in:cash,cheque,upi,bank_transfer,other',
+                'payment_mode'  => 'required|in:cash,cheque,upi,neft,bank_transfer,other',
                 'reference'     => 'nullable|string|max:255',
                 'notes'         => 'nullable|string',
             ]);
@@ -531,7 +531,7 @@ class ClientPortalController extends Controller
             'payment_date'     => 'required|date',
             'amount'           => 'required|numeric|min:0',
             'gst_amount'       => 'nullable|numeric|min:0',
-            'payment_mode'     => ['required', Rule::in(['cash', 'cheque', 'upi', 'bank_transfer', 'other'])],
+            'payment_mode'     => ['required', Rule::in(['cash', 'cheque', 'upi', 'neft', 'bank_transfer', 'other'])],
             'reference_number' => 'nullable|string|max:255',
             'notes'            => 'nullable|string',
             'next_due_date'    => 'nullable|date|after:payment_date',
@@ -558,7 +558,7 @@ class ClientPortalController extends Controller
             'payment_date'     => 'required|date',
             'amount'           => 'required|numeric|min:0',
             'gst_amount'       => 'nullable|numeric|min:0',
-            'payment_mode'     => ['required', Rule::in(['cash', 'cheque', 'upi', 'bank_transfer', 'other'])],
+            'payment_mode'     => ['required', Rule::in(['cash', 'cheque', 'upi', 'neft', 'bank_transfer', 'other'])],
             'reference_number' => 'nullable|string|max:255',
             'notes'            => 'nullable|string',
             'next_due_date'    => 'nullable|date',

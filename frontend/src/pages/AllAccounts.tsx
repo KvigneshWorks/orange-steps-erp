@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import axiosInstance from '../services/axiosConfig';
 import { toast } from '../services/toast';
 import { ERP_CSS } from './ERPTheme';
+import { AS_CSS } from './AccountSettingsTheme';
 import { Ic } from '../components/Icon';
-import { PageHeader, StatCard, TableCard, Tag } from '../components/ui';
+import { PageHeader, StatCard, TableCard } from '../components/ui';
 
 /**
  * "All Accounts" tab in Account Settings — super_admin only. Read-only
@@ -19,7 +20,10 @@ interface AccountRow {
 }
 
 const ROLE_LABEL: Record<string, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
-const ROLE_TAG_VARIANT: Record<string, 'ember' | 'info' | 'muted'> = { super_admin: 'ember', admin: 'info', user: 'muted' };
+const ROLE_AVATAR_BG: Record<string, string> = { super_admin: 'rgba(232,114,12,.10)', admin: '#fdf4ff', user: '#eff6ff' };
+const ROLE_AVATAR_FG: Record<string, string> = { super_admin: '#E8720C', admin: '#9333ea', user: '#2563eb' };
+
+type RoleFilter = 'all' | 'super_admin' | 'admin' | 'user';
 
 function fmtDate(iso: string) {
     const d = new Date(iso);
@@ -39,15 +43,18 @@ function SkeletonRow() {
     );
 }
 
+const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+
 export default function AllAccounts() {
     const [accounts, setAccounts] = useState<AccountRow[]>([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState<RoleFilter>('all');
     const hasFetched = useRef(false);
 
     const load = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await axiosInstance.get('users');
+            const res = await axiosInstance.get('users', { headers: authH() });
             setAccounts(res.data.data || []);
         } catch {
             toast.error('Load Failed', 'Could not load accounts');
@@ -69,9 +76,15 @@ export default function AllAccounts() {
         user: accounts.filter(a => a.role === 'user').length,
     };
 
+    const visible = useMemo(
+        () => (filter === 'all' ? accounts : accounts.filter(a => a.role === filter)),
+        [accounts, filter]
+    );
+
     return (
         <div className="ERP-page">
             <style>{ERP_CSS}</style>
+            <style>{AS_CSS}</style>
 
             <div className="ERP-hdr">
                 <div className="ERP-hdr-left">
@@ -94,14 +107,36 @@ export default function AllAccounts() {
 
             <div className="ERP-divider" />
 
-            <div className="ERP-stats">
+            <div className="ERP-stats AS-stat-grid">
                 <StatCard label="Total Accounts" value={counts.total} />
                 <StatCard label="Super Admin" value={counts.super_admin} />
                 <StatCard label="Admin" value={counts.admin} />
                 <StatCard label="User" value={counts.user} />
             </div>
 
-            <TableCard title="Accounts" count={loading ? undefined : accounts.length}>
+            {/* ── ROLE FILTER CHIPS ── */}
+            <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', margin: '0 0 20px' }}>
+                {[
+                    { key: 'all', label: 'All' },
+                    { key: 'super_admin', label: 'Super Admin' },
+                    { key: 'admin', label: 'Admin' },
+                    { key: 'user', label: 'User' },
+                ].map((chip, i) => (
+                    <button
+                        key={chip.key}
+                        className="AS-chip"
+                        onClick={() => setFilter(chip.key as RoleFilter)}
+                        style={{
+                            border: `1px solid ${filter === chip.key ? 'var(--ember-border,#60A5FA)' : 'var(--border)'}`,
+                            background: filter === chip.key ? 'var(--ember-ghost,rgba(37,99,235,0.08))' : 'var(--white)',
+                            color: filter === chip.key ? 'var(--ember,#60A5FA)' : 'var(--text-3,#555)',
+                            animationDelay: `${i * 0.03}s`,
+                        }}
+                    >{chip.label}</button>
+                ))}
+            </div>
+
+            <TableCard title="Accounts" count={loading ? undefined : visible.length}>
                 {loading && (
                     <div className="ERP-tbl-scroll">
                         <table className="ERP-tbl">
@@ -113,17 +148,17 @@ export default function AllAccounts() {
                     </div>
                 )}
 
-                {!loading && accounts.length === 0 && (
+                {!loading && visible.length === 0 && (
                     <div className="ERP-empty">
                         <div className="ERP-empty-icon">
                             <Ic d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" sz={28} c="var(--ember-light)" sw={1.8} />
                         </div>
-                        <div className="ERP-empty-title">No Accounts Found</div>
-                        <div className="ERP-empty-sub">Something went wrong loading the account list</div>
+                        <div className="ERP-empty-title">{accounts.length === 0 ? 'No Accounts Found' : 'No Accounts Match This Filter'}</div>
+                        <div className="ERP-empty-sub">{accounts.length === 0 ? 'Something went wrong loading the account list' : 'Try a different role filter'}</div>
                     </div>
                 )}
 
-                {!loading && accounts.length > 0 && (
+                {!loading && visible.length > 0 && (
                     <div className="ERP-tbl-scroll">
                         <table className="ERP-tbl">
                             <thead>
@@ -136,19 +171,27 @@ export default function AllAccounts() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {accounts.map((a, i) => (
-                                    <tr key={a.id}>
-                                        <td className="ERP-t-num ERP-center">{i + 1}</td>
-                                        <td className="ERP-t-primary">{a.name}</td>
-                                        <td>
-                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>{a.email}</span>
-                                        </td>
-                                        <td><Tag variant={ROLE_TAG_VARIANT[a.role] || 'muted'}>{ROLE_LABEL[a.role] || a.role}</Tag></td>
-                                        <td>
-                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>{fmtDate(a.created_at)}</span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {visible.map((a, i) => {
+                                    const initials = a.name.trim().slice(0, 2).toUpperCase() || '??';
+                                    return (
+                                        <tr key={a.id}>
+                                            <td className="ERP-t-num ERP-center">{i + 1}</td>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                                                    <div className="AS-avatar" style={{ background: ROLE_AVATAR_BG[a.role] || 'rgba(10,21,48,.06)', color: ROLE_AVATAR_FG[a.role] || '#0A1530' }}>{initials}</div>
+                                                    <span className="ERP-t-primary">{a.name}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: 'var(--font-mono)' }}>{a.email}</span>
+                                            </td>
+                                            <td><span className={`AS-role ${a.role}`}>{ROLE_LABEL[a.role] || a.role}</span></td>
+                                            <td>
+                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: 'var(--font-mono)' }}>{fmtDate(a.created_at)}</span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>

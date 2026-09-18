@@ -83,7 +83,7 @@ const getSubNames = (rec?: BioRecord | null): string[] => {
 };
 const TYPE_OPTS = [{ value: 'construction', label: 'Construction' }, { value: 'interior', label: 'Interior' }, { value: 'architecture', label: 'Architecture' }, { value: 'drawing', label: 'Drawing' }, { value: 'pmc', label: 'PMC' }];
 const STATUS_OPTS = [{ value: 'active', label: 'Active' }, { value: 'on_hold', label: 'On Hold' }, { value: 'completed', label: 'Completed' }];
-const MODE_OPTS = [{ value: 'cash', label: 'Cash' }, { value: 'cheque', label: 'Cheque' }, { value: 'upi', label: 'UPI' }, { value: 'bank_transfer', label: 'Bank Transfer' }, { value: 'other', label: 'Other' }];
+const MODE_OPTS = [{ value: 'cash', label: 'Cash' }, { value: 'cheque', label: 'Cheque' }, { value: 'upi', label: 'UPI' }, { value: 'neft', label: 'NEFT' }, { value: 'bank_transfer', label: 'Bank Transfer' }, { value: 'other', label: 'Other' }];
 
 /* ═══════════════════════════════════════
    CSS
@@ -2363,6 +2363,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                                       </svg>
                                     );
                                   case 'bank_transfer':
+                                  case 'neft':
                                     return (
                                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                                         <rect x="2" y="7" width="20" height="14" rx="2" />
@@ -2406,8 +2407,8 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                                       gap: 6,
                                       padding: '4px 10px',
                                       borderRadius: 20,
-                                      background: `var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : 'cobalt'}-t)`,
-                                      border: `1px solid var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : 'cobalt'}-r)`
+                                      background: `var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : pay.payment_mode === 'neft' ? 'emerald' : 'cobalt'}-t)`,
+                                      border: `1px solid var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : pay.payment_mode === 'neft' ? 'emerald' : 'cobalt'}-r)`
                                     }}>
                                       <span style={{ width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                         <ModeIcon />
@@ -2415,7 +2416,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                                       <span style={{
                                         fontSize: 9,
                                         fontWeight: 800,
-                                        color: `var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : 'cobalt'})`
+                                        color: `var(--${pay.payment_mode === 'cash' ? 'jade' : pay.payment_mode === 'upi' ? 'gold' : pay.payment_mode === 'cheque' ? 'iris' : pay.payment_mode === 'neft' ? 'emerald' : 'cobalt'})`
                                       }}>
                                         {pay.mode_label}
                                       </span>
@@ -2813,7 +2814,9 @@ function AddProjectModal({ clientId, clientName, subNames, onClose, onSaved }: {
   clientId: number; clientName: string; subNames: string[];
   onClose: () => void; onSaved: () => void;
 }) {
-  const [pf, setPf] = useState({ project_name: '', project_type: 'construction', start_date: '', total_budget: '', type_notes: '', status: 'active' });
+  // Pre-fill with the client's own name — most projects here are just named
+  // after the client they belong to, and the user can still edit/clear it.
+  const [pf, setPf] = useState({ project_name: clientName || '', project_type: 'construction', start_date: '', total_budget: '', type_notes: '', status: 'active' });
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const handleSubmit = async (e: React.FormEvent) => {
@@ -3007,7 +3010,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
                   <div className="CP-field" style={{ marginBottom: 12 }}>
                     <label className="CP-label"><Ic n="user" s={10} /> Client Name <span className="req">*</span></label>
                     <BioDD options={availableBio} value={cf.name} loading={namesLoading}
-                      onChange={(name, id, rec) => { setSelectedBio(rec); setCf(p => ({ ...p, name, id_number: id })); setPf(p => ({ ...p, project_name: '' })); }} />
+                      onChange={(name, id, rec) => { setSelectedBio(rec); setCf(p => ({ ...p, name, id_number: id })); setPf(p => ({ ...p, project_name: name })); }} />
                   </div>
                   <div className="CP-field" style={{ marginBottom: 12 }}>
                     <label className="CP-label">ID Number <span className="req">*</span></label>

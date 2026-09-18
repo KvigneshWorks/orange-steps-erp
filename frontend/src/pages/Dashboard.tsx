@@ -65,6 +65,14 @@ interface DueNotification {
     days_until_due: number;
 }
 
+interface PendingAccountRequest {
+    id: number;
+    name: string;
+    email: string;
+    role: 'user' | 'admin' | 'super_admin';
+    created_at: string;
+}
+
 interface CreditDue {
     credit_entry_id: number;
     vendor_name: string;
@@ -566,14 +574,16 @@ function ProjectTypesChart({ data, loading }: { data: TypeDist[]; loading: boole
 /* ──────────────────────────────────────
    NOTIFICATION PANEL
 ───────────────────────────────────────── */
-function NotificationPanel({ notifications, creditNotifs, onClose, onNavigate }: {
+function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onClose, onNavigate }: {
     notifications: DueNotification[];
     creditNotifs: CreditDue[];
+    pendingApprovals: PendingAccountRequest[];
     onClose: () => void;
     onNavigate: (path: string) => void;
 }) {
     const safeNotifications = Array.isArray(notifications) ? notifications : [];
     const safeCredits = Array.isArray(creditNotifs) ? creditNotifs : [];
+    const safeApprovals = Array.isArray(pendingApprovals) ? pendingApprovals : [];
     const fmt = (n: number) => '₹' + n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
     const urgencyClass = (days: number) => days <= 0 ? 'urgent' : days <= 7 ? 'soon' : 'normal';
     const urgencyLabel = (days: number) => days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `Due in ${days}d`;
@@ -581,17 +591,28 @@ function NotificationPanel({ notifications, creditNotifs, onClose, onNavigate }:
     const overdue = safeNotifications.filter(n => n.days_until_due <= 0).length;
     const thisWeek = safeNotifications.filter(n => n.days_until_due > 0 && n.days_until_due <= 7).length;
     const upcoming = safeNotifications.filter(n => n.days_until_due > 7 && n.days_until_due <= 20).length;
+    const totalCount = safeNotifications.length + safeCredits.length + safeApprovals.length;
+    const ROLE_LBL: Record<string, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
+
+    const timeAgo = (iso: string) => {
+        const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+        if (mins < 1) return 'just now';
+        if (mins < 60) return `${mins}m ago`;
+        const hrs = Math.round(mins / 60);
+        if (hrs < 24) return `${hrs}h ago`;
+        return `${Math.round(hrs / 24)}d ago`;
+    };
 
     return (
         <div className="NP-wrap">
-            <div style={{ height: 3, background: overdue > 0 ? 'linear-gradient(to right,#D93B55,#60A5FA)' : 'linear-gradient(to right,#60A5FA,#2563EB)', borderRadius: '16px 16px 0 0' }} />
+            <div style={{ height: 3, background: overdue > 0 ? 'linear-gradient(to right,#D93B55,#60A5FA)' : safeApprovals.length > 0 ? 'linear-gradient(to right,#C47E0A,#60A5FA)' : 'linear-gradient(to right,#60A5FA,#2563EB)', borderRadius: '16px 16px 0 0' }} />
             <div className="NP-head">
                 <div className="NP-title">
-                    <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : safeApprovals.length > 0 ? '#C47E0A' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    Payment Reminders
-                    {(safeNotifications.length + safeCredits.length) > 0 && <span className="NP-count">{safeNotifications.length + safeCredits.length}</span>}
+                    Notifications
+                    {totalCount > 0 && <span className="NP-count">{totalCount}</span>}
                 </div>
                 <button className="NP-clear" onClick={onClose}>Close ×</button>
             </div>
@@ -605,14 +626,45 @@ function NotificationPanel({ notifications, creditNotifs, onClose, onNavigate }:
             )}
 
             <div className="NP-body">
-                {safeCredits.length === 0 && safeNotifications.length === 0 ? (
+                {safeCredits.length === 0 && safeNotifications.length === 0 && safeApprovals.length === 0 ? (
                     <div className="NP-empty">
                         <svg width="32" height="32" fill="none" stroke="rgba(37,99,235,0.25)" strokeWidth="1.5" viewBox="0 0 24 24" style={{ marginBottom: 10 }}><path d="M5 13l4 4L19 7" /></svg>
                         <div style={{ fontFamily: 'var(--font-body)', fontSize: 12.5, fontWeight: 800, color: 'var(--d-ice)', marginBottom: 4 }}>All Caught Up!</div>
-                        <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, letterSpacing: '1px' }}>No payments due in 20 days</div>
+                        <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, letterSpacing: '1px' }}>Nothing needs your attention right now</div>
                     </div>
                 ) : (
                     <>
+                        {/* ── Section 0: Account Approvals Start ── */}
+                        {safeApprovals.length > 0 && (<>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px 5px', borderBottom: '1px solid rgba(0,0,0,.06)' }}>
+                                <svg width="10" height="10" fill="none" stroke="#C47E0A" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>
+                                <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'rgba(0,0,0,.4)' }}>Account Approvals — Needs Your Review</span>
+                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: 'rgba(196,126,10,.1)', color: '#C47E0A' }}>{safeApprovals.length}</span>
+                            </div>
+                            {safeApprovals.map((req, i) => {
+                                const initials = req.name.trim().slice(0, 2).toUpperCase() || '??';
+                                return (
+                                    <div key={req.id} className="NP-item soon" style={{ animationDelay: `${i * 0.05}s`, borderLeft: '3px solid #C47E0A' }} onClick={() => { onNavigate('pending-approvals'); onClose(); }}>
+                                        <div className="NP-dot soon" style={{ background: 'rgba(196,126,10,.12)' }}>
+                                            <span style={{ fontSize: 9, fontWeight: 800, color: '#C47E0A' }}>{initials}</span>
+                                        </div>
+                                        <div className="NP-info">
+                                            <div className="NP-client">{req.name}</div>
+                                            <div className="NP-proj">{req.email} · wants {ROLE_LBL[req.role] || req.role} access</div>
+                                            <div className="NP-meta">
+                                                <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: '#C47E0A', fontWeight: 800 }}>PENDING</span>
+                                                <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: 'var(--d-ice4)' }}>{timeAgo(req.created_at)}</span>
+                                            </div>
+                                        </div>
+                                        <div style={{ flexShrink: 0, paddingTop: 2 }}>
+                                            <svg width="12" height="12" fill="none" stroke="var(--d-ice4)" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </>)}
+                        {/* Section 0: Account Approvals End */}
+
                         {/* ── Section 1: Accounts Payable Start ── */}
                         {safeCredits.length > 0 && (<>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px 5px', borderBottom: '1px solid rgba(0,0,0,.06)' }}>
@@ -2131,6 +2183,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const [refreshing, setRefreshing] = useState(false);
     const [notifications, setNotifications] = useState<DueNotification[]>([]);
     const [creditNotifs, setCreditNotifs] = useState<CreditDue[]>([]);
+    const [pendingApprovals, setPendingApprovals] = useState<PendingAccountRequest[]>([]);
     const [showNotifPanel, setShowNotifPanel] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
@@ -2159,7 +2212,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const [typeDistLoading, setTypeDistLoading] = useState(true);
     const [recentProjects, setRecentProjects] = useState<RecentProject[]>([]);
     const notifPanelRef = useRef<HTMLDivElement>(null);
-    const { shaking, clearShake } = useBellShake(notifications.length + creditNotifs.length);
+    const { shaking, clearShake } = useBellShake(notifications.length + creditNotifs.length + pendingApprovals.length);
 
     useEffect(() => {
         try {
@@ -2401,6 +2454,31 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         return () => window.removeEventListener('erp:notifications-refresh', onNotifRefresh);
     }, [fetchOverview]);
 
+    /* ── Pending account-approval requests, for the bell — Super Admin
+       only. Polls fast (20s) rather than piggy-backing on the 5-minute
+       dashboard refresh, so a new request from an Admin's "Create
+       Account" page shows up here quickly. */
+    const fetchPendingApprovals = useCallback(async () => {
+        const tk = localStorage.getItem('token');
+        if (!tk || getStoredRole() !== 'super_admin') { setPendingApprovals([]); return; }
+        try {
+            const res = await axiosInstance.get('approval-requests?status=pending', { headers: { Authorization: `Bearer ${tk}` } });
+            setPendingApprovals(res.data?.data || []);
+        } catch { /* silent — bell just stays as-is until the next tick */ }
+    }, []);
+
+    useEffect(() => {
+        fetchPendingApprovals();
+        const id = setInterval(fetchPendingApprovals, 20 * 1000);
+        return () => clearInterval(id);
+    }, [fetchPendingApprovals]);
+
+    useEffect(() => {
+        const onNotifRefresh = () => fetchPendingApprovals();
+        window.addEventListener('erp:notifications-refresh', onNotifRefresh);
+        return () => window.removeEventListener('erp:notifications-refresh', onNotifRefresh);
+    }, [fetchPendingApprovals]);
+
     useEffect(() => {
         const LAST_KEY = 'notif_last_check_day';
         const today = new Date().toDateString();
@@ -2601,25 +2679,26 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                 <div ref={notifPanelRef} className="SB-bell-wrap">
                                     <button
                                         type="button"
-                                        className={`SB-bell ${shaking ? 'bell-shake' : ''} ${showNotifPanel ? 'open' : ''} ${(notifications.length + creditNotifs.length) > 0 ? 'has-notif' : ''}`}
+                                        className={`SB-bell ${shaking ? 'bell-shake' : ''} ${showNotifPanel ? 'open' : ''} ${(notifications.length + creditNotifs.length + pendingApprovals.length) > 0 ? 'has-notif' : ''}`}
                                         onClick={() => { setShowNotifPanel(o => !o); setSbFootOpen(false); clearShake(); }}
                                         aria-label="Notifications"
                                     >
                                         <svg width="15" height="15" fill="none"
-                                            stroke={overdueCount > 0 ? '#D93B55' : urgentCount > 0 ? '#2563EB' : 'currentColor'}
+                                            stroke={overdueCount > 0 ? '#D93B55' : pendingApprovals.length > 0 ? '#C47E0A' : urgentCount > 0 ? '#2563EB' : 'currentColor'}
                                             strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                         </svg>
-                                        {(notifications.length + creditNotifs.length) > 0 && (
-                                            <div className="SB-bell-badge">{(notifications.length + creditNotifs.length) > 9 ? '9+' : notifications.length + creditNotifs.length}</div>
+                                        {(notifications.length + creditNotifs.length + pendingApprovals.length) > 0 && (
+                                            <div className="SB-bell-badge">{(notifications.length + creditNotifs.length + pendingApprovals.length) > 9 ? '9+' : notifications.length + creditNotifs.length + pendingApprovals.length}</div>
                                         )}
-                                        {(notifications.length + creditNotifs.length) === 0 && <div className="SB-bell-dot" />}
+                                        {(notifications.length + creditNotifs.length + pendingApprovals.length) === 0 && <div className="SB-bell-dot" />}
                                     </button>
 
                                     {showNotifPanel && (
                                         <NotificationPanel
                                             notifications={notifications}
                                             creditNotifs={creditNotifs}
+                                            pendingApprovals={pendingApprovals}
                                             onClose={() => setShowNotifPanel(false)}
                                             onNavigate={(path) => setActiveNav(path)}
                                         />

@@ -190,7 +190,7 @@ const fmtDate = (d: string | undefined | null | unknown): string => {
 
 const labelForType = (t?: string): string => ({ construction: 'Construction', interior: 'Interior', architecture: 'Architecture', drawing: 'Drawing', pmc: 'PMC' }[t || ''] || t || '—');
 const labelForStatus = (s?: string): string => ({ active: 'Active', on_hold: 'On Hold', completed: 'Completed' }[s || ''] || s || '—');
-const labelForMode = (m?: string): string => ({ cash: 'Cash', upi: 'UPI', cheque: 'Cheque', bank_transfer: 'Bank Transfer', other: 'Other' }[m || ''] || m || '—');
+const labelForMode = (m?: string): string => ({ cash: 'Cash', upi: 'UPI', neft: 'NEFT', cheque: 'Cheque', bank_transfer: 'Bank Transfer', other: 'Other' }[m || ''] || m || '—');
 const today = (): string => new Date().toISOString().slice(0, 10);
 const monthStart = (): string => new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().slice(0, 10);
 const resolveVendorBalance = (v: CreditVendor): number => parseFloat(String(v.balance ?? v.outstanding_balance ?? 0));
@@ -1584,6 +1584,77 @@ const MODE_COLORS: Record<string, string> = {
     'Bank Transfer': '#0891B2', Others: '#6B6B6B',
 };
 const modeColor = (mode: string) => MODE_COLORS[mode] || '#6B6B6B';
+
+// ── PDF exports: draw a real per-mode icon badge instead of spelling the
+// mode out as plain text — mirrors the on-screen ModeIcon/MODE_ICON_NAME
+// treatment (small colored rounded chip + glyph) so the exported "Cash
+// Book" / "Client Debit" / "Accounts Payable" PDFs read the same way the
+// live table does, not as cramped letters wrapping inside a narrow column.
+const MODE_COLORS_RGB: Record<string, [number, number, number]> = {
+    Cash: [30, 156, 106], UPI: [40, 112, 204], NEFT: [196, 126, 10],
+    Cheque: [155, 69, 204], 'Bank Transfer': [8, 145, 178], Others: [107, 107, 107],
+};
+const pdfTint = (rgb: [number, number, number], amt: number): [number, number, number] =>
+    [rgb[0], rgb[1], rgb[2]].map(c => Math.round(c + (255 - c) * amt)) as [number, number, number];
+
+function drawModeBadge(doc: any, mode: string, cx: number, cy: number) {
+    const key = mode && MODE_COLORS_RGB[mode] ? mode : 'Others';
+    const rgb = MODE_COLORS_RGB[key];
+    const bg = pdfTint(rgb, 0.87);
+    const bd = pdfTint(rgb, 0.55);
+    const half = 2.5;
+
+    doc.setFillColor(bg[0], bg[1], bg[2]);
+    doc.setDrawColor(bd[0], bd[1], bd[2]);
+    doc.setLineWidth(0.15);
+    doc.roundedRect(cx - half, cy - half, half * 2, half * 2, 0.8, 0.8, 'FD');
+
+    doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
+    doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+    doc.setLineWidth(0.26);
+
+    switch (key) {
+        case 'Cash':
+            // banknote outline with a coin in the middle
+            doc.roundedRect(cx - 1.5, cy - 1.05, 3, 2.1, 0.35, 0.35, 'S');
+            doc.circle(cx, cy, 0.5, 'S');
+            break;
+        case 'UPI':
+            // phone outline with a home-bar
+            doc.roundedRect(cx - 0.9, cy - 1.5, 1.8, 3, 0.35, 0.35, 'S');
+            doc.line(cx - 0.35, cy + 0.95, cx + 0.35, cy + 0.95);
+            break;
+        case 'NEFT':
+            // bank building: roof + columns + base
+            doc.triangle(cx - 1.5, cy - 0.35, cx + 1.5, cy - 0.35, cx, cy - 1.55, 'S');
+            doc.line(cx - 1.5, cy - 0.35, cx - 1.5, cy + 1.25);
+            doc.line(cx - 0.6, cy - 0.05, cx - 0.6, cy + 1.05);
+            doc.line(cx + 0.6, cy - 0.05, cx + 0.6, cy + 1.05);
+            doc.line(cx + 1.5, cy - 0.35, cx + 1.5, cy + 1.25);
+            doc.line(cx - 1.7, cy + 1.25, cx + 1.7, cy + 1.25);
+            break;
+        case 'Cheque':
+            // document with two ruled lines
+            doc.roundedRect(cx - 1.6, cy - 1.2, 3.2, 2.4, 0.3, 0.3, 'S');
+            doc.line(cx - 0.95, cy - 0.35, cx + 0.95, cy - 0.35);
+            doc.line(cx - 0.95, cy + 0.35, cx + 0.35, cy + 0.35);
+            break;
+        case 'Bank Transfer':
+            // two opposing arrows
+            doc.line(cx - 1.6, cy - 0.55, cx + 1.1, cy - 0.55);
+            doc.line(cx + 0.4, cy - 1.15, cx + 1.3, cy - 0.55);
+            doc.line(cx + 0.4, cy + 0.05, cx + 1.3, cy - 0.55);
+            doc.line(cx + 1.6, cy + 0.55, cx - 1.1, cy + 0.55);
+            doc.line(cx - 0.4, cy + 1.15, cx - 1.3, cy + 0.55);
+            doc.line(cx - 0.4, cy - 0.05, cx - 1.3, cy + 0.55);
+            break;
+        default:
+            // ellipsis — Others / unrecognized mode
+            doc.circle(cx - 1, cy, 0.35, 'F');
+            doc.circle(cx, cy, 0.35, 'F');
+            doc.circle(cx + 1, cy, 0.35, 'F');
+    }
+}
 
 const STAT_ICON_PATHS: Record<string, string> = {
     trending: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
@@ -3187,7 +3258,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                     else if (col.key === 'sub_category') row.push(e.sub_category_name || '—');
                     else if (col.key === 'bio_name') row.push(e.bio_data_name || '—');
                     else if (col.key === 'sub_name') row.push(e.sub_name_name || '—');
-                    else if (col.key === 'mode') row.push(e.payment_mode || '—');
+                    else if (col.key === 'mode') row.push('');
                     else if (col.key === 'amount') {
                         const signed = (e.category_type === 'income' ? 1 : -1) * (Number(e.amount) || 0);
                         row.push(fmtINR_PDF(signed));
@@ -3220,6 +3291,14 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                         const entry = dbEntries[data.row.index];
                         data.cell.styles.textColor = entry?.category_type === 'income' ? PDF_COLORS.success : PDF_COLORS.danger;
                         data.cell.styles.fontStyle = 'bold';
+                    }
+                },
+                didDrawCell: (data: any) => {
+                    if (data.section === 'body' && cols[data.column.index]?.key === 'mode') {
+                        const entry = dbEntries[data.row.index];
+                        if (entry?.payment_mode) {
+                            drawModeBadge(doc, entry.payment_mode, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2);
+                        }
                     }
                 },
                 ...getPdfTableStyles(cols.length),
@@ -3288,7 +3367,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                 String(r.sub_name || '—'),
                 String(r.client || '—'),
                 String(r.category || '—'),
-                String(r.mode && r.mode !== '—' ? r.mode : '—'),
+                '',
                 pdfSafeNarration(String(r.narration || r.sub || '—')),
                 '—',
                 fmtINR_PDF(r.amount),
@@ -3308,6 +3387,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                 10: { cellWidth: 25, halign: 'right' as const },
             };
 
+            const modeColIdx = cols.findIndex(c => c.header === 'Mode');
             (doc as any).autoTable({
                 head: [cols.map(c => c.header)],
                 body: rows,
@@ -3315,6 +3395,14 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                 margin: { left: 10, right: 10, top: 10, bottom: 28 },
                 tableWidth: 277,
                 columnStyles,
+                didDrawCell: (data: any) => {
+                    if (data.section === 'body' && data.column.index === modeColIdx) {
+                        const r = clientDebitRows[data.row.index];
+                        if (r?.mode && r.mode !== '—') {
+                            drawModeBadge(doc, r.mode, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2);
+                        }
+                    }
+                },
                 ...getPdfTableStyles(cols.length),
             });
 
@@ -3383,7 +3471,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                 String(r.party || '—'),
                 r.status === 'paid' ? 'Paid' : r.status === 'partial' ? 'Partial' : r.isOverdue ? 'Overdue' : 'Due',
                 String(r.reference || '—'),
-                String(r.mode && r.mode !== '—' ? r.mode : '—'),
+                '',
                 pdfSafeNarration(r.notes),
                 r.kind === 'bill' ? fmtINR_PDF(r.credit) : '—',
                 fmtINR_PDF(r.paid),
@@ -3421,6 +3509,17 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                     if (data.column.index === 11 && r.balance !== undefined) {
                         data.cell.styles.textColor = (r.balance || 0) > 0 ? PDF_COLORS.danger : PDF_COLORS.success;
                         data.cell.styles.fontStyle = 'bold';
+                    }
+                },
+                didDrawCell: (data: any) => {
+                    // Only draw a badge when a payment actually has a mode —
+                    // an unpaid bill row genuinely has none, and drawing an
+                    // "Others" icon there would wrongly imply a payment exists.
+                    if (data.section === 'body' && data.column.index === 7) {
+                        const r = creditPartyRows[data.row.index];
+                        if (r?.mode && r.mode !== '—') {
+                            drawModeBadge(doc, r.mode, data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2);
+                        }
                     }
                 },
                 ...getPdfTableStyles(cols.length),
