@@ -22,11 +22,14 @@ return new class extends Migration
         $email = 'info@orangesteps.in';
         $name  = 'Santhosh — Managing Director';
 
-        // Bootstrap password (user-chosen) — only used if a new account is
-        // created below. This is a simple word with no numbers/symbols, so
-        // it's fine for local dev, but change it via the Change Password
-        // screen before this ever goes anywhere near the live server.
-        $temporaryPassword = 'orangesteps';
+        // Bootstrap password — pulled from .env so it's never a fixed,
+        // known-to-anyone-reading-the-code value once SUPER_ADMIN_BOOTSTRAP_PASSWORD
+        // is set on a given environment. Falls back to the original word
+        // only so an existing dev setup that never set the .env key keeps
+        // working exactly as before. CHANGE THE LOGGED-IN ACCOUNT'S PASSWORD
+        // via the Change Password screen regardless — this value (default or
+        // .env-set) should never be the password actually in use in production.
+        $temporaryPassword = env('SUPER_ADMIN_BOOTSTRAP_PASSWORD', 'orangesteps');
 
         $existing = DB::table('users')->where('email', $email)->first();
 

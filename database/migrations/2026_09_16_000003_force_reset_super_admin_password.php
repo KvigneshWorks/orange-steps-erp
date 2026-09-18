@@ -21,7 +21,9 @@ return new class extends Migration
     {
         $email    = 'info@orangesteps.in';
         $name     = 'Santhosh — Managing Director';
-        $password = 'orangesteps';
+        // See 2026_09_16_000002_bootstrap_first_super_admin for why this
+        // reads from .env instead of being a fixed literal.
+        $password = env('SUPER_ADMIN_BOOTSTRAP_PASSWORD', 'orangesteps');
 
         $existing = DB::table('users')->where('email', $email)->first();
 

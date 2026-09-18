@@ -1459,7 +1459,7 @@ const PILL_MAP: Record<string, { bg: string; c: string }> = {
     pending: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
     active: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
     medium: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
-    NEFT: { bg: 'rgba(99,102,241,0.10)', c: '#6366F1' },
+    NEFT: { bg: 'rgba(166,73,29,0.10)', c: '#A6491D' },
     'Bank Transfer': { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
     bank_transfer: { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
     low: { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
@@ -3973,7 +3973,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbStats.expense || 0)}</div>
                                             </div>
                                             <div className="ERP-stat">
-                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--purple),#A78BFA)' }} />
+                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--purple),#D98255)' }} />
                                                 <div className="ERP-stat-label">Manpower</div>
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbGlobalLabourUnpaid)}</div>
                                             </div>

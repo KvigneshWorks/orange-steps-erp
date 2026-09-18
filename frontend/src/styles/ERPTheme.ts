@@ -8,53 +8,57 @@ export const ERP_CSS = `
    this one rule covers all of them without per-component CSS. ── */
 [role="option"]:focus-visible,
 [role="option"]:focus {
-  outline: 2px solid var(--ember, #2563EB);
+  outline: 2px solid var(--ember, #C2410C);
   outline-offset: -2px;
-  background: var(--ember-ghost, rgba(59,130,246,0.10));
+  background: var(--ember-ghost, rgba(194,65,12,0.10));
 }
 
 :root {
-  --ember:        #2563EB;
-  --ember-mid:    #3B82F6;
-  --ember-light:  #60A5FA;
-  --ember-pale:   #BFDBFE;
-  --ember-ghost:  rgba(59,130,246,0.10);
-  --ember-glow:   rgba(59,130,246,0.22);
-  --ember-border: rgba(37,99,235,0.28);
+  /* ── Dark Orange (brand accent) — strictly this ramp, no blue/purple/teal ── */
+  --ember:        #C2410C;
+  --ember-mid:    #DB5B1F;
+  --ember-light:  #F0834D;
+  --ember-pale:   #FBC9A8;
+  --ember-ghost:  rgba(194,65,12,0.10);
+  --ember-glow:   rgba(194,65,12,0.22);
+  --ember-border: rgba(194,65,12,0.28);
 
-  --grey:         #334155;
-  --grey-2:       #3F4B63;
-  --grey-3:       #4B5875;
-  --grey-4:       #64748B;
-  --grey-5:       #94A3B8;
+  /* ── Warm neutrals (text/icons) — warm charcoal, never slate-blue ── */
+  --grey:         #3A3024;
+  --grey-2:       #453A2C;
+  --grey-3:       #524532;
+  --grey-4:       #6B5D48;
+  --grey-5:       #8C7C63;
 
-  --white:        #FFFFFF;
-  --off-white:    #F8FAFC;
-  --surface:      #F1F5F9;
-  --surface-2:    #E9EEF5;
-  --surface-3:    #DCE4EF;
+  /* ── Warm White (surfaces) — strictly this ramp, no cool/blue-white ── */
+  --white:        #FAF9F7;
+  --off-white:    #F5F3EF;
+  --surface:      #F0ECE6;
+  --surface-2:    #E8E2D8;
+  --surface-3:    #DCD3C4;
 
-  --border:       #E2E8F0;
-  --border-2:     #CBD5E1;
-  --border-3:     #B6C2D6;
+  --border:       #E3DDD3;
+  --border-2:     #D2C7B8;
+  --border-3:     #C0B29D;
 
-  --text-1:       #0F172A;
-  --text-2:       #1E293B;
-  --text-3:       #27364A;
-  --text-4:       #475569;
+  --text-1:       #231C14;
+  --text-2:       #3A3024;
+  --text-3:       #524532;
+  --text-4:       #6B5D48;
 
+  /* ── Money in/out exception (kept) — everything else below is orange family ── */
   --success:      #1E9C6A;
   --success-bg:   rgba(30,156,106,0.10);
   --success-bd:   rgba(30,156,106,0.28);
   --error:        #D93B55;
   --error-bg:     rgba(217,59,85,0.10);
   --error-bd:     rgba(217,59,85,0.26);
-  --warn:         #C47E0A;
-  --warn-bg:      rgba(196,126,10,0.10);
-  --warn-bd:      rgba(196,126,10,0.26);
-  --info:         #2870CC;
-  --info-bg:      rgba(40,112,204,0.10);
-  --info-bd:      rgba(40,112,204,0.26);
+  --warn:         #9A3412;
+  --warn-bg:      rgba(154,52,18,0.10);
+  --warn-bd:      rgba(154,52,18,0.26);
+  --info:         #EA580C;
+  --info-bg:      rgba(234,88,12,0.10);
+  --info-bd:      rgba(234,88,12,0.26);
 
   --font-display: 'Instrument Serif', serif;
   --font-body:    'Space Grotesk', sans-serif;
@@ -64,10 +68,10 @@ export const ERP_CSS = `
   --r-md:  10px;
   --r-lg:  16px;
   --r-xl:  22px;
-  --sh-card:    0 1px 4px rgba(37,99,235,0.10), 0 4px 16px rgba(37,99,235,0.07);
-  --sh-hover:   0 4px 20px rgba(37,99,235,0.14), 0 8px 40px rgba(37,99,235,0.10);
-  --sh-ember:   0 4px 18px rgba(37,99,235,0.30);
-  --sh-ember-lg:0 8px 32px rgba(37,99,235,0.40);
+  --sh-card:    0 1px 4px rgba(194,65,12,0.10), 0 4px 16px rgba(194,65,12,0.07);
+  --sh-hover:   0 4px 20px rgba(194,65,12,0.14), 0 8px 40px rgba(194,65,12,0.10);
+  --sh-ember:   0 4px 18px rgba(194,65,12,0.30);
+  --sh-ember-lg:0 8px 32px rgba(194,65,12,0.40);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,14 +81,14 @@ export const ERP_CSS = `
 @keyframes erp-fade-in    { from { opacity:0; }                              to { opacity:1; } }
 @keyframes erp-pop        { from { opacity:0; transform:scale(0.97) translateY(6px); } to { opacity:1; transform:scale(1) translateY(0); } }
 @keyframes erp-spin       { to   { transform:rotate(360deg); } }
-@keyframes erp-pulse-dot  { 0%,100% { box-shadow:0 0 0 0 rgba(37,99,235,0.5); } 50% { box-shadow:0 0 0 5px rgba(37,99,235,0); } }
+@keyframes erp-pulse-dot  { 0%,100% { box-shadow:0 0 0 0 rgba(194,65,12,0.5); } 50% { box-shadow:0 0 0 5px rgba(194,65,12,0); } }
 @keyframes erp-shimmer    {
   0%   { background-position: -600px 0; }
   100% { background-position:  600px 0; }
 }
 @keyframes erp-bar-fill   { from { width:0; } to { width:100%; } }
 @keyframes erp-float      { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
-@keyframes erp-glow-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(59,130,246,0.30); } 50% { box-shadow:0 0 0 8px rgba(59,130,246,0); } }
+@keyframes erp-glow-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(219,91,31,0.30); } 50% { box-shadow:0 0 0 8px rgba(219,91,31,0); } }
 @keyframes erp-stagger-in { from { opacity:0; transform:translateY(14px) scale(0.985); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes erp-gradient-x { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
 
@@ -116,7 +120,7 @@ export const ERP_CSS = `
   position: absolute;
   inset: 0;
   background-image:
-  radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px);
+  radial-gradient(circle, rgba(194,65,12,0.06) 1px, transparent 1px);
   background-size: 28px 28px;
   pointer-events: none;
   z-index: 0;
@@ -214,7 +218,7 @@ export const ERP_CSS = `
 .ERP-divider {
   position: relative;
   height: 1px;
-  background: linear-gradient(to right, var(--ember) 0%, rgba(37,99,235,0.3) 40%, transparent 70%);
+  background: linear-gradient(to right, var(--ember) 0%, rgba(194,65,12,0.3) 40%, transparent 70%);
   margin-bottom: 28px;
   z-index: 1;
 }
@@ -375,7 +379,7 @@ export const ERP_CSS = `
 
 .ERP-form-topbar {
   height: 3px;
-  background: linear-gradient(90deg, var(--ember) 0%, var(--ember-light) 60%, rgba(139,166,220,0.4) 100%);
+  background: linear-gradient(90deg, var(--ember) 0%, var(--ember-light) 60%, rgba(251,201,168,0.4) 100%);
   animation: erp-bar-fill 0.8s 0.3s ease both;
   border-radius: var(--r-xl) var(--r-xl) 0 0;  /* ← round top corners since overflow:visible */
 }
@@ -805,7 +809,7 @@ export const ERP_CSS = `
 .ERP-btn:hover::before { background: rgba(255,255,255,0.12); }
 
 .ERP-btn.primary {
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   color: #fff;
   box-shadow: var(--sh-ember);
 }
@@ -813,7 +817,7 @@ export const ERP_CSS = `
 .ERP-btn.primary:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.02);
   box-shadow: var(--sh-ember-lg);
-  background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #F0834D 0%, #C2410C 100%);
 }
 
 .ERP-btn.primary:active:not(:disabled),
@@ -834,12 +838,12 @@ export const ERP_CSS = `
 
 .ERP-btn.secondary {
   background: transparent;
-  border: 1.5px solid #3B82F6;
-  color: #2563EB;
+  border: 1.5px solid #DB5B1F;
+  color: #C2410C;
 }
 
 .ERP-btn.secondary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   border-color: transparent;
   color: #fff;
   box-shadow: var(--sh-ember);
@@ -855,7 +859,7 @@ export const ERP_CSS = `
 .ERP-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ── Unified compact refresh button — unique orbit icon, idle pulse + click ripple/spin ── */
-@keyframes erpRefreshIdle { 0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.30); } 50% { box-shadow: 0 0 0 5px rgba(37,99,235,0); } }
+@keyframes erpRefreshIdle { 0%,100% { box-shadow: 0 0 0 0 rgba(194,65,12,0.30); } 50% { box-shadow: 0 0 0 5px rgba(194,65,12,0); } }
 @keyframes erpRefreshSpin { to { transform: rotate(360deg); } }
 @keyframes erpRefreshRipple { from { transform: scale(0.5); opacity: 0.6; } to { transform: scale(1.9); opacity: 0; } }
 .ERP-refresh-btn {
@@ -875,10 +879,10 @@ export const ERP_CSS = `
 .ERP-refresh-btn svg { transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 .ERP-refresh-btn:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.08);
-  background: linear-gradient(135deg,#60A5FA,#2563EB);
+  background: linear-gradient(135deg,#F0834D,#C2410C);
   border-color: transparent;
   color: #fff;
-  box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+  box-shadow: 0 6px 16px rgba(194,65,12,0.35);
   animation-play-state: paused;
 }
 .ERP-refresh-btn:hover:not(:disabled) svg { transform: rotate(180deg); }
@@ -1146,7 +1150,7 @@ export const ERP_CSS = `
   color: #fff;
   border-color: var(--ember);
   transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 3px 10px rgba(37,99,235,0.3);
+  box-shadow: 0 3px 10px rgba(194,65,12,0.3);
 }
 
 .ERP-act.delete {
@@ -1227,8 +1231,8 @@ export const ERP_CSS = `
    ══════════════════════════════════════════════════════════════ */
 
 @keyframes erp-sb-glow {
-  0%,100% { box-shadow: 0 0 4px rgba(59,130,246,0.35), 0 0 10px rgba(37,99,235,0.15); }
-  50%      { box-shadow: 0 0 9px rgba(59,130,246,0.65), 0 0 20px rgba(37,99,235,0.30); }
+  0%,100% { box-shadow: 0 0 4px rgba(219,91,31,0.35), 0 0 10px rgba(194,65,12,0.15); }
+  50%      { box-shadow: 0 0 9px rgba(219,91,31,0.65), 0 0 20px rgba(194,65,12,0.30); }
 }
 @keyframes erp-sb-appear {
   from { opacity: 0; transform: scaleY(0.5); }
@@ -1240,7 +1244,7 @@ export const ERP_CSS = `
 .ERP-tbl-scroll,
 .erp-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #3B82F6 rgba(203,213,225,0.20);
+  scrollbar-color: #DB5B1F rgba(210,199,184,0.20);
 }
 
 /* Webkit — scoped to ERP light-surface containers */
@@ -1254,19 +1258,19 @@ export const ERP_CSS = `
 .ERP-page ::-webkit-scrollbar-track,
 .ERP-tbl-scroll::-webkit-scrollbar-track,
 .erp-scroll::-webkit-scrollbar-track {
-  background: rgba(203,213,225,0.22);
+  background: rgba(210,199,184,0.22);
   border-radius: 99px;
 }
 
 .ERP-page ::-webkit-scrollbar-thumb,
 .ERP-tbl-scroll::-webkit-scrollbar-thumb,
 .erp-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 42%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 42%, #C2410C 100%);
   border-radius: 99px;
   border: 1.5px solid rgba(255,255,255,0.50);
   box-shadow:
-    0 0 4px rgba(59,130,246,0.28),
-    inset 0 1px 0 rgba(191,219,254,0.40);
+    0 0 4px rgba(219,91,31,0.28),
+    inset 0 1px 0 rgba(253,224,203,0.40);
   animation: erp-sb-appear 0.25s ease both;
   transition: background 0.22s ease, box-shadow 0.22s ease;
 }
@@ -1274,22 +1278,22 @@ export const ERP_CSS = `
 .ERP-page ::-webkit-scrollbar-thumb:hover,
 .ERP-tbl-scroll::-webkit-scrollbar-thumb:hover,
 .erp-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 40%, #2563EB 100%);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 40%, #C2410C 100%);
   box-shadow:
-    0 0 10px rgba(59,130,246,0.58),
-    0 0 22px rgba(37,99,235,0.25),
-    inset 0 1px 0 rgba(219,234,254,0.50);
+    0 0 10px rgba(219,91,31,0.58),
+    0 0 22px rgba(194,65,12,0.25),
+    inset 0 1px 0 rgba(253,224,203,0.50);
   animation: erp-sb-glow 1.8s ease-in-out infinite;
 }
 
 .ERP-page ::-webkit-scrollbar-thumb:active,
 .ERP-tbl-scroll::-webkit-scrollbar-thumb:active,
 .erp-scroll::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, #DBEAFE 0%, #BFDBFE 20%, #3B82F6 55%, #2563EB 100%);
+  background: linear-gradient(180deg, #FDE0CB 0%, #FBC9A8 20%, #DB5B1F 55%, #C2410C 100%);
   box-shadow:
-    0 0 14px rgba(59,130,246,0.72),
-    0 0 28px rgba(37,99,235,0.38),
-    inset 0 1px 0 rgba(219,234,254,0.55);
+    0 0 14px rgba(219,91,31,0.72),
+    0 0 28px rgba(194,65,12,0.38),
+    inset 0 1px 0 rgba(253,224,203,0.55);
 }
 
 .ERP-page ::-webkit-scrollbar-corner,
@@ -1384,7 +1388,7 @@ export const ERP_CSS = `
 
 .ERP-cal-panel {
   background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
-  box-shadow: 0 12px 36px rgba(15,23,42,.16), 0 0 0 1px rgba(255,255,255,.9) inset;
+  box-shadow: 0 12px 36px rgba(35,28,20,.16), 0 0 0 1px rgba(255,255,255,.9) inset;
   padding: 10px; animation: erp-cal-pop .2s cubic-bezier(.22,1,.36,1) both;
 }
 @keyframes erp-cal-pop { from { opacity: 0; transform: translateY(-6px) scale(.96); } to { opacity: 1; transform: none; } }
@@ -1464,7 +1468,7 @@ export const ERP_CSS = `
   border-radius: var(--r-md);
   transition: transform .18s, box-shadow .18s;
   color: #fff;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   border: none;
   box-shadow: var(--sh-ember);
 }
@@ -1540,9 +1544,9 @@ export const ERP_CSS = `
 }
 .MD-form-icon-wrap {
   width: 38px; height: 38px;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   border: none;
-  box-shadow: 0 3px 10px rgba(37,99,235,0.26), inset 0 1px 0 rgba(255,255,255,.4);
+  box-shadow: 0 3px 10px rgba(194,65,12,0.26), inset 0 1px 0 rgba(255,255,255,.4);
   animation: erp-pop 0.4s ease both;
   position: relative;
   overflow: hidden;
@@ -1573,11 +1577,11 @@ export const ERP_CSS = `
 }
 .MD-create-grid .ERP-form-card {
   border: 1.5px solid var(--border-2);
-  box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 10px 30px rgba(15,23,42,0.08);
+  box-shadow: 0 1px 3px rgba(35,28,20,0.06), 0 10px 30px rgba(35,28,20,0.08);
 }
 .MD-tbl-card {
   border: 1.5px solid var(--border-2) !important;
-  box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 10px 30px rgba(15,23,42,0.07) !important;
+  box-shadow: 0 1px 3px rgba(35,28,20,0.06), 0 10px 30px rgba(35,28,20,0.07) !important;
 }
 .MD-preview-card {
   position: sticky; top: 16px;
@@ -1585,12 +1589,12 @@ export const ERP_CSS = `
   border: 1.5px solid var(--border-2);
   border-radius: var(--r-lg);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 12px 32px rgba(37,99,235,0.10);
+  box-shadow: 0 1px 3px rgba(35,28,20,0.06), 0 12px 32px rgba(194,65,12,0.10);
   animation: erp-pop 0.4s 0.15s ease both;
 }
 .MD-preview-head {
   display: flex; align-items: center; gap: 9px; padding: 15px 18px;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   position: relative; overflow: hidden;
 }
 .MD-preview-head::after {
@@ -1651,7 +1655,7 @@ export const ERP_CSS = `
    show through underneath as you scroll, breaking the sticky effect. */
 .MD-tbl-card .ERP-tbl th {
   color: #fff;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
   border-bottom: none;
   text-align: center;
 }
@@ -1715,12 +1719,12 @@ export const ERP_CSS = `
   display: flex; align-items: center; justify-content: center;
   width: 34px; height: 34px; flex-shrink: 0;
   border-radius: var(--r-sm); border: none;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-  box-shadow: 0 2px 8px rgba(37,99,235,0.24);
+  background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%);
+  box-shadow: 0 2px 8px rgba(194,65,12,0.24);
   cursor: pointer;
   transition: transform .18s cubic-bezier(0.22,1,0.36,1), box-shadow .18s ease;
 }
-.MD-tbl-search-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 5px 14px rgba(37,99,235,0.34); }
+.MD-tbl-search-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 5px 14px rgba(194,65,12,0.34); }
 .MD-tbl-reset-pill {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 9px 15px; border-radius: 100px;
@@ -1733,16 +1737,16 @@ export const ERP_CSS = `
 
 /* Transparent, thin, professional scrollbar for the table's scroll
    container — replaces the default chunky OS scrollbar. */
-.MD-tbl-card .ERP-tbl-scroll { scrollbar-width: thin; scrollbar-color: rgba(37,99,235,0.35) transparent; }
+.MD-tbl-card .ERP-tbl-scroll { scrollbar-width: thin; scrollbar-color: rgba(194,65,12,0.35) transparent; }
 .MD-tbl-card .ERP-tbl-scroll::-webkit-scrollbar { width: 7px; height: 7px; background: transparent; }
 .MD-tbl-card .ERP-tbl-scroll::-webkit-scrollbar-track { background: transparent; }
 .MD-tbl-card .ERP-tbl-scroll::-webkit-scrollbar-thumb {
-  background: rgba(37,99,235,0.30);
+  background: rgba(194,65,12,0.30);
   border-radius: 100px;
   border: 1px solid transparent;
   background-clip: padding-box;
 }
-.MD-tbl-card .ERP-tbl-scroll::-webkit-scrollbar-thumb:hover { background: rgba(37,99,235,0.55); background-clip: padding-box; }
+.MD-tbl-card .ERP-tbl-scroll::-webkit-scrollbar-thumb:hover { background: rgba(194,65,12,0.55); background-clip: padding-box; }
 
 /* Plain colored text label — replaces the pill/dot .ERP-badge look
    for reference fields (Type, Status, Account Head, Account Sub-Head,
@@ -1776,7 +1780,7 @@ export const ERP_CSS = `
 .MD-act-ico.edit:hover {
   background: var(--ember); color: #fff; border-color: var(--ember);
   transform: translateY(-2px) scale(1.08);
-  box-shadow: 0 5px 14px rgba(37,99,235,0.32);
+  box-shadow: 0 5px 14px rgba(194,65,12,0.32);
 }
 .MD-act-ico.delete { background: var(--error-bg); color: var(--error); border-color: var(--error-bd); }
 .MD-act-ico.delete:hover {
@@ -1928,7 +1932,7 @@ export const ERP_CSS = `
   left: 4px; top: 28px;
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,130,246,0.55) 0%, rgba(59,130,246,0) 72%);
+  background: radial-gradient(circle, rgba(219,91,31,0.55) 0%, rgba(219,91,31,0) 72%);
   animation: dbi-burst 420ms ease-out 80ms both;
   pointer-events: none;
 }
@@ -2012,8 +2016,8 @@ export const ERP_CSS = `
 .ERP-pg-btn:hover:not(:disabled) { color: var(--ember); background: var(--ember-ghost); transform: translateY(-1px) scale(1.06); }
 .ERP-pg-btn:active:not(:disabled) { transform: scale(0.9); transition-duration: .08s; }
 .ERP-pg-btn.on {
-  background: linear-gradient(135deg, var(--ember-mid,#3B82F6), var(--ember));
-  color: #fff; box-shadow: 0 3px 10px rgba(37,99,235,0.4); transform: scale(1.08);
+  background: linear-gradient(135deg, var(--ember-mid,#DB5B1F), var(--ember));
+  color: #fff; box-shadow: 0 3px 10px rgba(194,65,12,0.4); transform: scale(1.08);
   animation: erp-pg-pop .28s cubic-bezier(.34,1.56,.64,1);
 }
 .ERP-pg-btn.on:hover { transform: scale(1.1); }

@@ -136,7 +136,7 @@ interface RecentProject {
 const NAV_STRUCTURE = [
     {
         section: 'Core', items: [
-            { id: 'dashboard', label: 'Control Panel', badge: null, icon: 'dashboard', children: null },
+            { id: 'dashboard', label: 'Dashboard', badge: null, icon: 'dashboard', children: null },
         ]
     },
 
@@ -144,11 +144,11 @@ const NAV_STRUCTURE = [
         section: 'Core Records', items: [
             {
                 id: 'master', label: 'Core Records', badge: null, icon: 'master', children: [
-                    { id: 'master-category', label: 'Account Head' },
-                    { id: 'master-subcategory', label: 'Account Sub-Head' },
-                    { id: 'master-idtype', label: 'Identification Type' },
-                    { id: 'master-biodata', label: 'Party Master' },
-                    { id: 'master-subname', label: 'Associate Name' },
+                    { id: 'master-category', label: 'Category' },
+                    { id: 'master-subcategory', label: 'Sub-Category' },
+                    { id: 'master-idtype', label: 'ID Type' },
+                    { id: 'master-biodata', label: 'Contacts' },
+                    { id: 'master-subname', label: 'Associates' },
                 ]
             },
         ]
@@ -159,8 +159,8 @@ const NAV_STRUCTURE = [
         items: [
             {
                 id: 'daybook', label: 'Cash Book', badge: null, icon: 'daybook', children: [
-                    { id: 'txn-daybook', label: 'Log Entry' },
-                    { id: 'txn-history', label: 'View All' },
+                    { id: 'txn-daybook', label: 'New Entry' },
+                    { id: 'txn-history', label: 'All Entries' },
                 ]
             },
         ]
@@ -169,24 +169,24 @@ const NAV_STRUCTURE = [
     {
         section: 'Credit',
         items: [
-            { id: 'txn-credit', label: 'Accounts Payable', badge: null, icon: 'money', children: null },
+            { id: 'txn-credit', label: 'Vendor Payments', badge: null, icon: 'money', children: null },
         ]
     },
 
     {
         section: 'Clients',
         items: [
-            { id: 'client', label: 'Accounts Receivable', badge: 'NEW', icon: 'client', children: null },
+            { id: 'client', label: 'Client Payments', badge: 'NEW', icon: 'client', children: null },
         ]
     },
 
     {
         section: 'Manpower', items: [
             {
-                id: 'hr', label: 'Manpower Management', badge: null, icon: 'hr', children: [
-                    { id: 'workforce', label: 'Manpower Register' },
+                id: 'hr', label: 'Manpower', badge: null, icon: 'hr', children: [
+                    { id: 'workforce', label: 'Worker List' },
                     { id: 'attendance', label: 'Attendance' },
-                    { id: 'labour-payment', label: 'Wage Disbursement' },
+                    { id: 'labour-payment', label: 'Worker Payments' },
                 ]
             },
         ]
@@ -195,12 +195,12 @@ const NAV_STRUCTURE = [
     {
         section: 'Reports', items: [
             {
-                id: 'report', label: 'Business Insights', badge: null, icon: 'report', children: [
+                id: 'report', label: 'Reports', badge: null, icon: 'report', children: [
                     { id: 'report-daybook', label: 'Cash Book Report' },
-                    { id: 'report-credit', label: 'Accounts Payable Report' },
-                    { id: 'report-labour', label: 'Manpower Report' },
-                    { id: 'report-client', label: 'Accounts Receivable Report' },
-                    { id: 'report-pl', label: 'Income Statement' },
+                    { id: 'report-credit', label: 'Vendor Payments Report' },
+                    { id: 'report-labour', label: 'Worker Payments Report' },
+                    { id: 'report-client', label: 'Client Payments Report' },
+                    { id: 'report-pl', label: 'Profit & Loss' },
                 ]
             },
         ]
@@ -213,7 +213,7 @@ const NAV_STRUCTURE = [
                     { id: 'create-account', label: 'Create Account' },
                     { id: 'pending-approvals', label: 'Pending Approvals' },
                     { id: 'all-accounts', label: 'All Accounts' },
-                    { id: 'roles-permissions', label: 'Roles & Permissions' },
+                    { id: 'roles-permissions', label: 'Access Levels' },
                 ]
             },
         ]
@@ -221,7 +221,7 @@ const NAV_STRUCTURE = [
 
     {
         section: 'System', items: [
-            { id: 'recycle-bin', label: 'Deletion Log', badge: null, icon: 'trash', children: null },
+            { id: 'recycle-bin', label: 'Recycle Bin', badge: null, icon: 'trash', children: null },
         ]
     },
 ];
@@ -276,7 +276,7 @@ function getNav(role?: string) {
    NAV ICONS
 ───────────────────────────────────────── */
 function NavIcon({ type, active = false }: { type: string; active?: boolean }) {
-    const color = active ? '#2563EB' : '#C47E0A';
+    const color = active ? '#C2410C' : '#9A3412';
     const s = {
         width: 17, height: 17, fill: 'none', stroke: color,
         strokeWidth: 1.65, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const,
@@ -365,7 +365,7 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
                     <div key={i} style={{
                         flex: 1, borderRadius: 6,
                         height: `${40 + Math.random() * 60}%`,
-                        background: 'linear-gradient(90deg,#E9EEF5 25%,#F1F5F9 50%,#E9EEF5 75%)',
+                        background: 'linear-gradient(90deg,#E8E2D8 25%,#F0ECE6 50%,#E8E2D8 75%)',
                         backgroundSize: '300px 100%',
                         animation: `ds-SK-shimmer 1.6s ease infinite`,
                         animationDelay: `${i * 0.1}s`,
@@ -378,7 +378,7 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
     if (!data || data.length === 0) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 160, flexDirection: 'column', gap: 8 }}>
-                <svg width="28" height="28" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M3 21V13M8 21V9M13 21V5M18 21v-6" /></svg>
+                <svg width="28" height="28" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M3 21V13M8 21V9M13 21V5M18 21v-6" /></svg>
                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'var(--d-ice4)', letterSpacing: '1.5px' }}>NO COLLECTION DATA YET</span>
             </div>
         );
@@ -406,7 +406,7 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
                 {/* This Month Start */}
                 <div className="CH-pill hero">
                     <div className="CH-pill-ico">
-                        <svg width="14" height="14" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
+                        <svg width="14" height="14" fill="none" stroke="#faf9f7" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
                     </div>
                     <div>
                         <div className="CH-pill-lbl">This Month</div>
@@ -418,7 +418,7 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
                 {/* Total Start */}
                 <div className="CH-pill">
                     <div className="CH-pill-ico alt">
-                        <svg width="13" height="13" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /></svg>
+                        <svg width="13" height="13" fill="none" stroke="#faf9f7" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /></svg>
                     </div>
                     <div>
                         <div className="CH-pill-lbl">6-Mo Total</div>
@@ -472,7 +472,7 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
 ───────────────────────────────────────── */
 function ProjectTypesChart({ data, loading }: { data: TypeDist[]; loading: boolean }) {
     const [hovered, setHovered] = useState<number | null>(null);
-    const COLORS = ['#2563EB', '#60A5FA', '#1E9C6A', '#2870CC', '#D93B55', '#8B5CF6', '#06B6D4'];
+    const COLORS = ['#C2410C', '#DB5B1F', '#F0834D', '#9A3412', '#D98255', '#A6491D', '#EA580C'];
 
     if (loading) {
         return (
@@ -491,7 +491,7 @@ function ProjectTypesChart({ data, loading }: { data: TypeDist[]; loading: boole
     if (!data || data.length === 0) {
         return (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 120, flexDirection: 'column', gap: 8 }}>
-                <svg width="28" height="28" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24">
+                <svg width="28" height="28" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" />
                 </svg>
                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'var(--d-ice4)', letterSpacing: '1.5px' }}>NO PROJECTS YET</span>
@@ -535,7 +535,7 @@ function ProjectTypesChart({ data, loading }: { data: TypeDist[]; loading: boole
                             transform: hovered === i ? 'scaleY(1.15)' : 'scaleY(1)',
                             transition: 'all 0.25s cubic-bezier(.22,1,.36,1)', cursor: 'pointer',
                             animation: `ds-barGrow 0.8s ${i * 0.08}s cubic-bezier(.22,1,.36,1) both`,
-                            borderRight: i < data.length - 1 ? '1.5px solid #fff' : 'none',
+                            borderRight: i < data.length - 1 ? '1.5px solid #faf9f7' : 'none',
                         }}
                     />
                 ))}
@@ -551,7 +551,7 @@ function ProjectTypesChart({ data, loading }: { data: TypeDist[]; loading: boole
                         onMouseLeave={() => setHovered(null)}
                         style={{
                             padding: '9px 12px', borderRadius: 11, cursor: 'pointer',
-                            background: hovered === i ? `${COLORS[i % COLORS.length]}0F` : '#FFFFFF',
+                            background: hovered === i ? `${COLORS[i % COLORS.length]}0F` : '#FAF9F7',
                             border: `1px solid ${hovered === i ? COLORS[i % COLORS.length] + '55' : 'var(--d-line)'}`,
                             borderLeft: `3px solid ${COLORS[i % COLORS.length]}`,
                             transition: 'all 0.22s ease', transform: hovered === i ? 'translateY(-2px)' : 'none',
@@ -605,10 +605,10 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
 
     return (
         <div className="NP-wrap">
-            <div style={{ height: 3, background: overdue > 0 ? 'linear-gradient(to right,#D93B55,#60A5FA)' : safeApprovals.length > 0 ? 'linear-gradient(to right,#C47E0A,#60A5FA)' : 'linear-gradient(to right,#60A5FA,#2563EB)', borderRadius: '16px 16px 0 0' }} />
+            <div style={{ height: 3, background: overdue > 0 ? 'linear-gradient(to right,#D93B55,#F0834D)' : safeApprovals.length > 0 ? 'linear-gradient(to right,#9A3412,#F0834D)' : 'linear-gradient(to right,#F0834D,#C2410C)', borderRadius: '16px 16px 0 0' }} />
             <div className="NP-head">
                 <div className="NP-title">
-                    <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : safeApprovals.length > 0 ? '#C47E0A' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : safeApprovals.length > 0 ? '#9A3412' : '#C2410C'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     Notifications
@@ -620,15 +620,15 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
             {safeNotifications.length > 0 && (
                 <div style={{ padding: '8px 12px 4px', display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                     {overdue > 0 && <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '3px 9px', borderRadius: 100, background: 'rgba(217,59,85,.1)', color: 'var(--d-red)', border: '1px solid rgba(217,59,85,.22)' }}>{overdue} OVERDUE</span>}
-                    {thisWeek > 0 && <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '3px 9px', borderRadius: 100, background: 'rgba(37,99,235,.1)', color: 'var(--d-or)', border: '1px solid rgba(37,99,235,.22)' }}>{thisWeek} THIS WEEK</span>}
-                    {upcoming > 0 && <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '3px 9px', borderRadius: 100, background: 'rgba(40,112,204,.1)', color: 'var(--d-blue)', border: '1px solid rgba(40,112,204,.22)' }}>{upcoming} UPCOMING</span>}
+                    {thisWeek > 0 && <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '3px 9px', borderRadius: 100, background: 'rgba(194,65,12,.1)', color: 'var(--d-or)', border: '1px solid rgba(194,65,12,.22)' }}>{thisWeek} THIS WEEK</span>}
+                    {upcoming > 0 && <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '3px 9px', borderRadius: 100, background: 'rgba(234,88,12,.1)', color: 'var(--d-blue)', border: '1px solid rgba(234,88,12,.22)' }}>{upcoming} UPCOMING</span>}
                 </div>
             )}
 
             <div className="NP-body">
                 {safeCredits.length === 0 && safeNotifications.length === 0 && safeApprovals.length === 0 ? (
                     <div className="NP-empty">
-                        <svg width="32" height="32" fill="none" stroke="rgba(37,99,235,0.25)" strokeWidth="1.5" viewBox="0 0 24 24" style={{ marginBottom: 10 }}><path d="M5 13l4 4L19 7" /></svg>
+                        <svg width="32" height="32" fill="none" stroke="rgba(194,65,12,0.25)" strokeWidth="1.5" viewBox="0 0 24 24" style={{ marginBottom: 10 }}><path d="M5 13l4 4L19 7" /></svg>
                         <div style={{ fontFamily: 'var(--font-body)', fontSize: 12.5, fontWeight: 800, color: 'var(--d-ice)', marginBottom: 4 }}>All Caught Up!</div>
                         <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, letterSpacing: '1px' }}>Nothing needs your attention right now</div>
                     </div>
@@ -637,22 +637,22 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
                         {/* ── Section 0: Account Approvals Start ── */}
                         {safeApprovals.length > 0 && (<>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px 5px', borderBottom: '1px solid rgba(0,0,0,.06)' }}>
-                                <svg width="10" height="10" fill="none" stroke="#C47E0A" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>
+                                <svg width="10" height="10" fill="none" stroke="#9A3412" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>
                                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'rgba(0,0,0,.4)' }}>Account Approvals — Needs Your Review</span>
-                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: 'rgba(196,126,10,.1)', color: '#C47E0A' }}>{safeApprovals.length}</span>
+                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: 'rgba(154,52,18,.1)', color: '#9A3412' }}>{safeApprovals.length}</span>
                             </div>
                             {safeApprovals.map((req, i) => {
                                 const initials = req.name.trim().slice(0, 2).toUpperCase() || '??';
                                 return (
-                                    <div key={req.id} className="NP-item soon" style={{ animationDelay: `${i * 0.05}s`, borderLeft: '3px solid #C47E0A' }} onClick={() => { onNavigate('pending-approvals'); onClose(); }}>
-                                        <div className="NP-dot soon" style={{ background: 'rgba(196,126,10,.12)' }}>
-                                            <span style={{ fontSize: 9, fontWeight: 800, color: '#C47E0A' }}>{initials}</span>
+                                    <div key={req.id} className="NP-item soon" style={{ animationDelay: `${i * 0.05}s`, borderLeft: '3px solid #9A3412' }} onClick={() => { onNavigate('pending-approvals'); onClose(); }}>
+                                        <div className="NP-dot soon" style={{ background: 'rgba(154,52,18,.12)' }}>
+                                            <span style={{ fontSize: 9, fontWeight: 800, color: '#9A3412' }}>{initials}</span>
                                         </div>
                                         <div className="NP-info">
                                             <div className="NP-client">{req.name}</div>
                                             <div className="NP-proj">{req.email} · wants {ROLE_LBL[req.role] || req.role} access</div>
                                             <div className="NP-meta">
-                                                <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: '#C47E0A', fontWeight: 800 }}>PENDING</span>
+                                                <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: '#9A3412', fontWeight: 800 }}>PENDING</span>
                                                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: 'var(--d-ice4)' }}>{timeAgo(req.created_at)}</span>
                                             </div>
                                         </div>
@@ -670,7 +670,7 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
                             <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px 5px', borderBottom: '1px solid rgba(0,0,0,.06)' }}>
                                 <svg width="10" height="10" fill="none" stroke="var(--d-or)" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" /></svg>
                                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'rgba(0,0,0,.4)' }}>Accounts Payable — Pay to Vendor</span>
-                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: safeCredits.some(c => c.is_overdue) ? 'rgba(217,59,85,.1)' : 'rgba(37,99,235,.1)', color: safeCredits.some(c => c.is_overdue) ? 'var(--d-red)' : 'var(--d-or)' }}>{safeCredits.length}</span>
+                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: safeCredits.some(c => c.is_overdue) ? 'rgba(217,59,85,.1)' : 'rgba(194,65,12,.1)', color: safeCredits.some(c => c.is_overdue) ? 'var(--d-red)' : 'var(--d-or)' }}>{safeCredits.length}</span>
                             </div>
                             {safeCredits.map((c, i) => {
                                 const days = c.is_overdue ? -c.days_overdue : c.days_until_due;
@@ -701,9 +701,9 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
                         {safeNotifications.length > 0 && (<>
 
                             <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 14px 5px', borderBottom: '1px solid rgba(0,0,0,.06)', borderTop: safeCredits.length > 0 ? '2px solid rgba(0,0,0,.05)' : 'none' }}>
-                                <svg width="10" height="10" fill="none" stroke="#22c55e" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>
+                                <svg width="10" height="10" fill="none" stroke="#C2410C" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>
                                 <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.5px', color: 'rgba(0,0,0,.4)' }}>Accounts Receivable — Collect from Client</span>
-                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: 'rgba(34,197,94,.1)', color: '#16a34a' }}>{safeNotifications.length}</span>
+                                <span style={{ marginLeft: 'auto', fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800, padding: '2px 7px', borderRadius: 99, background: 'rgba(194,65,12,.1)', color: '#C2410C' }}>{safeNotifications.length}</span>
                             </div>
 
                             {safeNotifications.map((n, i) => {
@@ -738,9 +738,9 @@ function NotificationPanel({ notifications, creditNotifs, pendingApprovals, onCl
             </div>
 
             {safeNotifications.length > 0 && (
-                <div style={{ padding: '10px 14px', borderTop: '1px solid var(--d-line)', background: '#F8FAFC', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '10px 14px', borderTop: '1px solid var(--d-line)', background: '#F5F3EF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: 'var(--d-ice4)', letterSpacing: '1px' }}>Click any item to open Accounts Receivable</span>
-                    <button onClick={() => { onNavigate('client'); onClose(); }} style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, fontWeight: 800, padding: '5px 12px', borderRadius: 7, background: 'linear-gradient(135deg,#2563EB,#60A5FA)', color: '#fff', border: 'none', cursor: 'pointer', letterSpacing: '1px' }}>VIEW ALL →</button>
+                    <button onClick={() => { onNavigate('client'); onClose(); }} style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, fontWeight: 800, padding: '5px 12px', borderRadius: 7, background: 'linear-gradient(135deg,#C2410C,#F0834D)', color: '#faf9f7', border: 'none', cursor: 'pointer', letterSpacing: '1px' }}>VIEW ALL →</button>
                 </div>
             )}
 
@@ -755,19 +755,19 @@ function Placeholder({ id }: { id: string }) {
     const lbl = NAV_STRUCTURE.flatMap(s => s.items).flatMap(i => [i, ...(i.children || [])]).find((x: any) => x.id === id)?.label || id;
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: 20, textAlign: 'center', animation: 'ds-pageIn .5s cubic-bezier(.22,1,.36,1) both' }}>
-            <div style={{ width: 80, height: 80, borderRadius: 22, background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="32" height="32" fill="none" stroke="#2563EB" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>
+            <div style={{ width: 80, height: 80, borderRadius: 22, background: 'rgba(194,65,12,0.08)', border: '1px solid rgba(194,65,12,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="32" height="32" fill="none" stroke="#C2410C" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>
             </div>
             <div>
-                <div style={{ fontFamily: "'Instrument Serif',serif", fontSize: 32.5, fontWeight: 600, fontStyle: 'italic', color: '#0F172A', marginBottom: 6 }}>{lbl}</div>
-                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#64748B', letterSpacing: '3px', textTransform: 'uppercase' }}>Module · WhiteNode</div>
+                <div style={{ fontFamily: "'Instrument Serif',serif", fontSize: 32.5, fontWeight: 600, fontStyle: 'italic', color: '#231C14', marginBottom: 6 }}>{lbl}</div>
+                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#6B5D48', letterSpacing: '3px', textTransform: 'uppercase' }}>Module · WhiteNode</div>
             </div>
-            <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, letterSpacing: '2.5px', textTransform: 'uppercase', padding: '8px 22px', borderRadius: 8, background: 'rgba(37,99,235,0.08)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.28)' }}>Coming Soon</div>
+            <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, letterSpacing: '2.5px', textTransform: 'uppercase', padding: '8px 22px', borderRadius: 8, background: 'rgba(194,65,12,0.08)', color: '#C2410C', border: '1px solid rgba(194,65,12,0.28)' }}>Coming Soon</div>
         </div>
     );
 }
 
-function SectionHeader({ icon, eyebrow, title, subtitle, accent = '#2563EB', actions }: {
+function SectionHeader({ icon, eyebrow, title, subtitle, accent = '#C2410C', actions }: {
     icon: React.ReactNode; eyebrow: string; title: string; subtitle: string; accent?: string; actions?: React.ReactNode;
 }) {
     return (
@@ -775,8 +775,8 @@ function SectionHeader({ icon, eyebrow, title, subtitle, accent = '#2563EB', act
             <div style={{ width: 48, height: 48, borderRadius: 14, flexShrink: 0, background: `${accent}12`, border: `1.5px solid ${accent}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 4px 16px ${accent}16` }}>{icon}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, letterSpacing: '3px', color: accent, textTransform: 'uppercase', marginBottom: 4, fontWeight: 800 }}>{eyebrow}</div>
-                <div style={{ fontFamily: "'Instrument Serif',serif", fontSize: 28.5, fontWeight: 600, fontStyle: 'italic', color: '#0F172A', lineHeight: 1.1 }}>{title}</div>
-                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#64748B', marginTop: 3, letterSpacing: '1px' }}>{subtitle}</div>
+                <div style={{ fontFamily: "'Instrument Serif',serif", fontSize: 28.5, fontWeight: 600, fontStyle: 'italic', color: '#231C14', lineHeight: 1.1 }}>{title}</div>
+                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#6B5D48', marginTop: 3, letterSpacing: '1px' }}>{subtitle}</div>
             </div>
             {actions && <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 10 }}>{actions}</div>}
         </div>
@@ -842,7 +842,7 @@ function DashContent({
             dt: String(recentProjects.filter(p => normalizeStatus(p.status) === 'active').length) + ' active',
             dir: 'up' as const,
             sub: 'added in Accounts Receivable',
-            c: '#2563EB', bg: 'rgba(37,99,235,.09)', d: 0,
+            c: '#C2410C', bg: 'rgba(194,65,12,.09)', d: 0,
             iconPath: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></>,
         },
         {
@@ -851,7 +851,7 @@ function DashContent({
             dt: portalSummary ? fmt(portalSummary.total_collected) + ' collected' : '—',
             dir: 'up' as const,
             sub: 'in ₹ Lakhs',
-            c: '#60A5FA', bg: 'rgba(37,99,235,.09)', d: 0.08,
+            c: '#F0834D', bg: 'rgba(194,65,12,.09)', d: 0.08,
             iconPath: <><circle cx="12" cy="12" r="9" /><path d="M8 12h8M12 8v8" /></>,
         },
         {
@@ -880,7 +880,7 @@ function DashContent({
             dt: String(portalSummary?.total_projects ?? 0) + ' projects',
             dir: 'up' as const,
             sub: 'registered clients',
-            c: '#2870CC', bg: 'rgba(40,112,204,.09)', d: 0.32,
+            c: '#EA580C', bg: 'rgba(234,88,12,.09)', d: 0.32,
             iconPath: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /><path d="M16 11l2 2 4-4" /></>,
         },
         {
@@ -889,7 +889,7 @@ function DashContent({
             dt: 'on active roster',
             dir: 'up' as const,
             sub: 'active users',
-            c: '#27364A', bg: 'rgba(39,54,74,.07)', d: 0.40,
+            c: '#524532', bg: 'rgba(82,69,50,.07)', d: 0.40,
             iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
         },
     ];
@@ -908,11 +908,11 @@ function DashContent({
                 : 0,
             color: '#D93B55', warn: true,
         },
-        { label: 'Active Client Projects', val: activeProjPct, color: '#2563EB', warn: false },
+        { label: 'Active Client Projects', val: activeProjPct, color: '#C2410C', warn: false },
     ] : [
         { label: 'Collection Rate', val: 0, color: '#1E9C6A', warn: false },
         { label: 'Balance / Budget', val: 0, color: '#D93B55', warn: true },
-        { label: 'Active Client Projects', val: 0, color: '#2563EB', warn: false },
+        { label: 'Active Client Projects', val: 0, color: '#C2410C', warn: false },
     ];
 
     const healthGood = portalSummary ? portalSummary.collected_pct >= 50 : false;
@@ -929,14 +929,14 @@ function DashContent({
             {
                 id: 'master', title: 'Core Records', tag: 'Setup',
                 desc: 'Account Heads, account sub-heads, party master & Identification types — the foundation behind every entry.',
-                c: '#2563EB', bg: 'rgba(37,99,235,.09)', tagBg: 'rgba(37,99,235,.08)', tagBorder: 'rgba(37,99,235,.22)',
+                c: '#C2410C', bg: 'rgba(194,65,12,.09)', tagBg: 'rgba(194,65,12,.08)', tagBorder: 'rgba(194,65,12,.22)',
                 iconPath: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></>,
                 tags: ['Account Heads', 'Account Sub-Heads', 'Party Master', 'Identification Types'],
             },
             {
                 id: 'txn-daybook', title: 'Cash Book', tag: 'Explore',
                 desc: 'Log day-to-day income & expense transactions with category-linked entries.',
-                c: '#60A5FA', bg: 'rgba(37,99,235,.09)', tagBg: 'rgba(37,99,235,.08)', tagBorder: 'rgba(37,99,235,.22)',
+                c: '#F0834D', bg: 'rgba(194,65,12,.09)', tagBg: 'rgba(194,65,12,.08)', tagBorder: 'rgba(194,65,12,.22)',
                 iconPath: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></>,
                 tags: ['Income', 'Expense', 'Multi-Filter'],
             },
@@ -962,7 +962,7 @@ function DashContent({
             {
                 id: 'workforce', title: 'Manpower & Attendance', tag: 'Live',
                 desc: 'Attendance, worker registry & wage disbursement tracking.',
-                c: '#2870CC', bg: 'rgba(40,112,204,.09)', tagBg: 'rgba(40,112,204,.08)', tagBorder: 'rgba(40,112,204,.22)',
+                c: '#EA580C', bg: 'rgba(234,88,12,.09)', tagBg: 'rgba(234,88,12,.08)', tagBorder: 'rgba(234,88,12,.22)',
                 iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
                 metrics: [{ v: stats?.teamMembers ?? 0, l: 'Team' }],
                 tags: ['Attendance', 'Payroll', 'Registry'],
@@ -970,7 +970,7 @@ function DashContent({
             {
                 id: 'report-daybook', title: 'Business Insights', tag: 'Explore',
                 desc: 'Cash Book, Credit, Manpower, Client & Income Statement — five report centers, one click away.',
-                c: '#27364A', bg: 'rgba(39,54,74,.07)', tagBg: 'rgba(39,54,74,.06)', tagBorder: 'rgba(39,54,74,.16)',
+                c: '#524532', bg: 'rgba(82,69,50,.07)', tagBg: 'rgba(82,69,50,.06)', tagBorder: 'rgba(82,69,50,.16)',
                 iconPath: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></>,
                 metrics: [{ v: 5, l: 'Insights' }],
                 tags: ['PDF Export', 'Chained Filters', 'Instant Search'],
@@ -978,11 +978,11 @@ function DashContent({
         ];
 
     const QUICK_ACTIONS = [
-        { id: 'txn-daybook', lbl: 'New Cash Book Entry', c: '#60A5FA', bg: 'rgba(37,99,235,.12)', icon: <><path d="M12 5v14M5 12h14" /></> },
+        { id: 'txn-daybook', lbl: 'New Cash Book Entry', c: '#F0834D', bg: 'rgba(194,65,12,.12)', icon: <><path d="M12 5v14M5 12h14" /></> },
         { id: 'txn-credit', lbl: 'Add Bill', c: '#D93B55', bg: 'rgba(217,59,85,.12)', icon: <><rect x="2" y="6" width="20" height="13" rx="2" /><path d="M2 10h20" /></> },
         { id: 'client', lbl: 'Accounts Receivable', c: '#1E9C6A', bg: 'rgba(30,156,106,.12)', icon: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /></> },
-        { id: 'attendance', lbl: 'Mark Attendance', c: '#2870CC', bg: 'rgba(40,112,204,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
-        { id: 'report-daybook', lbl: 'View Insights', c: '#27364A', bg: 'rgba(39,54,74,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
+        { id: 'attendance', lbl: 'Mark Attendance', c: '#EA580C', bg: 'rgba(234,88,12,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
+        { id: 'report-daybook', lbl: 'View Insights', c: '#524532', bg: 'rgba(82,69,50,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
     ];
 
     return (
@@ -1175,14 +1175,14 @@ function DashContent({
 
                         {displayProjects.length === 0 ? (
                             <div className="DH-empty">
-                                <svg width="26" height="26" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>
+                                <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>
                                 <div className="DH-empty-tt">No projects yet</div>
                                 <div className="DH-empty-sb">Add one from Accounts Receivable</div>
                             </div>
                         ) : (
                             <div>
                                 {displayProjects.map((a, i) => {
-                                    const statusColor = a.status === 'active' ? '#1E9C6A' : a.status === 'pending' ? '#2563EB' : a.status === 'review' ? '#2870CC' : '#D93B55';
+                                    const statusColor = a.status === 'active' ? '#1E9C6A' : a.status === 'pending' ? '#C2410C' : a.status === 'review' ? '#EA580C' : '#D93B55';
                                     const initials = (a.name || '?').trim().slice(0, 2).toUpperCase();
                                     return (
                                         <div className="DH-proj-row" key={a.id} style={{ animationDelay: `${i * 0.05}s` }}>
@@ -1262,7 +1262,7 @@ function DashContent({
                 <div className="DH-panel">
                     <div className="DH-panel-hd">
                         <div className="DH-panel-tt" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <svg width="14" height="14" fill="none" stroke={creditNotifs.some(c => c.is_overdue) ? '#D93B55' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" /></svg>
+                            <svg width="14" height="14" fill="none" stroke={creditNotifs.some(c => c.is_overdue) ? '#D93B55' : '#C2410C'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" /></svg>
                             Bill Dues
                             {creditNotifs.length > 0 && <span className="NP-count" style={{ background: creditNotifs.some(c => c.is_overdue) ? 'var(--d-red)' : 'var(--d-or)' }}>{creditNotifs.length}</span>}
                         </div>
@@ -1271,7 +1271,7 @@ function DashContent({
                     <div style={{ maxHeight: 280, overflowY: 'auto' }}>
                         {creditNotifs.length === 0 ? (
                             <div className="DH-empty">
-                                <svg width="26" height="26" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+                                <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
                                 <div className="DH-empty-tt">No pending bills</div>
                                 <div className="DH-empty-sb">Vendor credit ledger is clear</div>
                             </div>
@@ -1302,8 +1302,8 @@ function DashContent({
 
             {/* Module Command Grid Start */}
             <SectionHeader
-                accent="#2563EB"
-                icon={<svg width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>}
+                accent="#C2410C"
+                icon={<svg width="20" height="20" fill="none" stroke="#C2410C" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>}
                 eyebrow="Command Center"
                 title="Studio Modules"
                 subtitle="Everything in your studio, at a glance"
@@ -1361,12 +1361,12 @@ function DashContent({
 
                 <div className="DH-flow-rail">
                     {[
-                        { id: 'master', lbl: 'Core Records', sub: 'Set up once', c: '#2563EB', icon: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></> },
-                        { id: 'txn-daybook', lbl: 'Cash Book', sub: 'Record entries', c: '#60A5FA', icon: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></> },
+                        { id: 'master', lbl: 'Core Records', sub: 'Set up once', c: '#C2410C', icon: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></> },
+                        { id: 'txn-daybook', lbl: 'Cash Book', sub: 'Record entries', c: '#F0834D', icon: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></> },
                         { id: 'txn-credit', lbl: 'Payables', sub: 'Track vendor dues', c: '#D93B55', icon: <><rect x="2" y="6" width="20" height="13" rx="2" /><path d="M2 10h20" /></> },
                         { id: 'client', lbl: 'Receivables', sub: 'Bill & collect', c: '#1E9C6A', icon: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /></> },
-                        { id: 'workforce', lbl: 'Workforce', sub: 'Attendance & pay', c: '#2870CC', icon: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></> },
-                        { id: 'report-daybook', lbl: 'Insights', sub: 'See the results', c: '#27364A', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
+                        { id: 'workforce', lbl: 'Workforce', sub: 'Attendance & pay', c: '#EA580C', icon: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></> },
+                        { id: 'report-daybook', lbl: 'Insights', sub: 'See the results', c: '#524532', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
                     ].map((s, i, arr) => (
                         <Fragment key={s.id}>
                             <div className="DH-flow-node" onClick={() => onNavigate(s.id)} style={{ animationDelay: `${i * 0.09}s` }}>
@@ -1458,19 +1458,19 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
     const allMarked = !!stats && stats.total_workers > 0 && stats.marked_today >= stats.total_workers;
 
     const PROGRESS_GAUGES = [
-        { label: 'Marked Today', val: markedPct, color: '#2563EB', warn: false },
+        { label: 'Marked Today', val: markedPct, color: '#C2410C', warn: false },
         { label: 'Present Rate', val: presentRate, color: '#1E9C6A', warn: false },
     ];
 
     const KPI_CARDS = [
         {
             lbl: 'Active Workers', val: String(stats?.total_workers ?? 0), dt: 'on the register', dir: 'up' as const, pre: '',
-            c: '#2870CC', bg: 'rgba(40,112,204,.09)', d: 0,
+            c: '#EA580C', bg: 'rgba(234,88,12,.09)', d: 0,
             iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
         },
         {
             lbl: 'Marked Today', val: String(stats?.marked_today ?? 0), dt: `${markedPct}% of workers`, dir: 'up' as const, pre: '',
-            c: '#2563EB', bg: 'rgba(37,99,235,.09)', d: 0.08,
+            c: '#C2410C', bg: 'rgba(194,65,12,.09)', d: 0.08,
             iconPath: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></>,
         },
         {
@@ -1480,7 +1480,7 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
         },
         {
             lbl: 'This Month', val: stats ? (stats.month_cost / 1000).toFixed(1) : '0', dt: 'manpower cost so far', dir: 'up' as const, pre: '₹', suf: 'K',
-            c: '#27364A', bg: 'rgba(39,54,74,.07)', d: 0.24,
+            c: '#524532', bg: 'rgba(82,69,50,.07)', d: 0.24,
             iconPath: <><circle cx="12" cy="12" r="9" /><path d="M8 12h8M12 8v8" /></>,
         },
     ];
@@ -1488,13 +1488,13 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
     const MODULES = [
         {
             id: 'workforce', title: 'Manpower Register', tag: 'Open', desc: 'View, add and manage every worker on the register.',
-            c: '#2870CC', bg: 'rgba(40,112,204,.09)', tagBg: 'rgba(40,112,204,.08)', tagBorder: 'rgba(40,112,204,.22)',
+            c: '#EA580C', bg: 'rgba(234,88,12,.09)', tagBg: 'rgba(234,88,12,.08)', tagBorder: 'rgba(234,88,12,.22)',
             iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
             metrics: [{ v: stats?.total_workers ?? 0, l: 'Workers' }],
         },
         {
             id: 'attendance', title: 'Attendance', tag: 'Open', desc: 'Mark today\'s attendance and review past entries.',
-            c: '#2563EB', bg: 'rgba(37,99,235,.09)', tagBg: 'rgba(37,99,235,.08)', tagBorder: 'rgba(37,99,235,.22)',
+            c: '#C2410C', bg: 'rgba(194,65,12,.09)', tagBg: 'rgba(194,65,12,.08)', tagBorder: 'rgba(194,65,12,.22)',
             iconPath: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></>,
             metrics: [{ v: stats?.present_today ?? 0, l: 'Present Today' }],
         },
@@ -1539,14 +1539,14 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
 
                 <div className="DH-quick-row">
                     <div className="DH-quick-pill" onClick={() => onNavigate('attendance')}>
-                        <div className="DH-quick-ico" style={{ background: 'rgba(37,99,235,.12)' }}>
-                            <svg width="13" height="13" fill="none" stroke="#2563EB" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></svg>
+                        <div className="DH-quick-ico" style={{ background: 'rgba(194,65,12,.12)' }}>
+                            <svg width="13" height="13" fill="none" stroke="#C2410C" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></svg>
                         </div>
                         <span className="DH-quick-lbl">Mark Attendance</span>
                     </div>
                     <div className="DH-quick-pill" style={{ animationDelay: '0.05s' }} onClick={() => onNavigate('workforce')}>
-                        <div className="DH-quick-ico" style={{ background: 'rgba(40,112,204,.12)' }}>
-                            <svg width="13" height="13" fill="none" stroke="#2870CC" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>
+                        <div className="DH-quick-ico" style={{ background: 'rgba(234,88,12,.12)' }}>
+                            <svg width="13" height="13" fill="none" stroke="#EA580C" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>
                         </div>
                         <span className="DH-quick-lbl">Manpower Register</span>
                     </div>
@@ -1587,7 +1587,7 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
                             <div className="DH-panel-tt">Today's Progress</div>
                             <div className="DH-panel-sb">Live attendance completion</div>
                         </div>
-                        <span className="DH-kpi-delta" style={{ color: allMarked ? 'var(--d-green)' : 'var(--d-or)', background: allMarked ? 'rgba(30,156,106,.08)' : 'rgba(37,99,235,.08)' }}>
+                        <span className="DH-kpi-delta" style={{ color: allMarked ? 'var(--d-green)' : 'var(--d-or)', background: allMarked ? 'rgba(30,156,106,.08)' : 'rgba(194,65,12,.08)' }}>
                             {allMarked ? 'All marked' : `${markedPct}% marked`}
                         </span>
                     </div>
@@ -1620,12 +1620,12 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--d-ice4)' }}>{stats?.total_workers ?? 0} workers</span>
                     </div>
                     <div className="DH-fin-bar">
-                        <div className="DH-fin-seg" style={{ width: `${markedPct}%`, background: 'linear-gradient(to right,#2563EB,#60A5FA)' }} />
+                        <div className="DH-fin-seg" style={{ width: `${markedPct}%`, background: 'linear-gradient(to right,#C2410C,#F0834D)' }} />
                         <div className="DH-fin-seg" style={{ width: `${Math.max(100 - markedPct, 0)}%`, background: 'linear-gradient(to right,rgba(0,0,0,.08),rgba(0,0,0,.04))', animationDelay: '0.1s' } as React.CSSProperties} />
                     </div>
                     <div className="DH-fin-legend">
                         <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#1E9C6A' }} />Present <b style={{ color: '#1E9C6A' }}>&nbsp;{stats?.present_today ?? 0}</b></div>
-                        <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#2563EB' }} />Marked <b style={{ color: '#2563EB' }}>&nbsp;{stats?.marked_today ?? 0}</b></div>
+                        <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#C2410C' }} />Marked <b style={{ color: '#C2410C' }}>&nbsp;{stats?.marked_today ?? 0}</b></div>
                         <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: 'var(--d-ice4)' }} />Not Marked <b>&nbsp;{Math.max((stats?.total_workers ?? 0) - (stats?.marked_today ?? 0), 0)}</b></div>
                     </div>
                 </div>
@@ -1645,12 +1645,12 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
                             <div className="SK" style={{ height: 240, borderRadius: 14 }} />
                         ) : activity.length === 0 ? (
                             <div className="DH-empty">
-                                <svg width="26" height="26" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18" /></svg>
+                                <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18" /></svg>
                                 <div className="DH-empty-tt">No attendance marked yet</div>
                                 <div className="DH-empty-sb">Entries you record will show up here</div>
                             </div>
                         ) : activity.map((a, i) => {
-                            const col = a.status === 'present' ? '#1E9C6A' : a.status === 'absent' ? '#D93B55' : '#2563EB';
+                            const col = a.status === 'present' ? '#1E9C6A' : a.status === 'absent' ? '#D93B55' : '#C2410C';
                             const name = a.is_sub_entry && a.sub_worker_name ? a.sub_worker_name : a.worker_name;
                             const sub = a.is_sub_entry && a.sub_worker_name ? `under ${a.worker_name}` : (a.site || '—');
                             const initials = (name || '?').trim().slice(0, 2).toUpperCase();
@@ -1676,8 +1676,8 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
 
             {/* Module Cards Start */}
             <SectionHeader
-                accent="#2563EB"
-                icon={<svg width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>}
+                accent="#C2410C"
+                icon={<svg width="20" height="20" fill="none" stroke="#C2410C" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>}
                 eyebrow="Your Access"
                 title="Manpower Modules"
                 subtitle="Everything available to your account"
@@ -1770,14 +1770,14 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
     const anyLoading = labourLoading || daybookLoading;
 
     const PROGRESS_GAUGES = [
-        { label: 'Marked Today', val: markedPct, color: '#2563EB', warn: false },
+        { label: 'Marked Today', val: markedPct, color: '#C2410C', warn: false },
         { label: 'Present Rate', val: presentRate, color: '#1E9C6A', warn: false },
     ];
 
     const KPI_CARDS = [
         {
             lbl: 'Team Members', val: String(labour?.total_workers ?? 0), dt: 'active workers', dir: 'up' as const, pre: '',
-            c: '#2870CC', bg: 'rgba(40,112,204,.09)', d: 0,
+            c: '#EA580C', bg: 'rgba(234,88,12,.09)', d: 0,
             iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
         },
         {
@@ -1787,7 +1787,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
         },
         {
             lbl: "Today's Income", val: daybook ? (daybook.income / 1000).toFixed(1) : '0', dt: 'from Cash Book', dir: 'up' as const, pre: '₹', suf: 'K',
-            c: '#2563EB', bg: 'rgba(37,99,235,.09)', d: 0.16,
+            c: '#C2410C', bg: 'rgba(194,65,12,.09)', d: 0.16,
             iconPath: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></>,
         },
         {
@@ -1800,12 +1800,12 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
     const MODULES = [
         {
             id: 'master', title: 'Core Records', tag: 'Setup', desc: 'Account Heads, account sub-heads, party master & Identification types.',
-            c: '#2563EB', bg: 'rgba(37,99,235,.09)', tagBg: 'rgba(37,99,235,.08)', tagBorder: 'rgba(37,99,235,.22)',
+            c: '#C2410C', bg: 'rgba(194,65,12,.09)', tagBg: 'rgba(194,65,12,.08)', tagBorder: 'rgba(194,65,12,.22)',
             iconPath: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></>,
         },
         {
             id: 'txn-daybook', title: 'Cash Book', tag: 'Explore', desc: 'Log day-to-day income & expense transactions.',
-            c: '#60A5FA', bg: 'rgba(37,99,235,.09)', tagBg: 'rgba(37,99,235,.08)', tagBorder: 'rgba(37,99,235,.22)',
+            c: '#F0834D', bg: 'rgba(194,65,12,.09)', tagBg: 'rgba(194,65,12,.08)', tagBorder: 'rgba(194,65,12,.22)',
             iconPath: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></>,
             metrics: daybook ? [{ v: fmt(daybook.balance), l: "Today's Balance" }] : undefined,
         },
@@ -1817,13 +1817,13 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
         },
         {
             id: 'workforce', title: 'Manpower & Attendance', tag: 'Live', desc: 'Attendance, worker registry & wage disbursement.',
-            c: '#2870CC', bg: 'rgba(40,112,204,.09)', tagBg: 'rgba(40,112,204,.08)', tagBorder: 'rgba(40,112,204,.22)',
+            c: '#EA580C', bg: 'rgba(234,88,12,.09)', tagBg: 'rgba(234,88,12,.08)', tagBorder: 'rgba(234,88,12,.22)',
             iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
             metrics: [{ v: labour?.total_workers ?? 0, l: 'Team' }],
         },
         {
             id: 'report-daybook', title: 'Business Insights', tag: 'Explore', desc: 'Cash Book, Credit & Manpower reports.',
-            c: '#27364A', bg: 'rgba(39,54,74,.07)', tagBg: 'rgba(39,54,74,.06)', tagBorder: 'rgba(39,54,74,.16)',
+            c: '#524532', bg: 'rgba(82,69,50,.07)', tagBg: 'rgba(82,69,50,.06)', tagBorder: 'rgba(82,69,50,.16)',
             iconPath: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></>,
             metrics: [{ v: 3, l: 'Insights' }],
         },
@@ -1870,10 +1870,10 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
 
                 <div className="DH-quick-row">
                     {[
-                        { id: 'txn-daybook', lbl: 'New Cash Book Entry', c: '#60A5FA', bg: 'rgba(37,99,235,.12)', icon: <><path d="M12 5v14M5 12h14" /></> },
+                        { id: 'txn-daybook', lbl: 'New Cash Book Entry', c: '#F0834D', bg: 'rgba(194,65,12,.12)', icon: <><path d="M12 5v14M5 12h14" /></> },
                         { id: 'txn-credit', lbl: 'Add Bill', c: '#D93B55', bg: 'rgba(217,59,85,.12)', icon: <><rect x="2" y="6" width="20" height="13" rx="2" /><path d="M2 10h20" /></> },
-                        { id: 'attendance', lbl: 'Mark Attendance', c: '#2870CC', bg: 'rgba(40,112,204,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
-                        { id: 'report-daybook', lbl: 'View Insights', c: '#27364A', bg: 'rgba(39,54,74,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
+                        { id: 'attendance', lbl: 'Mark Attendance', c: '#EA580C', bg: 'rgba(234,88,12,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
+                        { id: 'report-daybook', lbl: 'View Insights', c: '#524532', bg: 'rgba(82,69,50,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
                     ].map((a, i) => (
                         <div key={a.id} className="DH-quick-pill" style={{ animationDelay: `${i * 0.05}s` }} onClick={() => onNavigate(a.id)}>
                             <div className="DH-quick-ico" style={{ background: a.bg }}>
@@ -1918,7 +1918,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                             <div className="DH-panel-tt">Today's Progress</div>
                             <div className="DH-panel-sb">Live attendance completion</div>
                         </div>
-                        <span className="DH-kpi-delta" style={{ color: markedPct >= 100 ? 'var(--d-green)' : 'var(--d-or)', background: markedPct >= 100 ? 'rgba(30,156,106,.08)' : 'rgba(37,99,235,.08)' }}>
+                        <span className="DH-kpi-delta" style={{ color: markedPct >= 100 ? 'var(--d-green)' : 'var(--d-or)', background: markedPct >= 100 ? 'rgba(30,156,106,.08)' : 'rgba(194,65,12,.08)' }}>
                             {markedPct}% marked
                         </span>
                     </div>
@@ -1959,7 +1959,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                 <div className="DH-panel">
                     <div className="DH-panel-hd">
                         <div className="DH-panel-tt" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <svg width="14" height="14" fill="none" stroke={overdueCredit > 0 ? '#D93B55' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" /></svg>
+                            <svg width="14" height="14" fill="none" stroke={overdueCredit > 0 ? '#D93B55' : '#C2410C'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round"><rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" /></svg>
                             Bill Dues
                             {creditNotifs.length > 0 && <span className="NP-count" style={{ background: overdueCredit > 0 ? 'var(--d-red)' : 'var(--d-or)' }}>{creditNotifs.length}</span>}
                         </div>
@@ -1970,7 +1970,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                             <div className="SK" style={{ height: 200, borderRadius: 14 }} />
                         ) : creditNotifs.length === 0 ? (
                             <div className="DH-empty">
-                                <svg width="26" height="26" fill="none" stroke="rgba(37,99,235,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
+                                <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
                                 <div className="DH-empty-tt">No pending bills</div>
                                 <div className="DH-empty-sb">Vendor credit ledger is clear</div>
                             </div>
@@ -2001,8 +2001,8 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
 
             {/* Module Command Grid Start */}
             <SectionHeader
-                accent="#2563EB"
-                icon={<svg width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>}
+                accent="#C2410C"
+                icon={<svg width="20" height="20" fill="none" stroke="#C2410C" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>}
                 eyebrow="Command Center"
                 title="Studio Modules"
                 subtitle="Everything available to your account"
@@ -2053,11 +2053,11 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
 
                 <div className="DH-flow-rail">
                     {[
-                        { id: 'master', lbl: 'Core Records', sub: 'Set up once', c: '#2563EB', icon: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></> },
-                        { id: 'txn-daybook', lbl: 'Cash Book', sub: 'Record entries', c: '#60A5FA', icon: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></> },
+                        { id: 'master', lbl: 'Core Records', sub: 'Set up once', c: '#C2410C', icon: <><rect x="3" y="4" width="7" height="7" rx="1.5" /><rect x="14" y="4" width="7" height="7" rx="1.5" /><rect x="3" y="15" width="7" height="7" rx="1.5" /><rect x="14" y="15" width="7" height="7" rx="1.5" /></> },
+                        { id: 'txn-daybook', lbl: 'Cash Book', sub: 'Record entries', c: '#F0834D', icon: <><path d="M4 4h16v16H4z" /><path d="M4 9h16M9 4v16" /></> },
                         { id: 'txn-credit', lbl: 'Payables', sub: 'Track vendor dues', c: '#D93B55', icon: <><rect x="2" y="6" width="20" height="13" rx="2" /><path d="M2 10h20" /></> },
-                        { id: 'workforce', lbl: 'Workforce', sub: 'Attendance & pay', c: '#2870CC', icon: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></> },
-                        { id: 'report-daybook', lbl: 'Insights', sub: 'See the results', c: '#27364A', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
+                        { id: 'workforce', lbl: 'Workforce', sub: 'Attendance & pay', c: '#EA580C', icon: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></> },
+                        { id: 'report-daybook', lbl: 'Insights', sub: 'See the results', c: '#524532', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
                     ].map((s, i, arr) => (
                         <Fragment key={s.id}>
                             <div className="DH-flow-node" onClick={() => onNavigate(s.id)} style={{ animationDelay: `${i * 0.09}s` }}>
@@ -2584,7 +2584,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 >
                     <button className="SB-toggle" onClick={() => { cancelAutoCollapse(); setCollapsed(c => !c); }} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
                         <div className="SB-toggle-chevron">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 19l-7-7 7-7" /></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 3v18" /></svg>
                         </div>
                     </button>
                     <div className="SB-inner">
@@ -2684,7 +2684,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                         aria-label="Notifications"
                                     >
                                         <svg width="15" height="15" fill="none"
-                                            stroke={overdueCount > 0 ? '#D93B55' : pendingApprovals.length > 0 ? '#C47E0A' : urgentCount > 0 ? '#2563EB' : 'currentColor'}
+                                            stroke={overdueCount > 0 ? '#D93B55' : pendingApprovals.length > 0 ? '#9A3412' : urgentCount > 0 ? '#C2410C' : 'currentColor'}
                                             strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                         </svg>

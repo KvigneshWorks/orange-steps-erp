@@ -2,18 +2,16 @@ export const T_CSS = `
 :root {
   /* Bridge aliases → ERP design tokens */
   --err: var(--error,#D93B55);
-  --purple: #6366F1;
-  --t1: var(--text-1,#141414);
-  --t2: var(--text-2,#312F2F);
-  --t3: var(--text-3,#373533);
-  --t4: var(--text-4,#334155);
-  --white: var(--off-white,#F8F8F8);
+  --purple: #A6491D;
+  --t1: var(--text-1,#231C14);
+  --t2: var(--text-2,#3A3024);
+  --t3: var(--text-3,#524532);
+  --t4: var(--text-4,#6B5D48);
   --off: var(--surface,#F2F3F5);
   --surf: var(--surface,#F2F3F5);
-  --surf2: rgba(203,213,225,0.22);
-  --border2: #C0C1C5;
-  --amber: var(--ember-mid,#3B82F6);
-  --ember-light: rgba(59,130,246,0.65);
+  --surf2: rgba(210,199,184,0.22);
+  --border2: #C7BCA9;
+  --amber: var(--ember-mid,#DB5B1F);
   --display: var(--font-display,'Instrument Serif');
   --body: var(--font-body,'Space Grotesk');
   --mono: var(--font-mono,'JetBrains Mono');
@@ -22,7 +20,7 @@ export const T_CSS = `
   --rxl: var(--r-xl,22px);
   --sh: var(--sh-card,0 2px 8px rgba(0,0,0,0.05),0 6px 24px rgba(0,0,0,0.04));
   --shh: var(--sh-hover,0 8px 32px rgba(0,0,0,0.09),0 16px 48px rgba(0,0,0,0.06));
-  --she: var(--sh-ember,0 4px 18px rgba(29,78,216,0.22));
+  --she: var(--sh-ember,0 4px 18px rgba(194,65,12,0.22));
 }
 .T *{box-sizing:border-box;margin:0;padding:0;}
 .T{font-family:var(--body);background:var(--surf);color:var(--t1);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
@@ -541,7 +539,7 @@ export const T_CSS = `
 .T-client-sum-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .T-client-sum-card.total::before{background:linear-gradient(90deg,var(--ember),var(--amber));}
 .T-client-sum-card.daybook::before{background:linear-gradient(90deg,var(--info),#60A5FA);}
-.T-client-sum-card.labour::before{background:linear-gradient(90deg,var(--purple),#A78BFA);}
+.T-client-sum-card.labour::before{background:linear-gradient(90deg,var(--purple),#D98255);}
 .T-client-sum-card.credit::before{background:linear-gradient(90deg,var(--warn),#FBBF24);}
 .T-client-sum-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
 .T-client-sum-card:hover .T-client-sum-icon{transform:translateY(-2px) scale(1.08) rotate(-4deg);}
@@ -618,8 +616,8 @@ export const T_CSS = `
 .T-card-badge-db{background:var(--info-bg);color:var(--info);border:1px solid var(--info-bd);}
 .T-card-icon-cr{background:var(--ember-ghost);border-color:rgba(29,78,216,.22);color:var(--ember);}
 .T-card-badge-cr{background:var(--ember-ghost);color:var(--ember);border:1px solid rgba(29,78,216,.22);}
-.T-card-icon-cp{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.22);color:var(--purple);}
-.T-card-badge-cp{background:rgba(99,102,241,.08);color:var(--purple);border:1px solid rgba(99,102,241,.22);}
+.T-card-icon-cp{background:rgba(166,73,29,.08);border-color:rgba(166,73,29,.22);color:var(--purple);}
+.T-card-badge-cp{background:rgba(166,73,29,.08);color:var(--purple);border:1px solid rgba(166,73,29,.22);}
 .T-card-icon-lb{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn);}
 .T-card-badge-lb{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-bd);}
 .T-tbl-wrap{overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;}
