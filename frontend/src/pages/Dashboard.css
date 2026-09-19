@@ -579,6 +579,20 @@
     background: #FAF9F7;
     position: relative;
     z-index: 1;
+    transition: width 0.4s cubic-bezier(.22, 1, .36, 1), height 0.4s cubic-bezier(.22, 1, .36, 1);
+  }
+
+  /* Collapsed (icon-only) rail: the brand mark centers in the narrow strip
+     instead of hugging the left padding, and shrinks slightly so it clears
+     the floating collapse toggle beside it instead of crowding into it. */
+  .SB.collapsed .SB-brand {
+    padding: 0;
+    justify-content: center;
+  }
+
+  .SB.collapsed .SB-logo-img-wrap {
+    width: 36px;
+    height: 36px;
   }
 
   .SB-logo-img {
@@ -696,6 +710,18 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: width 0.4s cubic-bezier(.22, 1, .36, 1), height 0.4s cubic-bezier(.22, 1, .36, 1),
+      transform 0.2s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.2s, border-color 0.2s, background 0.2s;
+  }
+
+  .SB-toggle:hover {
+    transform: translateY(-50%) scale(1.08);
+    border-color: rgba(194,65,12, 0.5);
+    box-shadow: 0 4px 14px rgba(194,65,12, 0.24);
+  }
+
+  .SB-toggle:active {
+    transform: translateY(-50%) scale(0.94);
   }
 
   /* Auto-close countdown bar */
@@ -738,6 +764,8 @@
   }
 
   .SB.collapsed .SB-toggle {
+    width: 28px;
+    height: 28px;
     background: #FAF9F7;
     border-color: rgba(194,65,12, 0.28);
     box-shadow: 0 2px 8px rgba(35,28,20, 0.14);
@@ -1123,6 +1151,12 @@
     background: var(--d-green);
     border: 2px solid #F0ECE6;
     box-shadow: 0 0 6px rgba(30, 156, 106, 0.5);
+    animation: SB-dot-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes SB-dot-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(30, 156, 106, 0.5); }
+    50% { box-shadow: 0 0 10px rgba(30, 156, 106, 0.85); }
   }
 
   .SB-foot-trigger-txt {
@@ -1350,6 +1384,16 @@
     flex: 1;
     width: auto;
     min-width: 0;
+  }
+
+  .SB.collapsed .SB-foot-trigger {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
   }
 
   /* Wraps the bell button + its dropdown panel. Needs its own stacking
@@ -3835,9 +3879,9 @@
   }
 
   .pill.active {
-    background: rgba(30, 156, 106, .07);
-    border-color: rgba(30, 156, 106, .18);
-    color: #1E9C6A;
+    background: rgba(194, 65, 12, .07);
+    border-color: rgba(194, 65, 12, .2);
+    color: #C2410C;
   }
 
   .pill.pending {
@@ -3853,9 +3897,9 @@
   }
 
   .pill.hold {
-    background: rgba(217, 59, 85, .07);
-    border-color: rgba(217, 59, 85, .18);
-    color: #D93B55;
+    background: rgba(154, 52, 18, .07);
+    border-color: rgba(154, 52, 18, .18);
+    color: #9A3412;
   }
 
   .prog-w {

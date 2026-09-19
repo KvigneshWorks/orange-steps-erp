@@ -4772,11 +4772,16 @@ function EditModal({
 // ═══════════════════════════════════════════════════════════════════
 export default function DaybookTransactions() {
   const [userRole] = useState<string>(() => getStoredRole());
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [appliedFromDate, setAppliedFromDate] = useState('');
-  const [appliedToDate, setAppliedToDate] = useState('');
-  const [quickPick, setQuickPick] = useState('');
+  // Default to "This Month" instead of an unbounded range -- previously
+  // every open of this page fetched the FULL, ever-growing transaction
+  // history before any filter was touched. Same range the "Month"
+  // quick-pick button computes; Week/Quarter/Year and "Recently Added" /
+  // "View all" still show everything else on demand, unchanged.
+  const [fromDate, setFromDate] = useState(() => getDateRange('month').from);
+  const [toDate, setToDate] = useState(() => getDateRange('month').to);
+  const [appliedFromDate, setAppliedFromDate] = useState(() => getDateRange('month').from);
+  const [appliedToDate, setAppliedToDate] = useState(() => getDateRange('month').to);
+  const [quickPick, setQuickPick] = useState('month');
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState<string[]>([]);
   const [subCatFilter, setSubCatFilter] = useState<string[]>([]);

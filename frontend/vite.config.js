@@ -14,6 +14,30 @@ export default defineConfig(({ command }) => ({
         tailwindcss(),
     ],
     base: command === 'build' ? '/' : '/tesseract/',
+    // Strip noisy dev-only console.log/console.debug calls from the
+    // production bundle only -- console.error/console.warn are left in
+    // place so real problems are still visible in the browser console on
+    // the live site.
+    esbuild: command === 'build' ? {
+        pure: ['console.log', 'console.debug'],
+    } : undefined,
+    build: command === 'build' ? {
+        rollupOptions: {
+            output: {
+                // React/ReactDOM change far less often than the app's own
+                // pages. Splitting them into their own chunk means a
+                // returning visitor's browser can keep serving React from
+                // the long-lived cache already set in public/.htaccess
+                // across ordinary deploys that only touch page code,
+                // instead of re-downloading React on every release.
+                manualChunks(id) {
+                    if (id.includes('node_modules/react') || id.includes('node_modules/scheduler')) {
+                        return 'vendor-react';
+                    }
+                },
+            },
+        },
+    } : undefined,
     server: {
         port: 5173,
         strictPort: true,

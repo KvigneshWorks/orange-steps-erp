@@ -47,21 +47,23 @@ function App() {
                 justifyContent: 'center',
                 minHeight: '100vh',
                 background: '#231C14',
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '9.5px',
-                color: '#524532',
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
             }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-                    <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
-                        <rect width="42" height="42" rx="9" fill="#231C14" />
-                        <polygon points="21,4 36,12.5 36,29.5 21,38 6,29.5 6,12.5" stroke="#EA580C" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
-                        <text x="21" y="23" textAnchor="middle" dominantBaseline="middle"
-                            fontFamily="serif" fontSize="9.5" fontWeight="700" fill="#EA580C">T</text>
-                    </svg>
-                    <span>Loading…</span>
-                </div>
+                <img
+                    src={import.meta.env.BASE_URL + 'favicon.png'}
+                    alt="WhiteNode Software Solutions"
+                    style={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: 16,
+                        animation: 'wn-boot-pulse 1.4s ease-in-out infinite',
+                    }}
+                />
+                <style>{`
+                    @keyframes wn-boot-pulse {
+                        0%, 100% { opacity: 0.55; transform: scale(0.94); }
+                        50% { opacity: 1; transform: scale(1); }
+                    }
+                `}</style>
             </div>
         );
     }

@@ -153,7 +153,11 @@
 }
 
 .A-shake {
-    animation: AS-shakeX 0.4s cubic-bezier(.36, .07, .19, .97) both;
+    animation-name: AS-shakeX;
+    animation-duration: 0.4s;
+    animation-timing-function: cubic-bezier(.36, .07, .19, .97);
+    animation-iteration-count: 3;
+    animation-fill-mode: both;
 }
 
 .A-root em {
@@ -187,7 +191,7 @@
 
 .AS-shell {
     display: grid;
-    grid-template-columns: minmax(340px, 40%) 1fr;
+    grid-template-columns: minmax(380px, 58%) minmax(440px, 1fr);
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
@@ -360,20 +364,55 @@
     color: var(--ember-light, #F0834D);
     padding: 5px 12px;
     border-radius: 100px;
-    background: rgba(59,130,246, 0.12);
-    border: 1px solid rgba(59,130,246, 0.28);
+    background: rgba(240,131,77, 0.14);
+    border: 1px solid rgba(240,131,77, 0.32);
     margin-bottom: 22px;
     animation: AS-fadeUp 0.5s 0.15s cubic-bezier(.22, .68, 0, 1.1) both;
 }
 
 .AS-brand-title {
-    font-size: 30px;
+    display: block;
+    font-family: var(--font-body, 'Space Grotesk', sans-serif);
+    font-size: 32px;
     font-weight: 700;
-    line-height: 1.28;
-    letter-spacing: -0.2px;
+    line-height: 1.22;
+    letter-spacing: -0.5px;
     color: #FFFFFF;
     margin: 0 0 16px;
-    animation: AS-fadeUp 0.55s 0.25s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-title-l1 {
+    display: block;
+    animation: AS-lineReveal 0.7s 0.22s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+.AS-brand-title-l2 {
+    display: block;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    background: linear-gradient(90deg, #FFFFFF 0%, var(--ember-light, #F0834D) 55%, #FFFFFF 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: AS-lineReveal 0.7s 0.42s cubic-bezier(.22, .68, 0, 1.1) both, AS-shimmerText 5s 1.2s ease-in-out infinite;
+}
+
+/* A left-to-right "wipe" reveal, distinct from the plain fade-up used by
+   the tag/subtitle/features below it, so the headline gets its own,
+   more deliberate entrance. */
+@keyframes AS-lineReveal {
+    from {
+        opacity: 0.001;
+        clip-path: inset(0 100% 0 0);
+        transform: translateX(-6px);
+    }
+
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transform: translateX(0);
+    }
 }
 
 .AS-brand-sub {
@@ -384,35 +423,81 @@
     animation: AS-fadeUp 0.55s 0.35s cubic-bezier(.22, .68, 0, 1.1) both;
 }
 
-.AS-brand-features {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* ── Feature carousel — replaces the old static bullet list. Auto-advances,
+   pauses on hover, and can be jumped to any slide via the dots. Each slide
+   is a fixed-width flex item; the track just translates sideways. ── */
+.AS-carousel {
+    position: relative;
+    z-index: 1;
+    max-width: 380px;
+    overflow: hidden;
+    animation: AS-slideRight 0.5s 0.45s cubic-bezier(.22, .68, 0, 1.1) both;
 }
 
-.AS-brand-features li {
+.AS-carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.AS-carousel-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 58px;
+    opacity: 0.35;
+    transform: scale(0.97);
+    transition: opacity 0.6s cubic-bezier(.22, 1, .36, 1), transform 0.6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.AS-carousel-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.AS-carousel-slide-body {
+    min-width: 0;
+}
+
+.AS-carousel-slide-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #F5F3EF;
+    margin-bottom: 4px;
+}
+
+.AS-carousel-slide-desc {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #D2C7B8;
+}
+
+.AS-carousel-dots {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: #E8E2D8;
-    font-weight: 500;
-    animation: AS-slideRight 0.5s cubic-bezier(.22, .68, 0, 1.1) both;
+    gap: 6px;
+    margin-top: 16px;
 }
 
-.AS-brand-features li:nth-child(1) {
-    animation-delay: 0.45s;
+.AS-carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 100px;
+    background: rgba(245, 243, 239, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(.22, .68, 0, 1.1);
 }
 
-.AS-brand-features li:nth-child(2) {
-    animation-delay: 0.55s;
+.AS-carousel-dot:hover {
+    background: rgba(245, 243, 239, 0.5);
 }
 
-.AS-brand-features li:nth-child(3) {
-    animation-delay: 0.65s;
+.AS-carousel-dot.active {
+    width: 22px;
+    background: var(--ember-light, #F0834D);
 }
 
 .AS-brand-check {
@@ -423,7 +508,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(59,130,246, 0.16);
+    background: rgba(240,131,77, 0.18);
     color: var(--ember-light, #F0834D);
 }
 
@@ -507,6 +592,32 @@
     z-index: 0;
 }
 
+.AS-form-wrap::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(194,65,12, 0.08) 0%, transparent 72%);
+    pointer-events: none;
+    z-index: -1;
+    animation: AS-glowBloom 1.1s 0.1s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+@keyframes AS-glowBloom {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* segmented Sign In / Create Account tabs */
 .AS-tabs {
     display: flex;
@@ -557,15 +668,39 @@
     }
 }
 
+.AS-form-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ember, #C2410C);
+    background: var(--ember-ghost, rgba(194,65,12,0.10));
+    border: 1px solid var(--ember-border, rgba(194,65,12,0.24));
+    padding: 5px 12px 5px 9px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+    animation: AS-fadeUp 0.4s 0.02s cubic-bezier(.22, .68, 0, 1.1) both,
+        AS-eyebrowGlow 2.8s 0.5s ease-in-out infinite;
+}
+
+.AS-form-eyebrow svg {
+    flex-shrink: 0;
+    animation: AS-iconPulse 2.2s 0.5s ease-in-out infinite;
+}
+
 .AS-form-title {
     position: relative;
     font-family: var(--font-body);
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 29px;
+    font-weight: 800;
     color: #231C14;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.4px;
     margin: 0 0 18px;
-    animation: AS-fadeUp 0.45s 0.08s cubic-bezier(.22, .68, 0, 1.1) both;
+    animation: AS-lineReveal 0.55s 0.08s cubic-bezier(.22, .68, 0, 1.1) both;
 }
 
 .AS-t-accent {
@@ -585,7 +720,8 @@
     border-radius: 3px;
     background: linear-gradient(90deg, var(--ember, #C2410C), var(--ember-light, #F0834D));
     transform-origin: left;
-    animation: AS-underline 0.6s 0.3s cubic-bezier(.22, .68, 0, 1.1) both;
+    animation: AS-underline 0.6s 0.3s cubic-bezier(.22, .68, 0, 1.1) both,
+        AS-barGlow 3s 1s ease-in-out infinite;
 }
 
 .AS-form-sub {
@@ -593,8 +729,104 @@
     font-size: 13px;
     color: #6B5D48;
     line-height: 1.5;
-    margin: 0 0 24px;
+    margin: 0 0 18px;
     animation: AS-fadeUp 0.45s 0.14s cubic-bezier(.22, .68, 0, 1.1) both;
+}
+
+/* Trust-badge row — quick-scan proof this is a real, professional ERP
+   product, right beside the fields instead of only on the brand panel.
+   Each chip fades/lifts in with its own stagger, then breathes a slow,
+   near-imperceptible glow so the row never reads as static filler. */
+.AS-trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 24px;
+}
+
+.AS-trust-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    color: #524532;
+    background: #F5F3EF;
+    border: 1px solid #E8E2D8;
+    padding: 6px 11px;
+    border-radius: 100px;
+    white-space: nowrap;
+    animation: AS-fadeUp 0.4s cubic-bezier(.22, .68, 0, 1.1) both, AS-chipBreathe 3.6s ease-in-out infinite;
+}
+
+.AS-trust-chip svg {
+    color: var(--ember, #C2410C);
+    flex-shrink: 0;
+}
+
+.AS-trust-chip:nth-child(1) {
+    animation-delay: 0.18s, 0.6s;
+}
+
+.AS-trust-chip:nth-child(2) {
+    animation-delay: 0.25s, 1.1s;
+}
+
+.AS-trust-chip:nth-child(3) {
+    animation-delay: 0.32s, 1.6s;
+}
+
+@keyframes AS-chipBreathe {
+
+    0%,
+    100% {
+        border-color: #E8E2D8;
+        box-shadow: none;
+    }
+
+    50% {
+        border-color: var(--ember-border, rgba(194,65,12,0.28));
+        box-shadow: 0 0 0 3px var(--ember-ghost, rgba(194,65,12,0.08));
+    }
+}
+
+@keyframes AS-eyebrowGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(194, 65, 12, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px var(--ember-ghost, rgba(194,65,12,0.10));
+    }
+}
+
+@keyframes AS-iconPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.18);
+        opacity: 0.72;
+    }
+}
+
+@keyframes AS-barGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(194, 65, 12, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 8px 1px var(--ember-glow, rgba(194,65,12,0.35));
+    }
 }
 
 /* ── FIELDS (shared by login + register) ──
@@ -736,12 +968,34 @@
 
 .A-input:focus {
     border-color: var(--ember-mid, #DB5B1F);
-    box-shadow: 0 0 0 3px rgba(59,130,246, 0.14);
+    box-shadow: 0 0 0 3px rgba(194,65,12, 0.14);
     transform: translateY(-1px);
 }
 
 .A-input:hover:not(:focus) {
     border-color: #D2C7B8;
+}
+
+.A-field.has-error .A-input {
+    border-color: var(--warn, #9A3412);
+    animation: AS-fieldErrorPop 0.3s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+.A-field.has-error .A-input:focus {
+    box-shadow: 0 0 0 3px var(--warn-bg, rgba(154,52,18,0.14));
+}
+
+.A-field.has-error .A-field-label {
+    color: var(--warn, #9A3412);
+}
+
+.A-field.has-error .A-input-icon {
+    color: var(--warn, #9A3412);
+}
+
+@keyframes AS-fieldErrorPop {
+    0% { box-shadow: 0 0 0 0 rgba(154,52,18, 0.35); }
+    100% { box-shadow: 0 0 0 6px rgba(154,52,18, 0); }
 }
 
 .A-input.no-icon {
@@ -1002,8 +1256,9 @@
 .AS-btn.primary {
     background: var(--ember, #C2410C);
     color: #faf9f7;
-    box-shadow: 0 2px 10px rgba(29,78,216, 0.22);
+    box-shadow: 0 2px 10px rgba(194,65,12, 0.22);
     animation: AS-fadeIn 0.4s 0.4s both, AS-btnGlow 2.6s ease-in-out 1s infinite;
+    transition: background 0.16s, box-shadow 0.16s, transform 0.12s;
 }
 
 .AS-btn.primary::before {
@@ -1018,8 +1273,61 @@
 
 .AS-btn.primary:hover:not(:disabled) {
     background: #C2410C;
-    box-shadow: 0 5px 16px rgba(29,78,216, 0.3);
+    box-shadow: 0 5px 16px rgba(194,65,12, 0.3);
     transform: translateY(-1px) scale(1.012);
+}
+
+/* Success state — the button itself morphs into a confirmation instead of
+   just swapping its label text, right at the moment credentials are
+   accepted. Distinct gradient + a pop-in check icon, then it holds while
+   the page transitions. */
+.AS-btn.primary.success {
+    background: linear-gradient(135deg, var(--ember-mid, #DB5B1F), var(--ember, #C2410C));
+    box-shadow: 0 6px 20px rgba(194,65,12, 0.38);
+    animation: AS-btnSuccessPop 0.45s cubic-bezier(.34, 1.56, .64, 1) both;
+    cursor: default;
+}
+
+.AS-btn.primary.success::before {
+    animation: none;
+    opacity: 0;
+}
+
+@keyframes AS-btnSuccessPop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.035);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.A-btn-check {
+    display: inline-flex;
+    align-items: center;
+    animation: AS-checkPop 0.5s 0.05s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes AS-checkPop {
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2) rotate(8deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
 .AS-btn.primary:active:not(:disabled) {
@@ -1066,15 +1374,15 @@
 }
 
 .A-msg.success {
-    background: rgba(34, 197, 94, 0.08);
-    border: 1px solid rgba(34, 197, 94, 0.22);
-    color: #1E9C6A;
+    background: var(--ember-ghost, rgba(194,65,12,0.10));
+    border: 1px solid var(--ember-border, rgba(194,65,12,0.28));
+    color: var(--ember, #C2410C);
 }
 
 .A-msg.error {
-    background: rgba(29,78,216, 0.07);
-    border: 1px solid rgba(29,78,216, 0.20);
-    color: #D93B55;
+    background: var(--warn-bg, rgba(154,52,18,0.10));
+    border: 1px solid var(--warn-bd, rgba(154,52,18,0.26));
+    color: var(--warn, #9A3412);
 }
 
 .A-msg-icon {
@@ -1164,12 +1472,20 @@
     .AS-brand-top,
     .AS-brand-tag,
     .AS-brand-title,
+    .AS-brand-title-l1,
+    .AS-brand-title-l2,
     .AS-brand-sub,
-    .AS-brand-features li,
+    .AS-carousel,
+    .AS-carousel-track,
+    .AS-carousel-slide,
     .AS-brand-foot,
     .AS-brand-name-sub,
     .AS-brand-name-sub::after,
     .AS-panel-inner,
+    .AS-form-eyebrow,
+    .AS-form-eyebrow svg,
+    .AS-trust-chip,
+    .AS-form-wrap::before,
     .AS-form-title,
     .AS-form-sub,
     .AS-form-title-bar,
@@ -1180,6 +1496,8 @@
     .AS-btn,
     .AS-btn.primary,
     .AS-btn.primary::before,
+    .AS-btn.primary.success,
+    .A-btn-check,
     .AS-brand::before,
     .AS-brand::after,
     .AS-brand-grid,
@@ -1187,5 +1505,9 @@
     .A-drop-menu,
     .AS-tab.active {
         animation: none !important;
+    }
+
+    .AS-carousel-track {
+        transition: none !important;
     }
 }

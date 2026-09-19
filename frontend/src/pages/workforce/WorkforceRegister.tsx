@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import axiosInstance from '../../services/axiosConfig';
 import { toast as appToast } from '../../services/toast';
 import { ERP_CSS } from '../../styles/ERPTheme';
@@ -8,6 +9,31 @@ import Pagination from '../../components/Pagination';
 import { markPanelOpen, markPanelClosed, useKeyboardFieldNav, useDropdownTriggerKeyDown, useDropdownPanelArrowNav } from '../../utils/keyboardNav';
 import { getStoredRole, canDelete } from '../../utils/roleAccess';
 import CreatorBadge from '../../components/CreatorBadge';
+
+// Computes a viewport-anchored (position: fixed) placement for the floating
+// Associate Names popover, given the "+N more" chip's bounding rect. Flips
+// above the chip when there isn't enough room below, and clamps left/right
+// so the card never runs off the edge of the screen.
+function getSubPopoverStyle(anchor: { top: number; bottom: number; left: number; right: number }): React.CSSProperties {
+    const margin = 12;
+    const width = 260;
+    let left = anchor.left;
+    if (left + width > window.innerWidth - margin) left = window.innerWidth - width - margin;
+    if (left < margin) left = margin;
+    const spaceBelow = window.innerHeight - anchor.bottom;
+    const spaceAbove = anchor.top;
+    const openUpward = spaceBelow < 220 && spaceAbove > spaceBelow;
+    if (openUpward) {
+        return {
+            position: 'fixed', left, bottom: window.innerHeight - anchor.top + 8, top: 'auto',
+            maxHeight: Math.max(160, spaceAbove - 24), zIndex: 9999,
+        };
+    }
+    return {
+        position: 'fixed', left, top: anchor.bottom + 8, bottom: 'auto',
+        maxHeight: Math.max(160, spaceBelow - 24), zIndex: 9999,
+    };
+}
 
 type PayType = 'daily' | 'weekly' | 'monthly';
 
@@ -619,6 +645,8 @@ const CSS = `
    Card-style treatment (accent bar + shadow) instead of a flat tinted box,
    so it reads as a distinct floating panel rather than part of the row. */
 .WR-tbl-sub-expanded{position:relative;display:flex;flex-direction:column;gap:8px;min-width:240px;padding:10px 12px 8px;background:var(--white);border:1.5px solid var(--ember-border);border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.14);transform-origin:top center;animation:wr-sdd-drop-in .22s cubic-bezier(.22,1,.36,1) both;}
+.WR-tbl-sub-popover{overflow-y:auto;width:260px;}
+.WR-tbl-subchip.toggle.active{background:var(--ember);border-color:var(--ember);color:#faf9f7;}
 .WR-tbl-sub-expanded::before{content:'';position:absolute;top:0;left:12px;right:12px;height:2.5px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--ember) 0%,#F0834D 100%);}
 @keyframes wr-sdd-drop-in{0%{opacity:0;transform:translateY(-6px) scale(.96);}100%{opacity:1;transform:translateY(0) scale(1);}}
 /* Exit animation — played for ~200ms (matches the setTimeout in
@@ -637,6 +665,7 @@ const CSS = `
 /* Active/Inactive groups — small uppercase section label ahead of each
    cluster of rows, same "group header" language as other dropdown lists in
    the app, so a mixed active+inactive list has clear visual structure. */
+.WR-tbl-sub-cell{position:relative;}
 .WR-tbl-sub-group{display:flex;flex-direction:column;gap:3px;}
 .WR-tbl-sub-group-lbl{font-family:var(--font-mono);font-size: 7px;font-weight: 800;letter-spacing:1.5px;text-transform:uppercase;color:var(--success);opacity:.75;margin:2px 0 1px 2px;}
 .WR-tbl-sub-group-lbl.inactive{color:var(--text-4);}
@@ -757,6 +786,12 @@ export default function WorkforceRegister() {
     // where the toggle button was, so the feedback is visible while scanning
     // a long sub-name list instead of relying only on the corner toast.
     const [justToggledSub, setJustToggledSub] = useState<{ id: number; active: boolean } | null>(null);
+    // Screen-space anchor rect (from the "+N more" chip that was clicked) used to
+    // position the single, portal-rendered Associate Names popover below/above it.
+    const [subPopoverAnchor, setSubPopoverAnchor] = useState<{ top: number; bottom: number; left: number; right: number } | null>(null);
+    // The actual chip element the popover is anchored to — kept so a scroll/resize
+    // can re-measure its live position and follow it, instead of just closing.
+    const subPopoverAnchorElRef = useRef<HTMLElement | null>(null);
     const formRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     useKeyboardFieldNav(rootRef);
@@ -943,9 +978,44 @@ export default function WorkforceRegister() {
                 setClosingSubRows(prev => { const next = new Set(prev); next.delete(workerId); return next; });
             }, 200);
         } else {
-            setExpandedSubRows(prev => new Set(prev).add(workerId));
+            // Only one Associate Names popover is ever open at a time — opening
+            // a new one replaces whichever was open instead of stacking.
+            setExpandedSubRows(new Set([workerId]));
         }
     }
+
+    // The single currently-open worker id, derived from the (now always
+    // singleton) expandedSubRows set — drives the one shared, portal-rendered
+    // popover below instead of each row rendering its own inline copy.
+    const openSubWorkerId = expandedSubRows.size > 0 ? (Array.from(expandedSubRows)[0] as number) : null;
+    const subPopoverClosing = openSubWorkerId != null && closingSubRows.has(openSubWorkerId);
+
+    // Close the open popover on an outside click. On scroll/resize (e.g.
+    // scrolling the table to see more rows) it stays open and just follows
+    // the chip it's anchored to, instead of shutting itself off.
+    useEffect(() => {
+        if (openSubWorkerId == null) return;
+        function onDocMouseDown(e: MouseEvent) {
+            const t = e.target as Element;
+            if (t.closest('.WR-tbl-sub-expanded') || t.closest('.WR-tbl-subchip.toggle')) return;
+            toggleSubRow(openSubWorkerId as number);
+        }
+        function reposition() {
+            const el = subPopoverAnchorElRef.current;
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            setSubPopoverAnchor({ top: rect.top, bottom: rect.bottom, left: rect.left, right: rect.right });
+        }
+        document.addEventListener('mousedown', onDocMouseDown);
+        window.addEventListener('scroll', reposition, true);
+        window.addEventListener('resize', reposition);
+        return () => {
+            document.removeEventListener('mousedown', onDocMouseDown);
+            window.removeEventListener('scroll', reposition, true);
+            window.removeEventListener('resize', reposition);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openSubWorkerId]);
 
     // Indexed once per allWSubs change instead of re-scanning the whole
     // sub-names array for every worker on every keystroke (was O(workers x
@@ -1427,102 +1497,40 @@ export default function WorkforceRegister() {
                                                 <td>{w.category_id ? <span className="WR-cat-pill"><Ic n="folder" s={9} c="var(--ember)" />{getCatName(w)}</span> : <span style={{ color: 'var(--text-4)', fontSize: 9.5 }}>—</span>}</td>
                                                 <td>{w.sub_category_id ? <span className="WR-subcat-pill">{getSubCatName(w)}</span> : <span style={{ color: 'var(--text-4)', fontSize: 9.5 }}>—</span>}</td>
                                                 <td><div className="WR-name">{w.name}</div><div className="WR-code">{w.worker_code}</div></td>
-                                                <td>
+                                                <td className="WR-tbl-sub-cell">
                                                     {(() => {
                                                         // Removed associate names must not resurface here at all — not
                                                         // even in a strikethrough "Inactive" group — so this list is
                                                         // scoped to active sub-names only.
                                                         const subs = allWSubs.filter(s => s.worker_id === w.id && s.is_active !== false);
                                                         if (subs.length === 0) return <span style={{ color: 'var(--text-4)', fontSize: 9.5 }}>—</span>;
-                                                        const activeSubs = subs;
-                                                        const inactiveSubs: WSubName[] = [];
-                                                        const expanded = expandedSubRows.has(w.id);
-                                                        const closing = closingSubRows.has(w.id);
                                                         const hiddenCount = subs.length - 2;
-                                                        // Sequential 1,2,3… numbering across the whole list (active +
-                                                        // inactive, in original order) so the count stays stable and
-                                                        // easy to scan regardless of which rows are shown/hidden.
+                                                        // Sequential 1,2,3… numbering across the whole list so the
+                                                        // count stays stable regardless of which rows are hidden.
                                                         const numberOf = new Map(subs.map((s, idx) => [s.id, idx + 1]));
+                                                        const isOpen = openSubWorkerId === w.id;
 
-                                                        if (!expanded) {
-                                                            return (
-                                                                <div style={{ maxWidth: 175, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}>
-                                                                    {activeSubs.slice(0, 2).map(s => (
-                                                                        <span key={s.id} className="WR-tbl-subchip"><span className="WR-tbl-subnum">{numberOf.get(s.id)}</span>{s.sub_name}</span>
-                                                                    ))}
-                                                                    <button
-                                                                        type="button"
-                                                                        className={`WR-tbl-subchip toggle${hiddenCount > 0 ? ' more' : ''}`}
-                                                                        onClick={() => toggleSubRow(w.id)}
-                                                                        title="View / manage all associate names"
-                                                                    >
-                                                                        {hiddenCount > 0 ? `+${hiddenCount} more` : <Ic n="chevD" s={9} c="currentColor" />}
-                                                                    </button>
-                                                                </div>
-                                                            );
-                                                        }
-
+                                                        // Just the compact "first 2 + N more" preview here — the full
+                                                        // list opens in a single shared, portal-rendered popover (see
+                                                        // near the bottom of this component) so it floats above the
+                                                        // table instead of ballooning this row's height.
                                                         return (
-                                                            <div className={`WR-tbl-sub-expanded${closing ? ' closing' : ''}`}>
-                                                                <div className="WR-tbl-sub-hdr">
-                                                                    <span className="WR-tbl-sub-hdr-lbl"><Ic n="users" s={11} c="var(--ember)" />Associate Names <span className="WR-tbl-sub-hdr-count">{subs.length}</span></span>
-                                                                    <button type="button" className="WR-tbl-sub-close" onClick={() => toggleSubRow(w.id)} title="Close" aria-label="Close">
-                                                                        <Ic n="x" s={11} c="currentColor" />
-                                                                    </button>
-                                                                </div>
-
-                                                                {activeSubs.length > 0 && (
-                                                                    <div className="WR-tbl-sub-group">
-                                                                        <div className="WR-tbl-sub-group-lbl">Active</div>
-                                                                        {activeSubs.map(s => (
-                                                                            <div key={s.id} className="WR-tbl-sub-row">
-                                                                                <span className="WR-tbl-subchip big"><span className="WR-tbl-subnum">{numberOf.get(s.id)}</span>{s.sub_name}</span>
-                                                                                {justToggledSub?.id === s.id ? (
-                                                                                    <span className="WR-tbl-sub-msg deact"><Ic n="check" s={9} c="currentColor" /> Deactivated!</span>
-                                                                                ) : (
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        className="WR-tbl-sub-toggle deact icon-only"
-                                                                                        disabled={subToggleBusy === s.id}
-                                                                                        onClick={() => toggleSubActive(s)}
-                                                                                        title={`Deactivate ${s.sub_name}`}
-                                                                                        aria-label={`Deactivate ${s.sub_name}`}
-                                                                                    >
-                                                                                        <Ic n="power" s={13} c="currentColor" />
-                                                                                    </button>
-                                                                                )}
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-
-                                                                {inactiveSubs.length > 0 && (
-                                                                    <div className="WR-tbl-sub-group">
-                                                                        <div className="WR-tbl-sub-group-lbl inactive">Inactive</div>
-                                                                        {inactiveSubs.map(s => (
-                                                                            <div key={s.id} className="WR-tbl-sub-row inactive">
-                                                                                <span className="WR-tbl-subchip big inactive"><span className="WR-tbl-subnum">{numberOf.get(s.id)}</span>{s.sub_name}</span>
-                                                                                {justToggledSub?.id === s.id ? (
-                                                                                    <span className="WR-tbl-sub-msg act"><Ic n="check" s={9} c="currentColor" /> Activated!</span>
-                                                                                ) : (
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        className="WR-tbl-sub-toggle act icon-only"
-                                                                                        disabled={subToggleBusy === s.id}
-                                                                                        onClick={() => toggleSubActive(s)}
-                                                                                        title={`Activate ${s.sub_name}`}
-                                                                                        aria-label={`Activate ${s.sub_name}`}
-                                                                                    >
-                                                                                        <Ic n="check" s={12} c="currentColor" />
-                                                                                    </button>
-                                                                                )}
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-
-                                                                <button type="button" className="WR-tbl-sub-collapse" onClick={() => toggleSubRow(w.id)}>
-                                                                    Show less <Ic n="chevD" s={9} c="currentColor" />
+                                                            <div style={{ maxWidth: 175, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}>
+                                                                {subs.slice(0, 2).map(s => (
+                                                                    <span key={s.id} className="WR-tbl-subchip"><span className="WR-tbl-subnum">{numberOf.get(s.id)}</span>{s.sub_name}</span>
+                                                                ))}
+                                                                <button
+                                                                    type="button"
+                                                                    className={`WR-tbl-subchip toggle${hiddenCount > 0 ? ' more' : ''}${isOpen ? ' active' : ''}`}
+                                                                    onClick={(e) => {
+                                                                        const rect = e.currentTarget.getBoundingClientRect();
+                                                                        subPopoverAnchorElRef.current = e.currentTarget;
+                                                                        setSubPopoverAnchor({ top: rect.top, bottom: rect.bottom, left: rect.left, right: rect.right });
+                                                                        toggleSubRow(w.id);
+                                                                    }}
+                                                                    title="View / manage all associate names"
+                                                                >
+                                                                    {hiddenCount > 0 ? `+${hiddenCount} more` : <Ic n="chevD" s={9} c="currentColor" />}
                                                                 </button>
                                                             </div>
                                                         );
@@ -1588,6 +1596,60 @@ export default function WorkforceRegister() {
                 </div>
             )}
             {/* ── TAB: WORKERS START ── */}
+
+            {/* ASSOCIATE NAMES POPOVER START — one shared, portal-rendered
+                popover (see openSubWorkerId / getSubPopoverStyle above) so a
+                worker's full associate-name list floats above the table
+                instead of expanding that row in place. */}
+            {openSubWorkerId != null && subPopoverAnchor && createPortal(
+                (() => {
+                    const subs = allWSubs.filter(s => s.worker_id === openSubWorkerId && s.is_active !== false);
+                    if (subs.length === 0) return null;
+                    const numberOf = new Map(subs.map((s, idx) => [s.id, idx + 1]));
+                    return (
+                        <div
+                            className={`WR-tbl-sub-expanded WR-tbl-sub-popover${subPopoverClosing ? ' closing' : ''}`}
+                            style={getSubPopoverStyle(subPopoverAnchor)}
+                        >
+                            <div className="WR-tbl-sub-hdr">
+                                <span className="WR-tbl-sub-hdr-lbl"><Ic n="users" s={11} c="var(--ember)" />Associate Names <span className="WR-tbl-sub-hdr-count">{subs.length}</span></span>
+                                <button type="button" className="WR-tbl-sub-close" onClick={() => toggleSubRow(openSubWorkerId)} title="Close" aria-label="Close">
+                                    <Ic n="x" s={11} c="currentColor" />
+                                </button>
+                            </div>
+
+                            <div className="WR-tbl-sub-group">
+                                <div className="WR-tbl-sub-group-lbl">Active</div>
+                                {subs.map(s => (
+                                    <div key={s.id} className="WR-tbl-sub-row">
+                                        <span className="WR-tbl-subchip big"><span className="WR-tbl-subnum">{numberOf.get(s.id)}</span>{s.sub_name}</span>
+                                        {justToggledSub?.id === s.id ? (
+                                            <span className="WR-tbl-sub-msg deact"><Ic n="check" s={9} c="currentColor" /> Deactivated!</span>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="WR-tbl-sub-toggle deact icon-only"
+                                                disabled={subToggleBusy === s.id}
+                                                onClick={() => toggleSubActive(s)}
+                                                title={`Deactivate ${s.sub_name}`}
+                                                aria-label={`Deactivate ${s.sub_name}`}
+                                            >
+                                                <Ic n="power" s={13} c="currentColor" />
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button type="button" className="WR-tbl-sub-collapse" onClick={() => toggleSubRow(openSubWorkerId)}>
+                                Show less <Ic n="chevD" s={9} c="currentColor" />
+                            </button>
+                        </div>
+                    );
+                })(),
+                document.body
+            )}
+            {/* ASSOCIATE NAMES POPOVER END */}
 
             {/* DELETE MODAL START */}
             <ConfirmDeleteModal

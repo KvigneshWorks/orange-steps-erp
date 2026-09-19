@@ -156,8 +156,11 @@ class DashboardController extends Controller
                 return $months;
             });
 
-            // 5. Upcoming dues within 20 days (cached 5 min)
-            $upcomingDues = Cache::remember('dashboard_upcoming_dues', 300, function () {
+            // 5. Upcoming dues within 20 days — deliberately NOT cached (unlike the
+            // sections above). This powers the Dashboard's "Client Payment Dues"
+            // panel, and it needs to reflect a newly-added/edited payment due
+            // date immediately rather than up to 5 minutes late.
+            $upcomingDues = (function () {
                 $today  = Carbon::today();
                 $cutoff = Carbon::today()->addDays(20);
                 return ClientPayment::with(['clientProject.client'])
@@ -177,7 +180,7 @@ class DashboardController extends Controller
                         ];
                     })
                     ->values();
-            });
+            })();
 
             return response()->json([
                 'success' => true,

@@ -233,11 +233,7 @@ const ADMIN_ALLOWED = new Set([
     'txn-credit',
     'hr', 'workforce', 'attendance', 'labour-payment',
     'report', 'report-daybook', 'report-credit', 'report-labour',
-    // Admin can only reach "Create Account" (which always creates a pending
-    // User request) — NOT 'pending-approvals', which stays Super Admin only.
     'account-settings', 'create-account',
-    // 'recycle-bin' intentionally excluded — Deletion Log is Super Admin
-    // only now (both the nav item and the backend trash routes).
 ]);
 
 const USER_ALLOWED = new Set([
@@ -900,19 +896,19 @@ function DashContent({
         : 0;
 
     const dynKPIs = portalSummary ? [
-        { label: 'Collection Rate', val: portalSummary.collected_pct, color: '#1E9C6A', warn: false },
+        { label: 'Collection Rate', val: portalSummary.collected_pct, color: '#C2410C', warn: false },
         {
             label: 'Balance / Budget',
             val: portalSummary.total_budget > 0
                 ? parseFloat(((portalSummary.total_balance / portalSummary.total_budget) * 100).toFixed(1))
                 : 0,
-            color: '#D93B55', warn: true,
+            color: '#9A3412', warn: true,
         },
-        { label: 'Active Client Projects', val: activeProjPct, color: '#C2410C', warn: false },
+        { label: 'Active Client Projects', val: activeProjPct, color: '#EA580C', warn: false },
     ] : [
-        { label: 'Collection Rate', val: 0, color: '#1E9C6A', warn: false },
-        { label: 'Balance / Budget', val: 0, color: '#D93B55', warn: true },
-        { label: 'Active Client Projects', val: 0, color: '#C2410C', warn: false },
+        { label: 'Collection Rate', val: 0, color: '#C2410C', warn: false },
+        { label: 'Balance / Budget', val: 0, color: '#9A3412', warn: true },
+        { label: 'Active Client Projects', val: 0, color: '#EA580C', warn: false },
     ];
 
     const healthGood = portalSummary ? portalSummary.collected_pct >= 50 : false;
@@ -1113,7 +1109,7 @@ function DashContent({
                                 <div className="DH-panel-tt">Business Health</div>
                                 <div className="DH-panel-sb">Live KPI overview, updated in real time</div>
                             </div>
-                            <span className="DH-kpi-delta" style={{ color: healthGood ? 'var(--d-green)' : 'var(--d-red)', background: healthGood ? 'rgba(30,156,106,.08)' : 'rgba(217,59,85,.08)' }}>
+                            <span className="DH-kpi-delta" style={{ color: healthGood ? 'var(--ember)' : 'var(--warn)', background: healthGood ? 'var(--ember-ghost)' : 'var(--warn-bg)' }}>
                                 {healthGood ? 'Performing well' : 'Needs attention'}
                             </span>
                         </div>
@@ -1122,7 +1118,7 @@ function DashContent({
                             {dynKPIs.map((k, i) => {
                                 const r = 27, circ = 2 * Math.PI * r, pct = Math.min(Math.max(k.val, 0), 100);
                                 const dash = circ * (pct / 100);
-                                const col = k.warn && k.val > 0 ? '#D93B55' : k.color;
+                                const col = k.color;
                                 return (
                                     <div className="DH-gauge" key={k.label} style={{ animation: `dhRise 0.4s ${0.15 + i * 0.08}s ease both` }}>
                                         <div className="DH-gauge-ring">
@@ -1149,13 +1145,13 @@ function DashContent({
                                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--d-ice4)' }}>Budget {(portalSummary.total_budget / 100000).toFixed(1)}L</span>
                                 </div>
                                 <div className="DH-fin-bar">
-                                    <div className="DH-fin-seg" style={{ width: `${portalSummary.collected_pct}%`, background: 'linear-gradient(to right,#1E9C6A,#22b881)' }} />
-                                    <div className="DH-fin-seg" style={{ width: `${Math.max(100 - portalSummary.collected_pct, 0)}%`, background: 'linear-gradient(to right,#D93B55,#e85d76)', animationDelay: '0.1s' } as React.CSSProperties} />
+                                    <div className="DH-fin-seg" style={{ width: `${portalSummary.collected_pct}%`, background: 'linear-gradient(to right,#C2410C,#EA580C)' }} />
+                                    <div className="DH-fin-seg" style={{ width: `${Math.max(100 - portalSummary.collected_pct, 0)}%`, background: 'linear-gradient(to right,#9A3412,#DB5B1F)', animationDelay: '0.1s' } as React.CSSProperties} />
                                 </div>
                                 <div className="DH-fin-legend">
-                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#1E9C6A' }} />Collected <b style={{ color: '#1E9C6A' }}>&nbsp;{(portalSummary.total_collected / 100000).toFixed(1)}L</b></div>
-                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#D93B55' }} />Balance <b style={{ color: '#D93B55' }}>&nbsp;{(portalSummary.total_balance / 100000).toFixed(1)}L</b></div>
-                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#1E9C6A' }} />Client Dues <b>&nbsp;{notifications.length}</b></div>
+                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#C2410C' }} />Collected <b style={{ color: '#C2410C' }}>&nbsp;{(portalSummary.total_collected / 100000).toFixed(1)}L</b></div>
+                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#9A3412' }} />Balance <b style={{ color: '#9A3412' }}>&nbsp;{(portalSummary.total_balance / 100000).toFixed(1)}L</b></div>
+                                    <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: '#DB5B1F' }} />Client Dues <b>&nbsp;{notifications.length}</b></div>
                                     <div className="DH-fin-item"><div className="DH-fin-dot" style={{ background: 'var(--d-or)' }} />Credit Dues <b>&nbsp;{creditNotifs.length}</b></div>
                                 </div>
                             </>
@@ -1182,7 +1178,7 @@ function DashContent({
                         ) : (
                             <div>
                                 {displayProjects.map((a, i) => {
-                                    const statusColor = a.status === 'active' ? '#1E9C6A' : a.status === 'pending' ? '#C2410C' : a.status === 'review' ? '#EA580C' : '#D93B55';
+                                    const statusColor = a.status === 'active' ? '#C2410C' : a.status === 'pending' ? '#DB5B1F' : a.status === 'review' ? '#EA580C' : '#9A3412';
                                     const initials = (a.name || '?').trim().slice(0, 2).toUpperCase();
                                     return (
                                         <div className="DH-proj-row" key={a.id} style={{ animationDelay: `${i * 0.05}s` }}>
@@ -2173,7 +2169,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const sweepTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const autoCollapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
-    const [collapsed, setCollapsed] = useState(false);
+    // Sidebar starts collapsed on every fresh login/page load — the user
+    // opens it themselves via the toggle button instead of it defaulting open.
+    const [collapsed, setCollapsed] = useState(true);
     const [autoClosing, setAutoClosing] = useState(false);
     const [mobOpen, setMobOpen] = useState(false);
     const clockRef = useRef<HTMLSpanElement>(null);

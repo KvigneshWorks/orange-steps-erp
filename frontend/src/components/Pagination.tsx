@@ -1,3 +1,7 @@
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { markPanelOpen, markPanelClosed, useDropdownTriggerKeyDown, useDropdownPanelArrowNav } from '../utils/keyboardNav';
+
 export default function Pagination({
     page,
     totalPages,
@@ -17,7 +21,56 @@ export default function Pagination({
     perPageOptions?: number[];
     itemLabel?: string;
 }) {
-    if (totalPages <= 1) return null;
+    // A proper floating, portal-rendered "per page" menu — same pattern as
+    // every other custom dropdown in the app (see CalendarDD) — instead of
+    // a bare native <select>, so it gets a styled option list, a checkmark
+    // on the active value, and an entrance animation instead of the
+    // browser's own unstyled popup. Hooks run unconditionally (before the
+    // totalPages<=1 early-return below) per the rules of hooks.
+    const [ddOpen, setDdOpen] = useState(false);
+    const ddTriggerRef = useRef<HTMLButtonElement>(null);
+    const ddPanelRef = useRef<HTMLDivElement | null>(null);
+    const [ddPos, setDdPos] = useState<{ top: number; left: number; width: number } | null>(null);
+
+    useEffect(() => {
+        if (ddOpen) { markPanelOpen(); return () => markPanelClosed(); }
+    }, [ddOpen]);
+
+    useDropdownPanelArrowNav(ddOpen, setDdOpen, ddPanelRef, ddTriggerRef, { optionSelector: '[role="option"]' });
+    const onDdTriggerKeyDown = useDropdownTriggerKeyDown(ddOpen, setDdOpen);
+
+    useEffect(() => {
+        if (!ddOpen) return;
+        const h = (e: MouseEvent) => {
+            const t = e.target as Node;
+            if (!ddTriggerRef.current?.contains(t) && !ddPanelRef.current?.contains(t)) setDdOpen(false);
+        };
+        document.addEventListener('mousedown', h);
+        return () => document.removeEventListener('mousedown', h);
+    }, [ddOpen]);
+
+    useLayoutEffect(() => {
+        if (!ddOpen || !ddTriggerRef.current) return;
+        const reposition = () => {
+            if (!ddTriggerRef.current) return;
+            const r = ddTriggerRef.current.getBoundingClientRect();
+            const pw = Math.max(r.width, 92);
+            const ph = perPageOptions.length * 34 + 10;
+            const mg = 8;
+            let top = r.bottom + 6;
+            if (top + ph > window.innerHeight - mg) top = Math.max(mg, r.top - ph - 6);
+            let left = r.left;
+            if (left + pw > window.innerWidth - mg) left = window.innerWidth - pw - mg;
+            setDdPos({ top, left, width: pw });
+        };
+        reposition();
+        window.addEventListener('scroll', reposition, true);
+        window.addEventListener('resize', reposition);
+        return () => {
+            window.removeEventListener('scroll', reposition, true);
+            window.removeEventListener('resize', reposition);
+        };
+    }, [ddOpen, perPageOptions.length]);
 
     const start = total === 0 ? 0 : (page - 1) * perPage + 1;
     const end = Math.min(page * perPage, total);
@@ -54,6 +107,7 @@ export default function Pagination({
                 <span className="ERP-pg-info-page">Page <strong>{page}</strong> of {totalPages}</span>
             </span>
 
+            {totalPages > 1 && (
             <div className="ERP-pg-btns">
                 <button
                     type="button"
@@ -111,21 +165,55 @@ export default function Pagination({
                     <ChevronDouble flip />
                 </button>
             </div>
+            )}
 
             {onPerPageChange && (
                 <div className="ERP-pg-per">
                     <span>Show</span>
                     <div className="ERP-pg-per-wrap">
-                        <select
-                            className="ERP-pg-per-sel"
-                            value={perPage}
-                            onChange={e => onPerPageChange(+e.target.value)}
+                        <button
+                            type="button"
+                            ref={ddTriggerRef}
+                            className={`ERP-pg-per-dd${ddOpen ? ' open' : ''}`}
+                            onClick={() => setDdOpen(o => !o)}
+                            onKeyDown={onDdTriggerKeyDown}
+                            aria-haspopup="listbox"
+                            aria-expanded={ddOpen}
                         >
-                            {perPageOptions.map(n => <option key={n} value={n}>{n}</option>)}
-                        </select>
-                        <svg className="ERP-pg-per-chev" width="9" height="9" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                            <span className="ERP-pg-per-dd-val">{perPage}</span>
+                            <svg className="ERP-pg-per-chev" width="9" height="9" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+
+                        {ddOpen && ddPos && createPortal(
+                            <div
+                                ref={ddPanelRef}
+                                className="ERP-pg-per-panel"
+                                role="listbox"
+                                aria-label="Rows per page"
+                                style={{ top: ddPos.top, left: ddPos.left, minWidth: ddPos.width }}
+                            >
+                                {perPageOptions.map(n => (
+                                    <button
+                                        key={n}
+                                        type="button"
+                                        role="option"
+                                        aria-selected={n === perPage}
+                                        className={`ERP-pg-per-opt${n === perPage ? ' sel' : ''}`}
+                                        onClick={() => { onPerPageChange(n); setDdOpen(false); ddTriggerRef.current?.focus(); }}
+                                    >
+                                        <span>{n}</span>
+                                        {n === perPage && (
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                                                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>,
+                            document.body
+                        )}
                     </div>
                     <span>per page</span>
                 </div>

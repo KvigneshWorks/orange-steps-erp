@@ -5,6 +5,7 @@ import { ERP_CSS } from './ERPTheme';
 import { AS_CSS } from './AccountSettingsTheme';
 import { Ic } from '../components/Icon';
 import { PageHeader, StatCard, TableCard } from '../components/ui';
+import Pagination from '../components/Pagination';
 
 /**
  * "All Accounts" tab in Account Settings — super_admin only. Read-only
@@ -61,8 +62,47 @@ const AA_FULL_CSS = `
 .AA-full .AS-avatar { transition: transform .16s cubic-bezier(.22,1,.36,1); }
 .AA-full tbody tr:hover .AS-avatar { transform: scale(1.1); }
 
+@keyframes aa-pg-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.AA-full .ERP-pg {
+  animation: aa-pg-in .45s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes aa-row-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.AA-full .ERP-tbl-scroll tbody tr {
+  animation: aa-row-in .4s cubic-bezier(.22,1,.36,1) both;
+}
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(1) { animation-delay: 0.02s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(2) { animation-delay: 0.055s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(3) { animation-delay: 0.09s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(4) { animation-delay: 0.125s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(5) { animation-delay: 0.16s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(6) { animation-delay: 0.195s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(7) { animation-delay: 0.23s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(8) { animation-delay: 0.265s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(9) { animation-delay: 0.3s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(10) { animation-delay: 0.335s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(11) { animation-delay: 0.37s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(12) { animation-delay: 0.405s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(13) { animation-delay: 0.44s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(14) { animation-delay: 0.475s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(15) { animation-delay: 0.51s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(16) { animation-delay: 0.545s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(17) { animation-delay: 0.58s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(18) { animation-delay: 0.615s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(19) { animation-delay: 0.65s; }
+.AA-full .ERP-tbl-scroll tbody tr:nth-child(20) { animation-delay: 0.685s; }
+
 @media (prefers-reduced-motion: reduce) {
-  .AA-empty-ic-wrap .ERP-empty-icon, .AA-empty-ring, .AA-full .ERP-empty-title, .AA-full .ERP-empty-sub {
+  .AA-empty-ic-wrap .ERP-empty-icon, .AA-empty-ring, .AA-full .ERP-empty-title, .AA-full .ERP-empty-sub,
+  .AA-full .ERP-pg, .AA-full .ERP-tbl-scroll tbody tr {
     animation: none !important; opacity: 1 !important;
   }
 }
@@ -94,6 +134,8 @@ export default function AllAccounts() {
     const [accounts, setAccounts] = useState<AccountRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<RoleFilter>('all');
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(10);
     const hasFetched = useRef(false);
 
     const load = useCallback(async () => {
@@ -124,6 +166,16 @@ export default function AllAccounts() {
     const visible = useMemo(
         () => (filter === 'all' ? accounts : accounts.filter(a => a.role === filter)),
         [accounts, filter]
+    );
+
+    // Jump back to page 1 whenever the role filter changes the result set.
+    useEffect(() => { setPage(1); }, [filter]);
+
+    const totalPages = Math.max(1, Math.ceil(visible.length / perPage));
+    const safePage = Math.min(page, totalPages);
+    const paged = useMemo(
+        () => visible.slice((safePage - 1) * perPage, safePage * perPage),
+        [visible, safePage, perPage]
     );
 
     return (
@@ -220,12 +272,12 @@ export default function AllAccounts() {
                                     <th>Joined</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {visible.map((a, i) => {
+                            <tbody key={safePage}>
+                                {paged.map((a, i) => {
                                     const initials = a.name.trim().slice(0, 2).toUpperCase() || '??';
                                     return (
                                         <tr key={a.id}>
-                                            <td className="ERP-t-num ERP-center">{i + 1}</td>
+                                            <td className="ERP-t-num ERP-center">{(safePage - 1) * perPage + i + 1}</td>
                                             <td>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                                                     <div className="AS-avatar" style={{ background: ROLE_AVATAR_BG[a.role] || 'rgba(10,21,48,.06)', color: ROLE_AVATAR_FG[a.role] || '#231C14' }}>{initials}</div>
@@ -245,6 +297,18 @@ export default function AllAccounts() {
                             </tbody>
                         </table>
                     </div>
+                )}
+
+                {!loading && visible.length > 0 && (
+                    <Pagination
+                        page={safePage}
+                        totalPages={totalPages}
+                        onPageChange={setPage}
+                        total={visible.length}
+                        perPage={perPage}
+                        onPerPageChange={n => { setPerPage(n); setPage(1); }}
+                        itemLabel="accounts"
+                    />
                 )}
             </TableCard>
         </div>

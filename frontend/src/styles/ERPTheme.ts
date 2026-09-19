@@ -2102,21 +2102,43 @@ export const ERP_CSS = `
 }
 .ERP-pg-per { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--text-3); }
 .ERP-pg-per-wrap { position: relative; display: inline-flex; align-items: center; }
-.ERP-pg-per-sel {
-  appearance: none; -webkit-appearance: none; -moz-appearance: none;
-  padding: 7px 24px 7px 12px; background: var(--white); border: 1.5px solid var(--border);
-  border-radius: 999px; font-family: var(--font-mono); font-size: 9px; font-weight: 800;
+.ERP-pg-per-dd {
+  appearance: none; display: inline-flex; align-items: center; gap: 10px;
+  padding: 7px 12px 7px 14px; background: linear-gradient(170deg, var(--white) 0%, var(--off-white) 100%);
+  border: 1.5px solid var(--border); border-radius: 999px;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 800; letter-spacing: .5px;
   color: var(--text-1); cursor: pointer; outline: none;
   transition: border-color .18s ease, color .18s ease, box-shadow .2s ease, transform .15s ease;
   box-shadow: var(--sh-card);
 }
-.ERP-pg-per-sel:hover { border-color: var(--ember-border); color: var(--ember); transform: translateY(-1px); }
-.ERP-pg-per-sel:focus { border-color: var(--ember-mid); box-shadow: 0 0 0 2px var(--ember-ghost); }
+.ERP-pg-per-dd:hover { border-color: var(--ember-border); color: var(--ember); transform: translateY(-1px); }
+.ERP-pg-per-dd:focus-visible { border-color: var(--ember-mid); box-shadow: 0 0 0 2px var(--ember-ghost); }
+.ERP-pg-per-dd.open { border-color: var(--ember-mid); color: var(--ember); box-shadow: 0 0 0 2px var(--ember-ghost); }
+.ERP-pg-per-dd-val { min-width: 12px; text-align: center; }
 .ERP-pg-per-chev {
-  position: absolute; right: 9px; color: var(--text-4); pointer-events: none;
-  transition: color .18s ease, transform .18s ease;
+  color: var(--text-4); pointer-events: none; flex-shrink: 0;
+  transition: color .18s ease, transform .22s cubic-bezier(.22,1,.36,1);
 }
-.ERP-pg-per-wrap:hover .ERP-pg-per-chev { color: var(--ember); transform: translateY(1px); }
+.ERP-pg-per-dd:hover .ERP-pg-per-chev { color: var(--ember); transform: translateY(1px); }
+.ERP-pg-per-dd.open .ERP-pg-per-chev { color: var(--ember); transform: rotate(180deg); }
+
+.ERP-pg-per-panel {
+  position: fixed; z-index: 2147483647; padding: 6px;
+  background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(35,28,20,.16), 0 0 0 1px rgba(255,255,255,.9) inset;
+  display: flex; flex-direction: column; gap: 2px;
+  animation: erp-cal-pop .18s cubic-bezier(.22,1,.36,1) both;
+}
+.ERP-pg-per-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 100%; padding: 7px 10px; border: none; border-radius: 8px; background: transparent;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 800; letter-spacing: .5px;
+  color: var(--text-2); cursor: pointer; text-align: left;
+  transition: background .15s ease, color .15s ease, transform .15s ease;
+}
+.ERP-pg-per-opt:hover, .ERP-pg-per-opt:focus-visible { background: var(--ember-ghost); color: var(--ember); outline: none; transform: translateX(2px); }
+.ERP-pg-per-opt.sel { background: var(--ember-ghost); color: var(--ember); }
+.ERP-pg-per-opt svg { color: var(--ember); flex-shrink: 0; animation: erp-cal-pop .2s cubic-bezier(.22,1,.36,1) both; }
 @media (max-width: 720px) {
   .ERP-pg { justify-content: center; text-align: center; }
 }

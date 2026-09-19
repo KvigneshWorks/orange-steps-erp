@@ -4678,7 +4678,7 @@ export default function CreditManagement() {
         try {
             const H = authHeader();
             const [vRes, sRes, mRes] = await Promise.all([
-                axiosInstance.get('credit-management/vendors', { headers: H }),
+                axiosInstance.get('credit-management/vendors', { headers: H, params: { per_page: 100 } }),
                 axiosInstance.get('credit-management/summary', { headers: H }),
                 axiosInstance.get('master-data', { headers: H }),
             ]);
