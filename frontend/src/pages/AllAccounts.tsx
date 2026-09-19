@@ -20,8 +20,53 @@ interface AccountRow {
 }
 
 const ROLE_LABEL: Record<string, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
-const ROLE_AVATAR_BG: Record<string, string> = { super_admin: 'rgba(232,114,12,.10)', admin: '#fdf4ff', user: '#eff6ff' };
-const ROLE_AVATAR_FG: Record<string, string> = { super_admin: '#E8720C', admin: '#9333ea', user: '#2563eb' };
+const ROLE_AVATAR_BG: Record<string, string> = { super_admin: 'rgba(232,114,12,.10)', admin: '#FDE0CB', user: '#FDE0CB' };
+const ROLE_AVATAR_FG: Record<string, string> = { super_admin: '#EA580C', admin: '#DB5B1F', user: '#C2410C' };
+
+/* Per-filter empty-state icon + colour, matching the same on-brand
+   treatment given to Pending Approvals. */
+const EMPTY_META: Record<'all' | 'super_admin' | 'admin' | 'user', { path: string; c: string; bg: string; bd: string }> = {
+    all: { path: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0', c: '#231C14', bg: 'rgba(35,28,20,0.08)', bd: 'rgba(35,28,20,0.20)' },
+    super_admin: { path: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75', c: '#EA580C', bg: 'rgba(232,114,12,.12)', bd: 'rgba(232,114,12,.30)' },
+    admin: { path: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z', c: '#DB5B1F', bg: 'rgba(219,91,31,.12)', bd: 'rgba(219,91,31,.28)' },
+    user: { path: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z', c: '#C2410C', bg: 'rgba(194,65,12,.12)', bd: 'rgba(194,65,12,.26)' },
+};
+
+/* Page-scoped only: same premium treatment as Pending Approvals -- one
+   bold / upright / all-caps font everywhere, the table card stretched to
+   fill the full page height, and a livelier, ringed, per-role-coloured
+   empty state. Scoped under .AA-full so it never leaks into any other
+   page that shares the ERP-* / AS-* classes. */
+const AA_FULL_CSS = `
+.AA-full, .AA-full * {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.AA-full.ERP-page { display: flex; flex-direction: column; }
+.AA-full .ERP-tbl-card { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.AA-full .ERP-empty { flex: 1; }
+
+.AA-empty-ic-wrap { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.AA-empty-ic-wrap .ERP-empty-icon { margin-bottom: 0; animation: as-icon-pop .55s cubic-bezier(.22,1,.36,1) .1s both; }
+.AA-empty-ring {
+  position: absolute; width: 54px; height: 54px; border-radius: 50%;
+  border: 1.5px solid var(--aa-bd, var(--ember-border));
+  animation: as-ring-expand 2.2s cubic-bezier(.22,1,.36,1) infinite;
+}
+.AA-full .ERP-empty-title { animation: as-banner-in .5s cubic-bezier(.22,1,.36,1) .22s both; }
+.AA-full .ERP-empty-sub   { animation: as-banner-in .5s cubic-bezier(.22,1,.36,1) .3s both; }
+
+.AA-full .AS-avatar { transition: transform .16s cubic-bezier(.22,1,.36,1); }
+.AA-full tbody tr:hover .AS-avatar { transform: scale(1.1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .AA-empty-ic-wrap .ERP-empty-icon, .AA-empty-ring, .AA-full .ERP-empty-title, .AA-full .ERP-empty-sub {
+    animation: none !important; opacity: 1 !important;
+  }
+}
+`;
 
 type RoleFilter = 'all' | 'super_admin' | 'admin' | 'user';
 
@@ -36,7 +81,7 @@ function SkeletonRow() {
         <tr>
             {[36, 190, 220, 110, 120].map((w, i) => (
                 <td key={i} style={{ padding: '14px 16px' }}>
-                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E9EEF5 25%,#FFE0B2 50%,#E9EEF5 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
+                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E8E2D8 25%,#FDE0CB 50%,#E8E2D8 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
                 </td>
             ))}
         </tr>
@@ -82,9 +127,10 @@ export default function AllAccounts() {
     );
 
     return (
-        <div className="ERP-page">
+        <div className="ERP-page AA-full">
             <style>{ERP_CSS}</style>
             <style>{AS_CSS}</style>
+            <style>{AA_FULL_CSS}</style>
 
             <div className="ERP-hdr">
                 <div className="ERP-hdr-left">
@@ -127,9 +173,9 @@ export default function AllAccounts() {
                         className="AS-chip"
                         onClick={() => setFilter(chip.key as RoleFilter)}
                         style={{
-                            border: `1px solid ${filter === chip.key ? 'var(--ember-border,#60A5FA)' : 'var(--border)'}`,
+                            border: `1px solid ${filter === chip.key ? 'var(--ember-border,#F0834D)' : 'var(--border)'}`,
                             background: filter === chip.key ? 'var(--ember-ghost,rgba(37,99,235,0.08))' : 'var(--white)',
-                            color: filter === chip.key ? 'var(--ember,#60A5FA)' : 'var(--text-3,#555)',
+                            color: filter === chip.key ? 'var(--ember,#F0834D)' : 'var(--text-3,#524532)',
                             animationDelay: `${i * 0.03}s`,
                         }}
                     >{chip.label}</button>
@@ -149,9 +195,13 @@ export default function AllAccounts() {
                 )}
 
                 {!loading && visible.length === 0 && (
-                    <div className="ERP-empty">
-                        <div className="ERP-empty-icon">
-                            <Ic d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" sz={28} c="var(--ember-light)" sw={1.8} />
+                    <div className="ERP-empty" key={filter}>
+                        <div className="AA-empty-ic-wrap" style={{ '--aa-bd': EMPTY_META[filter].bd } as any}>
+                            <span className="AA-empty-ring" />
+                            <span className="AA-empty-ring" style={{ animationDelay: '.45s' }} />
+                            <div className="ERP-empty-icon" style={{ background: EMPTY_META[filter].bg, borderColor: EMPTY_META[filter].bd }}>
+                                <Ic d={EMPTY_META[filter].path} sz={28} c={EMPTY_META[filter].c} sw={1.8} />
+                            </div>
                         </div>
                         <div className="ERP-empty-title">{accounts.length === 0 ? 'No Accounts Found' : 'No Accounts Match This Filter'}</div>
                         <div className="ERP-empty-sub">{accounts.length === 0 ? 'Something went wrong loading the account list' : 'Try a different role filter'}</div>
@@ -178,16 +228,16 @@ export default function AllAccounts() {
                                             <td className="ERP-t-num ERP-center">{i + 1}</td>
                                             <td>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                                                    <div className="AS-avatar" style={{ background: ROLE_AVATAR_BG[a.role] || 'rgba(10,21,48,.06)', color: ROLE_AVATAR_FG[a.role] || '#0A1530' }}>{initials}</div>
+                                                    <div className="AS-avatar" style={{ background: ROLE_AVATAR_BG[a.role] || 'rgba(10,21,48,.06)', color: ROLE_AVATAR_FG[a.role] || '#231C14' }}>{initials}</div>
                                                     <span className="ERP-t-primary">{a.name}</span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: 'var(--font-mono)' }}>{a.email}</span>
+                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: 'var(--font-mono)' }}>{a.email}</span>
                                             </td>
                                             <td><span className={`AS-role ${a.role}`}>{ROLE_LABEL[a.role] || a.role}</span></td>
                                             <td>
-                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: 'var(--font-mono)' }}>{fmtDate(a.created_at)}</span>
+                                                <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: 'var(--font-mono)' }}>{fmtDate(a.created_at)}</span>
                                             </td>
                                         </tr>
                                     );

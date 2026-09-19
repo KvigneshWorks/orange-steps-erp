@@ -43,13 +43,13 @@ const ErpLogo = ({ size = 62 }: { size?: number }) => (
 
         <defs>
             <linearGradient id="teLg1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#2563EB" />
-                <stop offset="100%" stopColor="#1D4ED8" />
+                <stop offset="0%" stopColor="#C2410C" />
+                <stop offset="100%" stopColor="#9A3412" />
             </linearGradient>
             <linearGradient id="teLg2" x1="0" y1="0" x2="80" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#3B82F6" />
-                <stop offset="60%" stopColor="#3B82F6" />
-                <stop offset="100%" stopColor="#2563EB" />
+                <stop offset="0%" stopColor="#DB5B1F" />
+                <stop offset="60%" stopColor="#DB5B1F" />
+                <stop offset="100%" stopColor="#C2410C" />
             </linearGradient>
             <radialGradient id="teLg3" cx="40%" cy="30%" r="55%" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="rgba(255,255,255,0.12)" />
@@ -64,12 +64,12 @@ const ErpLogo = ({ size = 62 }: { size?: number }) => (
         <line x1="26.7" y1="0" x2="26.7" y2="80" stroke="rgba(255,255,255,0.07)" strokeWidth="0.7" />
         <line x1="53.4" y1="0" x2="53.4" y2="80" stroke="rgba(255,255,255,0.07)" strokeWidth="0.7" />
         <rect width="80" height="1.5" rx="0" fill="rgba(255,255,255,0.20)" />
-        <rect x="0" y="0" width="4" height="80" rx="0" fill="rgba(59,130,246,0.55)" />
+        <rect x="0" y="0" width="4" height="80" rx="0" fill="rgba(219,91,31,0.55)" />
         <rect x="0" y="62" width="80" height="18" fill="url(#teLg2)" />
         <rect x="0" y="62" width="80" height="2.5" fill="rgba(255,255,255,0.22)" />
         <rect x="11" y="18" width="58" height="12" rx="4" fill="white" />
         <rect x="31" y="30" width="18" height="25" rx="4" fill="white" />
-        <text x="63.5" y="75.5" textAnchor="middle" fontFamily="'JetBrains Mono',monospace" fontWeight="800" fontSize="9.5" fill="rgba(219,234,254,0.96)">S</text>
+        <text x="63.5" y="75.5" textAnchor="middle" fontFamily="'JetBrains Mono',monospace" fontWeight="800" fontSize="9.5" fill="rgba(251,201,168,0.96)">S</text>
         <rect x="7" y="7" width="10" height="2" rx="1" fill="rgba(255,255,255,0.38)" />
         <rect x="7" y="7" width="2" height="10" rx="1" fill="rgba(255,255,255,0.38)" />
         <rect x="63" y="7" width="10" height="2" rx="1" fill="rgba(255,255,255,0.38)" />
@@ -512,7 +512,7 @@ const LOGIN_CSS = `
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface,#F2F3F5);
+  background: var(--surface,#F5F3EF);
   font-family: var(--font-body,'Space Grotesk'),sans-serif;
   position: relative;
   overflow: hidden;
@@ -523,7 +523,7 @@ const LOGIN_CSS = `
   top: -120px; right: -120px;
   width: 600px; height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(29,78,216,.08), transparent 65%);
+  background: radial-gradient(circle, rgba(154,52,18,.08), transparent 65%);
   pointer-events: none;
 }
 .L-wrap::after {
@@ -532,12 +532,12 @@ const LOGIN_CSS = `
   bottom: -160px; left: -80px;
   width: 520px; height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,130,246,.05), transparent 65%);
+  background: radial-gradient(circle, rgba(219,91,31,.05), transparent 65%);
   pointer-events: none;
 }
 .L-card {
-  background: var(--off-white,#F8F8F8);
-  border: 1.5px solid var(--ember-border,rgba(29,78,216,0.28));
+  background: var(--off-white,#F5F3EF);
+  border: 1.5px solid var(--ember-border,rgba(154,52,18,0.28));
   border-radius: var(--r-xl,22px);
   box-shadow: 0 8px 48px rgba(0,0,0,.09), 0 2px 8px rgba(0,0,0,.04);
   padding: 48px 44px 44px;
@@ -553,7 +553,7 @@ const LOGIN_CSS = `
   top: 0; left: 0; right: 0;
   height: 3px;
   border-radius: var(--r-xl,22px) var(--r-xl,22px) 0 0;
-  background: linear-gradient(90deg, var(--ember,#2563EB), var(--ember-mid,#3B82F6), var(--ember,#2563EB));
+  background: linear-gradient(90deg, var(--ember,#C2410C), var(--ember-mid,#DB5B1F), var(--ember,#C2410C));
   background-size: 300% 100%;
   animation: L-shimmer 4s ease infinite;
 }
@@ -571,19 +571,19 @@ const LOGIN_CSS = `
   width: 52px; height: 52px;
   object-fit: contain;
   border-radius: var(--r-md,10px);
-  border: 2px solid var(--ember-border,rgba(29,78,216,0.28));
-  box-shadow: 0 4px 18px rgba(29,78,216,.16);
-  background: #FFFFFF;
+  border: 2px solid var(--ember-border,rgba(154,52,18,0.28));
+  box-shadow: 0 4px 18px rgba(154,52,18,.16);
+  background: #FAF9F7;
 }
 .L-logo-fallback {
   width: 52px; height: 52px;
   border-radius: var(--r-md,10px);
-  background: linear-gradient(135deg,var(--ember,#2563EB),var(--ember-mid,#3B82F6));
+  background: linear-gradient(135deg,var(--ember,#C2410C),var(--ember-mid,#DB5B1F));
   display: flex; align-items: center; justify-content: center;
-  color: #fff;
+  color: #faf9f7;
   font-family: var(--font-mono,'JetBrains Mono'),monospace;
   font-weight: 800; font-size: 10.5px;
-  box-shadow: 0 4px 18px rgba(29,78,216,.28);
+  box-shadow: 0 4px 18px rgba(154,52,18,.28);
 }
 .L-co-name {
   font-family: var(--font-body,'Space Grotesk'),sans-serif;
@@ -591,11 +591,11 @@ const LOGIN_CSS = `
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  color: var(--text-1,#0F172A);
+  color: var(--text-1,#231C14);
   line-height: 1;
 }
 .L-co-name em {
-  background: linear-gradient(90deg, var(--ember,#2563EB) 0%, #60A5FA 45%, var(--ember,#2563EB) 100%);
+  background: linear-gradient(90deg, var(--ember,#C2410C) 0%, #F0834D 45%, var(--ember,#C2410C) 100%);
   background-size: 220% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -607,7 +607,7 @@ const LOGIN_CSS = `
   font-size: 7.5px;
   font-weight: 800;
   letter-spacing: 2.5px;
-  color: var(--text-3,#6B6B6B);
+  color: var(--text-3,#6B5D48);
   text-transform: uppercase;
   margin-top: 4px;
 }
@@ -616,17 +616,17 @@ const LOGIN_CSS = `
   font-size: 24.5px;
   font-weight: 800;
   font-style: italic;
-  color: var(--text-1,#0F172A);
+  color: var(--text-1,#231C14);
   margin-bottom: 6px;
 }
-.L-title em { color: var(--ember,#2563EB); }
+.L-title em { color: var(--ember,#C2410C); }
 .L-sub {
   font-family: var(--font-mono,'JetBrains Mono'),monospace;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-3,#6B6B6B);
+  color: var(--text-3,#6B5D48);
   margin-bottom: 32px;
 }
 .L-field { margin-bottom: 18px; }
@@ -637,16 +637,16 @@ const LOGIN_CSS = `
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text-2,#444444);
+  color: var(--text-2,#3A3024);
   margin-bottom: 7px;
 }
 .L-input {
   width: 100%;
   padding: 12px 16px;
-  border: 1.5px solid var(--border,#D4D5D8);
+  border: 1.5px solid var(--border,#D2C7B8);
   border-radius: var(--r-md,10px);
-  background: #fff;
-  color: var(--text-1,#0F172A);
+  background: #faf9f7;
+  color: var(--text-1,#231C14);
   font-family: var(--font-body,'Space Grotesk'),sans-serif;
   font-size: 11.5px;
   font-weight: 700;
@@ -655,19 +655,19 @@ const LOGIN_CSS = `
   box-sizing: border-box;
 }
 .L-input:focus {
-  border-color: var(--ember,#2563EB);
-  box-shadow: 0 0 0 3px var(--ember-ghost,rgba(59,130,246,0.10));
-  background: #fff;
+  border-color: var(--ember,#C2410C);
+  box-shadow: 0 0 0 3px var(--ember-ghost,rgba(219,91,31,0.10));
+  background: #faf9f7;
 }
 .L-input.err { border-color: var(--error,#D93B55); box-shadow: 0 0 0 3px var(--error-bg,rgba(217,59,85,0.10)); }
 .L-pw-wrap { position: relative; }
 .L-pw-toggle {
   position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer; color: var(--text-3,#6B6B6B);
+  background: none; border: none; cursor: pointer; color: var(--text-3,#6B5D48);
   display: flex; align-items: center; justify-content: center;
   padding: 0; transition: color .15s;
 }
-.L-pw-toggle:hover { color: var(--ember,#2563EB); }
+.L-pw-toggle:hover { color: var(--ember,#C2410C); }
 .L-err-box {
   display: flex; align-items: center; gap: 8px;
   background: var(--error-bg,rgba(217,59,85,0.10));
@@ -682,8 +682,8 @@ const LOGIN_CSS = `
 .L-submit {
   width: 100%;
   padding: 13px;
-  background: linear-gradient(135deg,var(--ember-mid,#3B82F6),var(--ember,#2563EB));
-  color: #fff;
+  background: linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember,#C2410C));
+  color: #faf9f7;
   border: none;
   border-radius: var(--r-md,10px);
   font-family: var(--font-mono,'JetBrains Mono'),monospace;
@@ -692,17 +692,17 @@ const LOGIN_CSS = `
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(29,78,216,.28);
+  box-shadow: 0 4px 18px rgba(154,52,18,.28);
   transition: all .18s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   margin-top: 8px;
 }
-.L-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(29,78,216,.38); }
+.L-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(154,52,18,.38); }
 .L-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 .L-spinner {
   width: 14px; height: 14px;
   border: 2px solid rgba(255,255,255,.3);
-  border-top-color: #fff;
+  border-top-color: #faf9f7;
   border-radius: 50%;
   animation: L-spin .65s linear infinite;
 }
@@ -710,14 +710,14 @@ const LOGIN_CSS = `
   display: flex; align-items: center; gap: 12px;
   margin: 22px 0 8px;
 }
-.L-divider-line { flex: 1; height: 1px; background: var(--border,#D4D5D8); }
-.L-divider-txt { font-family: var(--font-mono,'JetBrains Mono'),monospace; font-size: 8px; color: var(--text-4,#94A3B8); letter-spacing: 1.5px; }
+.L-divider-line { flex: 1; height: 1px; background: var(--border,#D2C7B8); }
+.L-divider-txt { font-family: var(--font-mono,'JetBrains Mono'),monospace; font-size: 8px; color: var(--text-4,#6B5D48); letter-spacing: 1.5px; }
 .L-footer {
   margin-top: 28px;
   text-align: center;
   font-family: var(--font-mono,'JetBrains Mono'),monospace;
   font-size: 8px;
-  color: var(--text-4,#94A3B8);
+  color: var(--text-4,#6B5D48);
   letter-spacing: 1px;
 }
 `;
@@ -1451,31 +1451,31 @@ const PILL_MAP: Record<string, { bg: string; c: string }> = {
     overdue: { bg: 'var(--error-bg,rgba(217,59,85,0.10))', c: 'var(--error,#D93B55)' },
     on_hold: { bg: 'var(--error-bg,rgba(217,59,85,0.10))', c: 'var(--error,#D93B55)' },
     high: { bg: 'var(--error-bg,rgba(217,59,85,0.10))', c: 'var(--error,#D93B55)' },
-    partial: { bg: 'var(--warn-bg,rgba(196,126,10,0.10))', c: 'var(--warn,#C47E0A)' },
-    upi: { bg: 'var(--warn-bg,rgba(196,126,10,0.10))', c: 'var(--warn,#C47E0A)' },
-    UPI: { bg: 'var(--warn-bg,rgba(196,126,10,0.10))', c: 'var(--warn,#C47E0A)' },
-    Cheque: { bg: 'var(--warn-bg,rgba(196,126,10,0.10))', c: 'var(--warn,#C47E0A)' },
-    cheque: { bg: 'var(--warn-bg,rgba(196,126,10,0.10))', c: 'var(--warn,#C47E0A)' },
-    pending: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
-    active: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
-    medium: { bg: 'var(--info-bg,rgba(40,112,204,0.10))', c: 'var(--info,#2870CC)' },
+    partial: { bg: 'var(--warn-bg,rgba(154,52,18,0.10))', c: 'var(--warn,#9A3412)' },
+    upi: { bg: 'var(--warn-bg,rgba(154,52,18,0.10))', c: 'var(--warn,#9A3412)' },
+    UPI: { bg: 'var(--warn-bg,rgba(154,52,18,0.10))', c: 'var(--warn,#9A3412)' },
+    Cheque: { bg: 'var(--warn-bg,rgba(154,52,18,0.10))', c: 'var(--warn,#9A3412)' },
+    cheque: { bg: 'var(--warn-bg,rgba(154,52,18,0.10))', c: 'var(--warn,#9A3412)' },
+    pending: { bg: 'var(--info-bg,rgba(219,91,31,0.10))', c: 'var(--info,#DB5B1F)' },
+    active: { bg: 'var(--info-bg,rgba(219,91,31,0.10))', c: 'var(--info,#DB5B1F)' },
+    medium: { bg: 'var(--info-bg,rgba(219,91,31,0.10))', c: 'var(--info,#DB5B1F)' },
     NEFT: { bg: 'rgba(166,73,29,0.10)', c: '#A6491D' },
     'Bank Transfer': { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
     bank_transfer: { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
     low: { bg: 'var(--success-bg,rgba(30,156,106,0.10))', c: 'var(--success,#1E9C6A)' },
-    cash: { bg: 'rgba(154,154,154,0.12)', c: 'var(--text-3,#6B6B6B)' },
-    Cash: { bg: 'rgba(154,154,154,0.12)', c: 'var(--text-3,#6B6B6B)' },
-    inactive: { bg: 'rgba(154,154,154,0.12)', c: 'var(--text-3,#6B6B6B)' },
+    cash: { bg: 'rgba(140,124,99,0.12)', c: 'var(--text-3,#6B5D48)' },
+    Cash: { bg: 'rgba(140,124,99,0.12)', c: 'var(--text-3,#6B5D48)' },
+    inactive: { bg: 'rgba(140,124,99,0.12)', c: 'var(--text-3,#6B5D48)' },
     due: { bg: 'var(--error-bg,rgba(217,59,85,0.10))', c: 'var(--error,#D93B55)' },
 };
 
 const Pill = ({ label }: { label: string }) => {
     if (!label) return <span style={{ color: 'var(--t4)' }}>—</span>;
-    const s = PILL_MAP[label] || PILL_MAP[label.toLowerCase()] || { bg: 'rgba(154,154,154,0.12)', c: 'var(--text-3,#6B6B6B)' };
+    const s = PILL_MAP[label] || PILL_MAP[label.toLowerCase()] || { bg: 'rgba(140,124,99,0.12)', c: 'var(--text-3,#6B5D48)' };
     return <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', borderRadius: 4, background: s.bg, color: s.c, fontFamily: 'var(--mono)', fontSize: 8, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase' }}><span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor', flexShrink: 0 }} />{label}</span>;
 };
 
-const SK = ({ h = 40 }: { h?: number }) => <div style={{ height: h, background: 'linear-gradient(90deg,var(--surface,#F2F3F5) 25%,rgba(255,255,255,0.85) 50%,var(--surface,#F2F3F5) 75%)', backgroundSize: '700px 100%', animation: 'T-shimmer 1.8s ease infinite', borderRadius: 6, marginBottom: 8 }} />;
+const SK = ({ h = 40 }: { h?: number }) => <div style={{ height: h, background: 'linear-gradient(90deg,var(--surface,#F5F3EF) 25%,rgba(255,255,255,0.85) 50%,var(--surface,#F5F3EF) 75%)', backgroundSize: '700px 100%', animation: 'T-shimmer 1.8s ease infinite', borderRadius: 6, marginBottom: 8 }} />;
 
 function MiniBarChart({ data, loading }: { data: MonthlyData[]; loading: boolean }) {
     const [hov, setHov] = useState<number | null>(null);
@@ -1489,8 +1489,8 @@ function MiniBarChart({ data, loading }: { data: MonthlyData[]; loading: boolean
                     const val = d.total || d.collected || d.grand_total || 0; const pct = (val / max) * 100;
                     return (
                         <div key={i} style={{ flex: 1, height: '100%', display: 'flex', alignItems: 'flex-end', position: 'relative', cursor: 'pointer' }} onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(null)}>
-                            {hov === i && <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: 6, background: 'var(--text-1,#0F172A)', color: '#fff', borderRadius: 5, padding: '3px 8px', fontFamily: 'var(--mono)', fontSize: 8, whiteSpace: 'nowrap', zIndex: 10, boxShadow: '0 4px 12px rgba(0,0,0,.25)' }}>{fmtINR(val)}</div>}
-                            <div style={{ width: '100%', height: `${Math.max(pct, 4)}%`, borderRadius: '3px 3px 0 0', background: 'linear-gradient(180deg,var(--ember),var(--amber))', opacity: hov !== null && hov !== i ? .4 : 1, transition: 'all .25s', boxShadow: hov === i ? 'var(--sh-ember,0 4px 18px rgba(29,78,216,0.22))' : 'none' }} />
+                            {hov === i && <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: 6, background: 'var(--text-1,#231C14)', color: '#faf9f7', borderRadius: 5, padding: '3px 8px', fontFamily: 'var(--mono)', fontSize: 8, whiteSpace: 'nowrap', zIndex: 10, boxShadow: '0 4px 12px rgba(0,0,0,.25)' }}>{fmtINR(val)}</div>}
+                            <div style={{ width: '100%', height: `${Math.max(pct, 4)}%`, borderRadius: '3px 3px 0 0', background: 'linear-gradient(180deg,var(--ember),var(--amber))', opacity: hov !== null && hov !== i ? .4 : 1, transition: 'all .25s', boxShadow: hov === i ? 'var(--sh-ember,0 4px 18px rgba(154,52,18,0.22))' : 'none' }} />
                         </div>
                     );
                 })}
@@ -1509,7 +1509,7 @@ function AgingBars({ overdue, pending, paid, total, loading }: { overdue: number
         <div style={{ padding: '20px 24px' }}>
             {[
                 { label: 'Outstanding Balance', val: overdue, color: 'var(--error,#D93B55)', pct: (overdue / st) * 100 },
-                { label: 'Pending (Unallocated)', val: pending, color: 'var(--warn,#C47E0A)', pct: (pending / st) * 100 },
+                { label: 'Pending (Unallocated)', val: pending, color: 'var(--warn,#9A3412)', pct: (pending / st) * 100 },
                 { label: 'Total Paid', val: paid, color: 'var(--success,#1E9C6A)', pct: (paid / st) * 100 },
             ].map((b, i) => (
                 <div key={i} style={{ marginBottom: 18 }}>
@@ -1531,15 +1531,15 @@ function ModDiv({ num, label }: { num: string; label: string }) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '36px 36px 20px', position: 'relative', zIndex: 1 }}>
             <div style={{ position: 'relative' }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, var(--ember), var(--amber))', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--mono)', fontWeight: 800, fontSize: 10.5, flexShrink: 0, boxShadow: 'var(--sh-ember,0 4px 18px rgba(29,78,216,0.22))', animation: 'T-pulse-gentle 3s ease-in-out infinite' }}>{num}</div>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, var(--ember), var(--amber))', color: '#faf9f7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--mono)', fontWeight: 800, fontSize: 10.5, flexShrink: 0, boxShadow: 'var(--sh-ember,0 4px 18px rgba(154,52,18,0.22))', animation: 'T-pulse-gentle 3s ease-in-out infinite' }}>{num}</div>
                 <div style={{ position: 'absolute', inset: -3, borderRadius: '50%', border: '1.5px solid var(--ember-border)', animation: 'T-ring-pulse 3s ease-in-out infinite' }} />
             </div>
             <div style={{ flex: 0 }}>
                 <div style={{ fontFamily: 'var(--mono)', fontSize: 7.5, fontWeight: 800, letterSpacing: 3, color: 'var(--ember)', textTransform: 'uppercase', marginBottom: 3 }}>MODULE {num}</div>
                 <div style={{ fontFamily: 'var(--display)', fontSize: 19.5, fontStyle: 'italic', color: 'var(--t1)', whiteSpace: 'nowrap' }}>{label}</div>
             </div>
-            <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg,var(--ember-border),rgba(59,130,246,.06))' }} />
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--amber)', boxShadow: '0 0 10px rgba(59,130,246,.45)', animation: 'T-pulse-gentle 2s ease-in-out infinite' }} />
+            <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg,var(--ember-border),rgba(219,91,31,.06))' }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--amber)', boxShadow: '0 0 10px rgba(219,91,31,.45)', animation: 'T-pulse-gentle 2s ease-in-out infinite' }} />
         </div>
     );
 }
@@ -1547,7 +1547,7 @@ function ModDiv({ num, label }: { num: string; label: string }) {
 function PdfBtn({ label, onClick, loading, disabled }: { label: string; onClick: () => void; loading: boolean; disabled: boolean }) {
     return (
         <button onClick={onClick} disabled={disabled || loading} className="T-pdf-btn" title={disabled ? 'Choose a filter and load data in the table first' : `Export ${label} to PDF`}>
-            {loading ? <span style={{ width: 12, height: 12, border: '2px solid rgba(255,255,255,.3)', borderTopColor: '#fff', borderRadius: '50%', display: 'inline-block', animation: 'T-spin .65s linear infinite' }} /> : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>}
+            {loading ? <span style={{ width: 12, height: 12, border: '2px solid rgba(255,255,255,.3)', borderTopColor: '#faf9f7', borderRadius: '50%', display: 'inline-block', animation: 'T-spin .65s linear infinite' }} /> : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>}
             {loading ? 'Generating…' : 'Export PDF'}
         </button>
     );
@@ -1578,12 +1578,12 @@ export default function ReportCenter({ section = 'all' }: { section?: ReportSect
     return <ReportDashboard onLogout={handleLogout} section={section} />;
 }
 
-const T_ACCENT: Record<ReportSection, string> = { all: '#2563EB', daybook: '#2563EB', credit: '#2563EB', labour: '#2563EB', client: '#2563EB' };
+const T_ACCENT: Record<ReportSection, string> = { all: '#C2410C', daybook: '#C2410C', credit: '#C2410C', labour: '#C2410C', client: '#C2410C' };
 const MODE_COLORS: Record<string, string> = {
-    Cash: '#1E9C6A', UPI: '#2870CC', NEFT: '#C47E0A', Cheque: '#9B45CC',
-    'Bank Transfer': '#0891B2', Others: '#6B6B6B',
+    Cash: '#1E9C6A', UPI: '#DB5B1F', NEFT: '#9A3412', Cheque: '#C2410C',
+    'Bank Transfer': '#A6491D', Others: '#6B5D48',
 };
-const modeColor = (mode: string) => MODE_COLORS[mode] || '#6B6B6B';
+const modeColor = (mode: string) => MODE_COLORS[mode] || '#6B5D48';
 
 // ── PDF exports: draw a real per-mode icon badge instead of spelling the
 // mode out as plain text — mirrors the on-screen ModeIcon/MODE_ICON_NAME
@@ -3896,7 +3896,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                         </div>
                         <button type="button"
                             onClick={() => { setServerError(false); fetchDaybook(); fetchCredit(); fetchPortal(); fetchLabor(); fetchLbAttendance(); fetchLbWorkers(); }}
-                            style={{ padding: '8px 16px', borderRadius: 8, border: '1.5px solid #D93B55', background: '#fff', color: '#D93B55', fontWeight: 800, fontSize: 10.5, letterSpacing: '.04em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0 }}>
+                            style={{ padding: '8px 16px', borderRadius: 8, border: '1.5px solid #D93B55', background: '#faf9f7', color: '#D93B55', fontWeight: 800, fontSize: 10.5, letterSpacing: '.04em', textTransform: 'uppercase', cursor: 'pointer', flexShrink: 0 }}>
                             Retry
                         </button>
                     </div>
@@ -3909,7 +3909,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(380px, 100%), 1fr))', gap: 24 }}>
                                 <div className="T-card" style={{ margin: 0 }}>
                                     <div className="T-card-head">
-                                        <div className="T-card-head-left"><div className="T-card-icon" style={{ background: 'rgba(26,79,160,.07)', fontSize: 14 }}>📈</div><span className="T-card-title">Monthly Collection</span><span className="T-card-badge" style={{ background: 'rgba(26,79,160,.08)', color: 'var(--info)' }}>CLIENT</span></div>
+                                        <div className="T-card-head-left"><div className="T-card-icon" style={{ background: 'rgba(154,52,18,.07)', fontSize: 14 }}>📈</div><span className="T-card-title">Monthly Collection</span><span className="T-card-badge" style={{ background: 'rgba(154,52,18,.08)', color: 'var(--info)' }}>CLIENT</span></div>
                                         <span style={{ fontSize: 9.5, fontFamily: 'var(--mono)', color: 'var(--t4)' }}>{cpMonthly.length > 0 && `Last ${cpMonthly.length} months`}</span>
                                     </div>
                                     <MiniBarChart data={cpMonthly} loading={cpLoading} />
@@ -3968,7 +3968,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                         // instead — see [[daybook_report_client_daybook_only_table]].
                                         <>
                                             <div className="ERP-stat">
-                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
                                                 <div className="ERP-stat-label">Cash Book</div>
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbStats.expense || 0)}</div>
                                             </div>
@@ -3978,7 +3978,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbGlobalLabourUnpaid)}</div>
                                             </div>
                                             <div className="ERP-stat">
-                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--warn),#FBBF24)' }} />
+                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--warn),#F0834D)' }} />
                                                 <div className="ERP-stat-label">Credit</div>
                                                 <div className="ERP-stat-val" style={{ color: 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(dbGlobalCreditUnpaid)}</div>
                                             </div>
@@ -4006,7 +4006,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                             </span>
                                                         </div>
                                                         <div className="DB-stat-chip bank">
-                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#A6491D" /></span>
                                                             <span className="DB-stat-chip-text">
                                                                 <span className="DB-stat-chip-label">Bank Holding</span>
                                                                 <span className="DB-stat-chip-val">{fmtFull(dbCashBank.creditBank)}</span>
@@ -4029,7 +4029,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                             </span>
                                                         </div>
                                                         <div className="DB-stat-chip bank">
-                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#A6491D" /></span>
                                                             <span className="DB-stat-chip-text">
                                                                 <span className="DB-stat-chip-label">Bank Holding</span>
                                                                 <span className="DB-stat-chip-val">{fmtFull(dbCashBank.debitBank)}</span>
@@ -4039,7 +4039,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                 )}
                                             </div>
                                             <div className="ERP-stat">
-                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+                                                <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
                                                 <div className="ERP-stat-label">Net Balance</div>
                                                 <div className="ERP-stat-val" style={{ color: (dbStats.balance || 0) >= 0 ? 'var(--success)' : 'var(--err)', fontSize: 16, fontWeight: 800 }}>{fmtFull(Math.abs(dbStats.balance || 0))}</div>
                                                 {dbEntries.length > 0 && (
@@ -4054,7 +4054,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                             </span>
                                                         </div>
                                                         <div className="DB-stat-chip bank">
-                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                            <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#A6491D" /></span>
                                                             <span className="DB-stat-chip-text">
                                                                 <span className="DB-stat-chip-label">Bank Holding</span>
                                                                 <span className="DB-stat-chip-val" style={{ color: dbCashBank.netBank < 0 ? 'var(--err)' : 'var(--t1)' }}>
@@ -4094,7 +4094,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                                         </span>
                                                     </div>
                                                     <div className="DB-stat-chip bank">
-                                                        <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#0891B2" /></span>
+                                                        <span className="DB-stat-chip-icon"><StatIcon name="bank" size={9} color="#A6491D" /></span>
                                                         <span className="DB-stat-chip-text">
                                                             <span className="DB-stat-chip-label">Bank Holding</span>
                                                             <span className="DB-stat-chip-val">{fmtFull(clientCashBookCashBank.bank)}</span>
@@ -4734,7 +4734,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                             {cpHasSelection && (
                                 <div className="T-mode-stats">
                                     <div className="ERP-stat">
-                                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--warn),#FBBF24)' }} />
+                                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--warn),#F0834D)' }} />
                                         <div className="ERP-stat-label">Total Budget</div>
                                         <div className="ERP-stat-val" style={{ color: 'var(--warn)', fontSize: 16, fontWeight: 800 }}>{fmtFull(filteredCpStats?.budget || 0)}</div>
                                     </div>
@@ -4946,7 +4946,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                             {lbHasSelection && (
                                 <div className="T-mode-stats">
                                     <div className="ERP-stat">
-                                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+                                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
                                         <div className="ERP-stat-label">Total Earned</div>
                                         <div className="ERP-stat-val" style={{ color: 'var(--info)', fontSize: 16, fontWeight: 800 }}>{fmtFull(labourPartyTotals.earned)}</div>
                                     </div>

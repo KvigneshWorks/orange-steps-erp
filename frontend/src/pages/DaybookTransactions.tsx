@@ -58,11 +58,11 @@ const COMPANY = {
 
 const PAYMENT_CHIP: Record<string, { color: string; bg: string; border: string; emoji: string }> = {
   'Cash': { color: '#1E9C6A', bg: 'rgba(30,156,106,0.08)', border: 'rgba(30,156,106,0.22)', emoji: '💵' },
-  'UPI': { color: '#2870CC', bg: 'rgba(40,112,204,0.08)', border: 'rgba(40,112,204,0.22)', emoji: '📱' },
-  'NEFT': { color: '#C47E0A', bg: 'rgba(196,126,10,0.08)', border: 'rgba(196,126,10,0.22)', emoji: '🏦' },
-  'Cheque': { color: '#9B45CC', bg: 'rgba(155,69,204,0.08)', border: 'rgba(155,69,204,0.22)', emoji: '📄' },
-  'Bank Transfer': { color: '#0891B2', bg: 'rgba(8,145,178,0.08)', border: 'rgba(8,145,178,0.22)', emoji: '🔄' },
-  'Others': { color: '#6B6B6B', bg: 'rgba(107,107,107,0.08)', border: 'rgba(107,107,107,0.22)', emoji: '⋯' },
+  'UPI': { color: '#DB5B1F', bg: 'rgba(40,112,204,0.08)', border: 'rgba(40,112,204,0.22)', emoji: '📱' },
+  'NEFT': { color: '#9A3412', bg: 'rgba(196,126,10,0.08)', border: 'rgba(196,126,10,0.22)', emoji: '🏦' },
+  'Cheque': { color: '#C2410C', bg: 'rgba(155,69,204,0.08)', border: 'rgba(155,69,204,0.22)', emoji: '📄' },
+  'Bank Transfer': { color: '#A6491D', bg: 'rgba(8,145,178,0.08)', border: 'rgba(8,145,178,0.22)', emoji: '🔄' },
+  'Others': { color: '#6B5D48', bg: 'rgba(107,107,107,0.08)', border: 'rgba(107,107,107,0.22)', emoji: '⋯' },
 };
 
 const getChip = (pm: string) => PAYMENT_CHIP[pm] ?? PAYMENT_CHIP['Others'];
@@ -376,7 +376,7 @@ function MultiSearchDD({ options, value, onChange, placeholder, disabled = false
                 onClick={() => toggleVal(opt.value)}>
                 <span className="SDD-multi-item-lbl">{opt.label}</span>
                 <span className={`SDD-checkbox${sel ? ' on' : ''}`}>
-                  {sel && <Icon name="check" size={9} color="#fff" />}
+                  {sel && <Icon name="check" size={9} color="#faf9f7" />}
                 </span>
               </div>
             );
@@ -507,7 +507,7 @@ function IncomeNameFilter({
 
               {/* Icon Start */}
               <div className="INF2-drawer-hdr-icon">
-                <Icon name="income" size={18} color="#fff" />
+                <Icon name="income" size={18} color="#faf9f7" />
               </div>
               {/* Icon End */}
 
@@ -578,7 +578,7 @@ function IncomeNameFilter({
                     {/* Party Row Start */}
                     <div className="INF2-item-row" role="option" tabIndex={-1} aria-selected={isSel} onClick={() => toggle(opt.value)}>
                       <div className={`INF2-cb${isSel ? ' checked' : ''}`}>
-                        {isSel && <Icon name="check" size={10} color="#fff" />}
+                        {isSel && <Icon name="check" size={10} color="#faf9f7" />}
                       </div>
                       <div className={`INF2-avatar${isSel ? ' sel' : ''}`}>
                         {opt.label.charAt(0).toUpperCase()}
@@ -623,7 +623,7 @@ function IncomeNameFilter({
                                       : [...selSubIds, String(sn.id)]);
                                 }}>
                                 <div className={`INF2-sub-cb${snSel ? ' checked' : ''}`}>
-                                  {snSel && <Icon name="check" size={7} color="#fff" />}
+                                  {snSel && <Icon name="check" size={7} color="#faf9f7" />}
                                 </div>
                                 {sn.alternate_name}
                               </button>
@@ -665,7 +665,7 @@ function IncomeNameFilter({
                   className="INF2-foot-apply"
                   disabled={!hasSelection}
                   onClick={handleApply}>
-                  <Icon name="search" size={13} color="#fff" />
+                  <Icon name="search" size={13} color="#faf9f7" />
                   Apply Filter
                   {hasSelection && totalDebitCount > 0 &&
                     <span className="INF2-foot-apply-badge">{totalDebitCount}</span>}
@@ -1400,7 +1400,7 @@ const TX_CSS = `
   overflow-y: auto;
   padding: 4px 0;
   scrollbar-width: thin;
-  scrollbar-color: #3B82F6 rgba(203,213,225,0.18);
+  scrollbar-color: #DB5B1F rgba(203,213,225,0.18);
 }
 .SDD-list::-webkit-scrollbar {
   width: 5px;
@@ -1409,12 +1409,12 @@ const TX_CSS = `
   background: transparent;
 }
 .SDD-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   border: none;
 }
 .SDD-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 42%, #2563EB 100%);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 42%, #C2410C 100%);
   box-shadow: 0 0 8px rgba(59,130,246,0.5);
 }
 .SDD-item {
@@ -1527,7 +1527,7 @@ const TX_CSS = `
   padding: 0 5px;
   border-radius: 100px;
   background: var(--ember);
-  color: #fff;
+  color: #faf9f7;
   font-family: var(--font-mono);
   font-size: 8.5px;
   font-weight: 800;
@@ -1572,7 +1572,7 @@ const TX_CSS = `
 .INF2-trigger-icon.active {
   background: var(--ember);
   border-color: var(--ember);
-  color: #fff;
+  color: #faf9f7;
 }
 .INF2-trigger-body {
   flex: 1;
@@ -1602,7 +1602,7 @@ const TX_CSS = `
 }
 .INF2-trigger-badge {
   background: var(--ember);
-  color: #fff;
+  color: #faf9f7;
   font-size: 9px;
   font-weight: 800;
   padding: 2px 8px;
@@ -1655,7 +1655,7 @@ const TX_CSS = `
 .INF2-chip-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .INF2-chip-sub {
   background: var(--ember);
-  color: #fff;
+  color: #faf9f7;
   font-size: 8px;
   padding: 1px 5px;
   border-radius: 999px;
@@ -1668,7 +1668,7 @@ const TX_CSS = `
   border: none; cursor: pointer; color: var(--ember);
   transition: background 0.15s;
 }
-.INF2-chip-x:hover { background: var(--ember); color: #fff; }
+.INF2-chip-x:hover { background: var(--ember); color: #faf9f7; }
 .INF2-chips-clear {
   display: inline-flex;
   align-items: center;
@@ -1778,7 +1778,7 @@ const TX_CSS = `
   background: var(--border-2);
   border: none; cursor: pointer; color: var(--text-3);
 }
-.INF2-search-clr:hover { background: var(--danger); color: #fff; }
+.INF2-search-clr:hover { background: var(--danger); color: #faf9f7; }
 .INF2-search-pill {
   font-size: 9px;
   font-weight: 800;
@@ -1931,7 +1931,7 @@ const TX_CSS = `
 }
 .INF2-subnames-cnt {
   background: var(--success);
-  color: #fff;
+  color: #faf9f7;
   font-size: 8px;
   padding: 1px 6px;
   border-radius: 999px;
@@ -1959,7 +1959,7 @@ const TX_CSS = `
 .INF2-sub-pill.sel {
   background: var(--ember);
   border-color: var(--ember);
-  color: #fff;
+  color: #faf9f7;
   font-weight: 800;
 }
 .INF2-sub-cb {
@@ -2015,7 +2015,7 @@ const TX_CSS = `
   border-radius: var(--r-sm);
   font-size: 10.5px;
   font-weight: 800;
-  color: #fff;
+  color: #faf9f7;
   cursor: pointer;
   transition: opacity 0.15s, transform 0.12s;
 }
@@ -2713,9 +2713,9 @@ const TX_CSS = `
 .ERP-refresh-btn svg { transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 .ERP-refresh-btn:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.08);
-  background: linear-gradient(135deg,#60A5FA,#2563EB);
+  background: linear-gradient(135deg,#F0834D,#C2410C);
   border-color: transparent;
-  color: #fff;
+  color: #faf9f7;
   box-shadow: 0 6px 16px rgba(37,99,235,0.35);
   animation-play-state: paused;
 }
@@ -2932,7 +2932,7 @@ const TX_CSS = `
 .ERP-tbl-scroll::-webkit-scrollbar { height: 6px; }
 .ERP-tbl-scroll::-webkit-scrollbar-track { background: rgba(203,213,225, 0.15); border-radius: 99px; }
 .ERP-tbl-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(90deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   transition: background 0.22s ease, box-shadow 0.22s ease;
 }
@@ -2941,7 +2941,7 @@ const TX_CSS = `
 .ERP-page::-webkit-scrollbar { width: 6px; height: 6px; }
 .ERP-page::-webkit-scrollbar-track { background: rgba(203,213,225, 0.15); border-radius: 99px; }
 .ERP-page::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   transition: background 0.22s ease, box-shadow 0.22s ease;
 }
@@ -2953,7 +2953,7 @@ const TX_CSS = `
   table-layout: fixed;
 }
 .ERP-tbl thead tr {
-  background: var(--surface-2, #E9EEF5);
+  background: var(--surface-2, #E8E2D8);
 }
 .ERP-tbl thead th {
   padding: 13px 8px;
@@ -2962,12 +2962,12 @@ const TX_CSS = `
   font-weight: 800;
   letter-spacing: 0.2px;
   text-transform: uppercase;
-  color: var(--text-3, #27364A);
+  color: var(--text-3, #3A3024);
   white-space: normal;
   word-break: break-word;
   line-height: 1.3;
-  border-bottom: 2px solid var(--ember, #2563EB);
-  border-right: 1px solid var(--border, #E9EEF5);
+  border-bottom: 2px solid var(--ember, #C2410C);
+  border-right: 1px solid var(--border, #E8E2D8);
   font-family: var(--font-body);
   /* Same light header used by every other table in the app now — kept
      on the <th> itself (not the parent <tr>) rather than moved back to
@@ -2976,7 +2976,7 @@ const TX_CSS = `
      tried at the tr level under a scrolling .ERP-tbl-scroll box. Each
      cell just carries its own slice of the same flat color now instead
      of a gradient. */
-  background: var(--surface-2, #E9EEF5);
+  background: var(--surface-2, #E8E2D8);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -3136,7 +3136,7 @@ const TX_CSS = `
   padding: 4px 0;
 }
 .TX-th-sort:hover {
-  color: #FFEDD5;
+  color: #FDE0CB;
   transform: translateX(2px);
 }
 .TX-th-sort.active {
@@ -3402,7 +3402,7 @@ const TX_CSS = `
   color: var(--ember);
   letter-spacing: 0.3px;
 }
-.TX-pg-info strong { color: var(--ember-dark, #2563EB); font-weight: 900; }
+.TX-pg-info strong { color: var(--ember-dark, #C2410C); font-weight: 900; }
 .TX-pg-info-sep { margin: 0 8px; color: var(--ember-border); }
 .TX-pg-btns {
   display: flex;
@@ -3432,8 +3432,8 @@ const TX_CSS = `
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .TX-pg-btn:hover:not(:disabled) {
-  color: #fff;
-  background: linear-gradient(135deg, var(--ember-mid,#3B82F6), var(--ember));
+  color: #faf9f7;
+  background: linear-gradient(135deg, var(--ember-mid,#DB5B1F), var(--ember));
   transform: translateY(-2px) scale(1.08);
   box-shadow: 0 4px 12px rgba(37,99,235,0.35);
 }
@@ -3442,8 +3442,8 @@ const TX_CSS = `
   transition-duration: 0.08s;
 }
 .TX-pg-btn.on {
-  background: linear-gradient(135deg, var(--ember-mid,#3B82F6) 0%, var(--ember) 100%);
-  color: #fff;
+  background: linear-gradient(135deg, var(--ember-mid,#DB5B1F) 0%, var(--ember) 100%);
+  color: #faf9f7;
   box-shadow: 0 4px 14px rgba(37,99,235,0.45);
   transform: scale(1.1);
   animation: txPgPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -3453,7 +3453,7 @@ const TX_CSS = `
   to { transform: scale(1.1); }
 }
 .TX-pg-btn.on:hover { transform: scale(1.12); }
-.TX-pg-edge { color: var(--ember-mid, #3B82F6); }
+.TX-pg-edge { color: var(--ember-mid, #DB5B1F); }
 .TX-pg-btn:disabled {
   opacity: 0.32;
   cursor: not-allowed;
@@ -3518,7 +3518,7 @@ const TX_CSS = `
 }
 .T-fclear-btn:hover {
   background: var(--ember);
-  color: #fff;
+  color: #faf9f7;
   border-color: transparent;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(37,99,235,0.32);
@@ -3582,7 +3582,7 @@ const TX_CSS = `
 }
 .TX-recent-btn:hover {
   background: linear-gradient(135deg, var(--ember-mid), var(--ember));
-  color: #fff;
+  color: #faf9f7;
   border-color: transparent;
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 6px 16px rgba(37,99,235,0.4);
@@ -3595,7 +3595,7 @@ const TX_CSS = `
 .TX-recent-btn:active { transform: scale(0.94) !important; transition-duration: 0.08s; }
 .TX-recent-btn.active {
   background: linear-gradient(135deg, var(--ember-mid), var(--ember));
-  color: #fff;
+  color: #faf9f7;
   border-color: transparent;
   box-shadow: 0 4px 14px rgba(37,99,235,0.45);
 }
@@ -3625,7 +3625,7 @@ const TX_CSS = `
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(37,99,235,0.12);
 }
-.TX-per-pg-sel:hover { border-color: var(--ember); color: #fff; background: var(--ember); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+.TX-per-pg-sel:hover { border-color: var(--ember); color: #faf9f7; background: var(--ember); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
 .TX-per-pg-sel:focus {
   border-color: var(--ember-mid);
   box-shadow: 0 0 0 3px var(--ember-ghost);
@@ -3919,7 +3919,7 @@ const TX_CSS = `
 }
 .TX-ms-icon.purple {
   background: rgba(155, 69, 204, 0.08);
-  color: #9B45CC;
+  color: #C2410C;
   border-color: rgba(155, 69, 204, 0.2);
 }
 .TX-ms-lbl {
@@ -4092,12 +4092,12 @@ const TX_CSS = `
 }
 .TX-pay-pill.sel-cheque {
   background: rgba(155, 69, 204, 0.08);
-  color: #9B45CC;
+  color: #C2410C;
   border-color: rgba(155, 69, 204, 0.2);
 }
 .TX-pay-pill.sel-bank-transfer {
   background: rgba(8, 145, 178, 0.08);
-  color: #0891B2;
+  color: #A6491D;
   border-color: rgba(8, 145, 178, 0.2);
 }
 .TX-pay-pill.sel-others {
@@ -4355,7 +4355,7 @@ const TX_CSS = `
 
 .TD-list, .INF-list, .INF2-list, .T :is(div,section) {
   scrollbar-width: thin;
-  scrollbar-color: #3B82F6 rgba(203,213,225,0.18);
+  scrollbar-color: #DB5B1F rgba(203,213,225,0.18);
 }
 
 .TD-list::-webkit-scrollbar,
@@ -4376,7 +4376,7 @@ const TX_CSS = `
 .INF-list::-webkit-scrollbar-thumb,
 .INF2-list::-webkit-scrollbar-thumb,
 .T ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   border: none;
   box-shadow: 0 0 3px rgba(59,130,246,0.25);
@@ -4387,7 +4387,7 @@ const TX_CSS = `
 .INF-list::-webkit-scrollbar-thumb:hover,
 .INF2-list::-webkit-scrollbar-thumb:hover,
 .T ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 42%, #2563EB 100%);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 42%, #C2410C 100%);
   box-shadow: 0 0 8px rgba(59,130,246,0.55), 0 0 16px rgba(29,78,216,0.22);
   animation: tx-sb-glow 1.8s ease-in-out infinite;
 }
@@ -5205,44 +5205,44 @@ export default function DaybookTransactions() {
                 <td style="text-align:center">${i + 1}</td>
                 <td>${formatDate(e.transaction_date)}</td>
                 <td><strong>${e.bio_data_name}</strong></td>
-                <td style="color:#9B45CC;font-size: 9px">${e.sub_name_name || '—'}</td>
+                <td style="color:#C2410C;font-size: 9px">${e.sub_name_name || '—'}</td>
                 <td>${e.client_name || '—'}</td>
                 <td>${e.category_name}</td>
                 <td>${e.sub_category_name || '—'}</td>
                 <td>${e.payment_mode}</td>
                 <td style="text-align:right;font-weight: 800;color:${isCr ? '#1E9C6A' : '#D93B55'}">${isCr ? '+' : '-'}₹${Number(e.amount).toLocaleString('en-IN')}</td>
                 <td style="text-align:center"><span style="background:${isCr ? '#E6F9F0' : '#FEE8E8'};color:${isCr ? '#1E9C6A' : '#D93B55'};padding:2px 8px;border-radius:4px;font-size: 8px;font-weight: 800">${isCr ? 'CR' : 'DR'}</span></td>
-                <td style="color:#64748B;font-size: 9px">${e.narration || '—'}</td>
+                <td style="color:#6B5D48;font-size: 9px">${e.narration || '—'}</td>
             </tr>`;
     }).join('');
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Cash Book</title>
 <style>
   * { font-family: 'DM Sans', Arial, sans-serif; }
-  body { font-size: 9px; color: #1A1A1A; margin: 20px; background: #FAFAF8; }
-  .hdr { text-align: center; border-bottom: 2px solid #60A5FA; padding-bottom: 12px; margin-bottom: 16px; }
+  body { font-size: 9px; color: #231C14; margin: 20px; background: #F5F3EF; }
+  .hdr { text-align: center; border-bottom: 2px solid #F0834D; padding-bottom: 12px; margin-bottom: 16px; }
   .hdr-logo { height: 44px; margin-bottom: 6px; }
-  h1 { font-size: 17.5px; margin: 0 0 4px; color: #2C2C2C; font-weight: 800; letter-spacing: -0.5px; }
-  p { font-size: 9px; color: #64748B; margin: 3px 0; }
-  h2 { font-size: 11.5px; margin: 0 0 4px; color: #2C2C2C; font-weight: 800; }
-  .meta { font-size: 9px; color: #94A3B8; margin-bottom: 14px; }
-  .stats { display: flex; gap: 16px; margin-bottom: 16px; padding: 12px 0; border-top: 2px solid #60A5FA; border-bottom: 1px solid #E8E3D8; }
+  h1 { font-size: 17.5px; margin: 0 0 4px; color: #231C14; font-weight: 800; letter-spacing: -0.5px; }
+  p { font-size: 9px; color: #6B5D48; margin: 3px 0; }
+  h2 { font-size: 11.5px; margin: 0 0 4px; color: #231C14; font-weight: 800; }
+  .meta { font-size: 9px; color: #6B5D48; margin-bottom: 14px; }
+  .stats { display: flex; gap: 16px; margin-bottom: 16px; padding: 12px 0; border-top: 2px solid #F0834D; border-bottom: 1px solid #E8E2D8; }
   .sbox { flex: 1; padding: 10px 14px; border-radius: 8px; }
   .sbox.cr { background: #E6F9F0; }
   .sbox.dr { background: #FEE8E8; }
-  .sbox.bl { background: #FEF8E8; }
+  .sbox.bl { background: #FDE0CB; }
   .slbl { font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
   .slbl.cr { color: #1E9C6A; }
   .slbl.dr { color: #D93B55; }
-  .slbl.bl { color: #60A5FA; }
+  .slbl.bl { color: #F0834D; }
   .sval { font-size: 17.5px; font-weight: 800; margin-top: 3px; }
   .sval.cr { color: #1E9C6A; }
   .sval.dr { color: #D93B55; }
-  .sval.bl { color: #60A5FA; }
+  .sval.bl { color: #F0834D; }
   table { width: 100%; border-collapse: collapse; }
-  th { background: #2C2C2C; color: #fff; text-align: left; padding: 8px 10px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800; }
-  td { padding: 7px 10px; border-bottom: 1px solid #E8E3D8; vertical-align: middle; font-size: 9px; }
-  tr:nth-child(even) td { background: #FAFAF8; }
-  tfoot td { background: #FEF8E8 !important; font-weight: 800; border-top: 2px solid #60A5FA !important; }
+  th { background: #231C14; color: #faf9f7; text-align: left; padding: 8px 10px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800; }
+  td { padding: 7px 10px; border-bottom: 1px solid #E8E2D8; vertical-align: middle; font-size: 9px; }
+  tr:nth-child(even) td { background: #F5F3EF; }
+  tfoot td { background: #FDE0CB !important; font-weight: 800; border-top: 2px solid #F0834D !important; }
   @page { margin: 10mm; size: A4 landscape; }
 </style></head><body>
 <div class="hdr"><img class="hdr-logo" src="${window.location.origin + import.meta.env.BASE_URL + 'favicon.png'}" alt="${COMPANY.name}" /><h1>${COMPANY.name}</h1><p>${COMPANY.address}</p></div>
@@ -5261,7 +5261,7 @@ export default function DaybookTransactions() {
   <td colspan="8" style="text-align:right;font-size: 8px;letter-spacing:1px;text-transform:uppercase">Total — ${filtered.length} records</td>
   <td style="text-align:right"><div style="color:#1E9C6A">+₹${displayStats.income.toLocaleString('en-IN')}</div><div style="color:#D93B55">-₹${displayStats.expense.toLocaleString('en-IN')}</div></td>
   <td style="text-align:center;color:${displayStats.balance >= 0 ? '#1E9C6A' : '#D93B55'};font-weight: 800">${displayStats.balance >= 0 ? 'CR' : 'DR'}</td>
-  <td style="color:#60A5FA;font-weight: 800">₹${Math.abs(displayStats.balance).toLocaleString('en-IN')}</td>
+  <td style="color:#F0834D;font-weight: 800">₹${Math.abs(displayStats.balance).toLocaleString('en-IN')}</td>
 </tr></tfoot></table>
 </body></html>`;
     const w = window.open('', '_blank', 'width=1200,height=800');
@@ -5325,7 +5325,7 @@ export default function DaybookTransactions() {
                   </span>
                 </div>
                 <div className="DB-stat-chip bank">
-                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#A6491D" /></span>
                   <span className="DB-stat-chip-text">
                     <span className="DB-stat-chip-label">Bank Holding</span>
                     <span className="DB-stat-chip-val">₹{creditBank.toLocaleString('en-IN')}</span>
@@ -5360,7 +5360,7 @@ export default function DaybookTransactions() {
                   </span>
                 </div>
                 <div className="DB-stat-chip bank">
-                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#A6491D" /></span>
                   <span className="DB-stat-chip-text">
                     <span className="DB-stat-chip-label">Bank Holding</span>
                     <span className="DB-stat-chip-val">₹{debitBank.toLocaleString('en-IN')}</span>
@@ -5373,7 +5373,7 @@ export default function DaybookTransactions() {
 
           {/* NET BALANCE START */}
           <div className="ERP-stat">
-            <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+            <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
             <div className="ERP-stat-glow" />
             <div className="ERP-stat-label">Net Balance</div>
             <div className="ERP-stat-val" style={{ color: displayStats.balance >= 0 ? 'var(--success)' : 'var(--error)', fontSize: 28 }}>
@@ -5399,7 +5399,7 @@ export default function DaybookTransactions() {
                   </span>
                 </div>
                 <div className="DB-stat-chip bank">
-                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#0891B2" /></span>
+                  <span className="DB-stat-chip-icon"><Icon name="bank" size={9} color="#A6491D" /></span>
                   <span className="DB-stat-chip-text">
                     <span className="DB-stat-chip-label">Bank Holding</span>
                     <span className="DB-stat-chip-val" style={{ color: netBank < 0 ? 'var(--error)' : 'var(--text-1)' }}>
@@ -5626,7 +5626,7 @@ export default function DaybookTransactions() {
               <div className="T-choose-empty-orbit">
                 <div className="T-choose-ring" />
                 <div className="T-choose-ring r2" />
-                <div className="T-choose-empty-icon"><Icon name="filter" size={22} color="#fff" /></div>
+                <div className="T-choose-empty-icon"><Icon name="filter" size={22} color="#faf9f7" /></div>
               </div>
               <div className="T-choose-empty-title">Choose a Filter to View Transactions</div>
               <div className="T-choose-empty-sub">

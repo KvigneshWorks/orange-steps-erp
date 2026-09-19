@@ -58,21 +58,21 @@ const ROLE_CARD: Record<'user' | 'admin', { title: string; sub: string; icon: st
     user: {
         title: 'User', sub: 'Manpower Register & Attendance only',
         icon: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z',
-        c: '#2563eb', bg: '#eff6ff', bd: '#bfdbfe',
+        c: '#C2410C', bg: '#FDE0CB', bd: '#FBC9A8',
     },
     admin: {
         title: 'Admin', sub: 'Most modules — can create User accounts',
         icon: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
-        c: '#9333ea', bg: '#fdf4ff', bd: '#e9d5ff',
+        c: '#DB5B1F', bg: '#FDE0CB', bd: '#FBC9A8',
     },
 };
 
 const OUTCOME_META: Record<OutcomeStatus, { c: string; bg: string; bd: string }> = {
-    pending: { c: '#C47E0A', bg: 'rgba(196,126,10,.10)', bd: 'rgba(196,126,10,.30)' },
+    pending: { c: '#9A3412', bg: 'rgba(196,126,10,.10)', bd: 'rgba(196,126,10,.30)' },
     approved: { c: '#1E9C6A', bg: 'rgba(30,156,106,.10)', bd: 'rgba(30,156,106,.28)' },
     created: { c: '#1E9C6A', bg: 'rgba(30,156,106,.10)', bd: 'rgba(30,156,106,.28)' },
     rejected: { c: '#D93B55', bg: 'rgba(217,59,85,.10)', bd: 'rgba(217,59,85,.26)' },
-    expired: { c: '#64748b', bg: 'rgba(100,116,139,.10)', bd: 'rgba(100,116,139,.26)' },
+    expired: { c: '#6B5D48', bg: 'rgba(100,116,139,.10)', bd: 'rgba(100,116,139,.26)' },
 };
 
 const CONFETTI_ANGLES = [0, 36, 72, 108, 144, 180, 216, 252, 288, 324];
@@ -106,7 +106,7 @@ function Confetti() {
     return (
         <div className="AS-confetti">
             {CONFETTI_ANGLES.map((a, i) => (
-                <span key={a} style={{ '--a': `${a}deg`, animationDelay: `${i * 0.025}s`, background: i % 3 === 1 ? '#60A5FA' : i % 3 === 2 ? '#F5C542' : undefined } as any} />
+                <span key={a} style={{ '--a': `${a}deg`, animationDelay: `${i * 0.025}s`, background: i % 3 === 1 ? '#F0834D' : i % 3 === 2 ? '#EA580C' : undefined } as any} />
             ))}
         </div>
     );
@@ -121,17 +121,17 @@ function OutcomeStepper({ status }: { status: OutcomeStatus }) {
     return (
         <div className="AS-stepper">
             <div className="AS-step done">
-                <div className="AS-step-dot"><Ic d="M5 13l4 4L19 7" sz={10} c="#fff" sw={3} /></div>
+                <div className="AS-step-dot"><Ic d="M5 13l4 4L19 7" sz={10} c="#faf9f7" sw={3} /></div>
                 <div className="AS-step-label">Submitted</div>
             </div>
             <div className="AS-step-line done" />
             <div className={`AS-step ${resolved ? 'done' : 'active'}`}>
-                <div className="AS-step-dot">{resolved ? <Ic d="M5 13l4 4L19 7" sz={10} c="#fff" sw={3} /> : '2'}</div>
+                <div className="AS-step-dot">{resolved ? <Ic d="M5 13l4 4L19 7" sz={10} c="#faf9f7" sw={3} /> : '2'}</div>
                 <div className="AS-step-label">Under Review</div>
             </div>
             <div className={`AS-step-line ${resolved ? 'done' : ''}`} />
             <div className={`AS-step ${resolved ? 'done' : ''}`}>
-                <div className="AS-step-dot">{resolved ? <Ic d="M5 13l4 4L19 7" sz={10} c="#fff" sw={3} /> : '3'}</div>
+                <div className="AS-step-dot">{resolved ? <Ic d="M5 13l4 4L19 7" sz={10} c="#faf9f7" sw={3} /> : '3'}</div>
                 <div className="AS-step-label">{finalLabel}</div>
             </div>
         </div>
@@ -220,6 +220,86 @@ function OutcomeStage({ outcome, onReset }: { outcome: Outcome; onReset: () => v
         </div>
     );
 }
+
+/* Page-scoped only: "Create Account" full-page treatment -- stretches the
+   two-column layout to fill the available height instead of sitting short
+   above a lot of empty warm-white space, unifies every font on the page
+   to one bold / upright / all-caps style, neutralises the browser's
+   yellow autofill tint so fields always read as clean and empty, and adds
+   a richer staggered entrance for the side panel, the form and each
+   section. Scoped under .CA-full so it never leaks into any other page
+   even though the underlying classes (ERP-*, AS-*) are shared globally. */
+const CA_FULL_CSS = `
+.CA-full, .CA-full * {
+  font-family: var(--font-body) !important;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-style: normal;
+}
+.CA-full input,
+.CA-full textarea {
+  text-transform: uppercase;
+}
+.CA-full input::placeholder,
+.CA-full textarea::placeholder {
+  text-transform: uppercase;
+}
+
+/* -- Fill the full page height instead of sitting short with empty
+     warm-white space below the card. -- */
+.CA-full.ERP-page { display: flex; flex-direction: column; }
+.CA-full .AS-create { flex: 1; align-items: stretch; min-height: 0; }
+.CA-full .AS-create-side { align-self: stretch; }
+.CA-full .AS-create-main { display: flex; flex-direction: column; height: 100%; }
+.CA-full .AS-create-card { display: flex; flex-direction: column; height: 100%; }
+.CA-full .AS-create-card-body { display: flex; flex-direction: column; flex: 1; }
+.CA-full .AS-create-card-body form { display: flex; flex-direction: column; flex: 1; }
+.CA-full .AS-create-card-foot { margin-top: auto; padding-top: 26px; }
+
+/* -- Clean, empty-looking fields -- kill the browser's yellow/blue
+     autofill tint so every field reads as a crisp empty box, not a
+     pre-filled one. -- */
+.CA-full input:-webkit-autofill,
+.CA-full input:-webkit-autofill:hover,
+.CA-full input:-webkit-autofill:focus,
+.CA-full input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--text-1);
+  -webkit-box-shadow: 0 0 0px 1000px var(--white) inset;
+  box-shadow: 0 0 0px 1000px var(--white) inset;
+  transition: background-color 9999s ease-in-out 0s;
+  caret-color: var(--text-1);
+}
+
+/* -- Richer, staggered page-wide entrance -- */
+@keyframes ca-side-in  { 0% { opacity: 0; transform: translateX(-22px); } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes ca-main-in  { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes ca-sec-in   { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes ca-ic-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+.CA-full .AS-create-side    { animation: ca-side-in .6s cubic-bezier(.22,1,.36,1) both; }
+.CA-full .AS-create-main    { animation: ca-main-in .6s cubic-bezier(.22,1,.36,1) .08s both; }
+.CA-full .AS-create-side-ic { animation: ca-ic-float 2.6s ease-in-out infinite; }
+
+.CA-full .AS-create-section { opacity: 0; animation: ca-sec-in .5s cubic-bezier(.22,1,.36,1) forwards; }
+.CA-full .AS-create-section:nth-child(1) { animation-delay: .18s; }
+.CA-full .AS-create-section:nth-child(3) { animation-delay: .30s; }
+.CA-full .AS-create-section:nth-child(5) { animation-delay: .42s; }
+.CA-full .ERP-g2, .CA-full .ERP-g1 { opacity: 0; animation: ca-sec-in .5s cubic-bezier(.22,1,.36,1) forwards; }
+.CA-full .ERP-g2:nth-child(2) { animation-delay: .24s; }
+.CA-full .ERP-g2:nth-child(4) { animation-delay: .36s; }
+.CA-full .ERP-g1:nth-child(6) { animation-delay: .48s; }
+.CA-full .AS-create-card-foot { opacity: 0; animation: ca-sec-in .5s cubic-bezier(.22,1,.36,1) .5s forwards; }
+
+.CA-full .AS-role-card { transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s; }
+.CA-full .AS-role-card:hover { transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .CA-full .AS-create-side, .CA-full .AS-create-main, .CA-full .AS-create-side-ic,
+  .CA-full .AS-create-section, .CA-full .ERP-g2, .CA-full .ERP-g1, .CA-full .AS-create-card-foot {
+    animation: none !important; opacity: 1 !important;
+  }
+}
+`;
 
 export default function CreateAccount() {
     const role = getStoredRole();
@@ -324,9 +404,10 @@ export default function CreateAccount() {
     };
 
     return (
-        <div className="ERP-page">
+        <div className="ERP-page CA-full">
             <style>{ERP_CSS}</style>
             <style>{AS_CSS}</style>
+            <style>{CA_FULL_CSS}</style>
 
             <PageHeader eyebrow="Account Settings" title="Create" titleEm="Account" />
 
@@ -339,7 +420,7 @@ export default function CreateAccount() {
                     {/* ── LEFT: journey panel — what happens end to end ── */}
                     <div className="AS-create-side">
                         <div className="AS-create-side-ic">
-                            <Ic d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" sz={19} c="#fff" sw={1.8} />
+                            <Ic d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" sz={19} c="#faf9f7" sw={1.8} />
                         </div>
                         <div className="AS-create-side-title">{isSuperAdmin ? 'Add a teammate' : 'Add a new User'}</div>
                         <div className="AS-create-side-sub">
@@ -419,7 +500,7 @@ export default function CreateAccount() {
                                         <Field label="Full Name" error={errors.name}>
                                             <div className="AS-field-ic">
                                                 <span className="AS-field-ic-svg"><Ic d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" sz={13} c="currentColor" sw={2} /></span>
-                                                <Input name="name" value={form.name} onChange={handleChange} placeholder="e.g., Priya Sharma" required />
+                                                <Input name="name" value={form.name} onChange={handleChange} placeholder="Enter full name" required />
                                             </div>
                                         </Field>
                                         <Field label="Email" error={errors.email}>
@@ -488,7 +569,7 @@ export default function CreateAccount() {
                                                                         <div className="AS-role-card-sub">{rc.sub}</div>
                                                                     </div>
                                                                     <div className="AS-role-card-check">
-                                                                        {selected && <Ic d="M5 13l4 4L19 7" sz={10} c="#fff" sw={3} />}
+                                                                        {selected && <Ic d="M5 13l4 4L19 7" sz={10} c="#faf9f7" sw={3} />}
                                                                     </div>
                                                                 </div>
                                                             );
@@ -505,7 +586,7 @@ export default function CreateAccount() {
                                             variant="primary"
                                             loading={submitting}
                                             loadingText={isSuperAdmin ? 'Creating...' : 'Sending...'}
-                                            icon={<Ic d="M12 4v16m-8-8h16" sz={13} c="#fff" sw={2.2} />}
+                                            icon={<Ic d="M12 4v16m-8-8h16" sz={13} c="#faf9f7" sw={2.2} />}
                                         >
                                             {isSuperAdmin ? 'Create Account' : 'Send for Approval'}
                                         </Button>

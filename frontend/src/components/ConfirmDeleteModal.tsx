@@ -142,7 +142,7 @@ export default function ConfirmDeleteModal({
         }
         .cdm-backdrop.closing { animation: cdm-backdrop-out 0.24s ease both; }
         .cdm-card {
-          background: #fff;
+          background: #faf9f7;
           border-radius: 26px;
           box-shadow: 0 24px 80px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.05);
           width: 100%; max-width: 340px;
@@ -154,7 +154,7 @@ export default function ConfirmDeleteModal({
         .cdm-top-bar {
           height: 4px; position: relative; overflow: hidden;
           border-radius: 26px 26px 0 0;
-          background: linear-gradient(90deg, var(--ember,#FF6B00) 0%, var(--ember-mid,#fe9307) 50%, var(--ember-light,#F5A623) 100%);
+          background: linear-gradient(90deg, var(--ember,#C2410C) 0%, var(--ember-mid,#EA580C) 50%, var(--ember-light,#F0834D) 100%);
         }
         .cdm-top-bar::after {
           content: '';
@@ -171,7 +171,7 @@ export default function ConfirmDeleteModal({
           font-family: 'Space Grotesk', sans-serif;
           font-size: 13.5px;
           font-weight: 800;
-          color: #1a1008;
+          color: #231C14;
           margin: 4px 0 0;
           letter-spacing: -0.2px;
           line-height: 1.4;
@@ -184,8 +184,8 @@ export default function ConfirmDeleteModal({
           font-family: 'Space Grotesk', sans-serif;
           font-size: 10.5px;
           font-weight: 800;
-          color: #fff;
-          background: linear-gradient(135deg, var(--ember-mid,#fe9307) 0%, var(--ember,#FF6B00) 100%);
+          color: #faf9f7;
+          background: linear-gradient(135deg, var(--ember-mid,#EA580C) 0%, var(--ember,#C2410C) 100%);
           border: none;
           border-radius: 99px;
           padding: 9px 18px;
@@ -200,8 +200,8 @@ export default function ConfirmDeleteModal({
           font-family: 'Space Grotesk', sans-serif;
           font-size: 10.5px;
           font-weight: 700;
-          color: #c0392b;
-          background: #fdf3f1;
+          color: #9A3412;
+          background: #F5F3EF;
           border: none;
           border-radius: 99px;
           padding: 9px 16px;
@@ -210,12 +210,12 @@ export default function ConfirmDeleteModal({
           display: flex; align-items: center; justify-content: center; gap: 6px;
           flex: 1;
         }
-        .cdm-btn-delete:hover:not(:disabled) { background: #fbe6e2; }
+        .cdm-btn-delete:hover:not(:disabled) { background: #FDE0CB; }
         .cdm-btn-delete:disabled { opacity: 0.6; cursor: not-allowed; }
         .cdm-spinner {
           width: 13px; height: 13px;
           border: 2px solid rgba(192,57,43,0.25);
-          border-top-color: #c0392b;
+          border-top-color: #9A3412;
           border-radius: 50%;
           animation: cdm-spin 0.7s linear infinite;
         }
@@ -231,7 +231,7 @@ export default function ConfirmDeleteModal({
                 <g className={`cdm-run-track${falling ? ' paused' : ''}`}>
                   <g transform="translate(25,5)">
                     <g className={`cdm-run-flip${falling ? ' paused' : ''}`}>
-                      <g className={`cdm-run-lines${falling ? ' falling' : ''}`} opacity="0.4" stroke="var(--ember-light,#F5A623)" strokeWidth="3.1" strokeLinecap="round">
+                      <g className={`cdm-run-lines${falling ? ' falling' : ''}`} opacity="0.4" stroke="var(--ember-light,#F0834D)" strokeWidth="3.1" strokeLinecap="round">
                         <line className="cdm-run-line l1" x1="-30" y1="32.5" x2="-10" y2="32.5" />
                         <line className="cdm-run-line l2" x1="-25" y1="42.5" x2="-10" y2="42.5" />
                         <line className="cdm-run-line l3" x1="-20" y1="52.5" x2="-10" y2="52.5" />
@@ -240,34 +240,34 @@ export default function ConfirmDeleteModal({
 
                         <g transform="translate(14,22.5)">
                           <g className="cdm-run-arm-back">
-                            <line x1="0" y1="0" x2="-16.3" y2="12.5" stroke="var(--ember,#FF6B00)" strokeWidth="9.4" strokeLinecap="round" />
-                            <circle cx="-16.3" cy="12.5" r="4.7" fill="var(--ember,#FF6B00)" />
+                            <line x1="0" y1="0" x2="-16.3" y2="12.5" stroke="var(--ember,#C2410C)" strokeWidth="9.4" strokeLinecap="round" />
+                            <circle cx="-16.3" cy="12.5" r="4.7" fill="var(--ember,#C2410C)" />
                           </g>
                         </g>
 
                         <g transform="translate(14,47.5)">
                           <g className="cdm-run-leg-back">
-                            <line x1="0" y1="0" x2="-17.5" y2="22.5" stroke="var(--ember,#FF6B00)" strokeWidth="10.6" strokeLinecap="round" />
-                            <circle cx="-17.5" cy="22.5" r="5.4" fill="var(--ember,#FF6B00)" />
+                            <line x1="0" y1="0" x2="-17.5" y2="22.5" stroke="var(--ember,#C2410C)" strokeWidth="10.6" strokeLinecap="round" />
+                            <circle cx="-17.5" cy="22.5" r="5.4" fill="var(--ember,#C2410C)" />
                           </g>
                         </g>
 
                         <g transform="rotate(8,14,35)">
-                          <line x1="14" y1="18.8" x2="14" y2="48.8" stroke="var(--ember,#FF6B00)" strokeWidth="11.9" strokeLinecap="round" />
+                          <line x1="14" y1="18.8" x2="14" y2="48.8" stroke="var(--ember,#C2410C)" strokeWidth="11.9" strokeLinecap="round" />
                         </g>
-                        <circle cx="15" cy="8.1" r="10.6" fill="var(--ember,#FF6B00)" />
+                        <circle cx="15" cy="8.1" r="10.6" fill="var(--ember,#C2410C)" />
 
                         <g transform="translate(14,47.5)">
                           <g className="cdm-run-leg-front">
-                            <line x1="0" y1="0" x2="18.8" y2="20" stroke="var(--ember,#FF6B00)" strokeWidth="11.3" strokeLinecap="round" />
-                            <circle cx="18.8" cy="20" r="5.7" fill="var(--ember,#FF6B00)" />
+                            <line x1="0" y1="0" x2="18.8" y2="20" stroke="var(--ember,#C2410C)" strokeWidth="11.3" strokeLinecap="round" />
+                            <circle cx="18.8" cy="20" r="5.7" fill="var(--ember,#C2410C)" />
                           </g>
                         </g>
 
                         <g transform="translate(14,22.5)">
                           <g className="cdm-run-arm-front">
-                            <line x1="0" y1="0" x2="16.3" y2="10" stroke="var(--ember,#FF6B00)" strokeWidth="10" strokeLinecap="round" />
-                            <circle cx="16.3" cy="10" r="4.9" fill="var(--ember,#FF6B00)" />
+                            <line x1="0" y1="0" x2="16.3" y2="10" stroke="var(--ember,#C2410C)" strokeWidth="10" strokeLinecap="round" />
+                            <circle cx="16.3" cy="10" r="4.9" fill="var(--ember,#C2410C)" />
                           </g>
                         </g>
 

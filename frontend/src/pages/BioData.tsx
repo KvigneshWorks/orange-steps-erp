@@ -273,17 +273,17 @@ const SDD_CSS = `
   0%,100% { box-shadow: 0 0 4px rgba(59,130,246,0.35); }
   50%      { box-shadow: 0 0 9px rgba(59,130,246,0.65), 0 0 18px rgba(29,78,216,0.25); }
 }
-.SDD-list { scrollbar-width: thin; scrollbar-color: #3B82F6 rgba(203,213,225,0.18); }
+.SDD-list { scrollbar-width: thin; scrollbar-color: #DB5B1F rgba(203,213,225,0.18); }
 .SDD-list::-webkit-scrollbar { width: 3px; }
 .SDD-list::-webkit-scrollbar-track { background: rgba(203,213,225,0.15); border-radius: 99px; }
 .SDD-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   box-shadow: 0 0 3px rgba(59,130,246,0.25);
   transition: background 0.22s ease, box-shadow 0.22s ease;
 }
 .SDD-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 42%, #2563EB 100%);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 42%, #C2410C 100%);
   box-shadow: 0 0 8px rgba(59,130,246,0.55), 0 0 16px rgba(29,78,216,0.22);
   animation: bio-sb-glow 1.8s ease-in-out infinite;
 }
@@ -595,7 +595,7 @@ export default function BioData() {
                                 <div className="ERP-form-hdr MD-form-hdr">
                                     <div className="ERP-form-icon-wrap MD-form-icon-wrap">
                                         <Ic d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                            sz={18} c="#fff" sw={1.8} />
+                                            sz={18} c="#faf9f7" sw={1.8} />
                                     </div>
                                     <div>
                                         <div className="ERP-form-title MD-form-title">
@@ -759,7 +759,7 @@ export default function BioData() {
                                         <button type="submit" className="ERP-btn primary" disabled={loading}>
                                             {loading
                                                 ? <><span className="ERP-spinner" /> Saving...</>
-                                                : <><Ic d="M5 13l4 4L19 7" sz={13} c="#fff" sw={2.2} />
+                                                : <><Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} />
                                                     {editId ? 'Save Changes' : 'Register Party Master'}</>}
                                         </button>
                                         <button type="button" className="ERP-btn secondary"
@@ -865,7 +865,7 @@ export default function BioData() {
                                         onKeyDown={handleSearchKeyDown}
                                     />
                                     <button type="button" className="MD-tbl-search-btn" title="Search" onClick={runNameSearch}>
-                                        <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={14} c="#fff" sw={2.2} />
+                                        <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={14} c="#faf9f7" sw={2.2} />
                                     </button>
                                 </div>
                             </div>

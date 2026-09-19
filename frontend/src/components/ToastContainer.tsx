@@ -13,8 +13,8 @@ const IC: Record<string, string> = {
 const PALETTE = {
     success: { c: '#1E9C6A', bg: 'rgba(30,156,106,0.10)', bd: 'rgba(30,156,106,0.24)', label: 'Success' },
     error: { c: '#D93B55', bg: 'rgba(217,59,85,0.10)', bd: 'rgba(217,59,85,0.22)', label: 'Error' },
-    info: { c: '#2870CC', bg: 'rgba(40,112,204,0.10)', bd: 'rgba(40,112,204,0.22)', label: 'Info' },
-    warning: { c: '#C47E0A', bg: 'rgba(196,126,10,0.10)', bd: 'rgba(196,126,10,0.22)', label: 'Warning' },
+    info: { c: '#DB5B1F', bg: 'rgba(40,112,204,0.10)', bd: 'rgba(40,112,204,0.22)', label: 'Info' },
+    warning: { c: '#9A3412', bg: 'rgba(196,126,10,0.10)', bd: 'rgba(196,126,10,0.22)', label: 'Warning' },
 };
 
 const CSS = `
@@ -53,7 +53,7 @@ const CSS = `
   display:flex; align-items:stretch;
   border-radius:12px; overflow:hidden;
   background:#FFFFFF;
-  border:1px solid #E7E2DC;
+  border:1px solid #E8E2D8;
   box-shadow:0 1px 1px rgba(30,20,10,0.04), 0 4px 10px rgba(30,20,10,0.06), 0 16px 32px -8px rgba(30,20,10,0.12);
   transform-style:preserve-3d;
   transition:transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s ease;
@@ -93,19 +93,19 @@ const CSS = `
 }
 .PT-title {
   font-family:'Space Grotesk','Segoe UI',sans-serif; font-size:12.5px; font-weight:700;
-  color:#241D15; line-height:1.35; letter-spacing:-.01em;
+  color:#231C14; line-height:1.35; letter-spacing:-.01em;
 }
 .PT-sub {
   font-family:'Space Grotesk','Segoe UI',sans-serif; font-size:11px; font-weight:500;
-  color:#7A6F60; margin-top:2px; line-height:1.4;
+  color:#6B5D48; margin-top:2px; line-height:1.4;
 }
 
 .PT-close {
   flex-shrink:0; width:20px; height:20px; border-radius:6px; margin-top:0;
   border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  background:transparent; color:#A69A87; transition:background .15s, color .15s, transform .15s;
+  background:transparent; color:#8C7C63; transition:background .15s, color .15s, transform .15s;
 }
-.PT-close:hover { background:#F4EFE8; color:#4A4136; transform:scale(1.1); }
+.PT-close:hover { background:#F5F3EF; color:#3A3024; transform:scale(1.1); }
 
 .PT-track { position:absolute; left:0; right:0; bottom:0; height:2px; background:transparent; }
 .PT-fill { height:100%; background:var(--pt-c); opacity:.55; animation:pt-drain linear both; }

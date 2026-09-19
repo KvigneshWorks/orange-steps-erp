@@ -165,7 +165,7 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                 }
                 .cpm-backdrop.closing { animation: cpm-backdrop-out 0.22s ease both; }
                 .cpm-card {
-                    background: #fff;
+                    background: #faf9f7;
                     border-radius: 22px;
                     box-shadow: 0 24px 80px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.05);
                     width: 100%; max-width: 360px;
@@ -175,7 +175,7 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                 .cpm-card.closing { animation: cpm-modal-out 0.22s cubic-bezier(0.4,0,0.6,1) both; }
                 .cpm-top-bar {
                     height: 4px; position: relative; overflow: hidden;
-                    background: linear-gradient(90deg, var(--ember,#2563EB) 0%, var(--ember-mid,#3B82F6) 50%, var(--ember-light,#60A5FA) 100%);
+                    background: linear-gradient(90deg, var(--ember,#C2410C) 0%, var(--ember-mid,#DB5B1F) 50%, var(--ember-light,#F0834D) 100%);
                 }
                 .cpm-top-bar::after {
                     content: '';
@@ -194,57 +194,57 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                     background: rgba(37,99,235,0.1);
                     border: 1px solid rgba(37,99,235,0.22);
                     display: flex; align-items: center; justify-content: center;
-                    color: var(--ember,#2563EB);
+                    color: var(--ember,#C2410C);
                 }
                 .cpm-title {
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: 16px; font-weight: 800; color: #0F172A;
+                    font-size: 16px; font-weight: 800; color: #231C14;
                     letter-spacing: -0.2px;
                 }
                 .cpm-subtitle {
                     font-family: 'JetBrains Mono', monospace;
-                    font-size: 9px; font-weight: 700; color: #64748B;
+                    font-size: 9px; font-weight: 700; color: #6B5D48;
                     letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;
                 }
                 .cpm-body { padding: 16px 24px 4px; display: flex; flex-direction: column; gap: 14px; }
                 .cpm-field { display: flex; flex-direction: column; gap: 6px; }
                 .cpm-label {
                     font-family: 'JetBrains Mono', monospace;
-                    font-size: 9.5px; font-weight: 800; color: #64748B;
+                    font-size: 9.5px; font-weight: 800; color: #6B5D48;
                     letter-spacing: 1.5px; text-transform: uppercase;
                 }
                 .cpm-input-wrap { position: relative; display: flex; align-items: center; }
                 .cpm-input {
                     width: 100%;
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: 13.5px; font-weight: 600; color: #0F172A;
+                    font-size: 13.5px; font-weight: 600; color: #231C14;
                     padding: 10px 38px 10px 12px;
                     border-radius: 10px;
                     border: 1.5px solid rgba(0,0,0,0.09);
-                    background: #F8FAFC;
+                    background: #F5F3EF;
                     outline: none;
                     transition: border-color 0.15s, background 0.15s;
                     box-sizing: border-box;
                 }
                 .cpm-input:focus {
-                    border-color: var(--ember,#2563EB);
-                    background: #fff;
+                    border-color: var(--ember,#C2410C);
+                    background: #faf9f7;
                 }
                 .cpm-eye {
                     position: absolute; right: 8px;
                     background: none; border: none; cursor: pointer;
-                    color: #64748B; padding: 6px;
+                    color: #6B5D48; padding: 6px;
                     display: flex; align-items: center; justify-content: center;
                 }
-                .cpm-eye:hover { color: var(--ember,#2563EB); }
+                .cpm-eye:hover { color: var(--ember,#C2410C); }
                 .cpm-hint {
                     font-family: 'JetBrains Mono', monospace;
-                    font-size: 9px; color: #94A3B8; letter-spacing: 0.3px; margin-top: -6px;
+                    font-size: 9px; color: #6B5D48; letter-spacing: 0.3px; margin-top: -6px;
                 }
                 .cpm-error {
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: 11.5px; font-weight: 700; color: #c0392b;
-                    background: #fdf3f1; border: 1px solid rgba(192,57,43,0.18);
+                    font-size: 11.5px; font-weight: 700; color: #9A3412;
+                    background: #F5F3EF; border: 1px solid rgba(192,57,43,0.18);
                     border-radius: 9px; padding: 9px 12px;
                     animation: cpm-shake 0.4s ease;
                 }
@@ -254,7 +254,7 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                 }
                 .cpm-btn-cancel {
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: 11px; font-weight: 700; color: #64748B;
+                    font-size: 11px; font-weight: 700; color: #6B5D48;
                     background: rgba(0,0,0,0.04); border: none;
                     border-radius: 99px; padding: 10px 18px; cursor: pointer;
                     transition: background 0.15s;
@@ -263,8 +263,8 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                 .cpm-btn-cancel:disabled { opacity: 0.5; cursor: not-allowed; }
                 .cpm-btn-save {
                     font-family: 'Space Grotesk', sans-serif;
-                    font-size: 11px; font-weight: 800; color: #fff;
-                    background: linear-gradient(135deg, var(--ember-mid,#3B82F6) 0%, var(--ember,#2563EB) 100%);
+                    font-size: 11px; font-weight: 800; color: #faf9f7;
+                    background: linear-gradient(135deg, var(--ember-mid,#DB5B1F) 0%, var(--ember,#C2410C) 100%);
                     border: none; border-radius: 99px; padding: 10px 20px; cursor: pointer;
                     box-shadow: 0 4px 14px rgba(29,78,216,0.28);
                     transition: transform 0.16s ease, box-shadow 0.16s ease;
@@ -275,7 +275,7 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
                 .cpm-spinner {
                     width: 12px; height: 12px;
                     border: 2px solid rgba(255,255,255,0.4);
-                    border-top-color: #fff;
+                    border-top-color: #faf9f7;
                     border-radius: 50%;
                     animation: cpm-spin 0.7s linear infinite;
                 }

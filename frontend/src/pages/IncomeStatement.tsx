@@ -49,17 +49,17 @@ const isPdfSafe = (text: string | undefined | null): string => {
         .replace(/\s{2,}/g, ' ').trim() || '-';
 };
 const fmtDate = (d: string) => { if (!d) return '—'; try { const dt = new Date(d + 'T00:00:00'); return dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return d; } };
-const MODE_COLOR: Record<string, string> = { cash: '#1e9c6a', Cash: '#1e9c6a', upi: '#2870cc', UPI: '#2870cc', bank_transfer: '#7c3aed', 'Bank Transfer': '#7c3aed', cheque: '#c47e0a', Cheque: '#c47e0a', neft: '#2870cc', NEFT: '#2870cc', other: '#6b7280', Others: '#6b7280' };
+const MODE_COLOR: Record<string, string> = { cash: '#1e9c6a', Cash: '#1e9c6a', upi: '#DB5B1F', UPI: '#DB5B1F', bank_transfer: '#C2410C', 'Bank Transfer': '#C2410C', cheque: '#9A3412', Cheque: '#9A3412', neft: '#DB5B1F', NEFT: '#DB5B1F', other: '#6B5D48', Others: '#6B5D48' };
 const ErpLogo = ({ size = 62 }: { size?: number }) => (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"
         style={{ filter: 'drop-shadow(0 4px 18px rgba(29,78,216,0.40)) drop-shadow(0 1px 4px rgba(0,0,0,0.18))', transition: 'transform .22s,filter .22s', display: 'block' }}>
 
         <defs>
             <linearGradient id="isLg1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#2563EB" /><stop offset="100%" stopColor="#1D4ED8" />
+                <stop offset="0%" stopColor="#C2410C" /><stop offset="100%" stopColor="#9A3412" />
             </linearGradient>
             <linearGradient id="isLg2" x1="0" y1="0" x2="80" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#3B82F6" /><stop offset="60%" stopColor="#3B82F6" /><stop offset="100%" stopColor="#2563EB" />
+                <stop offset="0%" stopColor="#DB5B1F" /><stop offset="60%" stopColor="#DB5B1F" /><stop offset="100%" stopColor="#C2410C" />
             </linearGradient>
             <radialGradient id="isLg3" cx="40%" cy="30%" r="55%" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="rgba(255,255,255,0.12)" /><stop offset="100%" stopColor="rgba(255,255,255,0)" />
@@ -323,21 +323,21 @@ ${ERP_CSS}
 .IS-hero-body{flex:1;position:relative;z-index:1;min-width:0;}
 .IS-hero-eyebrow{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size: 8px;font-weight: 700;letter-spacing:3px;text-transform:uppercase;color:var(--ember);margin-bottom:4px;}
 .IS-hero-eyebrow-line{display:none;}
-.IS-hero-title{font-family:var(--font-display);font-size: 23px;font-weight: 600;font-style:italic;line-height:1.1;color:#1A1A1A;}
+.IS-hero-title{font-family:var(--font-display);font-size: 23px;font-weight: 600;font-style:italic;line-height:1.1;color:#231C14;}
 .IS-hero-title em{font-style:normal;color:var(--ember);background:none;-webkit-text-fill-color:currentColor;}
-.IS-hero-sub{font-family:var(--font-mono);font-size: 8px;color:#94A3B8;margin-top:3px;letter-spacing:1px;}
+.IS-hero-sub{font-family:var(--font-mono);font-size: 8px;color:#6B5D48;margin-top:3px;letter-spacing:1px;}
 .IS-hero-actions{display:flex;gap:10px;position:relative;z-index:1;flex-shrink:0;}
 
 /* ── Buttons ── */
 .IS-btn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 18px;border-radius:var(--r-sm);font-size: 9.5px;font-weight: 800;cursor:pointer;border:none;transition:all .15s;font-family:var(--font-body);white-space:nowrap;letter-spacing:.02em;}
-.IS-btn.primary{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#fff;box-shadow:0 2px 12px rgba(29,78,216,.28);}
+.IS-btn.primary{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#faf9f7;box-shadow:0 2px 12px rgba(29,78,216,.28);}
 .IS-btn.primary:hover{transform:translateY(-1px);box-shadow:var(--sh-ember);}
 .IS-btn.ghost{background:var(--off-white);color:var(--text-2);border:1px solid var(--border);}
 .IS-btn.ghost:hover{background:var(--ember-ghost);color:var(--ember);border-color:var(--ember-border);}
-.IS-btn.pdf-btn{background:linear-gradient(135deg,var(--ember),var(--ember-mid));color:#fff;box-shadow:0 2px 12px rgba(29,78,216,.25);}
+.IS-btn.pdf-btn{background:linear-gradient(135deg,var(--ember),var(--ember-mid));color:#faf9f7;box-shadow:0 2px 12px rgba(29,78,216,.25);}
 .IS-btn.pdf-btn:hover{transform:translateY(-1px);box-shadow:var(--sh-ember);}
 .IS-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
-.IS-spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:erp-spin .7s linear infinite;display:inline-block;flex-shrink:0;}
+.IS-spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#faf9f7;border-radius:50%;animation:erp-spin .7s linear infinite;display:inline-block;flex-shrink:0;}
 .IS-spin.dark{border-color:rgba(0,0,0,.12);border-top-color:var(--ember);}
 
 /* ── Filters ── */
@@ -356,35 +356,35 @@ ${ERP_CSS}
 .IS-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--sh-card);position:relative;overflow:hidden;animation:erp-slide-up .5s ease both;transition:box-shadow .2s,transform .2s;}
 .IS-card:hover{box-shadow:var(--sh-hover);transform:translateY(-3px);}
 .IS-card::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;}
-.IS-card-0::before{background:linear-gradient(90deg,#2563EB,#3B82F6,#BFDBFE);}
-.IS-card-1::before{background:linear-gradient(90deg,#1e9c6a,#2bcf8e);}
-.IS-card-2::before{background:linear-gradient(90deg,#2870cc,#5b9af8);}
-.IS-card-3::before{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
+.IS-card-0::before{background:linear-gradient(90deg,#C2410C,#DB5B1F,#FBC9A8);}
+.IS-card-1::before{background:linear-gradient(90deg,#1e9c6a,#34D399);}
+.IS-card-2::before{background:linear-gradient(90deg,#DB5B1F,#F0834D);}
+.IS-card-3::before{background:linear-gradient(90deg,#C2410C,#FBC9A8);}
 .IS-card-glow{position:absolute;bottom:-20px;right:-20px;width:100px;height:100px;border-radius:50%;opacity:.07;}
 .IS-card-0 .IS-card-glow{background:var(--ember);}
 .IS-card-1 .IS-card-glow{background:#1e9c6a;}
-.IS-card-2 .IS-card-glow{background:#2870cc;}
-.IS-card-3 .IS-card-glow{background:#7c3aed;}
+.IS-card-2 .IS-card-glow{background:#DB5B1F;}
+.IS-card-3 .IS-card-glow{background:#C2410C;}
 .IS-card-icon{width:42px;height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
 .IS-card-0 .IS-card-icon{background:var(--ember-ghost);color:var(--ember);}
 .IS-card-1 .IS-card-icon{background:var(--success-bg);color:var(--success);}
 .IS-card-2 .IS-card-icon{background:var(--info-bg);color:var(--info);}
-.IS-card-3 .IS-card-icon{background:rgba(124,58,237,.1);color:#7c3aed;}
+.IS-card-3 .IS-card-icon{background:rgba(124,58,237,.1);color:#C2410C;}
 .IS-card-lbl{font-size: 9px;font-weight: 700;color:var(--text-4);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.07em;}
 .IS-card-val{font-size: 23px;font-weight: 800;font-family:var(--font-mono);line-height:1;}
 .IS-card-0 .IS-card-val{color:var(--ember);}
 .IS-card-1 .IS-card-val{color:var(--success);}
 .IS-card-2 .IS-card-val{color:var(--info);}
-.IS-card-3 .IS-card-val{color:#7c3aed;}
+.IS-card-3 .IS-card-val{color:#C2410C;}
 .IS-card-sub{font-size: 9px;color:var(--text-4);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .IS-card-badge{display:inline-flex;align-items:center;font-size: 9px;font-family:var(--font-mono);font-weight: 800;padding:2px 8px;border-radius:10px;}
 .IS-card-0 .IS-card-badge{background:var(--ember-ghost);color:var(--ember);}
 .IS-card-1 .IS-card-badge{background:var(--success-bg);color:var(--success);}
 .IS-card-2 .IS-card-badge{background:var(--info-bg);color:var(--info);}
-.IS-card-3 .IS-card-badge{background:rgba(124,58,237,.1);color:#7c3aed;}
+.IS-card-3 .IS-card-badge{background:rgba(124,58,237,.1);color:#C2410C;}
 
 /* ── 3D Chart ── */
-.IS-chart-wrap{background:#fff;border:1px solid rgba(29,78,216,0.14);border-top:3px solid var(--ember-mid);border-radius:var(--r-xl);padding:26px 28px;margin-bottom:28px;box-shadow:0 2px 16px rgba(29,78,216,0.07),0 1px 4px rgba(0,0,0,0.04);position:relative;overflow:hidden;animation:erp-slide-up .5s ease .12s both;}
+.IS-chart-wrap{background:#faf9f7;border:1px solid rgba(29,78,216,0.14);border-top:3px solid var(--ember-mid);border-radius:var(--r-xl);padding:26px 28px;margin-bottom:28px;box-shadow:0 2px 16px rgba(29,78,216,0.07),0 1px 4px rgba(0,0,0,0.04);position:relative;overflow:hidden;animation:erp-slide-up .5s ease .12s both;}
 .IS-chart-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(59,130,246,0.06),transparent 60%),radial-gradient(ellipse at 70% 100%,rgba(40,112,204,0.04),transparent 60%);pointer-events:none;}
 .IS-chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative;z-index:1;flex-wrap:wrap;gap:12px;}
 .IS-chart-title-txt{font-size: 13px;font-weight: 800;color:var(--text-1);display:flex;align-items:center;gap:9px;font-family:var(--font-body);}
@@ -405,16 +405,16 @@ ${ERP_CSS}
 .IS-3d-bar{width:100%;position:relative;border-radius:4px 4px 0 0;transform-style:preserve-3d;cursor:pointer;transition:filter .18s;}
 .IS-3d-bar:hover{filter:brightness(1.15);}
 /* front face gradient */
-.IS-3d-bar-client{background:linear-gradient(180deg,#60A5FA 0%,#fe7a07 30%,#2563EB 100%);box-shadow:inset 1px 0 0 rgba(255,255,255,.25),inset -1px 0 0 rgba(0,0,0,.2),0 -1px 0 rgba(255,200,100,.4);}
-.IS-3d-bar-db{background:linear-gradient(180deg,#7ab8ff 0%,#4896f5 30%,#1e5bb8 100%);box-shadow:inset 1px 0 0 rgba(255,255,255,.25),inset -1px 0 0 rgba(0,0,0,.2),0 -1px 0 rgba(150,200,255,.4);}
+.IS-3d-bar-client{background:linear-gradient(180deg,#F0834D 0%,#EA580C 30%,#C2410C 100%);box-shadow:inset 1px 0 0 rgba(255,255,255,.25),inset -1px 0 0 rgba(0,0,0,.2),0 -1px 0 rgba(255,200,100,.4);}
+.IS-3d-bar-db{background:linear-gradient(180deg,#D98255 0%,#A6491D 30%,#9A3412 100%);box-shadow:inset 1px 0 0 rgba(255,255,255,.25),inset -1px 0 0 rgba(0,0,0,.2),0 -1px 0 rgba(150,200,255,.4);}
 /* right side face */
 .IS-3d-bar::after{content:'';position:absolute;top:0;right:-5px;width:5px;bottom:0;transform-origin:left;transform:rotateY(90deg) translateX(-50%);border-radius:0 4px 0 0;}
-.IS-3d-bar-client::after{background:linear-gradient(180deg,#1D4ED8,#1D4ED8);}
-.IS-3d-bar-db::after{background:linear-gradient(180deg,#1a4a90,#0d2555);}
+.IS-3d-bar-client::after{background:linear-gradient(180deg,#9A3412,#9A3412);}
+.IS-3d-bar-db::after{background:linear-gradient(180deg,#A6491D,#231C14);}
 /* top cap */
 .IS-3d-bar::before{content:'';position:absolute;top:-4px;left:0;right:-5px;height:5px;transform-origin:bottom;transform:rotateX(90deg) translateY(50%);border-radius:4px 4px 0 0;}
-.IS-3d-bar-client::before{background:linear-gradient(90deg,#ffcc60,#ff9020);}
-.IS-3d-bar-db::before{background:linear-gradient(90deg,#90ccff,#3080e0);}
+.IS-3d-bar-client::before{background:linear-gradient(90deg,#FBC9A8,#EA580C);}
+.IS-3d-bar-db::before{background:linear-gradient(90deg,#D98255,#A6491D);}
 
 .IS-3d-val{font-size: 8.5px;font-family:var(--font-mono);font-weight: 800;color:var(--ember);margin-bottom:6px;text-align:center;}
 .IS-3d-floor-line{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(29,78,216,0.15),transparent);margin-top:4px;}
@@ -427,10 +427,10 @@ ${ERP_CSS}
 /* ── Tabs ── */
 .IS-tabs{display:flex;gap:4px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);padding:4px;box-shadow:var(--sh-card);width:fit-content;margin-bottom:20px;animation:erp-fade-in .4s ease .18s both;}
 .IS-tab{display:flex;align-items:center;gap:7px;padding:9px 20px;border-radius:8px;font-size: 10.5px;font-weight: 700;cursor:pointer;border:none;background:transparent;color:var(--text-3);transition:all .18s;font-family:var(--font-body);}
-.IS-tab.active{background:linear-gradient(135deg,var(--ember),var(--ember-mid));color:#fff;box-shadow:0 3px 12px rgba(29,78,216,.28);}
+.IS-tab.active{background:linear-gradient(135deg,var(--ember),var(--ember-mid));color:#faf9f7;box-shadow:0 3px 12px rgba(29,78,216,.28);}
 .IS-tab:not(.active):hover{background:var(--surface);color:var(--text-1);}
 .IS-tab-badge{font-size: 9px;font-family:var(--font-mono);font-weight: 800;padding:2px 8px;border-radius:12px;}
-.IS-tab.active .IS-tab-badge{background:rgba(255,255,255,.22);color:#fff;}
+.IS-tab.active .IS-tab-badge{background:rgba(255,255,255,.22);color:#faf9f7;}
 .IS-tab:not(.active) .IS-tab-badge{background:var(--surface-2);color:var(--text-4);}
 
 /* ── Table section ── */
@@ -448,7 +448,7 @@ ${ERP_CSS}
 .IS-client-row:last-child{border-bottom:none;}
 .IS-client-hd{display:flex;align-items:center;gap:14px;padding:15px 22px;cursor:pointer;transition:background .12s;user-select:none;}
 .IS-client-hd:hover{background:rgba(59,130,246,.04);}
-.IS-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--ember),var(--ember-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-weight: 800;font-size: 14px;font-family:var(--font-mono);flex-shrink:0;box-shadow:0 3px 10px rgba(29,78,216,.3);}
+.IS-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--ember),var(--ember-mid));display:flex;align-items:center;justify-content:center;color:#faf9f7;font-weight: 800;font-size: 14px;font-family:var(--font-mono);flex-shrink:0;box-shadow:0 3px 10px rgba(29,78,216,.3);}
 .IS-client-info{flex:1;min-width:0;}
 .IS-client-name{font-size: 11.5px;font-weight: 800;color:var(--text-1);}
 .IS-client-meta{font-size: 9px;color:var(--text-4);font-family:var(--font-mono);margin-top:2px;}
@@ -689,14 +689,14 @@ export default function IncomeStatement() {
 
                                 {/* Client Collections Start */}
                                 <div className="IS-legend-item">
-                                    <div className="IS-legend-dot" style={{ background: 'linear-gradient(135deg,#60A5FA,#2563EB)' }} />
+                                    <div className="IS-legend-dot" style={{ background: 'linear-gradient(135deg,#F0834D,#C2410C)' }} />
                                     Client Collections
                                 </div>
                                 {/* Client Collections End */}
 
                                 {/* Cash Book Income Start */}
                                 <div className="IS-legend-item">
-                                    <div className="IS-legend-dot" style={{ background: 'linear-gradient(135deg,#7ab8ff,#1e5bb8)' }} />
+                                    <div className="IS-legend-dot" style={{ background: 'linear-gradient(135deg,#D98255,#9A3412)' }} />
                                     Cash Book Income
                                 </div>
                                 {/* Cash Book Income End */}
@@ -836,7 +836,7 @@ export default function IncomeStatement() {
                                                     </thead>
                                                     <tbody>
                                                         {client.payments.map(p => {
-                                                            const mc = MODE_COLOR[p.payment_mode] ?? '#6b7280';
+                                                            const mc = MODE_COLOR[p.payment_mode] ?? '#6B5D48';
                                                             return (
                                                                 <tr key={p.id}>
                                                                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, whiteSpace: 'nowrap' }}>{fmtDate(p.payment_date)}</td>
@@ -900,7 +900,7 @@ export default function IncomeStatement() {
                                             </thead>
                                             <tbody>
                                                 {pagedDB.map((e, i) => {
-                                                    const mc = MODE_COLOR[e.payment_mode] ?? '#6b7280';
+                                                    const mc = MODE_COLOR[e.payment_mode] ?? '#6B5D48';
                                                     return (
                                                         <tr key={e.id} style={{ animation: `erp-slide-up .3s ease ${i * 0.02}s both` }}>
                                                             <td style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-4)', width: 36 }}>{(dbSafePage - 1) * dbPerPage + i + 1}</td>

@@ -62,17 +62,17 @@ export default function DuplicateWarningModal({
           padding: 16px;
         }
         .dwm-box {
-          background: var(--white, #FDFAF6);
+          background: var(--white, #FAF9F7);
           border-radius: 18px;
           box-shadow: 0 24px 64px rgba(0,0,0,0.25), 0 4px 16px rgba(0,0,0,0.12);
           width: 100%; max-width: 440px;
           overflow: hidden;
           animation: dwm-modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
-          border: 1.5px solid var(--border, #E8E0D4);
+          border: 1.5px solid var(--border, #E8E2D8);
         }
         .dwm-accent {
           height: 4px;
-          background: linear-gradient(90deg, #F5A623 0%, #E8720C 60%, #C85A00 100%);
+          background: linear-gradient(90deg, #F0834D 0%, #EA580C 60%, #9A3412 100%);
         }
         .dwm-body {
           padding: 28px 28px 24px;
@@ -91,40 +91,40 @@ export default function DuplicateWarningModal({
         .dwm-title {
           font-family: var(--font-display, serif);
           font-size: 17.5px; font-style: italic; font-weight: 800;
-          color: var(--text-1, #1A1008); margin-bottom: 5px;
+          color: var(--text-1, #231C14); margin-bottom: 5px;
         }
         .dwm-subtitle {
           font-family: var(--font-body, sans-serif);
-          font-size: 11.5px; color: var(--text-3, #7A6248); line-height: 1.5;
+          font-size: 11.5px; color: var(--text-3, #6B5D48); line-height: 1.5;
         }
         .dwm-entity-badge {
           display: inline-flex; align-items: center; gap: 5px;
           background: rgba(255,107,0,0.10); border: 1px solid rgba(255,107,0,0.30);
           border-radius: 100px; padding: 2px 10px;
           font-family: var(--font-mono, monospace); font-size: 8px; font-weight: 800;
-          letter-spacing: 1.5px; text-transform: uppercase; color: #C85A00;
+          letter-spacing: 1.5px; text-transform: uppercase; color: #9A3412;
           margin-bottom: 16px;
         }
         .dwm-fields {
-          background: var(--off-white, #F5F0E8);
-          border: 1px solid var(--border, #E8E0D4);
+          background: var(--off-white, #F5F3EF);
+          border: 1px solid var(--border, #E8E2D8);
           border-radius: 10px; overflow: hidden;
           margin-bottom: 22px;
         }
         .dwm-field-row {
           display: flex; align-items: center; gap: 12px;
           padding: 10px 14px;
-          border-bottom: 1px solid var(--border, #E8E0D4);
+          border-bottom: 1px solid var(--border, #E8E2D8);
         }
         .dwm-field-row:last-child { border-bottom: none; }
         .dwm-field-lbl {
           font-family: var(--font-mono, monospace); font-size: 8px; font-weight: 800;
-          letter-spacing: 1px; text-transform: uppercase; color: var(--text-4, #9A8878);
+          letter-spacing: 1px; text-transform: uppercase; color: var(--text-4, #8C7C63);
           min-width: 90px; flex-shrink: 0;
         }
         .dwm-field-val {
           font-family: var(--font-body, sans-serif); font-size: 11.5px; font-weight: 700;
-          color: #C85A00; flex: 1; min-width: 0;
+          color: #9A3412; flex: 1; min-width: 0;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .dwm-hint {
@@ -134,7 +134,7 @@ export default function DuplicateWarningModal({
           border: 1px solid rgba(255,107,0,0.20);
           border-radius: 8px; margin-bottom: 22px;
           font-family: var(--font-body, sans-serif); font-size: 10.5px;
-          color: var(--text-3, #7A6248); line-height: 1.5;
+          color: var(--text-3, #6B5D48); line-height: 1.5;
         }
         .dwm-btn-row {
           display: flex; gap: 10px;
@@ -148,19 +148,19 @@ export default function DuplicateWarningModal({
         }
         .dwm-btn:disabled { opacity: 0.55; pointer-events: none; }
         .dwm-btn.cancel {
-          background: var(--white, #FDFAF6); color: var(--text-2, #3A2C1A);
-          border-color: var(--border, #E8E0D4);
+          background: var(--white, #FAF9F7); color: var(--text-2, #3A3024);
+          border-color: var(--border, #E8E2D8);
         }
         .dwm-btn.cancel:hover {
-          background: var(--off-white, #F5F0E8);
-          border-color: var(--border-2, #C8B89A);
+          background: var(--off-white, #F5F3EF);
+          border-color: var(--border-2, #C0B29D);
         }
         .dwm-btn.add-anyway {
-          background: rgba(255,107,0,0.10); color: #C85A00;
+          background: rgba(255,107,0,0.10); color: #9A3412;
           border-color: rgba(255,107,0,0.40);
         }
         .dwm-btn.add-anyway:hover {
-          background: #E8720C; color: #fff; border-color: #E8720C;
+          background: #EA580C; color: #faf9f7; border-color: #EA580C;
         }
         @media(max-width:480px){
           .dwm-body { padding: 20px 18px 18px; }
@@ -178,7 +178,7 @@ export default function DuplicateWarningModal({
             <div className="dwm-icon-row">
               <div className="dwm-icon">
                 <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
-                  stroke="#E8720C" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  stroke="#EA580C" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
@@ -212,7 +212,7 @@ export default function DuplicateWarningModal({
             <div className="dwm-hint">
               <svg width={14} height={14} viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
-                style={{ flexShrink: 0, marginTop: 1, color: '#C85A00' }}>
+                style={{ flexShrink: 0, marginTop: 1, color: '#9A3412' }}>
                 <circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" />
               </svg>
               Do you still want to save this entry? If it's intentional (e.g. a different person with the same name), click <strong>Add Anyway</strong>.

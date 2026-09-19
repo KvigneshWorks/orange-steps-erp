@@ -214,7 +214,7 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, emp
                                     onClick={() => handleSelect(opt.value)}>
                                     <span className="DB-SDD-item-inner">
                                         <span className="DB-SDD-checkbox">
-                                            {value === opt.value && <Icon name="check" size={9} color="#fff" />}
+                                            {value === opt.value && <Icon name="check" size={9} color="#faf9f7" />}
                                         </span>
                                         {opt.badge && (
                                             <span className="DB-SDD-badge" style={{
@@ -242,11 +242,11 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, emp
 
 const PAYMENT_METHODS = [
     { id: 'Cash', label: 'Cash', icon: 'cash', color: '#1E9C6A', bg: 'rgba(30,156,106,0.10)', border: 'rgba(30,156,106,0.30)' },
-    { id: 'UPI', label: 'UPI', icon: 'mobile', color: '#2870CC', bg: 'rgba(40,112,204,0.10)', border: 'rgba(40,112,204,0.30)' },
-    { id: 'NEFT', label: 'NEFT', icon: 'bank', color: '#C47E0A', bg: 'rgba(196,126,10,0.10)', border: 'rgba(196,126,10,0.30)' },
-    { id: 'Cheque', label: 'Cheque', icon: 'document', color: '#9B45CC', bg: 'rgba(155,69,204,0.10)', border: 'rgba(155,69,204,0.30)' },
-    { id: 'Bank Transfer', label: 'Bank', icon: 'transfer', color: '#0891B2', bg: 'rgba(8,145,178,0.10)', border: 'rgba(8,145,178,0.30)' },
-    { id: 'Others', label: 'Others', icon: 'more', color: '#6B6B6B', bg: 'rgba(107,107,107,0.10)', border: 'rgba(107,107,107,0.30)' },
+    { id: 'UPI', label: 'UPI', icon: 'mobile', color: '#DB5B1F', bg: 'rgba(40,112,204,0.10)', border: 'rgba(40,112,204,0.30)' },
+    { id: 'NEFT', label: 'NEFT', icon: 'bank', color: '#9A3412', bg: 'rgba(196,126,10,0.10)', border: 'rgba(196,126,10,0.30)' },
+    { id: 'Cheque', label: 'Cheque', icon: 'document', color: '#C2410C', bg: 'rgba(155,69,204,0.10)', border: 'rgba(155,69,204,0.30)' },
+    { id: 'Bank Transfer', label: 'Bank', icon: 'transfer', color: '#A6491D', bg: 'rgba(8,145,178,0.10)', border: 'rgba(8,145,178,0.30)' },
+    { id: 'Others', label: 'Others', icon: 'more', color: '#6B5D48', bg: 'rgba(107,107,107,0.10)', border: 'rgba(107,107,107,0.30)' },
 ];
 
 function getPaymentMethod(id: string) {
@@ -618,9 +618,9 @@ const PAGE_CSS = `
 .ERP-refresh-btn svg { transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 .ERP-refresh-btn:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.08);
-  background: linear-gradient(135deg,#60A5FA,#2563EB);
+  background: linear-gradient(135deg,#F0834D,#C2410C);
   border-color: transparent;
-  color: #fff;
+  color: #faf9f7;
   box-shadow: 0 6px 16px rgba(37,99,235,0.35);
   animation-play-state: paused;
 }
@@ -646,7 +646,7 @@ const PAGE_CSS = `
 .DB-edit-banner { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 14px; background:var(--warn-bg); border:1px solid var(--warn-bd); border-radius:var(--r-md); margin-bottom:18px; animation:erp-slide-up 0.2s ease both; flex-wrap:wrap; }
 .DB-edit-lhs { display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size: 8.5px; font-weight: 800; color:var(--warn); flex:1; min-width:0; }
 .DB-edit-cancel { display:flex; align-items:center; gap:5px; padding:5px 12px; background:none; border:1px solid var(--warn-bd); border-radius:var(--r-sm); font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; color:var(--warn); cursor:pointer; transition:all 0.15s; flex-shrink:0; }
-.DB-edit-cancel:hover { background:var(--warn); color:#fff; }
+.DB-edit-cancel:hover { background:var(--warn); color:#faf9f7; }
 
 /* ── BACK TO TRANSACTIONS BANNER ── */
 .DB-back-banner {
@@ -658,7 +658,7 @@ const PAGE_CSS = `
 .DB-back-lhs { display:flex; align-items:center; gap:9px; font-family:var(--font-mono); font-size: 8.5px; font-weight: 800; color:var(--info); flex:1; min-width:0; }
 .DB-back-btn {
   display:flex; align-items:center; gap:6px; padding:6px 14px;
-  background:var(--info); color:#fff; border:none;
+  background:var(--info); color:#faf9f7; border:none;
   border-radius:var(--r-sm); font-family:var(--font-mono); font-size: 8px;
   font-weight: 800; letter-spacing:1.5px; text-transform:uppercase;
   cursor:pointer; transition:all 0.15s; flex-shrink:0; white-space:nowrap;
@@ -720,7 +720,7 @@ const PAGE_CSS = `
 .DB-panel { background:var(--white); border:1.5px solid var(--border); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--sh-card); animation:erp-pop 0.45s 0.2s ease both; display:flex; flex-direction:column; max-height:920px; position:sticky; top:20px; }
 @media(max-width:900px){ .DB-panel { position:relative; top:auto; max-height:600px; } }
 @media(max-width:520px){ .DB-panel { max-height:480px; border-radius:var(--r-lg); } }
-.DB-panel-accent { height:3px; background:linear-gradient(90deg,var(--ember) 0%,#60A5FA 40%,#1E9C6A 100%); }
+.DB-panel-accent { height:3px; background:linear-gradient(90deg,var(--ember) 0%,#F0834D 40%,#1E9C6A 100%); }
 .DB-panel-hdr {
   display:flex; align-items:center; justify-content:space-between; gap:10px;
   padding:15px 18px; border-bottom:1px solid var(--border); flex-shrink:0;
@@ -730,7 +730,7 @@ const PAGE_CSS = `
 .DB-panel-hdr-icon {
   width:32px; height:32px; border-radius:10px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
+  background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%);
   box-shadow:0 3px 9px rgba(59,130,246,0.35);
 }
 .DB-panel-title { font-family:var(--font-body); font-size: 12.5px; font-weight: 800; font-style:normal; text-transform:uppercase; letter-spacing:0.5px; color:var(--grey); }
@@ -1093,7 +1093,7 @@ const PAGE_CSS = `
 }
 .DB-ea.edit:hover {
   background:var(--ember);
-  color:#fff;
+  color:#faf9f7;
   border-color:var(--ember);
   box-shadow:0 2px 8px rgba(37,99,235,0.30);
 }
@@ -1104,7 +1104,7 @@ const PAGE_CSS = `
 }
 .DB-ea.del:hover { 
   background:var(--error); 
-  color:#fff; 
+  color:#faf9f7; 
   border-color:var(--error); 
   transform:translateY(-1px); 
   box-shadow:0 2px 8px rgba(217,59,85,0.30); 
@@ -1171,7 +1171,7 @@ const PAGE_CSS = `
   width:3px; flex-shrink:0; align-self:stretch;
 }
 .DB-rc-strip.income  { background:linear-gradient(180deg,#1E9C6A 0%,#34D399 100%); }
-.DB-rc-strip.expense { background:linear-gradient(180deg,#60A5FA 0%,#D93B55 100%); }
+.DB-rc-strip.expense { background:linear-gradient(180deg,#F0834D 0%,#D93B55 100%); }
 
 /* Serial number */
 .DB-rc-num {
@@ -1288,7 +1288,7 @@ const PAGE_CSS = `
 @keyframes db-rc-shimmer { from{background-position:-600px 0} to{background-position:600px 0} }
 .DB-rc-skeleton {
   height:64px;
-  background:linear-gradient(90deg,var(--off-white) 25%,var(--surface-3,#f0f0f0) 50%,var(--off-white) 75%);
+  background:linear-gradient(90deg,var(--off-white) 25%,var(--surface-3,#F5F3EF) 50%,var(--off-white) 75%);
   background-size:600px 100%;
   animation:db-rc-shimmer 1.5s infinite linear;
   border-bottom:1px solid var(--border);
@@ -1301,7 +1301,7 @@ const PAGE_CSS = `
   background:linear-gradient(180deg, rgba(59,130,246,0.20) 0%, rgba(59,130,246,0.11) 100%);
   border-bottom:2px solid var(--ember-mid);
   box-shadow:0 2px 6px rgba(59,130,246,0.14);
-  color:#1D4ED8; font-family:var(--font-mono); font-size: 7.5px; font-weight: 800;
+  color:#9A3412; font-family:var(--font-mono); font-size: 7.5px; font-weight: 800;
   letter-spacing:1.2px; text-transform:uppercase; text-align:left;
   padding:9px 8px; white-space:nowrap;
 }
@@ -1313,9 +1313,9 @@ const PAGE_CSS = `
   transition:background 0.13s;
   animation:db-slide-in 0.38s cubic-bezier(0.22,1,0.36,1) both;
 }
-.DB-rc-tbl tbody tr:nth-child(even) { background:var(--off-white,#F8FAFC); }
+.DB-rc-tbl tbody tr:nth-child(even) { background:var(--off-white,#F5F3EF); }
 .DB-rc-tbl tbody tr.income { box-shadow:inset 3px 0 0 #1E9C6A; }
-.DB-rc-tbl tbody tr.expense { box-shadow:inset 3px 0 0 #60A5FA; }
+.DB-rc-tbl tbody tr.expense { box-shadow:inset 3px 0 0 #F0834D; }
 .DB-rc-tbl tbody tr.income:hover { background:rgba(30,156,106,0.06); }
 .DB-rc-tbl tbody tr.expense:hover { background:rgba(217,59,85,0.05); }
 .DB-rc-tbl tbody tr.db-new { animation:db-new-pop 0.52s cubic-bezier(0.34,1.56,0.64,1) both; }
@@ -1380,7 +1380,7 @@ const PAGE_CSS = `
 .DB-undo-toast {
   position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
   display:flex; align-items:center; gap:14px;
-  background:var(--surface-2,#1e1e1e); color:#fff;
+  background:var(--surface-2,#231C14); color:#faf9f7;
   border:1.5px solid rgba(255,255,255,0.10);
   border-radius:14px; padding:14px 18px;
   box-shadow:0 8px 40px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
@@ -1409,10 +1409,10 @@ const PAGE_CSS = `
 .DB-undo-name { color:rgba(255,255,255,0.8); font-weight: 700; }
 .DB-undo-actions { display:flex; gap:7px; flex-shrink:0; }
 .DB-undo-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 13px; border-radius:8px; font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:1px; text-transform:uppercase; cursor:pointer; border:1px solid; transition:all 0.15s; }
-.DB-undo-btn.undo    { background:rgba(37,99,235,0.12); color:var(--ember,#60A5FA); border-color:rgba(37,99,235,0.35); }
-.DB-undo-btn.undo:hover    { background:var(--ember,#60A5FA); color:#fff; border-color:var(--ember,#60A5FA); }
+.DB-undo-btn.undo    { background:rgba(37,99,235,0.12); color:var(--ember,#F0834D); border-color:rgba(37,99,235,0.35); }
+.DB-undo-btn.undo:hover    { background:var(--ember,#F0834D); color:#faf9f7; border-color:var(--ember,#F0834D); }
 .DB-undo-btn.confirm { background:rgba(217,59,85,0.12); color:#F87171; border-color:rgba(217,59,85,0.35); }
-.DB-undo-btn.confirm:hover { background:var(--error,#D93B55); color:#fff; border-color:var(--error,#D93B55); }
+.DB-undo-btn.confirm:hover { background:var(--error,#D93B55); color:#faf9f7; border-color:var(--error,#D93B55); }
 
 /* ── FORM WATERMARK ── */
 .DB-watermark { position:absolute; top:20px; right:24px; font-family:var(--font-display); font-size: 63.5px; font-style:italic; font-weight: 800; color:rgba(37,99,235,0.05); pointer-events:none; user-select:none; letter-spacing:-3px; line-height:1; }
@@ -1461,7 +1461,7 @@ const PAGE_CSS = `
 
 .DB-SDD-list, .DB-entry-list, .DB-tbl-wrap, .DB-rc-list {
   scrollbar-width: thin;
-  scrollbar-color: #3B82F6 transparent;
+  scrollbar-color: #DB5B1F transparent;
 }
 
 .DB-SDD-list::-webkit-scrollbar,
@@ -1481,7 +1481,7 @@ const PAGE_CSS = `
 .DB-entry-list::-webkit-scrollbar-thumb,
 .DB-tbl-wrap::-webkit-scrollbar-thumb,
 .DB-rc-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   border: none;
   box-shadow: 0 0 4px rgba(59,130,246,0.28);
@@ -1492,7 +1492,7 @@ const PAGE_CSS = `
 .DB-entry-list::-webkit-scrollbar-thumb:hover,
 .DB-tbl-wrap::-webkit-scrollbar-thumb:hover,
 .DB-rc-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 40%, #2563EB 100%);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 40%, #C2410C 100%);
   box-shadow: 0 0 8px rgba(59,130,246,0.55), 0 0 18px rgba(29,78,216,0.25);
   animation: db-sb-glow 1.8s ease-in-out infinite;
 }
@@ -2083,7 +2083,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                 </span>
                             </div>
                             <div className="DB-stat-chip bank">
-                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#0891B2" /></span>
+                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#A6491D" /></span>
                                 <span className="DB-stat-chip-text">
                                     <span className="DB-stat-chip-label">Bank Holding</span>
                                     <span className="DB-stat-chip-val">₹<AnimCount value={overallStats.debitBank} /></span>
@@ -2097,7 +2097,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                        same net figure: cashHolding + bankHolding always ==
                        netBalance. */}
                     <div className="ERP-stat">
-                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+                        <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
                         <div className="ERP-stat-label">Net Balance</div>
                         <div className="ERP-stat-val" style={{ color: overallStats.netBalance >= 0 ? 'var(--success)' : 'var(--error)', fontSize: 16, fontWeight: 800 }}>
                             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
@@ -2114,7 +2114,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                 </span>
                             </div>
                             <div className="DB-stat-chip bank">
-                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#0891B2" /></span>
+                                <span className="DB-stat-chip-icon"><Icon name="bank" size={8} color="#A6491D" /></span>
                                 <span className="DB-stat-chip-text">
                                     <span className="DB-stat-chip-label">Bank Holding</span>
                                     <span className="DB-stat-chip-val" style={{ color: overallStats.bankHolding < 0 ? 'var(--error)' : 'var(--text-1)' }}>
@@ -2325,7 +2325,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                                     </svg>
                                                 </div>
                                                 <div className="DB-pay-icon" style={{ background: isSel ? pm.color : pm.bg }}>
-                                                    <Icon name={pm.icon} size={17} color={isSel ? '#fff' : pm.color} />
+                                                    <Icon name={pm.icon} size={17} color={isSel ? '#faf9f7' : pm.color} />
                                                 </div>
                                                 <span className="DB-pay-label" style={{ color: isSel ? pm.color : 'var(--text-4)' }}>
                                                     {pm.label}
@@ -2426,7 +2426,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                         <div className="DB-panel-hdr">
                             <div className="DB-panel-hdr-left">
                                 <span className="DB-panel-hdr-icon">
-                                    <Icon name="list" size={15} color="#fff" />
+                                    <Icon name="list" size={15} color="#faf9f7" />
                                 </span>
                                 <div>
                                     <div className="DB-panel-title">Recent Entries</div>
@@ -2536,7 +2536,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                 <span
                                     onClick={() => { sessionStorage.setItem('daybook_show_recent', '1'); if (onNavigate) onNavigate('txn-history'); }}
                                     style={{ fontFamily: 'var(--font-body)', fontSize: 10.5, fontWeight: 700, color: 'var(--ember)', cursor: 'pointer', textDecoration: 'underline', textDecorationColor: 'rgba(37,99,235,0.45)', textUnderlineOffset: 3, letterSpacing: 0, transition: 'color 0.15s, text-decoration-color 0.15s' }}
-                                    onMouseEnter={e => { (e.target as HTMLElement).style.color = 'var(--ember-dark,#d4891e)'; (e.target as HTMLElement).style.textDecorationColor = 'var(--ember-dark,#d4891e)'; }}
+                                    onMouseEnter={e => { (e.target as HTMLElement).style.color = 'var(--ember-dark,#9A3412)'; (e.target as HTMLElement).style.textDecorationColor = 'var(--ember-dark,#9A3412)'; }}
                                     onMouseLeave={e => { (e.target as HTMLElement).style.color = 'var(--ember)'; (e.target as HTMLElement).style.textDecorationColor = 'rgba(37,99,235,0.45)'; }}
                                 >
                                     View all {allEntries.length} transactions →

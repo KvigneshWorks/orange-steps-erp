@@ -115,7 +115,7 @@ const SkeletonRow = () => (
             <td key={i} style={{ padding: '14px 16px' }}>
                 <div style={{
                     height: 13, borderRadius: 6, width: w,
-                    background: 'linear-gradient(90deg,#E9EEF5 25%,#DBEAFE 50%,#E9EEF5 75%)',
+                    background: 'linear-gradient(90deg,#E8E2D8 25%,#FBC9A8 50%,#E8E2D8 75%)',
                     backgroundSize: '400px 100%',
                     animation: 'erp-shimmer 1.4s infinite linear',
                 }} />
@@ -380,7 +380,7 @@ export default function SubCategory() {
                 {syncing && (
                     <div style={{
                         position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
-                        background: '#0F172A', color: '#60A5FA',
+                        background: '#231C14', color: '#F0834D',
                         padding: '6px 14px', borderRadius: 100,
                         fontSize: 9, fontFamily: 'monospace', fontWeight: 700,
                         display: 'flex', alignItems: 'center', gap: 6,
@@ -389,7 +389,7 @@ export default function SubCategory() {
                     }}>
                         <span style={{
                             width: 6, height: 6, borderRadius: '50%',
-                            background: '#60A5FA',
+                            background: '#F0834D',
                             animation: 'pulse 1s infinite',
                         }} />
                         Syncing...
@@ -448,7 +448,7 @@ export default function SubCategory() {
                                         <Ic d={editId
                                             ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
                                             : 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'}
-                                            sz={18} c="#fff" sw={1.8} />
+                                            sz={18} c="#faf9f7" sw={1.8} />
                                     </div>
                                     <div>
                                         <div className="ERP-form-title MD-form-title">
@@ -548,7 +548,7 @@ export default function SubCategory() {
                                         <button type="submit" className="ERP-btn primary" disabled={loading}>
                                             {loading
                                                 ? <><span className="ERP-spinner" /> {editId ? 'Updating…' : 'Creating…'}</>
-                                                : <><Ic d="M5 13l4 4L19 7" sz={13} c="#fff" sw={2.2} /> {editId ? 'Update Account Sub-Head' : 'Create Account Sub-Head'}</>}
+                                                : <><Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} /> {editId ? 'Update Account Sub-Head' : 'Create Account Sub-Head'}</>}
                                         </button>
                                         <button type="button" className="ERP-btn secondary"
                                             onClick={handleCancelEdit} disabled={loading}>

@@ -57,7 +57,7 @@ function SkeletonRow() {
                     <td key={i} style={{ padding: '14px 16px' }}>
                         <div style={{
                             height: 13, borderRadius: 6, width: w,
-                            background: 'linear-gradient(90deg,#E9EEF5 25%,#DBEAFE 50%,#E9EEF5 75%)',
+                            background: 'linear-gradient(90deg,#E8E2D8 25%,#FBC9A8 50%,#E8E2D8 75%)',
                             backgroundSize: '400px 100%',
                             animation: 'erp-shimmer 1.4s infinite linear',
                         }} />
@@ -308,7 +308,7 @@ export default function IDType() {
                 {syncing && (
                     <div style={{
                         position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
-                        background: '#0F172A', color: '#60A5FA',
+                        background: '#231C14', color: '#F0834D',
                         padding: '8px 16px', borderRadius: 100,
                         fontSize: 9.5, fontFamily: 'monospace', fontWeight: 700,
                         display: 'flex', alignItems: 'center', gap: 8,
@@ -318,7 +318,7 @@ export default function IDType() {
                         <span style={{
                             width: 8, height: 8, borderRadius: '50%',
                             border: '2px solid rgba(191,219,254,0.3)',
-                            borderTopColor: '#60A5FA',
+                            borderTopColor: '#F0834D',
                             display: 'inline-block',
                             animation: 'erp-spin 0.6s linear infinite',
                         }} />
@@ -365,7 +365,7 @@ export default function IDType() {
                     icon={<Ic d={editingId
                         ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
                         : 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0'}
-                        sz={18} c="#fff" sw={1.8} />}
+                        sz={18} c="#faf9f7" sw={1.8} />}
                     title={editingId ? 'Edit Identification Type' : 'Add New Identification Type'}
                     headerExtra={editingId && (
                         <button type="button" className="MD-cancel-pill" onClick={resetForm}>
@@ -430,7 +430,7 @@ export default function IDType() {
                                     variant="primary"
                                     loading={submitting}
                                     loadingText={editingId ? 'Updating...' : 'Creating...'}
-                                    icon={<Ic d="M5 13l4 4L19 7" sz={13} c="#fff" sw={2.2} />}
+                                    icon={<Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} />}
                                 >
                                     {editingId ? 'Update Identification Type' : 'Create Identification Type'}
                                 </Button>

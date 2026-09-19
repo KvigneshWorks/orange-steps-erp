@@ -5,7 +5,7 @@ export default function RunningLoader({ label = 'Loading Records' }: { label?: s
             <div className="RL-track">
                 <div className="RL-runner">
                     <svg className="RL-flip" width="70" height="76" viewBox="-35 0 100 83" fill="none" style={{ overflow: 'visible' }}>
-                        <g className="RL-run-lines" opacity="0.55" stroke="var(--ember-light,#F5A623)" strokeWidth="3.1" strokeLinecap="round">
+                        <g className="RL-run-lines" opacity="0.55" stroke="var(--ember-light,#F0834D)" strokeWidth="3.1" strokeLinecap="round">
                             <line className="RL-line l1" x1="-30" y1="32.5" x2="-10" y2="32.5" />
                             <line className="RL-line l2" x1="-25" y1="42.5" x2="-10" y2="42.5" />
                             <line className="RL-line l3" x1="-20" y1="52.5" x2="-10" y2="52.5" />

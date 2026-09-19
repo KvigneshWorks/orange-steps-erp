@@ -98,7 +98,7 @@ export default function RecycleBinDeleteModal({
 
         .rbdm-card {
           position:relative; background:#FFFFFF; border-radius:18px; overflow:hidden;
-          border:1px solid #E7E2DC;
+          border:1px solid #E8E2D8;
           box-shadow:0 1px 1px rgba(30,20,10,.05), 0 8px 20px rgba(30,20,10,.10), 0 30px 60px -14px rgba(30,20,10,.22);
           transform-style:preserve-3d;
           transition:transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s ease;
@@ -110,7 +110,7 @@ export default function RecycleBinDeleteModal({
           transform:skewX(-18deg); pointer-events:none; mix-blend-mode:soft-light;
           animation:rbdm-shine 1s ease .2s both;
         }
-        .rbdm-topbar { height:4px; background:linear-gradient(90deg,#D93B55 0%,#E8677D 60%,#F2A6B2 100%); }
+        .rbdm-topbar { height:4px; background:linear-gradient(90deg,#D93B55 0%,#9A3412 60%,#FBC9A8 100%); }
 
         .rbdm-body { padding:30px 26px 6px; }
         .rbdm-icon-wrap {
@@ -126,17 +126,17 @@ export default function RecycleBinDeleteModal({
         }
         .rbdm-title {
           font-family:'Space Grotesk','Segoe UI',sans-serif; font-size:16px; font-weight:800;
-          color:#241D15; letter-spacing:-.2px; margin-bottom:6px;
+          color:#231C14; letter-spacing:-.2px; margin-bottom:6px;
         }
         .rbdm-line {
           font-family:'Space Grotesk','Segoe UI',sans-serif; font-size:12.5px; font-weight:500;
-          color:#7A6F60; line-height:1.5; margin:0 0 4px;
+          color:#6B5D48; line-height:1.5; margin:0 0 4px;
         }
         .rbdm-warn {
           margin-top:12px; padding:9px 12px; border-radius:10px;
           background:rgba(196,126,10,0.08); border:1px solid rgba(196,126,10,0.22);
           font-family:'JetBrains Mono','Consolas',monospace; font-size:9.5px; font-weight:700;
-          color:#C47E0A; letter-spacing:.02em; text-align:left; display:flex; gap:8px; align-items:flex-start;
+          color:#9A3412; letter-spacing:.02em; text-align:left; display:flex; gap:8px; align-items:flex-start;
         }
 
         .rbdm-footer { display:flex; gap:10px; padding:22px 22px 24px; }
@@ -147,18 +147,18 @@ export default function RecycleBinDeleteModal({
           transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
         }
         .rbdm-btn-cancel {
-          background:#F6F1EA; color:#4A4136; border:1.5px solid #E7E2DC;
+          background:#F5F3EF; color:#3A3024; border:1.5px solid #E8E2D8;
         }
-        .rbdm-btn-cancel:hover:not(:disabled) { background:#EFE8DE; transform:translateY(-1px); }
+        .rbdm-btn-cancel:hover:not(:disabled) { background:#E8E2D8; transform:translateY(-1px); }
         .rbdm-btn-cancel:disabled { opacity:.5; cursor:not-allowed; }
         .rbdm-btn-delete {
-          background:linear-gradient(135deg,#E24A63 0%,#D93B55 100%); color:#fff;
+          background:linear-gradient(135deg,#9A3412 0%,#D93B55 100%); color:#faf9f7;
           box-shadow:0 6px 16px rgba(217,59,85,.32);
         }
         .rbdm-btn-delete:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 22px rgba(217,59,85,.4); }
         .rbdm-btn-delete:disabled { opacity:.6; cursor:not-allowed; transform:none; }
         .rbdm-spinner {
-          width:12px; height:12px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff;
+          width:12px; height:12px; border:2px solid rgba(255,255,255,.4); border-top-color:#faf9f7;
           border-radius:50%; animation:rbdm-spin .65s linear infinite;
         }
 
@@ -183,7 +183,7 @@ export default function RecycleBinDeleteModal({
                             <p className="rbdm-line">{line}</p>
                             {warnText && (
                                 <div className="rbdm-warn">
-                                    <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#C47E0A" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                                    <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#9A3412" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
                                         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                     <span>{warnText}</span>

@@ -52,7 +52,7 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
   };
 
   const urgencyColor = (days: number) => {
-    return days <= 0 ? '#D93B55' : days <= 7 ? '#2563EB' : '#2870CC';
+    return days <= 0 ? '#D93B55' : days <= 7 ? '#C2410C' : '#DB5B1F';
   };
 
   const overdue = notifications.filter(n => n.daysUntilDue <= 0).length;
@@ -64,14 +64,14 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
       <div style={{
         height: 3,
         background: overdue > 0
-          ? 'linear-gradient(to right,#D93B55,#60A5FA)'
-          : 'linear-gradient(to right,#60A5FA,#2563EB)',
+          ? 'linear-gradient(to right,#D93B55,#F0834D)'
+          : 'linear-gradient(to right,#F0834D,#C2410C)',
         borderRadius: '16px 16px 0 0'
       }} />
 
       <div className="NP-head">
         <div className="NP-title">
-          <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : '#2563EB'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" fill="none" stroke={overdue > 0 ? '#D93B55' : '#C2410C'} strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
           Payment Reminders
@@ -96,7 +96,7 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
             <span style={{
               fontFamily: 'JetBrains Mono,monospace', fontSize: 7, fontWeight: 800,
               padding: '3px 9px', borderRadius: 100,
-              background: 'rgba(37,99,235,.1)', color: '#2563EB',
+              background: 'rgba(37,99,235,.1)', color: '#C2410C',
               border: '1px solid rgba(37,99,235,.22)'
             }}>
               {thisWeek} THIS WEEK
@@ -106,7 +106,7 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
             <span style={{
               fontFamily: 'JetBrains Mono,monospace', fontSize: 7, fontWeight: 800,
               padding: '3px 9px', borderRadius: 100,
-              background: 'rgba(40,112,204,.1)', color: '#2870CC',
+              background: 'rgba(40,112,204,.1)', color: '#DB5B1F',
               border: '1px solid rgba(40,112,204,.22)'
             }}>
               {upcoming} UPCOMING
@@ -171,7 +171,7 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
       {notifications.length > 0 && (
         <div style={{
           padding: '10px 14px', borderTop: '1px solid var(--d-line)',
-          background: '#F8FAFC', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+          background: '#F5F3EF', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
         }}>
           <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, color: 'var(--d-ice4)', letterSpacing: '1px' }}>
             Click any item to view details
@@ -181,8 +181,8 @@ export default function NotificationPanel({ onClose, onNavigate }: NotificationP
             style={{
               fontFamily: 'JetBrains Mono,monospace', fontSize: 7.5, fontWeight: 800,
               padding: '5px 12px', borderRadius: 7,
-              background: 'linear-gradient(135deg,#2563EB,#60A5FA)',
-              color: '#fff', border: 'none', cursor: 'pointer', letterSpacing: '1px'
+              background: 'linear-gradient(135deg,#C2410C,#F0834D)',
+              color: '#faf9f7', border: 'none', cursor: 'pointer', letterSpacing: '1px'
             }}
           >
             VIEW ALL →

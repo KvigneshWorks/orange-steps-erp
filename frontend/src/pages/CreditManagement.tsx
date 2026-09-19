@@ -58,21 +58,21 @@ interface SummaryData {
 
 const STATUS_CONFIG = {
     clear: { label: 'Clear', color: '#10b981', bg: '#ecfdf5', border: '#a7f3d0' },
-    pending: { label: 'Pending', color: '#3b82f6', bg: '#eff6ff', border: '#bfdbfe' },
-    partial: { label: 'Partial', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+    pending: { label: 'Pending', color: '#DB5B1F', bg: '#FDE0CB', border: '#FBC9A8' },
+    partial: { label: 'Partial', color: '#DB5B1F', bg: '#FDE0CB', border: '#FDE0CB' },
     overdue: { label: 'Overdue', color: '#D93B55', bg: '#fef2f2', border: '#fecaca' },
 };
 
 const PRIORITY_CONFIG = {
-    low: { label: 'Low', color: '#94a3b8', bg: '#f8fafc', border: '#e2e8f0' },
-    medium: { label: 'Medium', color: '#3b82f6', bg: '#eff6ff', border: '#bfdbfe' },
-    high: { label: 'High', color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+    low: { label: 'Low', color: '#8C7C63', bg: '#F5F3EF', border: '#E3DDD3' },
+    medium: { label: 'Medium', color: '#DB5B1F', bg: '#FDE0CB', border: '#FBC9A8' },
+    high: { label: 'High', color: '#DB5B1F', bg: '#FDE0CB', border: '#FDE0CB' },
     urgent: { label: 'Urgent', color: '#D93B55', bg: '#fef2f2', border: '#fecaca' },
 };
 
 const PAYMENT_MODES = ['Cash', 'UPI', 'NEFT', 'Cheque', 'Bank Transfer', 'Others'];
 const CREDIT_COLOR = { primary: '#D93B55', light: '#fef2f2', border: '#fecaca', mid: '#D93B55', gradient: 'linear-gradient(135deg, #D93B55, #b91c1c)' };
-const PAYMENT_COLOR = { primary: '#0d9488', light: '#f0fdfa', border: '#99f6e4', mid: '#14b8a6', gradient: 'linear-gradient(135deg, #0d9488, #0f766e)' };
+const PAYMENT_COLOR = { primary: '#A6491D', light: '#FDE0CB', border: '#FBC9A8', mid: '#A6491D', gradient: 'linear-gradient(135deg, #A6491D, #9A3412)' };
 const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 const fmt = (n: number) =>
     `₹${Math.round(Number(n) || 0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
@@ -96,12 +96,12 @@ function apiErrMsg(e: any, fallback: string): string {
 
 function vendorColor(name: string) {
     const palette = [
-        { bg: '#fef3c7', color: '#C47E0A', border: '#fde68a' },
+        { bg: '#FDE0CB', color: '#9A3412', border: '#FDE0CB' },
         { bg: '#d1fae5', color: '#1E9C6A', border: '#6ee7b7' },
-        { bg: '#dbeafe', color: '#2563eb', border: '#93c5fd' },
-        { bg: '#fce7f3', color: '#db2777', border: '#f9a8d4' },
-        { bg: '#ede9fe', color: '#7c3aed', border: '#c4b5fd' },
-        { bg: '#cffafe', color: '#0891b2', border: '#67e8f9' },
+        { bg: '#FDE0CB', color: '#C2410C', border: '#F0834D' },
+        { bg: '#FBC9A8', color: '#db2777', border: '#f9a8d4' },
+        { bg: '#FBC9A8', color: '#A6491D', border: '#F0834D' },
+        { bg: '#FDE0CB', color: '#A6491D', border: '#D98255' },
     ];
     let h = 0;
     for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
@@ -168,7 +168,7 @@ const Ic = ({ n, sz = 16, c = 'currentColor' }: { n: string; sz?: number; c?: st
 interface SDDOpt { value: string; label: string; sub?: string; }
 function SDD({
     options, value, onChange, placeholder, disabled = false,
-    emptyMsg = 'No options', label, required, accent = 'var(--ember-mid,#3B82F6)',
+    emptyMsg = 'No options', label, required, accent = 'var(--ember-mid,#DB5B1F)',
 }: {
     options: SDDOpt[]; value: string; onChange: (v: string) => void;
     placeholder: string; disabled?: boolean; emptyMsg?: string;
@@ -253,7 +253,7 @@ function SDD({
         <div ref={panelRef} className="CM3-sdd-panel" style={panelStyle}>
 
             <div className="CM3-sdd-search">
-                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="var(--text-4,#9ca3af)" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="var(--text-4,#6B5D48)" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                 <input ref={inp} value={q} onChange={e => setQ(e.target.value)} placeholder="Type to search…" className="CM3-sdd-inp" />
                 {q && <button onClick={() => { setQ(''); inp.current?.focus(); }} className="CM3-sdd-clr">
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
@@ -269,14 +269,14 @@ function SDD({
                 )}
                 {filtered.length === 0
                     ? <div className="CM3-sdd-empty">
-                        <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="var(--text-4,#9ca3af)" strokeWidth={1.5} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+                        <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="var(--text-4,#6B5D48)" strokeWidth={1.5} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                         <span>{q ? `No results for "${q}"` : emptyMsg}</span>
                     </div>
                     : filtered.map(opt => {
                         const isSel = value === opt.value;
                         return (
                             <div key={opt.value} onClick={() => pick(opt.value)} role="option" tabIndex={-1} aria-selected={isSel} className={`CM3-sdd-item${isSel ? ' selected' : ''}`}>
-                                <div className="CM3-sdd-av" style={{ background: isSel ? accent + '20' : 'var(--surface,#f2f3f5)', color: isSel ? accent : 'var(--text-3,#6b6b6b)', borderColor: isSel ? accent + '40' : 'transparent' }}>
+                                <div className="CM3-sdd-av" style={{ background: isSel ? accent + '20' : 'var(--surface,#F0ECE6)', color: isSel ? accent : 'var(--text-3,#6B5D48)', borderColor: isSel ? accent + '40' : 'transparent' }}>
                                     {opt.label.slice(0, 2).toUpperCase()}
                                 </div>
                                 <div className="CM3-sdd-item-text">
@@ -321,7 +321,7 @@ function SDD({
                         {sel?.sub && <span className="CM3-sdd-val-sub"> · {sel.sub}</span>}
                     </span>
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="none"
-                        stroke={open ? accent : 'var(--text-4,#9ca3af)'} strokeWidth={2.5}
+                        stroke={open ? accent : 'var(--text-4,#6B5D48)'} strokeWidth={2.5}
                         strokeLinecap="round" strokeLinejoin="round"
                         style={{ flexShrink: 0, transition: 'transform 0.22s', transform: open ? 'rotate(180deg)' : 'none' }}>
                         <path d="M6 9l6 6 6-6" />
@@ -398,19 +398,19 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
     const pick = (label: string) => { onChange(label); setQ(''); setOpen(false); };
     const clear = () => { onChange(''); setQ(''); inputRef.current?.focus(); };
     const panel = open ? createPortal(
-        <div ref={panelRef} style={{ ...panelStyle, background: '#fff', border: `1.5px solid ${accent}30`, boxShadow: '0 8px 28px rgba(0,0,0,0.10)', overflow: 'hidden' }}>
+        <div ref={panelRef} style={{ ...panelStyle, background: '#faf9f7', border: `1.5px solid ${accent}30`, boxShadow: '0 8px 28px rgba(0,0,0,0.10)', overflow: 'hidden' }}>
 
             {/* Search row */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid #E9EEF5', background: '#F8FAFC' }}>
-                <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid #E8E2D8', background: '#F5F3EF' }}>
+                <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#8C7C63" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                 <input
                     autoFocus
                     value={q}
                     onChange={e => setQ(e.target.value)}
                     placeholder="Search or type any name…"
-                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 11, color: 'var(--text-1,#0F172A)', fontFamily: 'var(--font-body)' }}
+                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 11, color: 'var(--text-1,#231C14)', fontFamily: 'var(--font-body)' }}
                 />
-                {q && <button type="button" onClick={() => setQ('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', padding: 2, borderRadius: 4 }}>
+                {q && <button type="button" onClick={() => setQ('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8C7C63', display: 'flex', padding: 2, borderRadius: 4 }}>
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>}
             </div>
@@ -421,28 +421,28 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                 {/* "Use typed name" option when typing something not in list */}
                 {q.trim() && !options.find(o => o.label.toLowerCase() === q.toLowerCase()) && (
                     <div onClick={() => pick(q.trim())} role="option" tabIndex={-1} aria-selected={false}
-                        style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', borderBottom: '1px solid #F1F5F9', background: '#F8FAFC' }}>
+                        style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', borderBottom: '1px solid #F0ECE6', background: '#F5F3EF' }}>
                         <div style={{ width: 24, height: 24, borderRadius: 6, background: accent + '18', color: accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12.5, fontWeight: 800, flexShrink: 0 }}>+</div>
                         <div>
                             <div style={{ fontSize: 11, fontWeight: 700, color: accent }}>Use "{q.trim()}"</div>
-                            <div style={{ fontSize: 8.5, color: '#94a3b8', letterSpacing: '0.04em' }}>Save as new client name</div>
+                            <div style={{ fontSize: 8.5, color: '#8C7C63', letterSpacing: '0.04em' }}>Save as new client name</div>
                         </div>
                     </div>
                 )}
                 {filtered.length === 0 && !q.trim() ? (
-                    <div style={{ padding: '16px 14px', textAlign: 'center', fontSize: 10.5, color: '#94a3b8' }}>No clients found — type any name above</div>
+                    <div style={{ padding: '16px 14px', textAlign: 'center', fontSize: 10.5, color: '#8C7C63' }}>No clients found — type any name above</div>
                 ) : filtered.map((opt, i) => {
                     const isSel = value === opt.label;
                     const vc = vendorColor(opt.label);
                     return (
                         <div key={i} onClick={() => pick(opt.label)} role="option" tabIndex={-1} aria-selected={isSel}
-                            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', background: isSel ? accent + '08' : undefined, borderBottom: '1px solid #F1F5F9', transition: 'background .1s' }}>
+                            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', background: isSel ? accent + '08' : undefined, borderBottom: '1px solid #F0ECE6', transition: 'background .1s' }}>
                             <div style={{ width: 26, height: 26, borderRadius: 7, background: vc.bg, color: vc.color, border: `1px solid ${vc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 800, flexShrink: 0 }}>
                                 {opt.label.slice(0, 2).toUpperCase()}
                             </div>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                                <div style={{ fontSize: 11, fontWeight: isSel ? 800 : 600, color: isSel ? accent : 'var(--text-1,#0F172A)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{opt.label}</div>
-                                {opt.sub && <div style={{ fontSize: 8.5, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{opt.sub}</div>}
+                                <div style={{ fontSize: 11, fontWeight: isSel ? 800 : 600, color: isSel ? accent : 'var(--text-1,#231C14)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{opt.label}</div>
+                                {opt.sub && <div style={{ fontSize: 8.5, color: '#8C7C63', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{opt.sub}</div>}
                             </div>
                             {isSel && <svg style={{ color: accent, flexShrink: 0 }} width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M20 6 9 17l-5-5" /></svg>}
                         </div>
@@ -452,7 +452,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
             {/* List */}
 
             {/* Footer */}
-            <div style={{ padding: '4px 12px', background: '#F8FAFC', borderTop: '1px solid #E9EEF5', fontSize: 8, color: '#94a3b8', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ padding: '4px 12px', background: '#F5F3EF', borderTop: '1px solid #E8E2D8', fontSize: 8, color: '#8C7C63', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em', display: 'flex', justifyContent: 'space-between' }}>
                 <span>{filtered.length} client{filtered.length !== 1 ? 's' : ''}</span>
                 {value && <span style={{ color: accent, fontWeight: 800 }}>✓ {value}</span>}
             </div>
@@ -466,7 +466,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
         <div ref={wrapRef} style={{ position: 'relative' }}>
             <div style={{ position: 'relative' }}>
                 {/* Person icon */}
-                <div style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: value ? accent : '#94a3b8' }}>
+                <div style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: value ? accent : '#8C7C63' }}>
                     <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                 </div>
                 <input
@@ -483,7 +483,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                 {/* Clear button */}
                 {value && (
                     <button type="button" onClick={clear}
-                        style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', padding: 3, borderRadius: 4 }}>
+                        style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8C7C63', display: 'flex', padding: 3, borderRadius: 4 }}>
                         <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                     </button>
                 )}
@@ -498,7 +498,7 @@ const CSS = `
 /* ── PAGE ── */
 .CM3-page {
     font-family: var(--font-body, 'Space Grotesk', sans-serif);
-    background: var(--surface, #F2F3F5);
+    background: var(--surface, #F0ECE6);
     min-height: 100vh;
     padding: 32px 36px;
     animation: erp-slide-up 0.5s cubic-bezier(0.22,1,0.36,1) both;
@@ -511,20 +511,20 @@ const CSS = `
 .CM3-sync-pill {
     display: flex; align-items: center; gap: 6px;
     padding: 7px 14px;
-    background: rgba(13,148,136,0.08); border: 1px solid rgba(13,148,136,0.2);
+    background: rgba(166,73,29,0.08); border: 1px solid rgba(166,73,29,0.2);
     border-radius: 100px;
     font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 8px; font-weight: 800;
-    color: #0d9488; letter-spacing: 2px; text-transform: uppercase;
+    color: #A6491D; letter-spacing: 2px; text-transform: uppercase;
     transition: all 0.2s;
 }
-.CM3-sync-pill:hover { background: rgba(13,148,136,0.14); transform: translateY(-1px); }
-.CM3-sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; animation: erp-pulse-dot 2s ease-in-out infinite; }
+.CM3-sync-pill:hover { background: rgba(166,73,29,0.14); transform: translateY(-1px); }
+.CM3-sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #A6491D; animation: erp-pulse-dot 2s ease-in-out infinite; }
 
 /* ── STAT CARDS ── */
 .CM3-stat {
-    background: var(--white,#fff);
-    border: 1px solid var(--border,#D4D5D8);
+    background: var(--white,#faf9f7);
+    border: 1px solid var(--border,#D2C7B8);
     border-radius: var(--r-lg,16px);
     padding: 20px 22px;
     position: relative; overflow: hidden;
@@ -544,15 +544,15 @@ const CSS = `
 .CM3-stat-glow {
     position: absolute; top: -20px; right: -20px;
     width: 80px; height: 80px; border-radius: 50%;
-    background: var(--glow, rgba(37,99,235,0.07));
+    background: var(--glow, rgba(194,65,12,0.07));
     transition: transform 0.3s;
 }
 .CM3-stat:hover .CM3-stat-glow { transform: scale(1.3); }
 
 .CM3-stat-icon {
     width: 36px; height: 36px; border-radius: var(--r-md,10px);
-    background: var(--icon-bg, var(--ember-ghost,rgba(59,130,246,0.10)));
-    border: 1px solid var(--icon-border, var(--ember-border,rgba(29,78,216,0.28)));
+    background: var(--icon-bg, var(--ember-ghost,rgba(219,91,31,0.10)));
+    border: 1px solid var(--icon-border, var(--ember-border,rgba(154,52,18,0.28)));
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 14px;
     position: relative; z-index: 1;
@@ -563,23 +563,23 @@ const CSS = `
 .CM3-stat-label {
     font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 8px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
-    color: var(--text-4, #94A3B8); margin-bottom: 6px;
+    color: var(--text-4, #8C7C63); margin-bottom: 6px;
     position: relative; z-index: 1;
 }
 .CM3-stat-val {
     font-family: var(--font-body, 'Space Grotesk', sans-serif);
     font-size: 28px; font-style: normal; font-weight: 800;
     letter-spacing: -1px; line-height: 1;
-    color: var(--val-color, #3A3A3A);
+    color: var(--val-color, #3A3024);
     position: relative; z-index: 1;
 }
-.CM3-stat-foot { font-size: 9px; color: var(--text-4, #94A3B8); margin-top: 6px; }
+.CM3-stat-foot { font-size: 9px; color: var(--text-4, #8C7C63); margin-top: 6px; }
 .DB-stat-delta { display:flex; align-items:center; gap:5px; margin-top:5px; font-family:var(--font-mono); font-size: 8px; font-weight: 700; color:var(--text-4); letter-spacing:0.5px; }
 /* ── Open Ledger Account button ── */
-.CM3-add-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 12px; background:var(--ember,#2563EB); color:#fff; border:none; border-radius:8px; font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase; cursor:pointer; transition:background .18s,transform .15s; white-space:nowrap; }
-.CM3-add-btn:hover { background:var(--ember-dark,#1D4ED8); transform:translateY(-1px); }
+.CM3-add-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 12px; background:var(--ember,#C2410C); color:#faf9f7; border:none; border-radius:8px; font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase; cursor:pointer; transition:background .18s,transform .15s; white-space:nowrap; }
+.CM3-add-btn:hover { background:var(--ember-dark,#9A3412); transform:translateY(-1px); }
 /* ── Main detail panel ── */
-.CM3-main { overflow-y:auto; background:var(--white,#fff); height:100%; }
+.CM3-main { overflow-y:auto; background:var(--white,#faf9f7); height:100%; }
 /* ── Empty state ── */
 .CM3-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:320px; color:var(--text-4); text-align:center; padding:40px; }
 .CM3-empty-icon { opacity:.35; margin-bottom:16px; }
@@ -592,10 +592,10 @@ const CSS = `
     grid-template-columns: 320px 1fr;
     flex: 1;
     min-height: 500px;
-    border: 1.5px solid var(--border, #E9EEF5);
+    border: 1.5px solid var(--border, #E8E2D8);
     border-radius: 16px;
     overflow: hidden;
-    background: var(--white, #fff);
+    background: var(--white, #faf9f7);
     box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     animation: erp-slide-up 0.45s 0.1s cubic-bezier(0.22,1,0.36,1) both;
 }
@@ -604,32 +604,32 @@ const CSS = `
 /* ── SIDEBAR ── */
 /* ══ SIDEBAR REDESIGN ═══════════════════════════════════════════════ */
 .CM3-sidebar {
-  border-right: 1.5px solid var(--border,#E9EEF5);
+  border-right: 1.5px solid var(--border,#E8E2D8);
   display: flex; flex-direction: column;
-  background: #F8FAFC; overflow: hidden; height: 100%;
+  background: #F5F3EF; overflow: hidden; height: 100%;
 }
 
 /* ── Sidebar Hero Header ── */
 .CM3-sb-hero {
   padding: 14px 14px 10px;
-  background: linear-gradient(135deg,#F3E8FF 0%,#fff 100%);
-  border-bottom: 1px solid var(--border,#E9EEF5);
+  background: linear-gradient(135deg,#FBC9A8 0%,#faf9f7 100%);
+  border-bottom: 1px solid var(--border,#E8E2D8);
   position: relative; overflow: hidden;
 }
 .CM3-sb-hero::before {
   content:''; position:absolute; right:-20px; top:-20px;
   width:80px; height:80px; border-radius:50%;
-  background: radial-gradient(circle, rgba(29,78,216,0.07), transparent 70%);
+  background: radial-gradient(circle, rgba(154,52,18,0.07), transparent 70%);
   pointer-events:none;
 }
 .CM3-sb-eyebrow {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 7px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--ember,#2563EB); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+  color: var(--ember,#C2410C); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
 }
 .CM3-sb-eyebrow-dot {
   width: 5px; height: 5px; border-radius: 50%;
-  background: var(--ember,#2563EB);
+  background: var(--ember,#C2410C);
   animation: sb-dot-pulse 2s ease-in-out infinite;
 }
 @keyframes sb-dot-pulse {
@@ -638,7 +638,7 @@ const CSS = `
 }
 .CM3-sb-title {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 13px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 13px; font-weight: 800; color: var(--text-1,#231C14);
   text-transform: uppercase; letter-spacing: 0.4px;
   margin-bottom: 8px;
 }
@@ -646,29 +646,29 @@ const CSS = `
 /* ── Search box ── */
 .CM3-search {
   display: flex; align-items: center; gap: 7px; padding: 8px 11px;
-  background: #fff; border: 1.5px solid var(--border,#E9EEF5);
+  background: #faf9f7; border: 1.5px solid var(--border,#E8E2D8);
   border-radius: 10px; transition: border-color 0.15s, box-shadow 0.15s;
 }
 .CM3-search:focus-within {
-  border-color: var(--ember,#2563EB);
-  box-shadow: 0 0 0 3px rgba(29,78,216,0.08);
+  border-color: var(--ember,#C2410C);
+  box-shadow: 0 0 0 3px rgba(154,52,18,0.08);
 }
 .CM3-search input {
   flex: 1; border: none; outline: none; font-size: 9.5px;
-  color: var(--text-1,#0F172A); background: transparent;
+  color: var(--text-1,#231C14); background: transparent;
 }
-.CM3-search input::placeholder { color: var(--text-4,#9ca3af); }
+.CM3-search input::placeholder { color: var(--text-4,#6B5D48); }
 .CM3-alloc-search { margin-bottom: 4px; position: sticky; top: 0; z-index: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 
 /* ── Add vendor button ── */
 .CM3-add-btn {
   margin: 10px 12px 0; display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 11px; background: linear-gradient(135deg,#2563EB,#3B82F6);
-  color: #fff; border: none; border-radius: 10px;
+  padding: 11px; background: linear-gradient(135deg,#C2410C,#DB5B1F);
+  color: #faf9f7; border: none; border-radius: 10px;
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 8.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
   cursor: pointer; transition: all 0.22s;
-  box-shadow: 0 4px 16px rgba(29,78,216,0.28);
+  box-shadow: 0 4px 16px rgba(154,52,18,0.28);
   position: relative; overflow: hidden;
 }
 .CM3-add-btn::after {
@@ -676,24 +676,24 @@ const CSS = `
   background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
   pointer-events:none;
 }
-.CM3-add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,78,216,0.4); }
+.CM3-add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(154,52,18,0.4); }
 .CM3-add-btn:active { transform: translateY(0); }
 
 /* ── Filter chips bar ── */
 .CM3-filters {
   display: flex; gap: 4px; flex-wrap: wrap;
-  padding: 8px 12px; border-bottom: 1px solid var(--border,#E9EEF5);
-  background: #F1F5F9;
+  padding: 8px 12px; border-bottom: 1px solid var(--border,#E8E2D8);
+  background: #F0ECE6;
 }
 .CM3-chip {
-  padding: 3px 9px; border-radius: 100px; border: 1.5px solid var(--border,#E9EEF5);
+  padding: 3px 9px; border-radius: 100px; border: 1.5px solid var(--border,#E8E2D8);
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 8px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer; background: #fff; color: var(--text-4,#9ca3af);
+  cursor: pointer; background: #faf9f7; color: var(--text-4,#6B5D48);
   transition: all 0.15s;
 }
-.CM3-chip:hover { border-color: #BFDBFE; color: #2563EB; background: #F3E8FF; }
-.CM3-chip.on { background: #F3E8FF; border-color: #BFDBFE; color: #2563EB; font-weight: 800; }
+.CM3-chip:hover { border-color: #FBC9A8; color: #C2410C; background: #FBC9A8; }
+.CM3-chip.on { background: #FBC9A8; border-color: #FBC9A8; color: #C2410C; font-weight: 800; }
 
 /* ── Vendor count pill ── */
 .CM3-sb-count {
@@ -707,69 +707,69 @@ const CSS = `
 }
 .CM3-sb-count-num {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 800; color: var(--ember,#2563EB);
-  background: #F3E8FF; padding: 1px 7px; border-radius: 100px;
-  border: 1px solid #BFDBFE;
+  font-size: 8px; font-weight: 800; color: var(--ember,#C2410C);
+  background: #FBC9A8; padding: 1px 7px; border-radius: 100px;
+  border: 1px solid #FBC9A8;
 }
 
 /* ── Vendor list scroll ── */
 .CM3-vlist { flex: 1; overflow-y: auto; padding: 4px 0; }
 .CM3-vlist::-webkit-scrollbar { width: 4px; }
-.CM3-vlist::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 2px; }
+.CM3-vlist::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 2px; }
 
 /* ── Category drill-down (sidebar) ── */
 .CM3-catcard {
   margin: 4px 10px; border-radius: 12px;
-  border: 1.5px solid var(--border,#E9EEF5);
-  background: #fff; cursor: pointer;
+  border: 1.5px solid var(--border,#E8E2D8);
+  background: #faf9f7; cursor: pointer;
   display: flex; align-items: center; gap: 10px; padding: 11px 12px;
   transition: all 0.18s; position: relative; overflow: hidden;
   animation: vc-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
 }
 .CM3-catcard:hover {
-  border-color: #BFDBFE;
-  box-shadow: 0 4px 16px rgba(29,78,216,0.1);
+  border-color: #FBC9A8;
+  box-shadow: 0 4px 16px rgba(154,52,18,0.1);
   transform: translateX(2px);
 }
 .CM3-catcard:hover .CM3-vcard-accent { opacity: 1; }
 .CM3-catcard-icon {
   width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: #F3E8FF; border: 1.5px solid #BFDBFE;
+  background: #FBC9A8; border: 1.5px solid #FBC9A8;
 }
 .CM3-catcard-info { flex: 1; min-width: 0; }
 .CM3-catcard-name {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 10px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 10px; font-weight: 800; color: var(--text-1,#231C14);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .CM3-catcard-sub {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 700; color: #374151; margin-top: 2px; letter-spacing: 0.4px;
+  font-size: 8px; font-weight: 700; color: #3A3024; margin-top: 2px; letter-spacing: 0.4px;
 }
-.CM3-catcard-chev { color: var(--text-4,#9ca3af); flex-shrink: 0; transition: transform 0.18s, color 0.18s; }
-.CM3-catcard:hover .CM3-catcard-chev { color: var(--ember,#2563EB); transform: translateX(2px); }
+.CM3-catcard-chev { color: var(--text-4,#6B5D48); flex-shrink: 0; transition: transform 0.18s, color 0.18s; }
+.CM3-catcard:hover .CM3-catcard-chev { color: var(--ember,#C2410C); transform: translateX(2px); }
 
 /* Back-to-categories breadcrumb (shown when a category is drilled into) */
 .CM3-cat-back {
   display: flex; align-items: center; gap: 8px; width: calc(100% - 20px);
   margin: 2px 10px 8px; padding: 8px 10px; border-radius: 10px;
-  border: 1.5px dashed var(--border,#E9EEF5); background: #fff;
+  border: 1.5px dashed var(--border,#E8E2D8); background: #faf9f7;
   cursor: pointer; transition: all 0.15s;
 }
-.CM3-cat-back:hover { border-color: #BFDBFE; background: #F3E8FF; }
-.CM3-cat-back:hover .CM3-cat-back-name { color: #2563EB; }
-.CM3-cat-back svg { flex-shrink: 0; color: var(--text-3,#6B6B6B); }
-.CM3-cat-back:hover svg { color: #2563EB; }
+.CM3-cat-back:hover { border-color: #FBC9A8; background: #FBC9A8; }
+.CM3-cat-back:hover .CM3-cat-back-name { color: #C2410C; }
+.CM3-cat-back svg { flex-shrink: 0; color: var(--text-3,#6B5D48); }
+.CM3-cat-back:hover svg { color: #C2410C; }
 .CM3-cat-back-name {
   flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 9.5px;
-  color: var(--text-1,#0F172A); transition: color 0.15s;
+  color: var(--text-1,#231C14); transition: color 0.15s;
 }
 .CM3-cat-back-count {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 800; color: var(--ember,#2563EB);
-  background: #F3E8FF; padding: 1px 7px; border-radius: 100px; border: 1px solid #BFDBFE;
+  font-size: 8px; font-weight: 800; color: var(--ember,#C2410C);
+  background: #FBC9A8; padding: 1px 7px; border-radius: 100px; border: 1px solid #FBC9A8;
   flex-shrink: 0;
 }
 
@@ -780,61 +780,61 @@ const CSS = `
 .CM3-catsum-icon {
   width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(29,78,216,0.09); border: 1.5px solid rgba(29,78,216,0.18);
+  background: rgba(154,52,18,0.09); border: 1.5px solid rgba(154,52,18,0.18);
 }
 .CM3-catsum-eyebrow {
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--ember,#2563EB); margin-bottom: 2px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--ember,#C2410C); margin-bottom: 2px;
 }
-.CM3-catsum-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 16.5px; color: var(--text-1,#0F172A); text-transform: uppercase; letter-spacing: 0.3px; }
-.CM3-catsum-sub { font-size: 9px; font-weight: 700; color: var(--text-4,#9ca3af); margin-top: 2px; }
+.CM3-catsum-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 16.5px; color: var(--text-1,#231C14); text-transform: uppercase; letter-spacing: 0.3px; }
+.CM3-catsum-sub { font-size: 9px; font-weight: 700; color: var(--text-4,#6B5D48); margin-top: 2px; }
 .CM3-catsum-stats {
   display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px;
 }
 @media (max-width: 640px) { .CM3-catsum-stats { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 420px) { .CM3-catsum-stats { grid-template-columns: 1fr; } }
 .CM3-catsum-stat {
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 12px; background: var(--white,#fff);
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px; background: var(--white,#faf9f7);
   padding: 13px 15px;
 }
 .CM3-catsum-stat-lbl {
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--text-4,#94A3B8);
+  letter-spacing: 2px; text-transform: uppercase; color: var(--text-4,#8C7C63);
   display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
 }
 .CM3-catsum-stat-val { font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 16px; }
 .CM3-catsum-stat-val.credit-color { color: #D93B55; }
-.CM3-catsum-stat-val.payment-color { color: #0d9488; }
-.CM3-catsum-stat-val.balance-color { color: #C47E0A; }
+.CM3-catsum-stat-val.payment-color { color: #A6491D; }
+.CM3-catsum-stat-val.balance-color { color: #9A3412; }
 .CM3-catsum-listhdr {
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800;
-  letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-3,#6B6B6B); margin-bottom: 10px;
+  letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-3,#6B5D48); margin-bottom: 10px;
 }
 .CM3-catsum-list { display: flex; flex-direction: column; gap: 8px; }
 .CM3-catsum-row {
   display: flex; align-items: center; gap: 12px;
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 12px; background: var(--white,#fff);
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px; background: var(--white,#faf9f7);
   padding: 11px 14px; cursor: pointer; transition: all 0.15s;
 }
-.CM3-catsum-row:hover { border-color: #BFDBFE; background: #F3E8FF; transform: translateX(2px); }
+.CM3-catsum-row:hover { border-color: #FBC9A8; background: #FBC9A8; transform: translateX(2px); }
 .CM3-catsum-row-info { flex: 1; min-width: 0; }
 .CM3-catsum-row-name {
   font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 9.5px;
-  color: #7C3AED; text-transform: uppercase; letter-spacing: 0.2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: #A6491D; text-transform: uppercase; letter-spacing: 0.2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .CM3-catsum-row-meta {
   display: flex; align-items: center; gap: 5px; font-size: 8.5px; font-weight: 700;
-  color: var(--text-4,#9ca3af); margin-top: 2px;
+  color: var(--text-4,#6B5D48); margin-top: 2px;
 }
 .CM3-catsum-row-amt { text-align: right; flex-shrink: 0; }
-.CM3-catsum-row-bal { display: block; font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 11.5px; color: #C47E0A; }
-.CM3-catsum-row-bal-lbl { display: block; font-size: 7.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-4,#9ca3af); margin-top: 1px; }
+.CM3-catsum-row-bal { display: block; font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 11.5px; color: #9A3412; }
+.CM3-catsum-row-bal-lbl { display: block; font-size: 7.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-4,#6B5D48); margin-top: 1px; }
 
 /* ── Vendor card (new design) ── */
 .CM3-vcard {
   margin: 4px 10px; border-radius: 12px;
-  border: 1.5px solid var(--border,#E9EEF5);
-  background: #fff; cursor: pointer;
+  border: 1.5px solid var(--border,#E8E2D8);
+  background: #faf9f7; cursor: pointer;
   transition: all 0.18s; position: relative; overflow: hidden;
   animation: vc-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
 }
@@ -843,19 +843,19 @@ const CSS = `
   to   { opacity:1; transform:translateX(0); }
 }
 .CM3-vcard:hover {
-  border-color: #BFDBFE;
-  box-shadow: 0 4px 16px rgba(29,78,216,0.1);
+  border-color: #FBC9A8;
+  box-shadow: 0 4px 16px rgba(154,52,18,0.1);
   transform: translateX(2px);
 }
 .CM3-vcard.active {
-  border-color: var(--ember,#2563EB);
-  background: #F3E8FF;
-  box-shadow: 0 4px 20px rgba(29,78,216,0.15);
+  border-color: var(--ember,#C2410C);
+  background: #FBC9A8;
+  box-shadow: 0 4px 20px rgba(154,52,18,0.15);
   transform: translateX(3px);
 }
 .CM3-vcard-accent {
   position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(180deg,#2563EB,#3B82F6);
+  background: linear-gradient(180deg,#C2410C,#DB5B1F);
   opacity: 0; transition: opacity 0.18s;
   border-radius: 3px 0 0 3px;
 }
@@ -874,24 +874,24 @@ const CSS = `
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .CM3-vcard:hover .CM3-vavatar { transform: scale(1.1) rotate(-3deg); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-.CM3-vcard.active .CM3-vavatar { transform: scale(1.08); box-shadow: 0 4px 14px rgba(29,78,216,0.22); }
+.CM3-vcard.active .CM3-vavatar { transform: scale(1.08); box-shadow: 0 4px 14px rgba(154,52,18,0.22); }
 
 .CM3-vcard-info { flex: 1; min-width: 0; }
 .CM3-vname {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 9.5px; font-weight: 800; color: #7C3AED; text-transform: uppercase; letter-spacing: 0.2px;
+  font-size: 9.5px; font-weight: 800; color: #A6491D; text-transform: uppercase; letter-spacing: 0.2px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .CM3-vmeta {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 700; color: #374151; margin-top: 2px;
+  font-size: 8px; font-weight: 700; color: #3A3024; margin-top: 2px;
   display: flex; align-items: center; gap: 4px; letter-spacing: 0.5px;
 }
 .CM3-vmeta-dot {
   width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
 }
 .CM3-vclient {
-  font-size: 8.5px; color: #0d9488; margin-top: 2px; font-weight: 700;
+  font-size: 8.5px; color: #A6491D; margin-top: 2px; font-weight: 700;
   display: flex; align-items: center; gap: 3px;
 }
 
@@ -899,10 +899,10 @@ const CSS = `
 .CM3-vcard-foot {
   padding: 0 12px 9px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.CM3-vcard-bar-wrap { flex: 1; height: 3px; border-radius: 100px; background: #f1f5f9; overflow: hidden; }
+.CM3-vcard-bar-wrap { flex: 1; height: 3px; border-radius: 100px; background: #F0ECE6; overflow: hidden; }
 .CM3-vcard-bar-fill {
   height: 100%; border-radius: 100px;
-  background: linear-gradient(90deg,#2563EB,#3B82F6);
+  background: linear-gradient(90deg,#C2410C,#DB5B1F);
   transition: width 1s cubic-bezier(0.4,0,0.2,1);
 }
 .CM3-vbal-new {
@@ -910,7 +910,7 @@ const CSS = `
   font-size: 9px; font-weight: 900; white-space: nowrap; flex-shrink: 0;
 }
 .CM3-vbal-new.red  { color: #D93B55; }
-.CM3-vbal-new.grey { color: var(--text-4,#9ca3af); }
+.CM3-vbal-new.grey { color: var(--text-4,#6B5D48); }
 
 /* ERP-stat grid spacing */
 .CM3-page .ERP-stats { margin-bottom: 20px; }
@@ -918,7 +918,7 @@ const CSS = `
 .CM3-vitm-btn { display:none; }
 
 /* ── DETAIL PANEL ── */
-.CM3-detail { display: flex; flex-direction: column; overflow: hidden; background: var(--white,#fff); }
+.CM3-detail { display: flex; flex-direction: column; overflow: hidden; background: var(--white,#faf9f7); }
 
 .CM3-welcome {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -927,19 +927,19 @@ const CSS = `
 }
 .CM3-welcome-icon {
     width: 76px; height: 76px; border-radius: 22px;
-    background: #fffbeb; border: 2px solid #fde68a;
+    background: #FDE0CB; border: 2px solid #FDE0CB;
     display: flex; align-items: center; justify-content: center; margin-bottom: 8px;
     animation: cm3-welcome-float 3s ease-in-out infinite;
 }
 @keyframes cm3-welcome-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-.CM3-welcome-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; text-transform: uppercase; letter-spacing: 0.4px; font-size: 17.5px; font-weight: 800; color: var(--text-1,#0F172A); }
-.CM3-welcome-sub { font-size: 9.5px; color: var(--text-4,#9ca3af); max-width: 300px; line-height: 1.6; }
+.CM3-welcome-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; text-transform: uppercase; letter-spacing: 0.4px; font-size: 17.5px; font-weight: 800; color: var(--text-1,#231C14); }
+.CM3-welcome-sub { font-size: 9.5px; color: var(--text-4,#6B5D48); max-width: 300px; line-height: 1.6; }
 
 /* ── VENDOR HEADER — light style ── */
 .CM3-vhdr {
-    background: linear-gradient(135deg, #F8FAFC 0%, #fef9ed 100%);
+    background: linear-gradient(135deg, #F5F3EF 0%, #fef9ed 100%);
     padding: 20px 24px;
-    border-bottom: 1.5px solid var(--ember-border,#f5d87a);
+    border-bottom: 1.5px solid var(--ember-border,#D98255);
     display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;
 }
 .CM3-vhdr-left { display: flex; align-items: flex-start; gap: 14px; }
@@ -950,15 +950,15 @@ const CSS = `
     transition: transform 0.2s;
 }
 .CM3-vhdr-avatar:hover { transform: scale(1.06) rotate(-3deg); }
-.CM3-vhdr-name { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 16.5px; font-weight: 900; font-style: normal; color: #7C3AED; text-transform: uppercase; letter-spacing: 0.3px; text-shadow: 0 1px 0 rgba(255,255,255,.4); }
-.CM3-vhdr-cat { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; color: #374151; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+.CM3-vhdr-name { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 16.5px; font-weight: 900; font-style: normal; color: #A6491D; text-transform: uppercase; letter-spacing: 0.3px; text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.CM3-vhdr-cat { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; color: #3A3024; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
 .CM3-vhdr-client-strip {
     display: flex; align-items: center; gap: 6px; margin-top: 6px;
-    padding: 4px 10px; background: rgba(13,148,136,0.08);
-    border: 1px solid rgba(13,148,136,0.2); border-radius: 6px; width: fit-content;
+    padding: 4px 10px; background: rgba(166,73,29,0.08);
+    border: 1px solid rgba(166,73,29,0.2); border-radius: 6px; width: fit-content;
 }
-.CM3-vhdr-client-label { font-size: 8px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #0d9488; }
-.CM3-vhdr-client-name { font-size: 9px; font-weight: 800; color: #0f766e; }
+.CM3-vhdr-client-label { font-size: 8px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #A6491D; }
+.CM3-vhdr-client-name { font-size: 9px; font-weight: 800; color: #9A3412; }
 .CM3-vhdr-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 /* ── ACTION BUTTONS ── */
@@ -968,58 +968,58 @@ const CSS = `
     font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
     cursor: pointer; border: none; transition: all 0.18s;
 }
-.CM3-act.credit { background: ${CREDIT_COLOR.gradient}; color: #fff; box-shadow: 0 3px 10px rgba(220,38,38,0.25); }
+.CM3-act.credit { background: ${CREDIT_COLOR.gradient}; color: #faf9f7; box-shadow: 0 3px 10px rgba(220,38,38,0.25); }
 .CM3-act.credit:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(220,38,38,0.35); }
-.CM3-act.payment { background: ${PAYMENT_COLOR.gradient}; color: #fff; box-shadow: 0 3px 10px rgba(13,148,136,0.25); }
-.CM3-act.payment:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(13,148,136,0.35); }
-.CM3-act.payment:disabled { background: #e2e8f0; color: #94a3b8; box-shadow: none; cursor: not-allowed; transform: none; }
+.CM3-act.payment { background: ${PAYMENT_COLOR.gradient}; color: #faf9f7; box-shadow: 0 3px 10px rgba(166,73,29,0.25); }
+.CM3-act.payment:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(166,73,29,0.35); }
+.CM3-act.payment:disabled { background: #E3DDD3; color: #8C7C63; box-shadow: none; cursor: not-allowed; transform: none; }
 .CM3-act.ghost {
-    background: var(--white,#fff); color: var(--text-2,#3d3d3d);
-    border: 1.5px solid var(--border,#E9EEF5);
+    background: var(--white,#faf9f7); color: var(--text-2,#3A3024);
+    border: 1.5px solid var(--border,#E8E2D8);
 }
-.CM3-act.ghost:hover { border-color: var(--ember-border,#f5d87a); background: var(--off-white,#F8FAFC); transform: translateY(-1px); }
+.CM3-act.ghost:hover { border-color: var(--ember-border,#D98255); background: var(--off-white,#F5F3EF); transform: translateY(-1px); }
 
 /* ── BAL STRIP — light tones ── */
-.CM3-bal-strip { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1.5px solid var(--border,#E9EEF5); }
+.CM3-bal-strip { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1.5px solid var(--border,#E8E2D8); }
 @media (max-width: 480px) { .CM3-bal-strip { grid-template-columns: 1fr; } }
-.CM3-bal-cell { padding: 14px 20px; border-right: 1px solid var(--border,#E9EEF5); background: var(--white,#fff); }
+.CM3-bal-cell { padding: 14px 20px; border-right: 1px solid var(--border,#E8E2D8); background: var(--white,#faf9f7); }
 .CM3-bal-cell:last-child { border-right: none; }
-.CM3-bal-lbl { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #4b5563; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+.CM3-bal-lbl { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #524532; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
 .CM3-bal-val { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; font-size: 16.5px; font-weight: 900; }
 .CM3-bal-val.credit-color { color: #D93B55; }
-.CM3-bal-val.payment-color { color: #0d9488; }
-.CM3-bal-val.balance-color { color: #C47E0A; }
+.CM3-bal-val.payment-color { color: #A6491D; }
+.CM3-bal-val.balance-color { color: #9A3412; }
 
 .CM3-client-cell {
     grid-column: 1/-1; padding: 8px 20px;
-    background: rgba(13,148,136,0.05);
-    border-bottom: 1px solid rgba(13,148,136,0.15);
+    background: rgba(166,73,29,0.05);
+    border-bottom: 1px solid rgba(166,73,29,0.15);
     display: flex; align-items: center; gap: 8px;
 }
-.CM3-client-cell-lbl { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #0d9488; }
-.CM3-client-cell-name { font-size: 9.5px; font-weight: 800; color: #0f766e; }
+.CM3-client-cell-lbl { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #A6491D; }
+.CM3-client-cell-name { font-size: 9.5px; font-weight: 800; color: #9A3412; }
 
 /* ── PROGRESS ── */
-.CM3-prog { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: var(--off-white,#F8FAFC); border-bottom: 1px solid var(--border,#E9EEF5); }
-.CM3-prog-bar { flex: 1; height: 5px; background: var(--border,#E9EEF5); border-radius: 100px; overflow: hidden; }
+.CM3-prog { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: var(--off-white,#F5F3EF); border-bottom: 1px solid var(--border,#E8E2D8); }
+.CM3-prog-bar { flex: 1; height: 5px; background: var(--border,#E8E2D8); border-radius: 100px; overflow: hidden; }
 .CM3-prog-fill { height: 100%; background: ${PAYMENT_COLOR.gradient}; border-radius: 100px; transition: width 0.9s ease; }
-.CM3-prog-txt { font-size: 9px; font-weight: 800; color: #0f766e; }
+.CM3-prog-txt { font-size: 9px; font-weight: 800; color: #9A3412; }
 
 /* ── TABS ── */
-.CM3-tabs-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--white,#fff); border-bottom: 1.5px solid var(--border,#E9EEF5); }
+.CM3-tabs-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--white,#faf9f7); border-bottom: 1.5px solid var(--border,#E8E2D8); }
 .CM3-tabs { display: flex; gap: 0; }
 .CM3-tab {
     padding: 14px 18px;
     font-family: var(--font-mono,'JetBrains Mono',monospace);
     font-size: 8px; font-weight: 800; letter-spacing: 2px;
-    text-transform: uppercase; color: #4b5563;
+    text-transform: uppercase; color: #524532;
     cursor: pointer; border: none; background: transparent;
     border-bottom: 2.5px solid transparent; transition: all 0.15s; white-space: nowrap;
 }
-.CM3-tab:hover { color: #0F172A; }
+.CM3-tab:hover { color: #231C14; }
 .CM3-tab.credit-tab.on { color: #D93B55; border-bottom-color: #D93B55; }
-.CM3-tab.payment-tab.on { color: #0d9488; border-bottom-color: #0d9488; }
-.CM3-tab.tl-tab.on { color: #C47E0A; border-bottom-color: #C47E0A; }
+.CM3-tab.payment-tab.on { color: #A6491D; border-bottom-color: #A6491D; }
+.CM3-tab.tl-tab.on { color: #9A3412; border-bottom-color: #9A3412; }
 .CM3-tab-add {
     display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: var(--r-md,10px);
     border: 1.5px solid; font-family: var(--font-mono,'JetBrains Mono',monospace);
@@ -1028,13 +1028,13 @@ const CSS = `
 }
 .CM3-tab-add.credit { color: #D93B55; border-color: #fecaca; }
 .CM3-tab-add.credit:hover { background: #fef2f2; }
-.CM3-tab-add.payment { color: #0d9488; border-color: #99f6e4; }
-.CM3-tab-add.payment:hover { background: #f0fdfa; }
+.CM3-tab-add.payment { color: #A6491D; border-color: #FBC9A8; }
+.CM3-tab-add.payment:hover { background: #FDE0CB; }
 
 /* ── CONTENT ── */
-.CM3-content { flex: 1; overflow-y: auto; padding: 12px; background: var(--surface,#F1F5F9); }
+.CM3-content { flex: 1; overflow-y: auto; padding: 12px; background: var(--surface,#F0ECE6); display: flex; flex-direction: column; }
 .CM3-content::-webkit-scrollbar { width: 5px; }
-.CM3-content::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 3px; }
+.CM3-content::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
 
 /* ── ENTRY CARDS ── */
 /* ── NEW BILL CARDS ── */
@@ -1043,8 +1043,8 @@ const CSS = `
   display: grid;
   grid-template-columns: 62px 1fr auto 32px;
   border-radius: 11px; overflow: hidden;
-  border: 1px solid var(--border,#E9EEF5);
-  background: #fff;
+  border: 1px solid var(--border,#E8E2D8);
+  background: #faf9f7;
   margin-bottom: 6px;
   transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
   animation: bc-in 0.32s cubic-bezier(0.4,0,0.2,1) both;
@@ -1056,16 +1056,16 @@ const CSS = `
 }
 .CM3-bc.bc-overdue { border-color: #fca5a5; box-shadow: 0 0 0 2px rgba(239,68,68,0.08); }
 .CM3-bc.bc-overdue:hover { box-shadow: 0 5px 22px rgba(239,68,68,0.18), 0 0 0 2px rgba(239,68,68,0.12); }
-.CM3-bc.bc-neardue { border-color: #fde68a; }
-.CM3-bc.bc-ok { border-color: var(--border,#E9EEF5); }
-.CM3-bc.bc-closed { background: #F8FAFC; border-color: #e4e7ec; opacity: 0.84; }
+.CM3-bc.bc-neardue { border-color: #FDE0CB; }
+.CM3-bc.bc-ok { border-color: var(--border,#E8E2D8); }
+.CM3-bc.bc-closed { background: #F5F3EF; border-color: #E3DDD3; opacity: 0.84; }
 
 /* ── SETTLED DATE STAMP ── */
 .CM3-bc-settled-stamp {
   display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
   padding: 9px 12px; gap: 3px; flex-shrink: 0;
   min-width: 130px; border-left: 1px solid #d1fae5;
-  background: linear-gradient(160deg,#f0fdf4,#fafdf7);
+  background: linear-gradient(160deg,#f0fdf4,#FAF9F7);
 }
 .CM3-bc-settled-date {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
@@ -1088,19 +1088,19 @@ const CSS = `
 .CM3-bc-left {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 10px 4px; gap: 4px;
-  border-right: 1px solid var(--border,#E9EEF5);
-  background: linear-gradient(160deg, #F3E8FF 0%, #fff 100%);
+  border-right: 1px solid var(--border,#E8E2D8);
+  background: linear-gradient(160deg, #FBC9A8 0%, #faf9f7 100%);
   position: relative; overflow: hidden;
 }
 .CM3-bc-left::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(180deg, #2563EB, #3B82F6);
+  background: linear-gradient(180deg, #C2410C, #DB5B1F);
 }
-.CM3-bc.bc-overdue .CM3-bc-left { background: linear-gradient(160deg,#fef2f2,#fff); }
+.CM3-bc.bc-overdue .CM3-bc-left { background: linear-gradient(160deg,#fef2f2,#faf9f7); }
 .CM3-bc.bc-overdue .CM3-bc-left::before { background: linear-gradient(180deg,#D93B55,#f87171); }
-.CM3-bc.bc-neardue .CM3-bc-left { background: linear-gradient(160deg,#fffbeb,#fff); }
-.CM3-bc.bc-neardue .CM3-bc-left::before { background: linear-gradient(180deg,#f59e0b,#fbbf24); }
-.CM3-bc.bc-closed .CM3-bc-left { background: linear-gradient(160deg,#f0fdf4,#F8FAFC); }
+.CM3-bc.bc-neardue .CM3-bc-left { background: linear-gradient(160deg,#FDE0CB,#faf9f7); }
+.CM3-bc.bc-neardue .CM3-bc-left::before { background: linear-gradient(180deg,#DB5B1F,#F0834D); }
+.CM3-bc.bc-closed .CM3-bc-left { background: linear-gradient(160deg,#f0fdf4,#F5F3EF); }
 .CM3-bc.bc-closed .CM3-bc-left::before { background: linear-gradient(180deg,#10b981,#34d399); }
 
 .CM3-bc-num-lbl {
@@ -1110,22 +1110,22 @@ const CSS = `
 }
 .CM3-bc-num {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 16px; font-weight: 900; color: var(--ember,#2563EB);
+  font-size: 16px; font-weight: 900; color: var(--ember,#C2410C);
   line-height: 1; letter-spacing: -1px;
 }
 .CM3-bc.bc-overdue .CM3-bc-num { color: #D93B55; }
-.CM3-bc.bc-neardue .CM3-bc-num { color: #C47E0A; }
+.CM3-bc.bc-neardue .CM3-bc-num { color: #9A3412; }
 .CM3-bc.bc-closed .CM3-bc-num { color: #1E9C6A; }
 
 .CM3-bc-icon-ring {
   width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(29,78,216,0.08); border: 1.5px solid rgba(29,78,216,0.18);
+  background: rgba(154,52,18,0.08); border: 1.5px solid rgba(154,52,18,0.18);
   display: flex; align-items: center; justify-content: center; margin-top: 2px;
   transition: transform 0.2s;
 }
 .CM3-bc:hover .CM3-bc-icon-ring { transform: scale(1.12); }
 .CM3-bc.bc-overdue .CM3-bc-icon-ring { background:rgba(220,38,38,0.1); border-color:rgba(220,38,38,0.25); }
-.CM3-bc.bc-neardue .CM3-bc-icon-ring { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.25); }
+.CM3-bc.bc-neardue .CM3-bc-icon-ring { background:rgba(154,52,18,0.1); border-color:rgba(154,52,18,0.25); }
 .CM3-bc.bc-closed .CM3-bc-icon-ring { background:rgba(5,150,105,0.08); border-color:rgba(5,150,105,0.2); }
 
 /* ── CENTER BODY ── */
@@ -1136,19 +1136,19 @@ const CSS = `
 .CM3-bc-row1 { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .CM3-bc-vendor {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 10px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 10px; font-weight: 800; color: var(--text-1,#231C14);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;
 }
-.CM3-bc.bc-closed .CM3-bc-vendor { color: var(--text-3,#6b7280); }
+.CM3-bc.bc-closed .CM3-bc-vendor { color: var(--text-3,#524532); }
 .CM3-bc-ref {
   font-family: var(--font-mono); font-size: 8px; font-weight: 800;
-  color: #6b7280; background: #f3f4f6; padding: 1.5px 5px;
+  color: #524532; background: #F0ECE6; padding: 1.5px 5px;
   border-radius: 4px; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0;
 }
 .CM3-bc-row2 {
   display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
 }
-.CM3-bc-desc { font-size: 9px; color: var(--text-4,#9ca3af); }
+.CM3-bc-desc { font-size: 9px; color: var(--text-4,#6B5D48); }
 .CM3-bc-dot { color: var(--border); font-size: 8px; }
 .CM3-bc-row3 {
   display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 2px;
@@ -1161,103 +1161,104 @@ const CSS = `
   padding: 1.5px 6px; border-radius: 100px; border: 1px solid; white-space: nowrap;
   line-height: 14px;
 }
-.CM3-bc-chip.date   { color:var(--text-4); background:var(--off-white,#F1F5F9); border-color:var(--border); }
+.CM3-bc-chip.date   { color:var(--text-4); background:var(--off-white,#F0ECE6); border-color:var(--border); }
 .CM3-bc-chip.p-high { color:#D93B55; background:#fef2f2; border-color:#fca5a5; }
-.CM3-bc-chip.p-medium { color:#C47E0A; background:#fffbeb; border-color:#fde68a; }
+.CM3-bc-chip.p-medium { color:#9A3412; background:#FDE0CB; border-color:#FDE0CB; }
 .CM3-bc-chip.p-low  { color:#1E9C6A; background:#f0fdf4; border-color:#6ee7b7; }
 .CM3-bc-chip.due-overdue { color:#D93B55; background:#fef2f2; border-color:#fca5a5; animation: cm3-pulse-red 2s infinite; }
-.CM3-bc-chip.due-near   { color:#C47E0A; background:#fffbeb; border-color:#fde68a; }
+.CM3-bc-chip.due-near   { color:#9A3412; background:#FDE0CB; border-color:#FDE0CB; }
 .CM3-bc-chip.due-ok     { color:#1E9C6A; background:#f0fdf4; border-color:#6ee7b7; }
-.CM3-bc-chip.note       { color:#7c3aed; background:#faf5ff; border-color:#ddd6fe; }
-.CM3-bc-chip.client     { color:#0d9488; background:#f0fdfa; border-color:#99f6e4; }
+.CM3-bc-chip.note       { color:#A6491D; background:#FDE0CB; border-color:#FBC9A8; }
+.CM3-bc-chip.client     { color:#A6491D; background:#FDE0CB; border-color:#FBC9A8; }
 .CM3-bc-chip.settled    { color:#1E9C6A; background:#f0fdf4; border-color:#6ee7b7; }
 
 /* ── RIGHT AMOUNT PANEL ── */
 .CM3-bc-right {
   display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
   padding: 9px 12px; gap: 4px; flex-shrink: 0;
-  min-width: 140px; border-left: 1px solid var(--border,#E9EEF5);
+  min-width: 140px; border-left: 1px solid var(--border,#E8E2D8);
 }
 .CM3-bc-amt {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
   font-size: 14px; font-weight: 800; font-style: normal;
   color: #D93B55; line-height: 1;
 }
-.CM3-bc.bc-closed .CM3-bc-amt { color: #9ca3af; font-size: 13px; }
+.CM3-bc.bc-closed .CM3-bc-amt { color: #6B5D48; font-size: 13px; }
 .CM3-bc-status {
   font-family: var(--font-mono); font-size: 7px; font-weight: 800;
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 2px 8px; border-radius: 100px; border: 1px solid;
 }
-.CM3-bc-status.open   { color:#2563EB; background:#F3E8FF; border-color:#BFDBFE; }
+.CM3-bc-status.open   { color:#C2410C; background:#FBC9A8; border-color:#FBC9A8; }
 .CM3-bc-status.closed { color:#1E9C6A; background:#f0fdf4; border-color:#6ee7b7; }
 
 .CM3-bc-mini-bar {
-  width: 100%; height: 4px; border-radius: 100px; background: #f1f5f9;
+  width: 100%; height: 4px; border-radius: 100px; background: #F0ECE6;
   overflow: hidden; position: relative;
 }
 .CM3-bc-mini-fill {
   position: absolute; left: 0; top: 0; height: 100%;
-  background: linear-gradient(90deg, #2563EB, #3B82F6);
+  background: linear-gradient(90deg, #C2410C, #DB5B1F);
   border-radius: 100px;
   transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 0 4px rgba(29,78,216,0.3);
+  box-shadow: 0 0 4px rgba(154,52,18,0.3);
 }
 .CM3-bc-bal-row {
   display: flex; justify-content: space-between; align-items: center;
   width: 100%; gap: 4px;
 }
-.CM3-bc-total-lbl { font-family:var(--font-mono); font-size: 8px; color:#2563EB; font-weight: 800; }
+.CM3-bc-total-lbl { font-family:var(--font-mono); font-size: 8px; color:#C2410C; font-weight: 800; }
 .CM3-bc-bal-lbl   { font-family:var(--font-mono); font-size: 8px; color:#D93B55;  font-weight: 800; }
 
 /* ── ACTION COLUMN ── */
 .CM3-bc-acts {
   display: flex; flex-direction: column; flex-shrink: 0;
-  border-left: 1px solid var(--border,#E9EEF5); align-self: stretch; width: 32px;
+  border-left: 1px solid var(--border,#E8E2D8); align-self: stretch; width: 32px;
 }
 .CM3-bc-act {
   flex: 1; background: none; border: none; cursor: pointer;
-  color: var(--text-4,#9ca3af);
+  color: var(--text-4,#6B5D48);
   display: flex; align-items: center; justify-content: center;
   transition: background 0.14s, color 0.14s;
 }
-.CM3-bc-act + .CM3-bc-act { border-top: 1px solid var(--border,#E9EEF5); }
-.CM3-bc-act.edit:hover { background: #eff6ff; color: #3b82f6; }
+.CM3-bc-act + .CM3-bc-act { border-top: 1px solid var(--border,#E8E2D8); }
+.CM3-bc-act.edit:hover { background: #FDE0CB; color: #DB5B1F; }
 .CM3-bc-act.del:hover  { background: #fef2f2; color: #D93B55; }
 
 /* ══ BILLS TABLE (compact, professional, light theme, responsive — no row-select) ══ */
 .CM3-billtbl-wrap {
-  overflow-y: auto; overflow-x: hidden; max-height: 322px; width: 100%;
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 14px;
-  background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  overflow-y: auto; overflow-x: hidden; flex: 1; min-height: 340px; width: 100%;
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 14px;
+  background: #faf9f7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column;
 }
+.CM3-billtbl-wrap > table { flex-shrink: 0; }
 .CM3-billtbl-wrap::-webkit-scrollbar { width: 6px; height: 5px; }
-.CM3-billtbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 3px; }
-.CM3-billtbl-wrap::-webkit-scrollbar-thumb:hover { background: #BFDBFE; }
+.CM3-billtbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
+.CM3-billtbl-wrap::-webkit-scrollbar-thumb:hover { background: #FBC9A8; }
 /* table-layout:fixed + fixed % column widths means content wraps instead of
    overflowing, so the wrap never needs a horizontal scrollbar at any width. */
 .CM3-billtbl { width: 100%; table-layout: fixed; border-collapse: collapse; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9.5px; }
-.CM3-billtbl col.c-sno { width: 4%; } .CM3-billtbl col.c-inv { width: 11%; }
-.CM3-billtbl col.c-client { width: 14%; } .CM3-billtbl col.c-date { width: 7%; }
-.CM3-billtbl col.c-due { width: 6%; } .CM3-billtbl col.c-priority { width: 7%; }
-.CM3-billtbl col.c-credit { width: 10%; } .CM3-billtbl col.c-paid { width: 9%; }
-.CM3-billtbl col.c-balance { width: 10%; } .CM3-billtbl col.c-status { width: 16%; }
-.CM3-billtbl col.c-acts { width: 6%; }
+.CM3-billtbl col.c-sno { width: 5%; }
+.CM3-billtbl col.c-client { width: 19%; } .CM3-billtbl col.c-date { width: 9%; }
+.CM3-billtbl col.c-credit { width: 13%; } .CM3-billtbl col.c-paid { width: 12%; }
+.CM3-billtbl col.c-balance { width: 13%; } .CM3-billtbl col.c-status { width: 21%; }
+.CM3-billtbl col.c-acts { width: 8%; }
 .CM3-billtbl thead th {
   /* Same header language as every other table in the app (.ERP-tbl):
      light surface, dark uppercase mono-weight text, ember underline —
      instead of this table's previous solid-orange/white-text header. */
-  background: var(--surface-2,#E9EEF5); color: var(--text-3,#27364A);
+  background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
   font-size: 8px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
   padding: 11px 9px; text-align: left; white-space: nowrap;
-  border-bottom: 2px solid var(--ember,#2563EB);
+  border-bottom: 2px solid var(--ember,#C2410C);
   position: sticky; top: 0; z-index: 2;
 }
 .CM3-billtbl thead th:first-child { border-top-left-radius: 12px; }
 .CM3-billtbl thead th:last-child { border-top-right-radius: 12px; }
 .CM3-billtbl tbody td {
-  padding: 10px 9px; border-bottom: 1px solid var(--border,#E9EEF5);
-  vertical-align: middle; color: #0F172A; font-weight: 800;
+  padding: 10px 9px; border-bottom: 1px solid var(--border,#E8E2D8);
+  vertical-align: middle; color: #231C14; font-weight: 800;
   transition: background 0.14s; overflow-wrap: break-word;
 }
 .CM3-billtbl tbody tr { animation: bc-in 0.28s cubic-bezier(0.4,0,0.2,1) both; }
@@ -1269,16 +1270,16 @@ const CSS = `
 .CM3-billtbl tbody tr:nth-child(6) { animation-delay: 0.17s; }
 .CM3-billtbl tbody tr:nth-child(7) { animation-delay: 0.20s; }
 .CM3-billtbl tbody tr:nth-child(n+8) { animation-delay: 0.23s; }
-.CM3-billtbl tbody tr:nth-child(even) td { background: var(--surface,#F8FAFC); }
+.CM3-billtbl tbody tr:nth-child(even) td { background: var(--surface,#F5F3EF); }
 .CM3-billtbl tbody tr:last-child td { border-bottom: none; }
-.CM3-billtbl tbody tr:hover td { background: var(--ember-ghost,#F3E8FF); }
+.CM3-billtbl tbody tr:hover td { background: var(--ember-ghost,#FBC9A8); }
 /* Was: box-shadow: inset 3px 0 0 ... on every <td> in the row — an inset
    shadow is per-cell, so that drew a thin blue line down the LEFT edge of
    every single column, not just the row's own left edge, which is what
    showed up as the row being carved into vertical stripes on hover. Kept
    the row highlight, dropped the stray lines. */
 .CM3-billtbl tbody tr.row-closed { opacity: 0.6; }
-.CM3-billtbl tbody tr.row-closed:hover td { opacity: 1; background: #f8fafc; }
+.CM3-billtbl tbody tr.row-closed:hover td { opacity: 1; background: #F5F3EF; }
 @media (max-width: 720px) {
     .CM3-billtbl, .CM3-billtbl thead th, .CM3-billtbl tbody td { font-size: 8px; }
     .CM3-billtbl thead th, .CM3-billtbl tbody td { padding: 7px 5px; }
@@ -1289,15 +1290,15 @@ const CSS = `
 .CM3-billtbl-sno {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 24px; height: 22px; padding: 0 6px; border-radius: 7px;
-  background: var(--ember-ghost, #fff1e6); border: 1px solid #BFDBFE;
-  color: #2563EB; font-weight: 800; font-size: 9px; letter-spacing: 0.2px;
+  background: var(--ember-ghost, #fff1e6); border: 1px solid #FBC9A8;
+  color: #C2410C; font-weight: 800; font-size: 9px; letter-spacing: 0.2px;
 }
-.CM3-billtbl-num { color: var(--text-3,#6b7280); font-weight: 800; }
-.CM3-billtbl-client { color: #2563EB; font-weight: 800; }
+.CM3-billtbl-num { color: var(--text-3,#524532); font-weight: 800; }
+.CM3-billtbl-client { color: #C2410C; font-weight: 800; }
 .CM3-billtbl-ref {
   display: inline-block; font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 9px; font-weight: 800; color: #0F172A;
-  background: var(--surface,#F1F5F9); border: 1px solid var(--border,#E9EEF5);
+  font-size: 9px; font-weight: 800; color: #231C14;
+  background: var(--surface,#F0ECE6); border: 1px solid var(--border,#E8E2D8);
   border-radius: 5px; padding: 1.5px 7px;
 }
 .CM3-billtbl-amt { font-weight: 800; white-space: nowrap; }
@@ -1307,78 +1308,78 @@ const CSS = `
 /* Priority — plain colored text, no dot/icon */
 .CM3-billtbl-priority { font-size: 8.5px; font-weight: 800; text-transform: capitalize; letter-spacing: 0.2px; }
 .CM3-billtbl-priority.high   { color: #D93B55; }
-.CM3-billtbl-priority.medium { color: #C47E0A; }
-.CM3-billtbl-priority.low    { color: #6b7280; }
+.CM3-billtbl-priority.medium { color: #9A3412; }
+.CM3-billtbl-priority.low    { color: #524532; }
 
 /* Status — plain colored text, no pill/badge chrome */
 .CM3-billtbl-status {
   font-size: 8.5px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase;
   white-space: normal; line-height: 1.3;
 }
-.CM3-billtbl-status.open    { color: #2563EB; }
+.CM3-billtbl-status.open    { color: #C2410C; }
 .CM3-billtbl-status.overdue { color: #D93B55; }
-.CM3-billtbl-status.near    { color: #C47E0A; }
+.CM3-billtbl-status.near    { color: #9A3412; }
 .CM3-billtbl-status.closed  { color: #1E9C6A; }
 .CM3-billtbl-acts { display: flex; gap: 4px; justify-content: flex-end; }
 .CM3-billtbl-act {
-  width: 25px; height: 25px; border-radius: 7px; border: 1px solid var(--border,#E9EEF5);
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--text-4,#9ca3af); transition: all 0.16s; flex-shrink: 0;
+  width: 25px; height: 25px; border-radius: 7px; border: 1px solid var(--border,#E8E2D8);
+  background: #faf9f7; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-4,#6B5D48); transition: all 0.16s; flex-shrink: 0;
 }
 .CM3-billtbl-act:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
-.CM3-billtbl-act.edit:hover { background: #eff6ff; color: #3b82f6; border-color: #bfdbfe; }
+.CM3-billtbl-act.edit:hover { background: #FDE0CB; color: #DB5B1F; border-color: #FBC9A8; }
 .CM3-billtbl-act.del:hover  { background: #fef2f2; color: #D93B55; border-color: #fecaca; }
 
 /* Custom checkbox to match theme (used in header + row checks) */
 .CM3-billtbl-cb {
   width: 15px; height: 15px; border-radius: 4px; flex-shrink: 0;
-  border: 1.5px solid var(--border,#E9EEF5); appearance: none; -webkit-appearance: none;
-  background: #fff; cursor: pointer; position: relative; transition: all 0.15s; vertical-align: middle;
+  border: 1.5px solid var(--border,#E8E2D8); appearance: none; -webkit-appearance: none;
+  background: #faf9f7; cursor: pointer; position: relative; transition: all 0.15s; vertical-align: middle;
 }
-.CM3-billtbl-cb:hover { border-color: #BFDBFE; }
-.CM3-billtbl-cb:checked { background: linear-gradient(135deg,#2563EB,#3B82F6); border-color: #2563EB; }
+.CM3-billtbl-cb:hover { border-color: #FBC9A8; }
+.CM3-billtbl-cb:checked { background: linear-gradient(135deg,#C2410C,#DB5B1F); border-color: #C2410C; }
 .CM3-billtbl-cb:checked::after {
   content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
-  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+  border: solid #faf9f7; border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
 thead .CM3-billtbl-cb { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.12); }
-thead .CM3-billtbl-cb:checked { background: #fff; border-color: #fff; }
-thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
+thead .CM3-billtbl-cb:checked { background: #faf9f7; border-color: #faf9f7; }
+thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 
 /* ══ REPAYMENT CARDS ════════════════════════════════════════════════ */
 .CM3-pm-hdr {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 6px;
-  border-bottom: 1px solid var(--border,#E9EEF5);
-  background: linear-gradient(90deg,#f0fdfa,#fff);
+  border-bottom: 1px solid var(--border,#E8E2D8);
+  background: linear-gradient(90deg,#FDE0CB,#faf9f7);
   margin-bottom: 4px;
 }
 .CM3-pm-hdr-title {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 7.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-  color: #0d9488; display: flex; align-items: center; gap: 5px;
+  color: #A6491D; display: flex; align-items: center; gap: 5px;
 }
 .CM3-pm-hdr-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #0d9488;
+  width: 6px; height: 6px; border-radius: 50%; background: #A6491D;
   animation: sb-dot-pulse 2s ease-in-out infinite;
 }
 .CM3-pm-hdr-total {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 9px; font-weight: 800; color: #0d9488;
+  font-size: 9px; font-weight: 800; color: #A6491D;
 }
 
 .CM3-pmc {
   display: grid;
   grid-template-columns: 58px 1fr auto 32px;
   border-radius: 11px; overflow: hidden;
-  border: 1px solid var(--border,#E9EEF5);
-  background: #fff; margin-bottom: 6px;
+  border: 1px solid var(--border,#E8E2D8);
+  background: #faf9f7; margin-bottom: 6px;
   transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
   animation: bc-in 0.32s cubic-bezier(0.4,0,0.2,1) both;
 }
 .CM3-pmc:hover {
-  border-color: #99f6e4;
-  box-shadow: 0 4px 18px rgba(13,148,136,0.12);
+  border-color: #FBC9A8;
+  box-shadow: 0 4px 18px rgba(166,73,29,0.12);
   transform: translateY(-1px);
 }
 
@@ -1386,26 +1387,26 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-pmc-left {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 10px 4px; gap: 4px;
-  border-right: 1px solid var(--border,#E9EEF5);
-  background: linear-gradient(160deg,#f0fdfa 0%,#fff 100%);
+  border-right: 1px solid var(--border,#E8E2D8);
+  background: linear-gradient(160deg,#FDE0CB 0%,#faf9f7 100%);
   position: relative; overflow: hidden;
 }
 .CM3-pmc-left::before {
   content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
-  background: linear-gradient(180deg,#0d9488,#14b8a6);
+  background: linear-gradient(180deg,#A6491D,#A6491D);
 }
 .CM3-pmc-num-lbl {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 6px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
-  color: #0d9488; line-height: 1;
+  color: #A6491D; line-height: 1;
 }
 .CM3-pmc-num {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 15px; font-weight: 900; color: #0d9488; line-height: 1; letter-spacing: -1px;
+  font-size: 15px; font-weight: 900; color: #A6491D; line-height: 1; letter-spacing: -1px;
 }
 .CM3-pmc-icon-ring {
   width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(13,148,136,0.1); border: 1.5px solid rgba(13,148,136,0.25);
+  background: rgba(166,73,29,0.1); border: 1.5px solid rgba(166,73,29,0.25);
   display: flex; align-items: center; justify-content: center; margin-top: 2px;
   transition: transform 0.2s;
 }
@@ -1419,17 +1420,17 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-pmc-row1 { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .CM3-pmc-vendor {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 10px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 10px; font-weight: 800; color: var(--text-1,#231C14);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
 }
 .CM3-pmc-mode {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 800; color: #0d9488;
-  background: #f0fdfa; padding: 1.5px 6px; border-radius: 4px;
-  border: 1px solid #99f6e4; white-space: nowrap; flex-shrink: 0;
+  font-size: 8px; font-weight: 800; color: #A6491D;
+  background: #FDE0CB; padding: 1.5px 6px; border-radius: 4px;
+  border: 1px solid #FBC9A8; white-space: nowrap; flex-shrink: 0;
 }
 .CM3-pmc-row2 { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.CM3-pmc-desc { font-size: 9px; color: var(--text-4,#9ca3af); }
+.CM3-pmc-desc { font-size: 9px; color: var(--text-4,#6B5D48); }
 .CM3-pmc-dot  { color: var(--border); font-size: 8px; }
 .CM3-pmc-row3 { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
 
@@ -1440,22 +1441,22 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
   padding: 1.5px 6px; border-radius: 100px; border: 1px solid; white-space: nowrap;
   line-height: 14px;
 }
-.CM3-pmc-chip.date    { color:var(--text-4); background:var(--off-white,#F1F5F9); border-color:var(--border); }
+.CM3-pmc-chip.date    { color:var(--text-4); background:var(--off-white,#F0ECE6); border-color:var(--border); }
 .CM3-pmc-chip.synced  { color:#1E9C6A; background:#f0fdf4; border-color:#6ee7b7; }
-.CM3-pmc-chip.unsynced{ color:#9ca3af; background:#f9fafb; border-color:#e5e7eb; }
-.CM3-pmc-chip.ref     { color:#7c3aed; background:#faf5ff; border-color:#ddd6fe; }
-.CM3-pmc-chip.client  { color:#0d9488; background:#f0fdfa; border-color:#99f6e4; }
+.CM3-pmc-chip.unsynced{ color:#6B5D48; background:#F5F3EF; border-color:#E3DDD3; }
+.CM3-pmc-chip.ref     { color:#A6491D; background:#FDE0CB; border-color:#FBC9A8; }
+.CM3-pmc-chip.client  { color:#A6491D; background:#FDE0CB; border-color:#FBC9A8; }
 
 /* Right amount panel */
 .CM3-pmc-right {
   display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
   padding: 9px 12px; gap: 4px; flex-shrink: 0;
-  min-width: 120px; border-left: 1px solid var(--border,#E9EEF5);
+  min-width: 120px; border-left: 1px solid var(--border,#E8E2D8);
 }
 .CM3-pmc-amt {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
   font-size: 14px; font-weight: 800; font-style: normal;
-  color: #0d9488; line-height: 1;
+  color: #A6491D; line-height: 1;
 }
 .CM3-pmc-status {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
@@ -1467,16 +1468,16 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 /* Action col */
 .CM3-pmc-acts {
   display: flex; flex-direction: column; flex-shrink: 0;
-  border-left: 1px solid var(--border,#E9EEF5); align-self: stretch; width: 32px;
+  border-left: 1px solid var(--border,#E8E2D8); align-self: stretch; width: 32px;
 }
 .CM3-pmc-act {
   flex: 1; background: none; border: none; cursor: pointer;
-  color: var(--text-4,#9ca3af);
+  color: var(--text-4,#6B5D48);
   display: flex; align-items: center; justify-content: center;
   transition: background 0.14s, color 0.14s;
 }
-.CM3-pmc-act + .CM3-pmc-act { border-top: 1px solid var(--border,#E9EEF5); }
-.CM3-pmc-act.edit:hover { background: #eff6ff; color: #3b82f6; }
+.CM3-pmc-act + .CM3-pmc-act { border-top: 1px solid var(--border,#E8E2D8); }
+.CM3-pmc-act.edit:hover { background: #FDE0CB; color: #DB5B1F; }
 .CM3-pmc-act.del:hover  { background: #fef2f2; color: #D93B55; }
 
 /* ── ANIMATIONS ── */
@@ -1496,94 +1497,94 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 
 .CM3-ecard {
-    background: var(--white,#fff); border: 1px solid var(--border,#D4D5D8); border-radius: var(--r-md,12px);
+    background: var(--white,#faf9f7); border: 1px solid var(--border,#D2C7B8); border-radius: var(--r-md,12px);
     margin-bottom: 8px; display: flex; overflow: hidden;
     transition: all 0.18s; cursor: default;
     box-shadow: var(--sh-card, 0 1px 4px rgba(0,0,0,0.08));
     animation: erp-pop 0.3s ease both;
 }
-.CM3-ecard:hover { border-color: var(--ember-border,#f5d87a); box-shadow: 0 4px 16px rgba(37,99,235,0.1); transform: translateY(-1px); }
+.CM3-ecard:hover { border-color: var(--ember-border,#D98255); box-shadow: 0 4px 16px rgba(194,65,12,0.1); transform: translateY(-1px); }
 .CM3-ecard-bar { width: 4px; flex-shrink: 0; }
 .CM3-ecard-bar.credit-bar { background: ${CREDIT_COLOR.gradient}; }
 .CM3-ecard-bar.payment-bar { background: ${PAYMENT_COLOR.gradient}; }
 .CM3-ecard-body { flex: 1; padding: 13px 14px; min-width: 0; }
 .CM3-ecard-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-.CM3-ecard-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10.5px; font-weight: 800; color: var(--text-1,#0F172A); }
-.CM3-ecard-subtitle { font-size: 9px; color: var(--text-4,#94A3B8); margin-top: 1px; }
+.CM3-ecard-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10.5px; font-weight: 800; color: var(--text-1,#231C14); }
+.CM3-ecard-subtitle { font-size: 9px; color: var(--text-4,#8C7C63); margin-top: 1px; }
 .CM3-ecard-amt { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 13px; font-weight: 800; font-style: normal; white-space: nowrap; }
 .CM3-ecard-amt.credit-amt { color: #D93B55; }
-.CM3-ecard-amt.payment-amt { color: #0d9488; }
+.CM3-ecard-amt.payment-amt { color: #A6491D; }
 .CM3-ecard-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.CM3-ecard-date { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; color: var(--text-4,#94A3B8); font-weight: 700; letter-spacing: 0.5px; }
+.CM3-ecard-date { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; color: var(--text-4,#8C7C63); font-weight: 700; letter-spacing: 0.5px; }
 /* Action column — stacked edit + delete */
 .CM3-ecard-actions {
     display: flex; flex-direction: column; flex-shrink: 0;
-    border-left: 1px solid var(--border,#E9EEF5); width: 36px;
+    border-left: 1px solid var(--border,#E8E2D8); width: 36px;
 }
 .CM3-ecard-act {
     flex: 1; background: none; border: none; cursor: pointer;
-    color: var(--text-4,#9ca3af); display: flex; align-items: center; justify-content: center;
+    color: var(--text-4,#6B5D48); display: flex; align-items: center; justify-content: center;
     transition: background 0.14s, color 0.14s;
 }
-.CM3-ecard-act + .CM3-ecard-act { border-top: 1px solid var(--border,#E9EEF5); }
-.CM3-ecard-act.act-edit:hover  { background: #eff6ff; color: #3b82f6; }
+.CM3-ecard-act + .CM3-ecard-act { border-top: 1px solid var(--border,#E8E2D8); }
+.CM3-ecard-act.act-edit:hover  { background: #FDE0CB; color: #DB5B1F; }
 .CM3-ecard-act.act-del:hover   { background: #fef2f2; color: #D93B55; }
 /* legacy single del kept for any stray use */
 .CM3-ecard-del {
     width: 36px; flex-shrink: 0; background: none; border: none; cursor: pointer;
-    color: var(--text-4,#9ca3af); display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s; border-left: 1px solid var(--border,#E9EEF5);
+    color: var(--text-4,#6B5D48); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; border-left: 1px solid var(--border,#E8E2D8);
 }
 .CM3-ecard-del:hover { background: #fef2f2; color: #D93B55; }
-.CM3-card-client { font-size: 8px; display: flex; align-items: center; gap: 3px; color: #0d9488; font-weight: 700; }
+.CM3-card-client { font-size: 8px; display: flex; align-items: center; gap: 3px; color: #A6491D; font-weight: 700; }
 
 /* ── MINI PROGRESS ── */
 .CM3-miniprog { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
-.CM3-miniprog-bar { flex: 1; height: 3px; background: var(--border,#E9EEF5); border-radius: 100px; overflow: hidden; }
+.CM3-miniprog-bar { flex: 1; height: 3px; background: var(--border,#E8E2D8); border-radius: 100px; overflow: hidden; }
 .CM3-miniprog-fill { height: 100%; background: ${PAYMENT_COLOR.gradient}; border-radius: 100px; transition: width 0.6s ease; }
-.CM3-miniprog-txt { font-size: 8px; color: var(--text-4,#9ca3af); white-space: nowrap; }
+.CM3-miniprog-txt { font-size: 8px; color: var(--text-4,#6B5D48); white-space: nowrap; }
 
 /* ── TAGS ── */
 .CM3-tag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 100px; border: 1px solid; font-size: 8px; font-weight: 800; letter-spacing: 0.04em; }
 .CM3-dot { width: 5px; height: 5px; border-radius: 50%; }
-.CM3-synced { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 100px; font-size: 8px; font-weight: 800; color: #0d9488; background: #f0fdfa; border: 1px solid #99f6e4; }
-.CM3-unsynced { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 100px; font-size: 8px; font-weight: 800; color: #94a3b8; background: #f8fafc; border: 1px solid #e2e8f0; }
+.CM3-synced { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 100px; font-size: 8px; font-weight: 800; color: #A6491D; background: #FDE0CB; border: 1px solid #FBC9A8; }
+.CM3-unsynced { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 100px; font-size: 8px; font-weight: 800; color: #8C7C63; background: #F5F3EF; border: 1px solid #E3DDD3; }
 
 /* ── TIMELINE ── */
 .CM3-tl { padding: 8px 0; }
 .CM3-tl-item { display: flex; gap: 14px; padding: 10px 4px; position: relative; animation: cm3-card-in 0.3s ease both; }
-.CM3-tl-item::before { content: ''; position: absolute; left: 15px; top: 28px; bottom: -8px; width: 1px; background: var(--border,#E9EEF5); }
+.CM3-tl-item::before { content: ''; position: absolute; left: 15px; top: 28px; bottom: -8px; width: 1px; background: var(--border,#E8E2D8); }
 .CM3-tl-item:last-child::before { display: none; }
 .CM3-tl-dot { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid; }
 .CM3-tl-dot.credit-dot { background: #fef2f2; border-color: #fecaca; }
-.CM3-tl-dot.payment-dot { background: #f0fdfa; border-color: #99f6e4; }
+.CM3-tl-dot.payment-dot { background: #FDE0CB; border-color: #FBC9A8; }
 .CM3-tl-body { flex: 1; min-width: 0; }
-.CM3-tl-label { font-size: 9.5px; font-weight: 800; color: var(--text-1,#0F172A); }
-.CM3-tl-sub { font-size: 9px; color: var(--text-4,#9ca3af); display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 2px; }
+.CM3-tl-label { font-size: 9.5px; font-weight: 800; color: var(--text-1,#231C14); }
+.CM3-tl-sub { font-size: 9px; color: var(--text-4,#6B5D48); display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 2px; }
 .CM3-tl-amt { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; font-size: 12.5px; font-weight: 800; }
 .CM3-tl-amt.credit-tl { color: #D93B55; }
-.CM3-tl-amt.payment-tl { color: #0d9488; }
+.CM3-tl-amt.payment-tl { color: #A6491D; }
 
 /* ── EMPTY STATE ── */
 .CM3-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 52px 20px; text-align: center; }
 .CM3-empty-ic { width: 58px; height: 58px; border-radius: 16px; display: flex; align-items: center; justify-content: center; animation: cm3-welcome-float 3s ease-in-out infinite; }
 .CM3-empty-ic.credit-empty { background: #fef2f2; border: 1.5px solid #fecaca; }
-.CM3-empty-ic.payment-empty { background: #f0fdfa; border: 1.5px solid #99f6e4; }
-.CM3-empty-title { font-size: 13px; font-weight: 800; color: var(--text-1,#0F172A); }
-.CM3-empty-sub { font-size: 9px; color: var(--text-4,#9ca3af); max-width: 240px; line-height: 1.6; }
+.CM3-empty-ic.payment-empty { background: #FDE0CB; border: 1.5px solid #FBC9A8; }
+.CM3-empty-title { font-size: 13px; font-weight: 800; color: var(--text-1,#231C14); }
+.CM3-empty-sub { font-size: 9px; color: var(--text-4,#6B5D48); max-width: 240px; line-height: 1.6; }
 
 /* ── SKELETON ── */
-.CM3-skel { background: linear-gradient(90deg, #f1f5f9 25%, #E9EEF5 50%, #f1f5f9 75%); background-size: 200% 100%; border-radius: 8px; animation: cm3-skel 1.4s infinite; }
+.CM3-skel { background: linear-gradient(90deg, #F0ECE6 25%, #E8E2D8 50%, #F0ECE6 75%); background-size: 200% 100%; border-radius: 8px; animation: cm3-skel 1.4s infinite; }
 @keyframes cm3-skel { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
 /* ── LEGEND ── */
-.CM3-legend { display: flex; align-items: center; gap: 12px; padding: 8px 20px; background: var(--off-white,#F8FAFC); border-bottom: 1px solid var(--border,#E9EEF5); flex-wrap: wrap; }
-.CM3-legend-lbl { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-4,#9ca3af); }
+.CM3-legend { display: flex; align-items: center; gap: 12px; padding: 8px 20px; background: var(--off-white,#F5F3EF); border-bottom: 1px solid var(--border,#E8E2D8); flex-wrap: wrap; }
+.CM3-legend-lbl { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-4,#6B5D48); }
 
 /* ── SYNC BANNER ── */
 .CM3-sync-banner {
     display: flex; align-items: center; gap: 10px; padding: 10px 20px;
-    background: #f0fdfa; border-bottom: 1px solid #99f6e4; font-size: 9.5px; color: #0d9488;
+    background: #FDE0CB; border-bottom: 1px solid #FBC9A8; font-size: 9.5px; color: #A6491D;
     animation: cm3-slide-down 0.3s ease both;
 }
 @keyframes cm3-slide-down { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
@@ -1608,7 +1609,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 .CM3-overlay {
     position: fixed; inset: 0;
-    background: rgba(15,23,42,0.52);
+    background: rgba(35,28,20,0.52);
     backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     z-index: 10000;
     display: flex; align-items: center; justify-content: center;
@@ -1617,7 +1618,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 .CM3-modal {
     position: relative;
-    background: var(--white,#fff);
+    background: var(--white,#faf9f7);
     border-radius: 22px;
     width: 100%; max-width: 620px;
     box-shadow: 0 6px 28px rgba(0,0,0,0.10), 0 32px 88px rgba(0,0,0,0.24);
@@ -1640,23 +1641,23 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-mhdr {
     display: flex; align-items: center; justify-content: space-between;
     padding: 18px 22px;
-    border-bottom: 1.5px solid #BFDBFE; flex-shrink:0;
-    background: linear-gradient(135deg, #F3E8FF, #EDE9FE);
+    border-bottom: 1.5px solid #FBC9A8; flex-shrink:0;
+    background: linear-gradient(135deg, #FBC9A8, #FBC9A8);
     border-radius: 20px 20px 0 0;
 }
 .CM3-mhdr.credit-top, .CM3-mhdr.payment-top, .CM3-mhdr.ledger-top {
-    background: linear-gradient(135deg, #F3E8FF, #EDE9FE);
+    background: linear-gradient(135deg, #FBC9A8, #FBC9A8);
 }
 .CM3-mhdr-ic {
     width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    background: #fff !important; border: 1.5px solid #BFDBFE !important;
+    background: #faf9f7 !important; border: 1.5px solid #FBC9A8 !important;
     animation: cm3-icon-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
 }
-.CM3-mtitle { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 20px; font-weight: 900; font-style: normal; color: #0F172A; }
-.CM3-msub { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 9px; font-weight: 700; color: #4b5563; margin-top: 4px; }
+.CM3-mtitle { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 20px; font-weight: 900; font-style: normal; color: #231C14; }
+.CM3-msub { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 9px; font-weight: 700; color: #524532; margin-top: 4px; }
 .CM3-msub-tag {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  color: var(--ember,#2563EB); text-transform: uppercase;
+  color: var(--ember,#C2410C); text-transform: uppercase;
   font-weight: 800; letter-spacing: 0.6px; font-size: 8.5px;
 }
 /* Close control — compact X icon button in the header corner, standard
@@ -1665,15 +1666,15 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-mclose {
     display: flex; align-items: center; justify-content: center;
     width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
-    background: #fff; border: 1.5px solid #BFDBFE;
+    background: #faf9f7; border: 1.5px solid #FBC9A8;
     cursor: pointer; color: #9a3412;
     transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 .CM3-mclose svg { transition: transform 0.18s; }
 .CM3-mclose:hover {
-    background: #F3E8FF; border-color: #60A5FA; color: #2563EB;
-    transform: rotate(90deg); box-shadow: 0 3px 10px rgba(29,78,216,0.14);
+    background: #FBC9A8; border-color: #F0834D; color: #C2410C;
+    transform: rotate(90deg); box-shadow: 0 3px 10px rgba(154,52,18,0.14);
 }
 .CM3-mclose:active { transform: rotate(90deg) scale(0.9); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
@@ -1684,10 +1685,10 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
     scroll-behavior: smooth; overscroll-behavior: contain;
 }
 .CM3-mbody::-webkit-scrollbar { width: 3px; }
-.CM3-mbody::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius:3px; }
+.CM3-mbody::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius:3px; }
 .CM3-mbody::-webkit-scrollbar-track { background: transparent; }
 
-.CM3-mfoot { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:14px 22px; border-top:1.5px solid var(--border,#E9EEF5); background:var(--surface,#F1F5F9); flex-shrink:0; border-radius: 0 0 20px 20px; }
+.CM3-mfoot { display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:14px 22px; border-top:1.5px solid var(--border,#E8E2D8); background:var(--surface,#F0ECE6); flex-shrink:0; border-radius: 0 0 20px 20px; }
 @media(max-width:640px){
     .CM3-mhdr { border-radius: 18px 18px 0 0; }
     .CM3-mfoot { border-radius: 0; }
@@ -1701,44 +1702,44 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-field-label {
     font-family: var(--font-mono,'JetBrains Mono',monospace);
     font-size: 10.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-    color: #1f2430; margin-bottom: 5px;
+    color: #231C14; margin-bottom: 5px;
     display: flex; gap: 6px; align-items: center;
 }
 .CM3-req { color: var(--error,#D93B55); font-size: 11px; }
 .CM3-label {
     font-family: var(--font-mono,'JetBrains Mono',monospace);
     font-size: 10.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-    color: #1f2430; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+    color: #231C14; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
 }
 .CM3-label .req { color: var(--error,#D93B55); }
 .CM3-input {
-    width: 100%; padding: 10px 13px; background: var(--white,#fff);
-    border: 1.5px solid var(--border,#D4D5D8); border-radius: var(--r-md,10px);
+    width: 100%; padding: 10px 13px; background: var(--white,#faf9f7);
+    border: 1.5px solid var(--border,#D2C7B8); border-radius: var(--r-md,10px);
     font-family: var(--font-body,'Space Grotesk',sans-serif);
-    font-size: 13px; font-weight: 800; color: #0d0905;
+    font-size: 13px; font-weight: 800; color: #231C14;
     transition: border-color 0.18s, box-shadow 0.18s; outline: none; box-sizing: border-box;
 }
-.CM3-input:focus { border-color: var(--ember-mid,#3B82F6); box-shadow: 0 0 0 3px var(--ember-ghost,rgba(59,130,246,0.10)); }
-.CM3-input::placeholder { color: #9ca3af; font-style: normal; font-weight: 700; }
+.CM3-input:focus { border-color: var(--ember-mid,#DB5B1F); box-shadow: 0 0 0 3px var(--ember-ghost,rgba(219,91,31,0.10)); }
+.CM3-input::placeholder { color: #6B5D48; font-style: normal; font-weight: 700; }
 /* Category locked to context (opened from a Category Overview panel) — shown
    read-only instead of the usual dropdown, since it isn't selectable here. */
 .CM3-locked-field {
     width: 100%; padding: 8px 12px; box-sizing: border-box;
-    background: #F3E8FF; border: 1.5px solid #BFDBFE; border-radius: var(--r-md,10px);
+    background: #FBC9A8; border: 1.5px solid #FBC9A8; border-radius: var(--r-md,10px);
     font-family: var(--font-body,'Space Grotesk',sans-serif);
-    font-size: 10.5px; font-weight: 800; color: #2563EB;
+    font-size: 10.5px; font-weight: 800; color: #C2410C;
     display: flex; align-items: center; gap: 8px;
 }
 .CM3-textarea {
-    width: 100%; padding: 10px 13px; background: var(--white,#fff);
-    border: 1.5px solid var(--border,#D4D5D8); border-radius: var(--r-md,10px);
+    width: 100%; padding: 10px 13px; background: var(--white,#faf9f7);
+    border: 1.5px solid var(--border,#D2C7B8); border-radius: var(--r-md,10px);
     font-family: var(--font-body,'Space Grotesk',sans-serif);
-    font-size: 13px; font-weight: 800; color: #0d0905;
+    font-size: 13px; font-weight: 800; color: #231C14;
     resize: vertical; min-height: 64px;
     transition: border-color 0.18s, box-shadow 0.18s; outline: none; box-sizing: border-box;
 }
-.CM3-textarea:focus { border-color: var(--ember-mid,#3B82F6); box-shadow: 0 0 0 3px var(--ember-ghost,rgba(59,130,246,0.10)); }
-.CM3-textarea::placeholder { color: #9ca3af; font-style: normal; font-weight: 700; }
+.CM3-textarea:focus { border-color: var(--ember-mid,#DB5B1F); box-shadow: 0 0 0 3px var(--ember-ghost,rgba(219,91,31,0.10)); }
+.CM3-textarea::placeholder { color: #6B5D48; font-style: normal; font-weight: 700; }
 
 /* ── Required-field validation (shake + red border + inline message) ──
    Matches the shake/scroll/toast pattern already used in Cash Book and the
@@ -1765,24 +1766,24 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 /* ── SDD Portal Dropdown ── */
 @keyframes sdd-open{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
 /* ── SDD Trigger ── */
-.CM3-sdd-trigger{width:100%;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white,#fff);border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;min-height:40px;transition:border-color .18s,box-shadow .18s;outline:none;}
-.CM3-sdd-trigger:hover{border-color:#C8B8AF;background:#F8FAFC;}
-.CM3-sdd-trigger.open{border-color:var(--sdd-accent,#3B82F6);box-shadow:0 0 0 3px color-mix(in srgb,var(--sdd-accent,#3B82F6) 12%,transparent);}
-.CM3-sdd-trigger.has-val{border-color:rgba(29,78,216,0.30);}
+.CM3-sdd-trigger{width:100%;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white,#faf9f7);border:1.5px solid #E3DDD3;border-radius:10px;cursor:pointer;min-height:40px;transition:border-color .18s,box-shadow .18s;outline:none;}
+.CM3-sdd-trigger:hover{border-color:#C8B8AF;background:#F5F3EF;}
+.CM3-sdd-trigger.open{border-color:var(--sdd-accent,#DB5B1F);box-shadow:0 0 0 3px color-mix(in srgb,var(--sdd-accent,#DB5B1F) 12%,transparent);}
+.CM3-sdd-trigger.has-val{border-color:rgba(154,52,18,0.30);}
 .CM3-sdd-trig-av{width:20px;height:20px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;font-weight: 800;border:1px solid transparent;}
 /* Matches .CM3-input's 11px/700 exactly — a dropdown's selected value and a
    typed input's value are both just "the value of a field" and should read
    at the same size/weight throughout Accounts Payable. */
-.CM3-sdd-val{font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 13px;font-weight: 800;color:#0d0905;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;}
-.CM3-sdd-val.ph{color:var(--text-4,#94A3B8);font-weight: 600;}
-.CM3-sdd-val-sub{color:#6b7280;font-size: 11px;margin-left:4px;}
+.CM3-sdd-val{font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 13px;font-weight: 800;color:#231C14;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;}
+.CM3-sdd-val.ph{color:var(--text-4,#8C7C63);font-weight: 600;}
+.CM3-sdd-val-sub{color:#524532;font-size: 11px;margin-left:4px;}
 /* ── SDD Panel ── */
-.CM3-sdd-panel{background:#fff;border:1.5px solid rgba(29,78,216,0.15);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08),0 8px 28px rgba(0,0,0,0.07);overflow:hidden;animation:sdd-open .18s cubic-bezier(.22,.68,0,1.15) both;transform-origin:top center;}
+.CM3-sdd-panel{background:#faf9f7;border:1.5px solid rgba(154,52,18,0.15);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08),0 8px 28px rgba(0,0,0,0.07);overflow:hidden;animation:sdd-open .18s cubic-bezier(.22,.68,0,1.15) both;transform-origin:top center;}
 /* Search */
-.CM3-sdd-search{display:flex;align-items:center;gap:8px;padding:7px 11px;border-bottom:1px solid #E9EEF5;background:#F8FAFC;}
-.CM3-sdd-inp{flex:1;border:none;outline:none;background:transparent;font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 12.5px;font-weight:700;color:#0d0905;}
-.CM3-sdd-inp::placeholder{color:var(--text-4,#94A3B8);}
-.CM3-sdd-clr{display:flex;align-items:center;justify-content:center;width:16px;height:16px;background:none;border:none;cursor:pointer;color:var(--text-4,#94A3B8);border-radius:4px;transition:all .15s;flex-shrink:0;}
+.CM3-sdd-search{display:flex;align-items:center;gap:8px;padding:7px 11px;border-bottom:1px solid #E8E2D8;background:#F5F3EF;}
+.CM3-sdd-inp{flex:1;border:none;outline:none;background:transparent;font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 12.5px;font-weight:700;color:#231C14;}
+.CM3-sdd-inp::placeholder{color:var(--text-4,#8C7C63);}
+.CM3-sdd-clr{display:flex;align-items:center;justify-content:center;width:16px;height:16px;background:none;border:none;cursor:pointer;color:var(--text-4,#8C7C63);border-radius:4px;transition:all .15s;flex-shrink:0;}
 .CM3-sdd-clr:hover{background:#fef2f2;color:#D93B55;}
 /* List */
 .CM3-sdd-list{max-height:160px;overflow-y:auto;overscroll-behavior:contain;}
@@ -1793,18 +1794,18 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-sdd-item{display:flex;align-items:center;gap:8px;padding:6px 11px;cursor:pointer;border-bottom:1px solid #FAF5F0;transition:background .1s;}
 .CM3-sdd-item:last-child{border-bottom:none;}
 .CM3-sdd-item:hover{background:#FDF7F3;}
-.CM3-sdd-item.selected{background:rgba(29,78,216,0.05);}
+.CM3-sdd-item.selected{background:rgba(154,52,18,0.05);}
 .CM3-sdd-av{width:20px;height:20px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;font-weight: 800;border:1px solid transparent;}
 .CM3-sdd-item-text{flex:1;min-width:0;}
-.CM3-sdd-item-label{font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 12px;font-weight: 800;color:#0d0905;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.CM3-sdd-item.selected .CM3-sdd-item-label{color:var(--ember,#2563EB);font-weight: 700;}
+.CM3-sdd-item-label{font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 12px;font-weight: 800;color:#231C14;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.CM3-sdd-item.selected .CM3-sdd-item-label{color:var(--ember,#C2410C);font-weight: 700;}
 .CM3-sdd-check{display:flex;align-items:center;flex-shrink:0;}
-.CM3-sdd-clear{color:var(--error,#D93B55);gap:6px;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;font-weight: 700;letter-spacing:.3px;border-bottom:1px solid #E9EEF5;}
+.CM3-sdd-clear{color:var(--error,#D93B55);gap:6px;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;font-weight: 700;letter-spacing:.3px;border-bottom:1px solid #E8E2D8;}
 .CM3-sdd-clear:hover{background:#fef2f2;}
-.CM3-sdd-empty{padding:12px 14px;text-align:center;color:#6b7280;font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:6px;}
-.CM3-sdd-sub{font-size: 9.5px;color:#6b7280;margin-top:1px;letter-spacing:.3px;font-family:var(--font-mono,'JetBrains Mono',monospace);text-transform:uppercase;}
+.CM3-sdd-empty{padding:12px 14px;text-align:center;color:#524532;font-family:var(--font-body,'Space Grotesk',sans-serif);font-size: 11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.CM3-sdd-sub{font-size: 9.5px;color:#524532;margin-top:1px;letter-spacing:.3px;font-family:var(--font-mono,'JetBrains Mono',monospace);text-transform:uppercase;}
 /* Footer */
-.CM3-sdd-footer{padding:4px 11px;background:#F8FAFC;border-top:1px solid #E9EEF5;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;color:var(--text-4,#94A3B8);letter-spacing:.6px;display:flex;align-items:center;justify-content:space-between;}
+.CM3-sdd-footer{padding:4px 11px;background:#F5F3EF;border-top:1px solid #E8E2D8;font-family:var(--font-mono,'JetBrains Mono',monospace);font-size: 8px;color:var(--text-4,#8C7C63);letter-spacing:.6px;display:flex;align-items:center;justify-content:space-between;}
 
 /* ── MODAL BUTTONS ── */
 .CM3-btn {
@@ -1817,14 +1818,14 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 .CM3-btn.primary,
 .CM3-btn.credit,
-.CM3-btn.payment { background: linear-gradient(135deg, var(--ember,#2563EB), var(--ember-mid,#3B82F6)); color: #fff; box-shadow: var(--sh-ember,0 4px 18px rgba(29,78,216,0.28)); }
+.CM3-btn.payment { background: linear-gradient(135deg, var(--ember,#C2410C), var(--ember-mid,#DB5B1F)); color: #faf9f7; box-shadow: var(--sh-ember,0 4px 18px rgba(154,52,18,0.28)); }
 .CM3-btn.primary:hover,
 .CM3-btn.credit:hover,
-.CM3-btn.payment:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(29,78,216,0.38); }
-.CM3-btn.ghost { background: var(--white,#fff); color: var(--text-2,#3d3d3d); border: 1.5px solid var(--border,#E9EEF5); }
-.CM3-btn.ghost:hover { transform: translateY(-1px); border-color: var(--ember-border,#f5d87a); background: var(--off-white,#F8FAFC); }
-.CM3-btn.back { background: var(--surface,#F1F5F9); color: var(--text-3,#64748b); border: 1.5px solid var(--border,#E9EEF5); }
-.CM3-btn.back:hover { transform: translateY(-1px); border-color: var(--ember-border,#f5d87a); background: var(--off-white,#F8FAFC); }
+.CM3-btn.payment:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(154,52,18,0.38); }
+.CM3-btn.ghost { background: var(--white,#faf9f7); color: var(--text-2,#3A3024); border: 1.5px solid var(--border,#E8E2D8); }
+.CM3-btn.ghost:hover { transform: translateY(-1px); border-color: var(--ember-border,#D98255); background: var(--off-white,#F5F3EF); }
+.CM3-btn.back { background: var(--surface,#F0ECE6); color: var(--text-3,#6B5D48); border: 1.5px solid var(--border,#E8E2D8); }
+.CM3-btn.back:hover { transform: translateY(-1px); border-color: var(--ember-border,#D98255); background: var(--off-white,#F5F3EF); }
 /* Icon-only variant — used for the step-wizard "Back" control so it reads
    as a compact, professional nav affordance instead of a bulky labeled
    button; the shared arrow glyph is reused rotated 180deg to point left. */
@@ -1836,56 +1837,56 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 /* ── SPINNER ── */
 .CM3-spin {
     display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff; border-radius: 50%; animation: erp-spin 0.7s linear infinite;
+    border-top-color: #faf9f7; border-radius: 50%; animation: erp-spin 0.7s linear infinite;
 }
 
 /* ── STEP WIZARD ── */
-.CM3-steps { display:flex; align-items:center; gap:0; padding:10px 20px; background:var(--off-white,#F8FAFC); border-bottom:1px solid var(--border,#E9EEF5); flex-shrink:0; }
+.CM3-steps { display:flex; align-items:center; gap:0; padding:10px 20px; background:var(--off-white,#F5F3EF); border-bottom:1px solid var(--border,#E8E2D8); flex-shrink:0; }
 .CM3-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .CM3-step-dot {
     width: 26px; height: 26px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    border: 2px solid var(--border,#E9EEF5); background: var(--white,#fff);
-    font-size: 9px; font-weight: 800; color: var(--text-4,#9ca3af);
+    border: 2px solid var(--border,#E8E2D8); background: var(--white,#faf9f7);
+    font-size: 9px; font-weight: 800; color: var(--text-4,#6B5D48);
     transition: all 0.2s;
 }
-.CM3-step.active .CM3-step-dot { border-color: var(--ember-mid,#3B82F6); background: linear-gradient(135deg,var(--ember,#2563EB),var(--ember-mid,#3B82F6)); color: #fff; }
-.CM3-step.done .CM3-step-dot { border-color: #10b981; background: #10b981; color: #fff; }
-.CM3-step-lbl { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-4,#94A3B8); transition: color 0.2s; }
-.CM3-step.active .CM3-step-lbl { color: var(--ember-mid,#3B82F6); }
+.CM3-step.active .CM3-step-dot { border-color: var(--ember-mid,#DB5B1F); background: linear-gradient(135deg,var(--ember,#C2410C),var(--ember-mid,#DB5B1F)); color: #faf9f7; }
+.CM3-step.done .CM3-step-dot { border-color: #10b981; background: #10b981; color: #faf9f7; }
+.CM3-step-lbl { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-4,#8C7C63); transition: color 0.2s; }
+.CM3-step.active .CM3-step-lbl { color: var(--ember-mid,#DB5B1F); }
 .CM3-step.done .CM3-step-lbl { color: #10b981; }
-.CM3-step-line { width: 24px; height: 1.5px; background: var(--border,#E9EEF5); margin: 0 4px; }
+.CM3-step-line { width: 24px; height: 1.5px; background: var(--border,#E8E2D8); margin: 0 4px; }
 .CM3-step.done + .CM3-step .CM3-step-line { background: #10b981; }
 
 /* ── STEP CONTENT ── */
 .CM3-step-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
-.CM3-step-num { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; font-size: 28px; font-weight: 800; color: var(--border,#D4D5D8); line-height: 1; }
-.CM3-step-ttl { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; text-transform: uppercase; letter-spacing: 0.3px; font-size: 13px; font-weight: 800; color: var(--text-1,#0F172A); }
-.CM3-step-desc { font-size: 11.5px; font-weight: 600; color: #374151; margin-top: 3px; }
+.CM3-step-num { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; font-size: 28px; font-weight: 800; color: var(--border,#D2C7B8); line-height: 1; }
+.CM3-step-ttl { font-family: var(--font-body,'Space Grotesk',sans-serif); font-style: normal; text-transform: uppercase; letter-spacing: 0.3px; font-size: 13px; font-weight: 800; color: var(--text-1,#231C14); }
+.CM3-step-desc { font-size: 11.5px; font-weight: 600; color: #3A3024; margin-top: 3px; }
 
 /* ── SECTION SEPARATOR (like BioData section tag) ── */
 .CM3-section { display: flex; align-items: center; gap: 10px; margin: 18px 0 12px; }
 .CM3-section-tag {
     font-family: var(--font-mono,'JetBrains Mono',monospace);
     font-size: 9.5px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase;
-    color: var(--ember,#2563EB); white-space: nowrap;
-    background: rgba(29,78,216,0.07); padding: 4px 11px; border-radius: 100px;
-    border: 1px solid var(--ember-border,rgba(29,78,216,0.18));
+    color: var(--ember,#C2410C); white-space: nowrap;
+    background: rgba(154,52,18,0.07); padding: 4px 11px; border-radius: 100px;
+    border: 1px solid var(--ember-border,rgba(154,52,18,0.18));
 }
-.CM3-section-rule { flex: 1; height: 1px; background: var(--border,#E9EEF5); }
-.CM3-section-sep { height: 1px; background: var(--border,#E9EEF5); margin: 14px 0; }
+.CM3-section-rule { flex: 1; height: 1px; background: var(--border,#E8E2D8); }
+.CM3-section-sep { height: 1px; background: var(--border,#E8E2D8); margin: 14px 0; }
 
 /* ── PREVIEW / CONFIRM CARDS ── */
-.CM3-prev-card { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 12px 16px; margin-top: 12px; }
+.CM3-prev-card { background: #FDE0CB; border: 1.5px solid #FDE0CB; border-radius: 10px; padding: 12px 16px; margin-top: 12px; }
 .CM3-prev-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.CM3-prev-lbl { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #78350f; }
-.CM3-prev-val { font-size: 13px; font-weight: 800; color: #C47E0A; }
+.CM3-prev-lbl { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #9A3412; }
+.CM3-prev-val { font-size: 13px; font-weight: 800; color: #9A3412; }
 
-.CM3-sel-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface,#F1F5F9); border: 1.5px solid var(--border,#E9EEF5); border-radius: 10px; margin-top: 10px; }
+.CM3-sel-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface,#F0ECE6); border: 1.5px solid var(--border,#E8E2D8); border-radius: 10px; margin-top: 10px; }
 .CM3-sel-av { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: 900; flex-shrink: 0; border: 1.5px solid; }
-.CM3-sel-name { font-size: 13.5px; font-weight: 800; color: #0d0905; }
-.CM3-sel-sub { font-size: 10.5px; color: #6b7280; margin-top: 1px; }
-.CM3-sel-badge { margin-left: auto; padding: 4px 11px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 100px; font-size: 9.5px; font-weight: 800; color: #C47E0A; letter-spacing: 0.06em; text-transform: uppercase; }
+.CM3-sel-name { font-size: 13.5px; font-weight: 800; color: #231C14; }
+.CM3-sel-sub { font-size: 10.5px; color: #524532; margin-top: 1px; }
+.CM3-sel-badge { margin-left: auto; padding: 4px 11px; background: #FDE0CB; border: 1px solid #FDE0CB; border-radius: 100px; font-size: 9.5px; font-weight: 800; color: #9A3412; letter-spacing: 0.06em; text-transform: uppercase; }
 .CM3-sel-badge.teal { background: ${PAYMENT_COLOR.light}; border-color: ${PAYMENT_COLOR.border}; color: ${PAYMENT_COLOR.primary}; }
 
 /* ── NOTICE BOXES ── */
@@ -1894,12 +1895,12 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
     border-radius: 9px; font-size: 11.5px; font-weight: 600; border: 1px solid; margin-bottom: 14px;
 }
 .CM3-notice.red { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
-.CM3-notice.teal { background: #f0fdfa; border-color: #99f6e4; color: #065f46; }
-.CM3-notice.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+.CM3-notice.teal { background: #FDE0CB; border-color: #FBC9A8; color: #065f46; }
+.CM3-notice.blue { background: #FDE0CB; border-color: #FBC9A8; color: #9A3412; }
 
 /* ── MANDATORY CLIENT BOX ── */
-.CM3-mandatory-client { border: 2px solid rgba(13,148,136,0.3); border-radius: 12px; overflow: hidden; }
-.CM3-mandatory-client-hdr { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(13,148,136,0.06); border-bottom: 1px solid rgba(13,148,136,0.15); }
+.CM3-mandatory-client { border: 2px solid rgba(166,73,29,0.3); border-radius: 12px; overflow: hidden; }
+.CM3-mandatory-client-hdr { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(166,73,29,0.06); border-bottom: 1px solid rgba(166,73,29,0.15); }
 .CM3-mandatory-client-title { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: ${PAYMENT_COLOR.primary}; }
 .CM3-mandatory-client-body { padding: 12px 14px; }
 
@@ -1907,10 +1908,10 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
    Smaller box, smaller text, and a real 3-column grid for the short fields
    (Party / Category / Sub-category) instead of the 2-col layout that pushed
    Sub-category onto its own half-empty row. */
-.CM3-db-box { padding: 10px 12px; border: 1.5px solid ${PAYMENT_COLOR.border}; border-radius: 8px; background: rgba(13,148,136,0.03); margin-top: 12px; }
+.CM3-db-box { padding: 10px 12px; border: 1.5px solid ${PAYMENT_COLOR.border}; border-radius: 8px; background: rgba(166,73,29,0.03); margin-top: 12px; }
 .CM3-db-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .CM3-db-toggle-title { font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: ${PAYMENT_COLOR.primary}; display: flex; align-items: center; gap: 5px; }
-.CM3-db-toggle-sub { font-size: 8px; font-weight: 600; color: #6b7280; margin-top: 2px; }
+.CM3-db-toggle-sub { font-size: 8px; font-weight: 600; color: #524532; margin-top: 2px; }
 
 /* 3-up grid for the daybook fields — Party / Category / Sub-category share one
    row; Client Name and Narration span the full width below. */
@@ -1926,7 +1927,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-db-box .CM3-sdd-val-sub { font-size: 8.5px; }
 .CM3-db-box .CM3-input { min-height: 28px; padding: 5px 9px; font-size: 10px; }
 .CM3-db-hint { font-size: 8px; color: ${PAYMENT_COLOR.primary}; margin-top: 2px; font-weight: 700; }
-.CM3-db-client-box { display: flex; align-items: center; gap: 5px; padding: 5px 8px; background: rgba(0,0,0,0.03); border: 1.5px solid var(--bd,#e2e2e2); border-radius: 7px; min-height: 26px; }
+.CM3-db-client-box { display: flex; align-items: center; gap: 5px; padding: 5px 8px; background: rgba(0,0,0,0.03); border: 1.5px solid var(--bd,#D2C7B8); border-radius: 7px; min-height: 26px; }
 
 /* ── PAYMENT DETAILS (01) ──
    Was bumped bigger than the rest of the form in an earlier pass; per the
@@ -1944,12 +1945,12 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 
 /* ── LEDGER COUNT PILL (legacy, kept for safety) ── */
 .CM3-ledger-pill {
-    padding: 6px 14px; background: var(--off-white,#F8FAFC);
-    border: 1px solid var(--border,#E9EEF5); border-radius: 8px;
-    font-size: 9px; font-weight: 800; color: var(--text-3,#64748b); letter-spacing: 0.08em;
+    padding: 6px 14px; background: var(--off-white,#F5F3EF);
+    border: 1px solid var(--border,#E8E2D8); border-radius: 8px;
+    font-size: 9px; font-weight: 800; color: var(--text-3,#6B5D48); letter-spacing: 0.08em;
     transition: all 0.2s;
 }
-.CM3-ledger-pill:hover { border-color: var(--ember-border,#f5d87a); color: var(--ember,#60A5FA); }
+.CM3-ledger-pill:hover { border-color: var(--ember-border,#D98255); color: var(--ember,#F0834D); }
 
 /* ── COLOR LEGEND PILLS ── */
 .CM3-legend-pill {
@@ -1963,13 +1964,13 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
    PREMIUM SCROLLBAR — Accounts Payable (ERP Light)
    ══════════════════════════════════════════════════════ */
 @keyframes cm-sb-glow {
-  0%,100% { box-shadow: 0 0 4px rgba(59,130,246,0.35), 0 0 10px rgba(29,78,216,0.15); }
-  50%      { box-shadow: 0 0 9px rgba(59,130,246,0.62), 0 0 20px rgba(29,78,216,0.28); }
+  0%,100% { box-shadow: 0 0 4px rgba(219,91,31,0.35), 0 0 10px rgba(154,52,18,0.15); }
+  50%      { box-shadow: 0 0 9px rgba(219,91,31,0.62), 0 0 20px rgba(154,52,18,0.28); }
 }
 
 .CM3-vlist, .CM3-content, .CM3-mbody, .CM3-sdd-list {
   scrollbar-width: thin;
-  scrollbar-color: #3B82F6 rgba(203,213,225,0.18);
+  scrollbar-color: #DB5B1F rgba(210,199,184,0.18);
 }
 
 .CM3-vlist::-webkit-scrollbar,
@@ -1981,7 +1982,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-content::-webkit-scrollbar-track,
 .CM3-mbody::-webkit-scrollbar-track,
 .CM3-sdd-list::-webkit-scrollbar-track {
-  background: rgba(203,213,225,0.15);
+  background: rgba(210,199,184,0.15);
   border-radius: 99px;
 }
 
@@ -1989,10 +1990,10 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-content::-webkit-scrollbar-thumb,
 .CM3-mbody::-webkit-scrollbar-thumb,
 .CM3-sdd-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 45%, #2563EB 100%);
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
   border-radius: 99px;
   border: none;
-  box-shadow: 0 0 3px rgba(59,130,246,0.25);
+  box-shadow: 0 0 3px rgba(219,91,31,0.25);
   transition: background 0.22s ease, box-shadow 0.22s ease;
 }
 
@@ -2000,8 +2001,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-content::-webkit-scrollbar-thumb:hover,
 .CM3-mbody::-webkit-scrollbar-thumb:hover,
 .CM3-sdd-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #BFDBFE 0%, #3B82F6 42%, #2563EB 100%);
-  box-shadow: 0 0 8px rgba(59,130,246,0.55), 0 0 16px rgba(29,78,216,0.22);
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 42%, #C2410C 100%);
+  box-shadow: 0 0 8px rgba(219,91,31,0.55), 0 0 16px rgba(154,52,18,0.22);
   animation: cm-sb-glow 1.8s ease-in-out infinite;
 }
 
@@ -2011,13 +2012,13 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
    card over a dim/blurred backdrop rather than taking over the screen. */
 .CM3-alloc-overlay {
   position: fixed; inset: 0;
-  background: rgba(15,23,42,0.52);
+  background: rgba(35,28,20,0.52);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   z-index: 11000; display: flex; align-items: center; justify-content: center; padding: 24px;
   animation: cm3-overlay-in 0.22s ease both;
 }
 .CM3-alloc-modal {
-  background: var(--white,#fff); border-radius: 22px; width: 100%; max-width: 860px;
+  background: var(--white,#faf9f7); border-radius: 22px; width: 100%; max-width: 860px;
   box-shadow: 0 6px 28px rgba(0,0,0,0.10), 0 32px 88px rgba(0,0,0,0.24);
   overflow: hidden; display: flex; flex-direction: column;
   animation: cm3-modal-in 0.42s cubic-bezier(0.22,1,0.36,1) both;
@@ -2031,8 +2032,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
     .CM3-alloc-modal { max-width: 100%; border-radius: 18px 18px 0 0; max-height: min(94dvh,94vh); }
 }
 .CM3-alloc-hdr {
-  padding: 18px 22px 16px; border-bottom: 1.5px solid var(--border,#E9EEF5); flex-shrink: 0;
-  background: var(--surface,#F8FAFC); position: relative;
+  padding: 18px 22px 16px; border-bottom: 1.5px solid var(--border,#E8E2D8); flex-shrink: 0;
+  background: var(--surface,#F5F3EF); position: relative;
 }
 /* "Back" — this step sits inside the repayment wizard, so dismissing it
    returns to the previous step rather than closing the whole flow; kept as
@@ -2041,8 +2042,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
   position: absolute; top: 16px; right: 22px;
   display: flex; align-items: center; gap: 7px;
   height: 32px; padding: 0 15px 0 6px; border-radius: 100px;
-  border: 1.5px solid #BFDBFE;
-  background: linear-gradient(135deg,#F3E8FF,#EDE9FE);
+  border: 1.5px solid #FBC9A8;
+  background: linear-gradient(135deg,#FBC9A8,#FBC9A8);
   cursor: pointer;
   color: #9a3412;
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
@@ -2052,19 +2053,19 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-alloc-close-ic {
   display: flex; align-items: center; justify-content: center;
   width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-  background: #fff; border: 1.5px solid #BFDBFE;
+  background: #faf9f7; border: 1.5px solid #FBC9A8;
   transition: border-color 0.18s;
 }
 .CM3-alloc-close svg { transform: rotate(180deg); transition: transform 0.18s; }
 .CM3-alloc-close:hover {
-  background: linear-gradient(135deg,#EDE9FE,#DDD6FE); border-color: #60A5FA; color: #2563EB;
-  transform: translateY(-1px); box-shadow: 0 4px 12px rgba(29,78,216,0.18);
+  background: linear-gradient(135deg,#FBC9A8,#FBC9A8); border-color: #F0834D; color: #C2410C;
+  transform: translateY(-1px); box-shadow: 0 4px 12px rgba(154,52,18,0.18);
 }
-.CM3-alloc-close:hover .CM3-alloc-close-ic { border-color: #60A5FA; }
+.CM3-alloc-close:hover .CM3-alloc-close-ic { border-color: #F0834D; }
 .CM3-alloc-close:hover svg { transform: rotate(180deg) translateX(3px); }
 .CM3-alloc-close:active { transform: translateY(0) scale(0.96); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.CM3-alloc-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 13.5px; font-weight: 800; font-style: normal; color: #0F172A; text-transform: uppercase; letter-spacing: 0.3px; }
-.CM3-alloc-sub { font-size: 9.5px; font-weight: 700; color: #6b7280; margin-top: 4px; }
+.CM3-alloc-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 13.5px; font-weight: 800; font-style: normal; color: #231C14; text-transform: uppercase; letter-spacing: 0.3px; }
+.CM3-alloc-sub { font-size: 9.5px; font-weight: 700; color: #524532; margin-top: 4px; }
 /* Icon badge next to the title — matches the icon-boxes on the other 3 full
    pages (Ledger/Bill/Payment) and gives this step a pop-in entrance. */
 @keyframes cm3-badge-pop { from{opacity:0; transform:scale(0.5) rotate(-10deg);} to{opacity:1; transform:scale(1) rotate(0);} }
@@ -2072,13 +2073,13 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-alloc-hdr-ic {
   width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: #fff; border: 1.5px solid #BFDBFE;
+  background: #faf9f7; border: 1.5px solid #FBC9A8;
   animation: cm3-badge-pop 0.32s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 @keyframes cm3-chip-pop { from{opacity:0; transform:translateY(-3px) scale(0.9);} to{opacity:1; transform:none;} }
-@keyframes cm3-chip-pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(217,119,6,0.28); } 50%{ box-shadow:0 0 0 5px rgba(217,119,6,0); } }
-.CM3-alloc-chip { display:inline-flex; align-items:center; gap:5px; padding: 4px 10px; border-radius: 6px; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; margin-top: 8px; background: var(--white,#fff); border: 1px solid var(--border,#E9EEF5); color: #4b5563; animation: cm3-chip-pop 0.22s ease both; }
-.CM3-alloc-chip.amber { color: #92400e; border-color: #fde68a; background: #fffbeb; animation: cm3-chip-pop 0.22s ease both, cm3-chip-pulse 1.8s ease-in-out 0.3s infinite; }
+@keyframes cm3-chip-pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(154,52,18,0.28); } 50%{ box-shadow:0 0 0 5px rgba(154,52,18,0); } }
+.CM3-alloc-chip { display:inline-flex; align-items:center; gap:5px; padding: 4px 10px; border-radius: 6px; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; margin-top: 8px; background: var(--white,#faf9f7); border: 1px solid var(--border,#E8E2D8); color: #524532; animation: cm3-chip-pop 0.22s ease both; }
+.CM3-alloc-chip.amber { color: #9A3412; border-color: #FDE0CB; background: #FDE0CB; animation: cm3-chip-pop 0.22s ease both, cm3-chip-pulse 1.8s ease-in-out 0.3s infinite; }
 .CM3-alloc-body { flex: 1; overflow-y: auto; padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
 .CM3-alloc-body::-webkit-scrollbar { width: 3px; }
 .CM3-alloc-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -2087,170 +2088,170 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
    The wrap scrolls its own body with a sticky header, so a client with many bills
    scrolls inside the table instead of stretching the whole modal off-screen. */
 .CM3-alloc-billtbl-wrap {
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 12px;
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px;
   max-height: 48vh; overflow-y: auto; overflow-x: hidden;
 }
 .CM3-alloc-billtbl-wrap::-webkit-scrollbar { width: 6px; }
-.CM3-alloc-billtbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 3px; }
-.CM3-alloc-billtbl-wrap::-webkit-scrollbar-thumb:hover { background: #BFDBFE; }
+.CM3-alloc-billtbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
+.CM3-alloc-billtbl-wrap::-webkit-scrollbar-thumb:hover { background: #FBC9A8; }
 .CM3-alloc-billtbl { width: 100%; border-collapse: collapse; }
 .CM3-alloc-billtbl thead th {
-  background: var(--surface-2,#E9EEF5); color: var(--text-3,#27364A);
+  background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 8px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
   padding: 9px 12px; text-align: left; white-space: nowrap;
-  border-bottom: 2px solid var(--ember,#2563EB);
+  border-bottom: 2px solid var(--ember,#C2410C);
   position: sticky; top: 0; z-index: 1;
 }
 .CM3-alloc-billtbl tbody tr { cursor: pointer; }
 .CM3-alloc-billtbl tbody tr.bill-row { animation: cm3-row-pop-in 0.32s cubic-bezier(0.34,1.56,0.64,1) both; }
-.CM3-alloc-billtbl tbody tr.bill-row:nth-child(odd) td { background: var(--surface,#F8FAFC); }
-.CM3-alloc-billtbl tbody tr.bill-row:not(:last-child) td { border-bottom: 1px solid var(--border,#E9EEF5); }
+.CM3-alloc-billtbl tbody tr.bill-row:nth-child(odd) td { background: var(--surface,#F5F3EF); }
+.CM3-alloc-billtbl tbody tr.bill-row:not(:last-child) td { border-bottom: 1px solid var(--border,#E8E2D8); }
 .CM3-alloc-billtbl tbody tr.bill-row td { transition: background 0.18s, box-shadow 0.2s; box-shadow: inset 0 0 0 0 transparent; }
-.CM3-alloc-billtbl tbody tr.bill-row:hover td { background: #F3E8FF; }
-.CM3-alloc-billtbl tbody tr.bill-row:hover td:first-child { box-shadow: inset 4px 0 0 0 #3B82F6; }
-.CM3-alloc-billtbl tbody tr.bill-row.selected td:first-child { box-shadow: inset 4px 0 0 0 #2563EB; }
+.CM3-alloc-billtbl tbody tr.bill-row:hover td { background: #FBC9A8; }
+.CM3-alloc-billtbl tbody tr.bill-row:hover td:first-child { box-shadow: inset 4px 0 0 0 #DB5B1F; }
+.CM3-alloc-billtbl tbody tr.bill-row.selected td:first-child { box-shadow: inset 4px 0 0 0 #C2410C; }
 .CM3-alloc-billtbl tbody tr.bill-row.selected td { background: #fff1e6; }
 .CM3-alloc-billtbl tbody tr.bill-row.closed-bill { opacity: 0.45; pointer-events: none; }
 .CM3-alloc-billtbl td { padding: 9px 12px; vertical-align: middle; }
 .CM3-alloc-billtbl-check-cell { width: 30px; }
-.CM3-alloc-billtbl-inv { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #0F172A; }
-.CM3-alloc-billtbl-client { font-size: 9px; font-weight: 800; color: #2563EB; }
-.CM3-alloc-billtbl-amt { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #374151; white-space: nowrap; }
-.CM3-alloc-billtbl-date { font-size: 9px; color: #6b7280; white-space: nowrap; }
+.CM3-alloc-billtbl-inv { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #231C14; }
+.CM3-alloc-billtbl-client { font-size: 9px; font-weight: 800; color: #C2410C; }
+.CM3-alloc-billtbl-amt { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #3A3024; white-space: nowrap; }
+.CM3-alloc-billtbl-date { font-size: 9px; color: #524532; white-space: nowrap; }
 .CM3-alloc-billtbl-bal-cell { text-align: right; }
-.CM3-alloc-billtbl-bal { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #0F172A; white-space: nowrap; }
-.CM3-alloc-billtbl-preview-row td { padding: 0 12px 9px; background: #F3E8FF; border-bottom: 1px solid var(--border,#E9EEF5); }
+.CM3-alloc-billtbl-bal { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #231C14; white-space: nowrap; }
+.CM3-alloc-billtbl-preview-row td { padding: 0 12px 9px; background: #FBC9A8; border-bottom: 1px solid var(--border,#E8E2D8); }
 /* Checkbox-style bill selector — square, animated check glyph pops in,
    filled orange (will close the bill) or amber (partial payment) when picked. */
 @keyframes cm3-check-pop { 0%{opacity:0; transform:scale(0.4);} 60%{opacity:1; transform:scale(1.2);} 100%{opacity:1; transform:scale(1);} }
 .CM3-alloc-check {
-  width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--border,#D4D5D8);
+  width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--border,#D2C7B8);
   flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  background: #fff; transition: all 0.16s cubic-bezier(0.34,1.56,0.64,1);
+  background: #faf9f7; transition: all 0.16s cubic-bezier(0.34,1.56,0.64,1);
 }
 .CM3-alloc-check svg { animation: cm3-check-pop 0.24s cubic-bezier(0.34,1.56,0.64,1) both; }
 .CM3-alloc-check.will-close {
-  border-color: #2563EB; background: linear-gradient(135deg,#2563EB,#3B82F6);
-  transform: scale(1.08); box-shadow: 0 2px 8px rgba(29,78,216,0.35);
+  border-color: #C2410C; background: linear-gradient(135deg,#C2410C,#DB5B1F);
+  transform: scale(1.08); box-shadow: 0 2px 8px rgba(154,52,18,0.35);
 }
 .CM3-alloc-check.will-partial {
-  border-color: #f59e0b; background: linear-gradient(135deg,#f59e0b,#fbbf24);
-  transform: scale(1.08); box-shadow: 0 2px 8px rgba(245,158,11,0.3);
+  border-color: #DB5B1F; background: linear-gradient(135deg,#DB5B1F,#F0834D);
+  transform: scale(1.08); box-shadow: 0 2px 8px rgba(154,52,18,0.3);
 }
-.CM3-alloc-billtbl tbody tr.bill-row:hover .CM3-alloc-check { border-color: #BFDBFE; }
+.CM3-alloc-billtbl tbody tr.bill-row:hover .CM3-alloc-check { border-color: #FBC9A8; }
 .CM3-alloc-bill {
   display: flex; align-items: center; gap: 14px; padding: 20px 22px;
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 14px;
-  cursor: pointer; transition: all 0.15s; background: var(--white,#fff);
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 14px;
+  cursor: pointer; transition: all 0.15s; background: var(--white,#faf9f7);
 }
-.CM3-alloc-bill:hover { border-color: #BFDBFE; background: #F3E8FF; }
-.CM3-alloc-bill.selected { border-color: #2563EB; background: #F3E8FF; box-shadow: 0 0 0 3px rgba(29,78,216,0.10); }
-.CM3-alloc-bill.will-close { border-color: #2563EB; background: #F3E8FF; }
-.CM3-alloc-bill.will-partial { border-color: #f59e0b; background: #fffbeb; }
-.CM3-alloc-bill.closed-bill { opacity: 0.42; pointer-events: none; background: #f8fafc; }
+.CM3-alloc-bill:hover { border-color: #FBC9A8; background: #FBC9A8; }
+.CM3-alloc-bill.selected { border-color: #C2410C; background: #FBC9A8; box-shadow: 0 0 0 3px rgba(154,52,18,0.10); }
+.CM3-alloc-bill.will-close { border-color: #C2410C; background: #FBC9A8; }
+.CM3-alloc-bill.will-partial { border-color: #DB5B1F; background: #FDE0CB; }
+.CM3-alloc-bill.closed-bill { opacity: 0.42; pointer-events: none; background: #F5F3EF; }
 .CM3-alloc-radio {
-  width: 17px; height: 17px; border-radius: 50%; border: 2px solid var(--border,#D4D5D8);
+  width: 17px; height: 17px; border-radius: 50%; border: 2px solid var(--border,#D2C7B8);
   flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
 }
 .CM3-alloc-bill.selected .CM3-alloc-radio,
-.CM3-alloc-bill.will-close .CM3-alloc-radio { border-color: #2563EB; background: #2563EB; transform: scale(1.05); }
-.CM3-alloc-bill.will-partial .CM3-alloc-radio { border-color: #f59e0b; background: #f59e0b; }
-.CM3-alloc-radio-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+.CM3-alloc-bill.will-close .CM3-alloc-radio { border-color: #C2410C; background: #C2410C; transform: scale(1.05); }
+.CM3-alloc-bill.will-partial .CM3-alloc-radio { border-color: #DB5B1F; background: #DB5B1F; }
+.CM3-alloc-radio-dot { width: 6px; height: 6px; border-radius: 50%; background: #faf9f7; }
 .CM3-alloc-info { flex: 1; min-width: 0; }
-.CM3-alloc-bill-num { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-4,#94A3B8); }
-.CM3-alloc-bill-desc { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10.5px; font-weight: 700; color: var(--text-1,#0F172A); margin-top: 2px; }
+.CM3-alloc-bill-num { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-4,#8C7C63); }
+.CM3-alloc-bill-desc { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10.5px; font-weight: 700; color: var(--text-1,#231C14); margin-top: 2px; }
 .CM3-alloc-bill-meta { display: flex; gap: 6px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
 .CM3-alloc-bill-remaining { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #D93B55; }
-.CM3-alloc-bill-date { font-size: 9px; color: var(--text-4,#94A3B8); }
-.CM3-alloc-bill-closed-tag { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; background: #F3E8FF; border: 1px solid #BFDBFE; color: #2563EB; }
+.CM3-alloc-bill-date { font-size: 9px; color: var(--text-4,#8C7C63); }
+.CM3-alloc-bill-closed-tag { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; background: #FBC9A8; border: 1px solid #FBC9A8; color: #C2410C; }
 .CM3-alloc-bill-overdue { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800; letter-spacing: 0.7px; padding: 2px 7px; border-radius: 100px; background: #fef2f2; border: 1px solid #fecaca; color: #D93B55; }
 .CM3-alloc-preview { margin-top: 5px; padding: 5px 8px; border-radius: 7px; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8.5px; font-weight: 800; display: flex; align-items: center; gap: 5px; animation: cm3-chip-pop 0.2s ease both; }
-.CM3-alloc-preview.closes { background: #F3E8FF; color: #2563EB; border: 1px solid #BFDBFE; }
-.CM3-alloc-preview.partial { background: #fffbeb; color: #C47E0A; border: 1px solid #fde68a; }
+.CM3-alloc-preview.closes { background: #FBC9A8; color: #C2410C; border: 1px solid #FBC9A8; }
+.CM3-alloc-preview.partial { background: #FDE0CB; color: #9A3412; border: 1px solid #FDE0CB; }
 
 /* ── Client drill-down (premium, mirrors sidebar Category→Names UX) ── */
 .CM3-alloc-back {
   display: flex; align-items: center; gap: 8px; width: 100%;
   padding: 8px 10px; margin-bottom: 4px; border-radius: 8px;
-  border: 1px dashed var(--border,#E9EEF5); background: #fff;
+  border: 1px dashed var(--border,#E8E2D8); background: #faf9f7;
   cursor: pointer; transition: background 0.15s, border-color 0.15s; text-align: left;
   animation: cm3-page-in 0.2s ease both;
 }
-.CM3-alloc-back:hover { border-color: #d1d5db; background: var(--surface,#F8FAFC); }
+.CM3-alloc-back:hover { border-color: #D2C7B8; background: var(--surface,#F5F3EF); }
 .CM3-alloc-back-ic {
   width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: var(--surface,#F1F5F9); border: 1px solid var(--border,#E9EEF5); color: #4b5563;
+  background: var(--surface,#F0ECE6); border: 1px solid var(--border,#E8E2D8); color: #524532;
   transition: transform 0.18s;
 }
 .CM3-alloc-back:hover .CM3-alloc-back-ic { transform: translateX(-2px); }
 .CM3-alloc-back-name {
   flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: var(--font-body,'Space Grotesk',sans-serif); font-weight: 800; font-size: 11px;
-  color: #0F172A;
+  color: #231C14;
 }
 .CM3-alloc-back-count {
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8px; font-weight: 800;
-  color: #6b7280; background: var(--surface,#F1F5F9); padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border,#E9EEF5); flex-shrink: 0;
+  color: #524532; background: var(--surface,#F0ECE6); padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border,#E8E2D8); flex-shrink: 0;
 }
 
 /* Client picker — real table (rows & columns), bigger modal, readable font.
    Scrolls its own body with a sticky header once the client list runs long. */
 .CM3-alloc-tbl-wrap {
-  border: 1.5px solid var(--border,#E9EEF5); border-radius: 12px;
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px;
   max-height: 48vh; overflow-y: auto; overflow-x: hidden;
 }
 .CM3-alloc-tbl-wrap::-webkit-scrollbar { width: 6px; }
-.CM3-alloc-tbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 3px; }
-.CM3-alloc-tbl-wrap::-webkit-scrollbar-thumb:hover { background: #BFDBFE; }
+.CM3-alloc-tbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
+.CM3-alloc-tbl-wrap::-webkit-scrollbar-thumb:hover { background: #FBC9A8; }
 .CM3-alloc-tbl { width: 100%; border-collapse: collapse; }
 .CM3-alloc-tbl thead th {
-  background: var(--surface-2,#E9EEF5); color: var(--text-3,#27364A);
+  background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 8px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
   padding: 9px 12px; text-align: left;
-  border-bottom: 2px solid var(--ember,#2563EB);
+  border-bottom: 2px solid var(--ember,#C2410C);
   position: sticky; top: 0; z-index: 1;
 }
 .CM3-alloc-tbl tbody tr {
   cursor: pointer; animation: cm3-row-pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
 }
-.CM3-alloc-tbl tbody tr:nth-child(odd) td { background: var(--surface,#F8FAFC); }
+.CM3-alloc-tbl tbody tr:nth-child(odd) td { background: var(--surface,#F5F3EF); }
 .CM3-alloc-tbl tbody tr td { transition: background 0.18s, box-shadow 0.2s; box-shadow: inset 0 0 0 0 transparent; }
-.CM3-alloc-tbl tbody tr:hover td:first-child { box-shadow: inset 4px 0 0 0 #3B82F6; }
-.CM3-alloc-tbl tbody tr:not(:last-child) td { border-bottom: 1px solid var(--border,#E9EEF5); }
-.CM3-alloc-tbl tbody tr:hover td { background: #F3E8FF; }
+.CM3-alloc-tbl tbody tr:hover td:first-child { box-shadow: inset 4px 0 0 0 #DB5B1F; }
+.CM3-alloc-tbl tbody tr:not(:last-child) td { border-bottom: 1px solid var(--border,#E8E2D8); }
+.CM3-alloc-tbl tbody tr:hover td { background: #FBC9A8; }
 .CM3-alloc-tbl tbody tr:active td { background: #ffe9d5; }
 .CM3-alloc-tbl td { padding: 9px 12px; vertical-align: middle; }
 .CM3-alloc-tbl-name {
-  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10px; font-weight: 800; color: #0F172A;
+  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10px; font-weight: 800; color: #231C14;
   display: flex; align-items: center; gap: 8px;
 }
 .CM3-alloc-tbl-avatar {
   width: 24px; height: 24px; border-radius: 8px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg,#3B82F6,#2563EB); color: #fff;
+  background: linear-gradient(135deg,#DB5B1F,#C2410C); color: #faf9f7;
   font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10px; font-weight: 800;
-  box-shadow: 0 2px 6px rgba(29,78,216,0.22);
+  box-shadow: 0 2px 6px rgba(154,52,18,0.22);
 }
 .CM3-alloc-tbl-bills-pill {
   display: inline-flex; align-items: center; font-size: 9px; font-weight: 800;
-  color: #6b7280; background: var(--white,#fff); border: 1px solid var(--border,#E9EEF5);
+  color: #524532; background: var(--white,#faf9f7); border: 1px solid var(--border,#E8E2D8);
   border-radius: 100px; padding: 3px 10px;
 }
-.CM3-alloc-tbl-due { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 10.5px; font-weight: 800; color: #0F172A; text-align: right; }
+.CM3-alloc-tbl-due { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 10.5px; font-weight: 800; color: #231C14; text-align: right; }
 .CM3-alloc-tbl-chev { text-align: right; width: 80px; white-space: nowrap; }
-.CM3-alloc-tbl-chev svg { color: #9ca3af; transition: transform 0.2s, color 0.2s; vertical-align: middle; }
+.CM3-alloc-tbl-chev svg { color: #6B5D48; transition: transform 0.2s, color 0.2s; vertical-align: middle; }
 .CM3-alloc-tbl-select {
   font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 8.5px; font-weight: 800;
-  letter-spacing: 0.6px; text-transform: uppercase; color: #2563EB; margin-right: 6px;
+  letter-spacing: 0.6px; text-transform: uppercase; color: #C2410C; margin-right: 6px;
   opacity: 0; transform: translateX(4px); transition: opacity 0.18s, transform 0.18s;
 }
 .CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-select { opacity: 1; transform: translateX(0); }
-.CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-chev svg { color: #2563EB; transform: translateX(3px); }
+.CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-chev svg { color: #C2410C; transform: translateX(3px); }
 
-.CM3-alloc-footer { padding: 16px 22px; border-top: 1.5px solid var(--border,#E9EEF5); display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--surface,#F1F5F9); }
+.CM3-alloc-footer { padding: 16px 22px; border-top: 1.5px solid var(--border,#E8E2D8); display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--surface,#F0ECE6); }
 
 /* ── BILL CLOSED / PAYMENT CELEBRATION ──
    Now the single success signal (no more redundant toast alongside it), so it
@@ -2265,8 +2266,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
   100%{ transform: scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes cm3-check-glow {
-  0%, 100% { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 0 rgba(29,78,216,0.35); }
-  50%      { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 10px rgba(29,78,216,0); }
+  0%, 100% { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 0 rgba(154,52,18,0.35); }
+  50%      { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 10px rgba(154,52,18,0); }
 }
 @keyframes cm3-confetti-pop { from{opacity:0;transform:scale(0)} to{opacity:1;transform:scale(1)} }
 @keyframes cm3-confetti-fly {
@@ -2289,19 +2290,19 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 .CM3-closed-celebrate {
   position: absolute; inset: 0;
-  background: linear-gradient(160deg, #F1F5F9 0%, #F3E8FF 55%, #EDE9FE 100%);
-  border: 2px solid #BFDBFE;
+  background: linear-gradient(160deg, #F0ECE6 0%, #FBC9A8 55%, #FBC9A8 100%);
+  border: 2px solid #FBC9A8;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   z-index: 10; border-radius: 20px; overflow: hidden;
 }
 .CM3-closed-ring {
   position: absolute; width: 180px; height: 180px; border-radius: 50%;
-  border: 2.5px solid rgba(29,78,216,0.18);
+  border: 2.5px solid rgba(154,52,18,0.18);
   animation: cm3-ring-pulse 1s ease-out 0.1s both;
 }
 .CM3-closed-ring2 {
   position: absolute; width: 260px; height: 260px; border-radius: 50%;
-  border: 1.5px solid rgba(29,78,216,0.09);
+  border: 1.5px solid rgba(154,52,18,0.09);
   animation: cm3-ring-pulse 1.1s ease-out 0.25s both;
 }
 .CM3-sparkle {
@@ -2315,36 +2316,36 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 }
 .CM3-closed-check {
   width: 80px; height: 80px; border-radius: 50%;
-  background: linear-gradient(135deg, #2563EB, #3B82F6);
-  border: 3px solid rgba(29,78,216,0.18);
-  box-shadow: 0 8px 28px rgba(29,78,216,0.28);
+  background: linear-gradient(135deg, #C2410C, #DB5B1F);
+  border: 3px solid rgba(154,52,18,0.18);
+  box-shadow: 0 8px 28px rgba(154,52,18,0.28);
   display: flex; align-items: center; justify-content: center;
   animation: cm3-check-glow 1.4s ease-in-out 0.7s infinite;
 }
 .CM3-closed-txt {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 19.5px; font-weight: 900; color: #2563EB;
+  font-size: 19.5px; font-weight: 900; color: #C2410C;
   letter-spacing: 4px; text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(29,78,216,0.10);
+  text-shadow: 0 1px 0 rgba(154,52,18,0.10);
 }
 .CM3-closed-sub {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 11.5px; color: #92400e; margin-top: -8px; font-weight: 700;
+  font-size: 11.5px; color: #9A3412; margin-top: -8px; font-weight: 700;
 }
 .CM3-closed-amt-badge {
   position: relative;
   padding: 8px 20px;
-  background: #fff;
-  border: 1.5px solid #BFDBFE;
-  box-shadow: 0 2px 12px rgba(29,78,216,0.10);
+  background: #faf9f7;
+  border: 1.5px solid #FBC9A8;
+  box-shadow: 0 2px 12px rgba(154,52,18,0.10);
   border-radius: 100px;
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 16px; font-weight: 800; color: #2563EB; margin-top: 4px;
+  font-size: 16px; font-weight: 800; color: #C2410C; margin-top: 4px;
   overflow: hidden;
 }
 .CM3-closed-amt-badge::after {
   content: ''; position: absolute; top: 0; bottom: 0; width: 40%;
-  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(219,91,31,0.35), transparent);
   animation: cm3-badge-shimmer 1.6s ease-in-out 0.9s infinite;
 }
 .CM3-confetti-piece {
@@ -2356,11 +2357,11 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-closed-stamp {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 100px;
-  background: #F3E8FF; border: 1.5px solid #BFDBFE; color: #2563EB;
+  background: #FBC9A8; border: 1.5px solid #FBC9A8; color: #C2410C;
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
 }
-.CM3-closed-stamp-dot { width: 5px; height: 5px; border-radius: 50%; background: #2563EB; }
+.CM3-closed-stamp-dot { width: 5px; height: 5px; border-radius: 50%; background: #C2410C; }
 
 /* ── OVERDUE WARNING STRIP ── */
 .CM3-due-warn {
@@ -2372,7 +2373,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #2563EB; }
 .CM3-due-near {
   display: flex; align-items: center; gap: 6px;
   padding: 5px 10px; border-radius: 8px;
-  background: #fffbeb; border: 1px solid #fde68a; color: #C47E0A;
+  background: #FDE0CB; border: 1px solid #FDE0CB; color: #9A3412;
   font-size: 9px; font-weight: 700; margin-top: 4px;
 }
 `;
@@ -2466,7 +2467,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                 <div className="CM3-mhdr ledger-top">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div className="CM3-mhdr-ic">
-                            <Ic n="layers" sz={18} c="#2563EB" />
+                            <Ic n="layers" sz={18} c="#C2410C" />
                         </div>
                         <div>
                             <div className="CM3-mtitle">{editVendor ? 'Edit Ledger Account' : 'Open Ledger Account'}</div>
@@ -2480,7 +2481,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                     {STEPS.map((s, i) => (
                         <div key={i} className={`CM3-step${i === step ? ' active' : i < step ? ' done' : ''}`}>
                             <div className="CM3-step-dot">
-                                {i < step ? <Ic n="check" sz={11} c="#fff" /> : <span>{i + 1}</span>}
+                                {i < step ? <Ic n="check" sz={11} c="#faf9f7" /> : <span>{i + 1}</span>}
                             </div>
                             <span className="CM3-step-lbl">{s}</span>
                             {i < STEPS.length - 1 && <div className="CM3-step-line" />}
@@ -2561,7 +2562,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                             <div className="CM3-grid1">
                                 <div>
                                     <div className="CM3-notice blue" style={{ marginBottom: 10 }}>
-                                        <Ic n="user" sz={13} c="#2563eb" />
+                                        <Ic n="user" sz={13} c="#C2410C" />
                                         <div><strong>{categoryLabel} Name *</strong> — From expense party master under <em>{selCat?.name}</em></div>
                                     </div>
                                     <div ref={bioFieldRef} className={`CM3-field${errorField === 'bio_data' ? ' err' : ''}`}>
@@ -2586,7 +2587,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                                     )}
                                 </div>
 
-                                <div className="CM3-notice" style={{ marginTop: 8, background: 'rgba(13,148,136,0.06)', border: '1px solid rgba(13,148,136,0.2)', borderRadius: 8, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <div className="CM3-notice" style={{ marginTop: 8, background: 'rgba(166,73,29,0.06)', border: '1px solid rgba(166,73,29,0.2)', borderRadius: 8, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <Ic n="client" sz={13} c={PAYMENT_COLOR.primary} />
                                     <span style={{ fontSize: 9.5, color: PAYMENT_COLOR.primary }}>Client name is added per bill & repayment — not here.</span>
                                 </div>
@@ -2605,16 +2606,16 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                                 {[
-                                    { label: 'Account Head', val: `${selCat?.name || '—'}${selSub ? ` › ${selSub.name}` : ''}`, ic: 'tag', color: '#f59e0b' },
-                                    { label: 'Party Name', val: selBio?.name || '—', ic: 'user', color: '#3b82f6' },
+                                    { label: 'Account Head', val: `${selCat?.name || '—'}${selSub ? ` › ${selSub.name}` : ''}`, ic: 'tag', color: '#DB5B1F' },
+                                    { label: 'Party Name', val: selBio?.name || '—', ic: 'user', color: '#DB5B1F' },
                                 ].map(row => (
-                                    <div key={row.label} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', background: 'var(--surface,#F1F5F9)', border: '1.5px solid var(--border,#E9EEF5)', borderRadius: 10 }}>
+                                    <div key={row.label} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', background: 'var(--surface,#F0ECE6)', border: '1.5px solid var(--border,#E8E2D8)', borderRadius: 10 }}>
                                         <div style={{ width: 36, height: 36, borderRadius: 9, background: row.color + '15', border: `1px solid ${row.color}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                             <Ic n={row.ic} sz={16} c={row.color} />
                                         </div>
                                         <div>
-                                            <div style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-4,#9ca3af)' }}>{row.label}</div>
-                                            <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-1,#0F172A)' }}>{row.val}</div>
+                                            <div style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-4,#6B5D48)' }}>{row.label}</div>
+                                            <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text-1,#231C14)' }}>{row.val}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -2650,7 +2651,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                         }}>Review →</button>}
                         {step === 2 && (
                             <button className="CM3-btn primary" onClick={handleSubmit} disabled={saving}>
-                                {saving ? <><span className="CM3-spin" /> Saving…</> : <><Ic n="check" sz={12} c="#fff" /> {editVendor ? 'Update Ledger Account' : 'Create Ledger Account'}</>}
+                                {saving ? <><span className="CM3-spin" /> Saving…</> : <><Ic n="check" sz={12} c="#faf9f7" /> {editVendor ? 'Update Ledger Account' : 'Create Ledger Account'}</>}
                             </button>
                         )}
                     </div>
@@ -2782,7 +2783,7 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                 <div className="CM3-mhdr credit-top">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div className="CM3-mhdr-ic">
-                            <Ic n="receipt" sz={17} c="#2563EB" />
+                            <Ic n="receipt" sz={17} c="#C2410C" />
                         </div>
                         <div>
                             <div className="CM3-mtitle">{isEdit ? 'Edit Bill' : 'Add Bill'}</div>
@@ -2873,7 +2874,7 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                 <div className="CM3-mfoot">
                     <button className="CM3-btn ghost" onClick={onClose}>Cancel</button>
                     <button className="CM3-btn credit" onClick={handleSubmit} disabled={saving}>
-                        {saving ? <><span className="CM3-spin" /> Saving…</> : <><Ic n={isEdit ? 'edit' : 'receipt'} sz={12} c="#fff" />{isEdit ? ' Update Bill' : ' Add Bill'}</>}
+                        {saving ? <><span className="CM3-spin" /> Saving…</> : <><Ic n={isEdit ? 'edit' : 'receipt'} sz={12} c="#faf9f7" />{isEdit ? ' Update Bill' : ' Add Bill'}</>}
                     </button>
                 </div>
             </div>
@@ -2881,7 +2882,7 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
         , document.body);
 }
 
-const CONFETTI_COLORS = ['#2563EB', '#3B82F6', '#BFDBFE', '#fde68a', '#F3E8FF', '#fff', '#EDE9FE', '#60A5FA', '#fef3c7'];
+const CONFETTI_COLORS = ['#C2410C', '#DB5B1F', '#FBC9A8', '#FDE0CB', '#FBC9A8', '#faf9f7', '#FBC9A8', '#F0834D', '#FDE0CB'];
 // `seed` offsets the pattern so a second burst (rendered with a delay) doesn't
 // look like an identical copy of the first — a fuller, livelier celebration.
 function ConfettiPieces({ seed = 0, count = 22 }: { seed?: number; count?: number }) {
@@ -2929,7 +2930,7 @@ function SparklePieces() {
             {sparks.map(s => (
                 <svg key={s.id} className="CM3-sparkle" width={s.size} height={s.size} viewBox="0 0 24 24"
                     style={{ left: s.left, top: s.top, animationDelay: s.delay }}
-                    fill="#3B82F6">
+                    fill="#DB5B1F">
                     <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
                 </svg>
             ))}
@@ -2964,7 +2965,7 @@ function SuccessCelebration({ title, sub, amountText, onDone, duration = 1800 }:
             <div className="CM3-closed-ring2" />
             <div className="CM3-closed-stamp-wrap">
                 <div className="CM3-closed-check">
-                    <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5" />
                     </svg>
                 </div>
@@ -3159,7 +3160,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                         <div className="CM3-closed-ring2" />
                         <div className="CM3-closed-stamp-wrap">
                             <div className="CM3-closed-check">
-                                <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                                <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M20 6 9 17l-5-5" />
                                 </svg>
                             </div>
@@ -3167,7 +3168,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                             <div className="CM3-closed-sub">BILL NUM: {celebration.billNum}</div>
                             <div className="CM3-closed-amt-badge">{fmt(celebration.amount)} — Settled ✓</div>
                             {remaining > 0 && (
-                                <div style={{ fontSize: 10.5, color: '#92400e', marginTop: 6, fontWeight: 700, background: '#fff', border: '1px solid #BFDBFE', borderRadius: 100, padding: '4px 14px' }}>
+                                <div style={{ fontSize: 10.5, color: '#9A3412', marginTop: 6, fontWeight: 700, background: '#faf9f7', border: '1px solid #FBC9A8', borderRadius: 100, padding: '4px 14px' }}>
                                     {fmt(remaining)} remaining → select next bill…
                                 </div>
                             )}
@@ -3183,7 +3184,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                     </button>
                     <div className="CM3-alloc-hdr-row">
                         <div className="CM3-alloc-hdr-ic">
-                            <Ic n={isDone ? 'check' : !selectedClient ? 'client' : 'receipt'} sz={17} c="#2563EB" />
+                            <Ic n={isDone ? 'check' : !selectedClient ? 'client' : 'receipt'} sz={17} c="#C2410C" />
                         </div>
                         <div>
                             <div className="CM3-alloc-title">
@@ -3216,8 +3217,8 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                 <div className="CM3-alloc-body">
                     {liveOpen.length === 0 && (
                         <div style={{ textAlign: 'center', padding: '32px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-                            <svg width={44} height={44} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={1.5} strokeLinecap="round"><path d="M20 6 9 17l-5-5" /></svg>
-                            <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.3px', fontStyle: 'normal', color: '#2563EB' }}>All Bills Settled</div>
+                            <svg width={44} height={44} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={1.5} strokeLinecap="round"><path d="M20 6 9 17l-5-5" /></svg>
+                            <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.3px', fontStyle: 'normal', color: '#C2410C' }}>All Bills Settled</div>
                             <div style={{ fontSize: 10.5, color: 'var(--text-4)' }}>No more open bills to allocate</div>
                         </div>
                     )}
@@ -3311,7 +3312,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                                     <tr className={`bill-row${isSel ? ' selected' : ''}`} style={{ animationDelay: `${bIdx * 30}ms` }} onClick={() => setSelected(e.id)}>
                                                         <td className="CM3-alloc-billtbl-check-cell">
                                                             <div className={`CM3-alloc-check${isSel ? (willClose ? ' will-close' : ' will-partial') : ''}`}>
-                                                                {isSel && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
+                                                                {isSel && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
                                                             </div>
                                                         </td>
                                                         <td className="CM3-alloc-billtbl-inv">#{billNum} · {e.bill_number || `ID ${e.id}`}</td>
@@ -3322,13 +3323,13 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                                             {e.due_date && daysUntilDue !== null && daysUntilDue < 0 ? (
                                                                 <span className="CM3-alloc-bill-overdue">{Math.abs(daysUntilDue)}d overdue</span>
                                                             ) : e.due_date && daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 5 ? (
-                                                                <span className="CM3-alloc-bill-overdue" style={{ background: '#fffbeb', border: '1px solid #fde68a', color: '#C47E0A' }}>Due in {daysUntilDue}d</span>
-                                                            ) : <span style={{ color: 'var(--text-4,#9ca3af)' }}>—</span>}
+                                                                <span className="CM3-alloc-bill-overdue" style={{ background: '#FDE0CB', border: '1px solid #FDE0CB', color: '#9A3412' }}>Due in {daysUntilDue}d</span>
+                                                            ) : <span style={{ color: 'var(--text-4,#6B5D48)' }}>—</span>}
                                                         </td>
                                                         <td className="CM3-alloc-billtbl-bal-cell">
                                                             <div className="CM3-alloc-billtbl-bal">{fmt(e.bill_balance)}</div>
                                                             {e.credit_amount > e.bill_balance && (
-                                                                <div style={{ fontSize: 8, color: 'var(--text-4,#9ca3af)', marginTop: 2, fontWeight: 600 }}>of {fmt(e.credit_amount)} total</div>
+                                                                <div style={{ fontSize: 8, color: 'var(--text-4,#6B5D48)', marginTop: 2, fontWeight: 600 }}>of {fmt(e.credit_amount)} total</div>
                                                             )}
                                                         </td>
                                                     </tr>
@@ -3367,7 +3368,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                 const billNum = String(sortedEntries.indexOf(e) + 1).padStart(2, '0');
                                 const wasJustClosed = justClosed.has(e.id);
                                 return (
-                                    <div key={e.id} className="CM3-alloc-bill closed-bill" style={{ background: wasJustClosed ? '#F3E8FF' : undefined }}>
+                                    <div key={e.id} className="CM3-alloc-bill closed-bill" style={{ background: wasJustClosed ? '#FBC9A8' : undefined }}>
                                         <div className="CM3-alloc-info">
                                             <div className="CM3-alloc-bill-num">BILL NUM: {billNum} · {e.bill_number || `#${e.id}`}</div>
                                             <div className="CM3-alloc-bill-desc">{e.description || `Bill ${billNum}`}</div>
@@ -3384,8 +3385,8 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                 {/* ── FOOTER ── */}
                 <div className="CM3-alloc-footer">
                     {isDone ? (
-                        <button className="CM3-btn payment" style={{ background: 'linear-gradient(135deg,#2563EB,#3B82F6)', border: 'none' }} onClick={handleConfirm}>
-                            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                        <button className="CM3-btn payment" style={{ background: 'linear-gradient(135deg,#C2410C,#DB5B1F)', border: 'none' }} onClick={handleConfirm}>
+                            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
                             Save Payment &amp; Apply
                         </button>
                     ) : (
@@ -3394,16 +3395,16 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                 <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
                                 Auto-Split Across All Bills
                             </button>
-                            <button className="CM3-btn payment" style={{ background: selected ? 'linear-gradient(135deg,#2563EB,#3B82F6)' : 'rgba(29,78,216,0.35)', border: 'none', cursor: selected ? 'pointer' : 'default' }}
+                            <button className="CM3-btn payment" style={{ background: selected ? 'linear-gradient(135deg,#C2410C,#DB5B1F)' : 'rgba(154,52,18,0.35)', border: 'none', cursor: selected ? 'pointer' : 'default' }}
                                 onClick={handleApply} disabled={!selected}>
                                 {!selected
                                     ? <>
-                                        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+                                        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
                                         Select a Bill to Continue
                                     </>
                                     : wouldClose
                                         ? <>
-                                            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                                            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
                                             Close Bill &amp; Apply {fmt(applyAmount)}
                                         </>
                                         : <>Apply {fmt(applyAmount)} to Bill</>
@@ -3438,7 +3439,7 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                         <span className="CM3-alloc-close-ic"><Ic n="arrow" sz={11} /></span> Cancel
                     </button>
                     <div className="CM3-alloc-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
+                        <svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
                         Smart Redistribution Preview
                     </div>
                     <div className="CM3-alloc-sub">
@@ -3451,7 +3452,7 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                         </span>
                         <span className="CM3-alloc-chip amber">Equal share: {fmt(result.originalPerBill)} / bill</span>
                         {result.totalSurplus > 0 && (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 100, background: '#fce7f3', color: '#be185d', border: '1px solid #fbcfe8', fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: '0.06em' }}>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 100, background: '#FBC9A8', color: '#be185d', border: '1px solid #fbcfe8', fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: '0.06em' }}>
                                 ↺ {fmt(result.totalSurplus)} redistributed
                             </span>
                         )}
@@ -3459,7 +3460,7 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                 </div>
 
                 {/* Info banner */}
-                <div style={{ margin: '0 16px 4px', padding: '10px 14px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 8, fontSize: 10.5, color: '#92400e', lineHeight: 1.6 }}>
+                <div style={{ margin: '0 16px 4px', padding: '10px 14px', background: '#FDE0CB', border: '1px solid #FDE0CB', borderRadius: 8, fontSize: 10.5, color: '#9A3412', lineHeight: 1.6 }}>
                     <strong>{smallBills.map(r => r.bill.client_name || r.bill.description || `Bill #${r.bill.id}`).join(', ')}</strong>
                     {smallBills.length > 1 ? ' are' : ' is'} smaller than the equal share of <strong>{fmt(result.originalPerBill)}</strong>.
                     {result.totalSurplus > 0 && bigBills.length > 0 && (
@@ -3476,23 +3477,23 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                             {/* Status icon */}
                             <div style={{
                                 width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                                background: row.isClosed ? '#d1fae5' : '#F3E8FF',
-                                border: `1px solid ${row.isClosed ? '#6ee7b7' : '#DDD6FE'}`,
+                                background: row.isClosed ? '#d1fae5' : '#FBC9A8',
+                                border: `1px solid ${row.isClosed ? '#6ee7b7' : '#FBC9A8'}`,
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 fontSize: 11.5, fontWeight: 800,
-                                color: row.isClosed ? '#1E9C6A' : '#C47E0A',
+                                color: row.isClosed ? '#1E9C6A' : '#9A3412',
                             }}>
                                 {row.isClosed ? '✓' : String(i + 1).padStart(2, '0')}
                             </div>
                             {/* Bill info */}
                             <div className="CM3-alloc-info" style={{ flex: 1 }}>
-                                <div style={{ fontWeight: 800, fontSize: 11.5, color: 'var(--text-1,#0F172A)', marginBottom: 3 }}>
+                                <div style={{ fontWeight: 800, fontSize: 11.5, color: 'var(--text-1,#231C14)', marginBottom: 3 }}>
                                     {row.bill.client_name || row.bill.description || `Bill #${row.bill.id}`}
                                 </div>
-                                <div style={{ fontSize: 9.5, color: '#6b7280', display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                                <div style={{ fontSize: 9.5, color: '#524532', display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
                                     <span>Balance: {fmt(row.bill.bill_balance)}</span>
                                     {row.isClosed && row.bill.bill_balance < result.originalPerBill - 0.005 && (
-                                        <span style={{ color: '#C47E0A', fontWeight: 700 }}>
+                                        <span style={{ color: '#9A3412', fontWeight: 700 }}>
                                             → saved {fmt(result.originalPerBill - row.bill.bill_balance)} surplus
                                         </span>
                                     )}
@@ -3513,19 +3514,19 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                             </div>
                             {/* Amount */}
                             <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 84 }}>
-                                <div style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#9ca3af', marginBottom: 4 }}>Allocated</div>
+                                <div style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#6B5D48', marginBottom: 4 }}>Allocated</div>
                                 <div style={{
                                     fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 800, lineHeight: 1,
-                                    color: row.isClosed ? '#1E9C6A' : '#2563EB',
+                                    color: row.isClosed ? '#1E9C6A' : '#C2410C',
                                 }}>{fmt(row.allocated)}</div>
                             </div>
                         </div>
                     ))}
 
                     {/* Total */}
-                    <div style={{ margin: '10px 0 0', padding: '10px 16px', background: '#f3f4f6', borderRadius: 8, border: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#6b7280' }}>TOTAL ALLOCATED</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 17.5, fontWeight: 800, color: '#0F172A' }}>{fmt(totalAmount)}</span>
+                    <div style={{ margin: '10px 0 0', padding: '10px 16px', background: '#F0ECE6', borderRadius: 8, border: '1px solid #E3DDD3', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#524532' }}>TOTAL ALLOCATED</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 17.5, fontWeight: 800, color: '#231C14' }}>{fmt(totalAmount)}</span>
                     </div>
                 </div>
 
@@ -3533,7 +3534,7 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                 <div className="CM3-alloc-footer">
                     <button className="CM3-btn ghost" onClick={onCancel}>Cancel — Go Back</button>
                     <button className="CM3-btn payment"
-                        style={{ background: 'linear-gradient(135deg,#2563EB,#3B82F6)', border: 'none' }}
+                        style={{ background: 'linear-gradient(135deg,#C2410C,#DB5B1F)', border: 'none' }}
                         onClick={() => onConfirm(result.plan)}>
                         ✓ Confirm &amp; Save Smart Split
                     </button>
@@ -3782,11 +3783,11 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                 <div className="CM3-mhdr payment-top">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div className="CM3-mhdr-ic">
-                            <Ic n="cash" sz={17} c="#2563EB" />
+                            <Ic n="cash" sz={17} c="#C2410C" />
                         </div>
                         <div>
                             <div className="CM3-mtitle">{isEdit ? 'Edit Payment' : 'Record Payment'}</div>
-                            <div className="CM3-msub" style={{ color: '#2563EB', fontSize: 11.5, fontWeight: 800 }}>
+                            <div className="CM3-msub" style={{ color: '#C2410C', fontSize: 11.5, fontWeight: 800 }}>
                                 {vendor.party_name} · {vendor.category_name}{vendor.sub_category_name ? ` › ${vendor.sub_category_name}` : ''}
                                 {isEdit ? ` · Editing payment #${editPayment?.id}` : ` · Outstanding: ${fmt(vendor.balance)}`}
                             </div>
@@ -3800,17 +3801,17 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                     {isEdit && editPayment && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 18px', alignItems: 'center', padding: '10px 14px', background: PAYMENT_COLOR.light, border: `1px solid ${PAYMENT_COLOR.border}`, borderRadius: 10, marginBottom: 16, fontSize: 9.5 }}>
                             <span style={{ fontWeight: 800, color: PAYMENT_COLOR.primary, textTransform: 'uppercase', fontSize: 8, letterSpacing: '0.06em' }}>Editing Payment #{editPayment.id}</span>
-                            <span style={{ color: 'var(--text-3,#6b7280)' }}>Original Amount: <strong style={{ color: 'var(--text-1,#0F172A)' }}>{fmt(editPayment.amount_paid)}</strong></span>
+                            <span style={{ color: 'var(--text-3,#524532)' }}>Original Amount: <strong style={{ color: 'var(--text-1,#231C14)' }}>{fmt(editPayment.amount_paid)}</strong></span>
                             {editPayment.client_name && (
-                                <span style={{ color: 'var(--text-3,#6b7280)' }}>Client: <strong style={{ color: 'var(--text-1,#0F172A)' }}>{editPayment.client_name}</strong></span>
+                                <span style={{ color: 'var(--text-3,#524532)' }}>Client: <strong style={{ color: 'var(--text-1,#231C14)' }}>{editPayment.client_name}</strong></span>
                             )}
                             {(editPayment.bill_number || editPayment.bill_description) && (
-                                <span style={{ color: 'var(--text-3,#6b7280)' }}>Linked Bill: <strong style={{ color: 'var(--text-1,#0F172A)' }}>{editPayment.bill_number ? `#${editPayment.bill_number}` : editPayment.bill_description}</strong></span>
+                                <span style={{ color: 'var(--text-3,#524532)' }}>Linked Bill: <strong style={{ color: 'var(--text-1,#231C14)' }}>{editPayment.bill_number ? `#${editPayment.bill_number}` : editPayment.bill_description}</strong></span>
                             )}
-                            <span style={{ color: 'var(--text-3,#6b7280)' }}>
+                            <span style={{ color: 'var(--text-3,#524532)' }}>
                                 Cash Book: {editPayment.daybook_entry_id
                                     ? <strong style={{ color: PAYMENT_COLOR.primary }}>Synced (DB #{editPayment.daybook_entry_id})</strong>
-                                    : <strong style={{ color: 'var(--text-4,#9ca3af)' }}>Not synced</strong>}
+                                    : <strong style={{ color: 'var(--text-4,#6B5D48)' }}>Not synced</strong>}
                             </span>
                         </div>
                     )}
@@ -3917,11 +3918,11 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                                                 {previewClientName ? (
                                                     <>
                                                         <Ic n="client" sz={10} c={PAYMENT_COLOR.primary} />
-                                                        <span style={{ fontSize: 8.5, fontWeight: 800, color: '#1a1a1a' }}>{previewClientName}</span>
+                                                        <span style={{ fontSize: 8.5, fontWeight: 800, color: '#231C14' }}>{previewClientName}</span>
                                                         <span style={{ fontSize: 7.5, color: PAYMENT_COLOR.primary, marginLeft: 'auto', fontWeight: 700 }}>Auto-filled from bill</span>
                                                     </>
                                                 ) : (
-                                                    <span style={{ fontSize: 8, color: '#aaa', fontWeight: 700, fontStyle: 'normal' }}>No client assigned to open bills</span>
+                                                    <span style={{ fontSize: 8, color: '#8C7C63', fontWeight: 700, fontStyle: 'normal' }}>No client assigned to open bills</span>
                                                 )}
                                             </div>
                                         </div>
@@ -3946,8 +3947,8 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         {saving
                             ? <><span className="CM3-spin" /> {isEdit ? 'Updating…' : (form.sync_to_daybook ? 'Saving & Syncing…' : 'Saving…')}</>
                             : isEdit
-                                ? <><Ic n="edit" sz={12} c="#fff" /> Update Payment</>
-                                : <><Ic n="check" sz={12} c="#fff" /> Add Payment</>}
+                                ? <><Ic n="edit" sz={12} c="#faf9f7" /> Update Payment</>
+                                : <><Ic n="check" sz={12} c="#faf9f7" /> Add Payment</>}
                     </button>
                 </div>
                 {/* Cancel End */}
@@ -4092,7 +4093,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                     <span className="CM3-dot" style={{ background: sc.color }} />{sc.label}
                                     {v.days_overdue > 0 && ` · ${v.days_overdue}d`}
                                 </span>
-                                <span style={{ fontSize: 9, fontWeight: 700, color: '#374151' }}>{v.entry_count} bills · {v.payment_count} payments</span>
+                                <span style={{ fontSize: 9, fontWeight: 700, color: '#3A3024' }}>{v.entry_count} bills · {v.payment_count} payments</span>
                             </div>
                         </div>
                     </div>
@@ -4103,13 +4104,13 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
 
                         {/* Add Bill Start */}
                         <button className="CM3-act credit" onClick={() => setShowCredit(true)}>
-                            <Ic n="receipt" sz={13} c="#fff" /> Add Bill
+                            <Ic n="receipt" sz={13} c="#faf9f7" /> Add Bill
                         </button>
                         {/* Add Bill End */}
 
                         {/* Repayment Start */}
                         <button className="CM3-act payment" disabled={v.balance <= 0} onClick={() => setShowPayment(true)}>
-                            <Ic n="cash" sz={13} c="#fff" /> Repayment
+                            <Ic n="cash" sz={13} c="#faf9f7" /> Repayment
                         </button>
                         {/* Repayment End */}
 
@@ -4126,15 +4127,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                 {/* Vendor Header End */}
 
                 {/* Balance Strip Start */}
-                <div style={{ borderBottom: '1.5px solid var(--border,#E9EEF5)' }}>
-                    {clientGroups.length > 0 && (
-                        <div className="CM3-client-cell" style={{ cursor: 'pointer' }} onClick={() => setTab('clients')}>
-                            <Ic n="client" sz={12} c={PAYMENT_COLOR.primary} />
-                            <span className="CM3-client-cell-lbl">{clientGroups.length} Client{clientGroups.length !== 1 ? 's' : ''}</span>
-                            <span className="CM3-client-cell-name">{clientGroups.map(g => g.name).join(', ')}</span>
-                        </div>
-                    )}
-
+                <div style={{ borderBottom: '1.5px solid var(--border,#E8E2D8)' }}>
                     <div className="CM3-bal-strip">
                         {/* Total Credit Start */}
                         <div className="CM3-bal-cell">
@@ -4152,7 +4145,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
 
                         {/* Balance Due Start */}
                         <div className="CM3-bal-cell">
-                            <div className="CM3-bal-lbl"><Ic n="scale" sz={9} c="#C47E0A" />Balance Due</div>
+                            <div className="CM3-bal-lbl"><Ic n="scale" sz={9} c="#9A3412" />Balance Due</div>
                             <div className="CM3-bal-val balance-color">{fmt(v.balance)}</div>
                         </div>
                         {/* Balance Due End */}
@@ -4165,7 +4158,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                     <div className="CM3-prog">
                         <div className="CM3-prog-bar"><div className="CM3-prog-fill" style={{ width: `${paidPct}%` }} /></div>
                         <span className="CM3-prog-txt">{Math.round(paidPct)}% repaid</span>
-                        <span style={{ fontSize: 9, color: '#4b5563', fontWeight: 800, marginLeft: 8 }}>Last: {fmtDate(v.last_transaction_date)}</span>
+                        <span style={{ fontSize: 9, color: '#524532', fontWeight: 800, marginLeft: 8 }}>Last: {fmtDate(v.last_transaction_date)}</span>
                     </div>
                 )}
                 {/* Progress End */}
@@ -4206,19 +4199,16 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                 <div className="CM3-billtbl-wrap">
                                     <table className="CM3-billtbl">
                                         <colgroup>
-                                            <col className="c-sno" /><col className="c-inv" /><col className="c-client" />
-                                            <col className="c-date" /><col className="c-due" /><col className="c-priority" />
+                                            <col className="c-sno" /><col className="c-client" />
+                                            <col className="c-date" />
                                             <col className="c-credit" /><col className="c-paid" /><col className="c-balance" />
                                             <col className="c-status" /><col className="c-acts" />
                                         </colgroup>
                                         <thead>
                                             <tr>
                                                 <th>S.no</th>
-                                                <th>Invoice No</th>
                                                 <th>Client</th>
                                                 <th>Date</th>
-                                                <th>Due</th>
-                                                <th>Priority</th>
                                                 <th style={{ textAlign: 'right' }}>Credit Amt</th>
                                                 <th style={{ textAlign: 'right' }}>Paid</th>
                                                 <th style={{ textAlign: 'right' }}>Balance</th>
@@ -4242,25 +4232,10 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                         className={e.is_paid ? 'row-closed' : ''}
                                                         style={{ animationDelay: `${eIdx * 25}ms` }}>
                                                         <td><span className="CM3-billtbl-sno">{billNum}</span></td>
-                                                        <td><span className="CM3-billtbl-ref">{e.bill_number || `ID ${e.id}`}</span>{e.description && <div style={{ fontSize: 8.5, color: '#4b5563', fontWeight: 800, marginTop: 3 }}>{e.description}</div>}</td>
                                                         <td>{e.client_name ? (
                                                             <span className="CM3-billtbl-client">{e.client_name}</span>
-                                                        ) : <span style={{ color: 'var(--text-4,#9ca3af)' }}>—</span>}</td>
+                                                        ) : <span style={{ color: 'var(--text-4,#6B5D48)' }}>—</span>}</td>
                                                         <td>{fmtDate(e.credit_date)}</td>
-                                                        <td>
-                                                            {e.is_paid ? (
-                                                                <span style={{ color: 'var(--text-4,#9ca3af)' }}>—</span>
-                                                            ) : e.due_date && daysUntilDue !== null ? (
-                                                                <span style={{ color: isOverdue ? '#D93B55' : isNearDue ? '#C47E0A' : 'var(--text-3,#6b7280)', fontWeight: 800 }}>
-                                                                    {isOverdue ? `${Math.abs(daysUntilDue)}d overdue` : daysUntilDue === 0 ? 'Today' : `${daysUntilDue}d`}
-                                                                </span>
-                                                            ) : <span style={{ color: 'var(--text-4,#9ca3af)' }}>—</span>}
-                                                        </td>
-                                                        <td>
-                                                            {!e.is_paid && (
-                                                                <span className={`CM3-billtbl-priority ${e.priority}`}>{e.priority}</span>
-                                                            )}
-                                                        </td>
                                                         <td className="CM3-billtbl-amt" style={{ textAlign: 'right' }}>{fmt(e.credit_amount)}</td>
                                                         <td className="CM3-billtbl-amt paid" style={{ textAlign: 'right' }}>{fmt(e.amount_paid)}</td>
                                                         <td className="CM3-billtbl-amt due" style={{ textAlign: 'right' }}>{e.is_paid ? '—' : fmt(e.bill_balance)}</td>
@@ -4337,7 +4312,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                             <div className="CM3-pmc-num-lbl">PAY</div>
                                             <div className="CM3-pmc-num">{pmNum}</div>
                                             <div className="CM3-pmc-icon-ring">
-                                                <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth={2.5} strokeLinecap="round">
+                                                <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#A6491D" strokeWidth={2.5} strokeLinecap="round">
                                                     <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
                                                 </svg>
                                             </div>
@@ -4432,7 +4407,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                     {tab === 'clients' && (
                         clientGroups.length === 0 ? (
                             <div className="CM3-empty">
-                                <div className="CM3-empty-ic" style={{ background: 'rgba(13,148,136,0.08)', border: '1.5px solid rgba(13,148,136,0.2)' }}><Ic n="client" sz={22} c={PAYMENT_COLOR.primary} /></div>
+                                <div className="CM3-empty-ic" style={{ background: 'rgba(166,73,29,0.08)', border: '1.5px solid rgba(166,73,29,0.2)' }}><Ic n="client" sz={22} c={PAYMENT_COLOR.primary} /></div>
                                 <div className="CM3-empty-title">No Clients Yet</div>
                                 <div className="CM3-empty-sub">Client names appear here once bills are added</div>
                             </div>
@@ -4444,48 +4419,48 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                     const cgPct = cg.totalBilled > 0 ? Math.min(100, (cg.totalPaid / cg.totalBilled) * 100) : 0;
                                     const cgPmts = payments.filter(p => (p.client_name || '(No Client)') === cg.name);
                                     return (
-                                        <div key={ci} style={{ border: `1.5px solid var(--border,#E9EEF5)`, borderRadius: 12, overflow: 'hidden', background: 'var(--bg,#fff)', animationDelay: `${ci * 40}ms` }}>
+                                        <div key={ci} style={{ border: `1.5px solid var(--border,#E8E2D8)`, borderRadius: 12, overflow: 'hidden', background: 'var(--bg,#faf9f7)', animationDelay: `${ci * 40}ms` }}>
 
                                             {/* Client header Row Start */}
                                             <div onClick={() => setExpandedClient(isOpen ? null : cg.name)}
-                                                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', background: isOpen ? 'rgba(13,148,136,0.04)' : undefined }}>
+                                                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', cursor: 'pointer', background: isOpen ? 'rgba(166,73,29,0.04)' : undefined }}>
                                                 <div style={{ width: 34, height: 34, borderRadius: 8, background: cgColor.bg, border: `1.5px solid ${cgColor.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 9.5, color: cgColor.color, flexShrink: 0 }}>
                                                     {cg.name.slice(0, 2).toUpperCase()}
                                                 </div>
 
                                                 {/* Payment Start */}
                                                 <div style={{ flex: 1, minWidth: 0 }}>
-                                                    <div style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--text-1,#0F172A)' }}>{cg.name}</div>
-                                                    <div style={{ fontSize: 9, color: 'var(--text-4,#9ca3af)' }}>{cg.entries.length} bill{cg.entries.length !== 1 ? 's' : ''} · {cgPmts.length} payment{cgPmts.length !== 1 ? 's' : ''}</div>
+                                                    <div style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--text-1,#231C14)' }}>{cg.name}</div>
+                                                    <div style={{ fontSize: 9, color: 'var(--text-4,#6B5D48)' }}>{cg.entries.length} bill{cg.entries.length !== 1 ? 's' : ''} · {cgPmts.length} payment{cgPmts.length !== 1 ? 's' : ''}</div>
                                                 </div>
                                                 {/* Payment End */}
 
                                                 {/* Balance Start */}
                                                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                                                     <div style={{ fontSize: 10.5, fontWeight: 800, color: cg.balance > 0 ? CREDIT_COLOR.mid : '#1E9C6A' }}>{fmt(cg.balance)}</div>
-                                                    <div style={{ fontSize: 9, color: 'var(--text-4,#9ca3af)' }}>balance</div>
+                                                    <div style={{ fontSize: 9, color: 'var(--text-4,#6B5D48)' }}>balance</div>
                                                 </div>
                                                 {/* Balance End */}
 
-                                                <Ic n={isOpen ? 'up' : 'down'} sz={12} c="var(--text-4,#9ca3af)" />
+                                                <Ic n={isOpen ? 'up' : 'down'} sz={12} c="var(--text-4,#6B5D48)" />
                                             </div>
                                             {/* Client Header Row End */}
 
                                             {/* Mini Progress Bar Start */}
-                                            <div style={{ height: 3, background: 'var(--border,#E9EEF5)', margin: '0 14px' }}>
+                                            <div style={{ height: 3, background: 'var(--border,#E8E2D8)', margin: '0 14px' }}>
                                                 <div style={{ height: '100%', width: `${cgPct}%`, background: PAYMENT_COLOR.primary, borderRadius: 2, transition: 'width 0.4s' }} />
                                             </div>
                                             {/* Mini Progress Bar End */}
 
                                             {/* Totals Row Start */}
-                                            <div style={{ display: 'flex', gap: 0, borderBottom: isOpen ? '1px solid var(--border,#E9EEF5)' : undefined }}>
+                                            <div style={{ display: 'flex', gap: 0, borderBottom: isOpen ? '1px solid var(--border,#E8E2D8)' : undefined }}>
                                                 {[
                                                     { label: 'Billed', val: cg.totalBilled, color: CREDIT_COLOR.mid },
                                                     { label: 'Repaid', val: cg.totalPaid, color: PAYMENT_COLOR.primary },
-                                                    { label: 'Due', val: cg.balance, color: cg.balance > 0 ? '#C47E0A' : '#1E9C6A' },
+                                                    { label: 'Due', val: cg.balance, color: cg.balance > 0 ? '#9A3412' : '#1E9C6A' },
                                                 ].map((cell, ci2) => (
-                                                    <div key={ci2} style={{ flex: 1, padding: '7px 14px', borderRight: ci2 < 2 ? '1px solid var(--border,#E9EEF5)' : undefined }}>
-                                                        <div style={{ fontSize: 8, color: 'var(--text-4,#9ca3af)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{cell.label}</div>
+                                                    <div key={ci2} style={{ flex: 1, padding: '7px 14px', borderRight: ci2 < 2 ? '1px solid var(--border,#E8E2D8)' : undefined }}>
+                                                        <div style={{ fontSize: 8, color: 'var(--text-4,#6B5D48)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{cell.label}</div>
                                                         <div style={{ fontSize: 10.5, fontWeight: 800, color: cell.color }}>{fmt(cell.val)}</div>
                                                     </div>
                                                 ))}
@@ -4502,7 +4477,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                         amount: e.credit_amount,
                                                         statusNode: e.is_paid
                                                             ? <span style={{ color: '#1E9C6A', fontWeight: 800 }}>✓ Paid</span>
-                                                            : <span style={{ color: '#C47E0A', fontWeight: 800 }}>{fmt(e.bill_balance)} due</span>,
+                                                            : <span style={{ color: '#9A3412', fontWeight: 800 }}>{fmt(e.bill_balance)} due</span>,
                                                     })),
                                                     ...cgPmts.map(p => ({
                                                         id: `pmt-${p.id}`, date: p.payment_date, type: 'payment' as const,
@@ -4510,17 +4485,17 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                         amount: p.amount_paid,
                                                         statusNode: p.daybook_entry_id
                                                             ? <span style={{ color: '#1E9C6A', fontWeight: 800, fontSize: 8 }}>✓ Cash Book</span>
-                                                            : <span style={{ color: 'var(--text-4,#9ca3af)', fontSize: 8 }}>—</span>,
+                                                            : <span style={{ color: 'var(--text-4,#6B5D48)', fontSize: 8 }}>—</span>,
                                                     })),
                                                 ].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-                                                const th: React.CSSProperties = { textAlign: 'left', padding: '6px 10px', fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-4,#9ca3af)', borderBottom: '1.5px solid var(--border,#E9EEF5)', whiteSpace: 'nowrap' };
-                                                const td: React.CSSProperties = { padding: '7px 10px', fontSize: 9.5, color: 'var(--text-2,#4b5563)', borderBottom: '1px solid var(--border,#E9EEF5)', whiteSpace: 'nowrap' };
+                                                const th: React.CSSProperties = { textAlign: 'left', padding: '6px 10px', fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-4,#6B5D48)', borderBottom: '1.5px solid var(--border,#E8E2D8)', whiteSpace: 'nowrap' };
+                                                const td: React.CSSProperties = { padding: '7px 10px', fontSize: 9.5, color: 'var(--text-2,#524532)', borderBottom: '1px solid var(--border,#E8E2D8)', whiteSpace: 'nowrap' };
                                                 return (
                                                     <div style={{ padding: '8px 14px 12px' }}>
                                                         {rows.length === 0 ? (
-                                                            <div style={{ fontSize: 9.5, color: 'var(--text-4,#9ca3af)', padding: '10px 0' }}>No bills or repayments for this client yet.</div>
+                                                            <div style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', padding: '10px 0' }}>No bills or repayments for this client yet.</div>
                                                         ) : (
-                                                            <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid var(--border,#E9EEF5)' }}>
+                                                            <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid var(--border,#E8E2D8)' }}>
                                                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                                                     <thead>
                                                                         <tr>
@@ -4536,15 +4511,15 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                                     <tbody>
                                                                         {rows.map((r, ri) => (
                                                                             <tr key={r.id}>
-                                                                                <td style={{ ...td, color: 'var(--text-4,#9ca3af)' }}>{ri + 1}</td>
+                                                                                <td style={{ ...td, color: 'var(--text-4,#6B5D48)' }}>{ri + 1}</td>
                                                                                 <td style={td}>{fmtDate(r.date)}</td>
                                                                                 <td style={td}>
-                                                                                    <span style={{ fontSize: 8, fontWeight: 800, padding: '2px 7px', borderRadius: 20, background: r.type === 'bill' ? 'rgba(29,78,216,0.08)' : PAYMENT_COLOR.light, color: r.type === 'bill' ? CREDIT_COLOR.mid : PAYMENT_COLOR.primary, border: `1px solid ${r.type === 'bill' ? 'rgba(29,78,216,0.2)' : PAYMENT_COLOR.border}` }}>
+                                                                                    <span style={{ fontSize: 8, fontWeight: 800, padding: '2px 7px', borderRadius: 20, background: r.type === 'bill' ? 'rgba(154,52,18,0.08)' : PAYMENT_COLOR.light, color: r.type === 'bill' ? CREDIT_COLOR.mid : PAYMENT_COLOR.primary, border: `1px solid ${r.type === 'bill' ? 'rgba(154,52,18,0.2)' : PAYMENT_COLOR.border}` }}>
                                                                                         {r.type === 'bill' ? 'Bill' : 'Payment'}
                                                                                     </span>
                                                                                 </td>
                                                                                 <td style={{ ...td, maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.ref}</td>
-                                                                                <td style={{ ...td, fontWeight: 700, color: 'var(--text-1,#0F172A)' }}>{cg.name}</td>
+                                                                                <td style={{ ...td, fontWeight: 700, color: 'var(--text-1,#231C14)' }}>{cg.name}</td>
                                                                                 <td style={{ ...td, textAlign: 'right', fontWeight: 800, color: r.type === 'bill' ? CREDIT_COLOR.mid : PAYMENT_COLOR.primary }}>
                                                                                     {r.type === 'bill' ? '+' : '−'}{fmt(r.amount)}
                                                                                 </td>
@@ -4554,9 +4529,9 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                                     </tbody>
                                                                     <tfoot>
                                                                         <tr>
-                                                                            <td colSpan={5} style={{ ...td, fontWeight: 800, color: 'var(--text-1,#0F172A)', borderBottom: 'none' }}>Total</td>
+                                                                            <td colSpan={5} style={{ ...td, fontWeight: 800, color: 'var(--text-1,#231C14)', borderBottom: 'none' }}>Total</td>
                                                                             <td style={{ ...td, textAlign: 'right', fontWeight: 800, color: PAYMENT_COLOR.primary, borderBottom: 'none' }}>{fmt(cg.totalPaid)}</td>
-                                                                            <td style={{ ...td, textAlign: 'right', fontWeight: 800, color: cg.balance > 0 ? '#C47E0A' : '#1E9C6A', borderBottom: 'none' }}>{fmt(cg.balance)} due</td>
+                                                                            <td style={{ ...td, textAlign: 'right', fontWeight: 800, color: cg.balance > 0 ? '#9A3412' : '#1E9C6A', borderBottom: 'none' }}>{fmt(cg.balance)} due</td>
                                                                         </tr>
                                                                     </tfoot>
                                                                 </table>
@@ -4577,7 +4552,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                     {tab === 'timeline' && (
                         timeline.length === 0 ? (
                             <div className="CM3-empty">
-                                <div className="CM3-empty-ic" style={{ background: '#fffbeb', border: '1.5px solid #fde68a' }}><Ic n="list" sz={22} c="#C47E0A" /></div>
+                                <div className="CM3-empty-ic" style={{ background: '#FDE0CB', border: '1.5px solid #FDE0CB' }}><Ic n="list" sz={22} c="#9A3412" /></div>
                                 <div className="CM3-empty-title">No Activity</div>
                                 <div className="CM3-empty-sub">Bills & payments appear here</div>
                             </div>
@@ -4744,7 +4719,7 @@ export default function CreditManagement() {
         : null;
 
     const [vgPage, setVgPage] = useState(1);
-    const [vgPerPage, setVgPerPage] = useState(10);
+    const [vgPerPage, setVgPerPage] = useState(5);
     const vgTotalPages = Math.max(1, Math.ceil((activeGroup?.vendors.length || 0) / vgPerPage));
     const vgSafePage = Math.min(vgPage, vgTotalPages);
     const pagedGroupVendors = activeGroup ? activeGroup.vendors.slice((vgSafePage - 1) * vgPerPage, vgSafePage * vgPerPage) : [];
@@ -4809,9 +4784,9 @@ export default function CreditManagement() {
 
                 {/* Total Paid Start  */}
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#0d9488,#14b8a6)' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#A6491D,#A6491D)' }} />
                     <div className="ERP-stat-label">Total Repaid</div>
-                    <div className="ERP-stat-val" style={{ color: '#0d9488', fontSize: 16, fontWeight: 800 }}>
+                    <div className="ERP-stat-val" style={{ color: '#A6491D', fontSize: 16, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
                         <AnimCount value={Math.round(sum?.total_paid ?? 0)} />
                     </div>
@@ -4820,9 +4795,9 @@ export default function CreditManagement() {
 
                 {/* Total Outstanding Start */}
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember,#2563EB),var(--ember-mid,#3B82F6))' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember,#C2410C),var(--ember-mid,#DB5B1F))' }} />
                     <div className="ERP-stat-label">Total Outstanding</div>
-                    <div className="ERP-stat-val" style={{ color: 'var(--ember,#2563EB)', fontSize: 16, fontWeight: 800 }}>
+                    <div className="ERP-stat-val" style={{ color: 'var(--ember,#C2410C)', fontSize: 16, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
                         <AnimCount value={Math.round(sum?.balance ?? 0)} />
                     </div>
@@ -4911,7 +4886,7 @@ export default function CreditManagement() {
                                         style={{ animationDelay: `${gIdx * 35}ms` }}
                                         onClick={() => { setSelectedCategory({ id: g.id, name: g.name }); setSelectedVendor(null); }}>
                                         <div className="CM3-vcard-accent" />
-                                        <div className="CM3-catcard-icon"><Ic n="layers" sz={16} c="var(--ember,#2563EB)" /></div>
+                                        <div className="CM3-catcard-icon"><Ic n="layers" sz={16} c="var(--ember,#C2410C)" /></div>
                                         <div className="CM3-catcard-info">
                                             <div className="CM3-catcard-name">{g.name}</div>
                                             <div className="CM3-catcard-sub">
@@ -4996,6 +4971,7 @@ export default function CreditManagement() {
                                         total={activeGroup!.vendors.length}
                                         perPage={vgPerPage}
                                         onPerPageChange={n => { setVgPerPage(n); setVgPage(1); }}
+                                        perPageOptions={[5, 10, 15, 25]}
                                         itemLabel="ledgers"
                                     />
                                 )}
@@ -5021,7 +4997,7 @@ export default function CreditManagement() {
                     ) : selectedCategory && activeGroup && categorySummary ? (
                         <div className="CM3-catsum">
                             <div className="CM3-catsum-hdr">
-                                <div className="CM3-catsum-icon"><Ic n="layers" sz={20} c="var(--ember,#2563EB)" /></div>
+                                <div className="CM3-catsum-icon"><Ic n="layers" sz={20} c="var(--ember,#C2410C)" /></div>
                                 <div style={{ flex: 1 }}>
                                     <div className="CM3-catsum-eyebrow">Account Head Overview</div>
                                     <div className="CM3-catsum-title">{selectedCategory.name}</div>
@@ -5045,7 +5021,7 @@ export default function CreditManagement() {
                                     <div className="CM3-catsum-stat-val payment-color">{fmt(categorySummary.repaid)}</div>
                                 </div>
                                 <div className="CM3-catsum-stat">
-                                    <div className="CM3-catsum-stat-lbl"><Ic n="scale" sz={9} c="#C47E0A" />Outstanding</div>
+                                    <div className="CM3-catsum-stat-lbl"><Ic n="scale" sz={9} c="#9A3412" />Outstanding</div>
                                     <div className="CM3-catsum-stat-val balance-color">{fmt(categorySummary.outstanding)}</div>
                                 </div>
                             </div>
@@ -5087,12 +5063,12 @@ export default function CreditManagement() {
                     ) : (
                         <div className="CM3-welcome">
                             <div className="CM3-welcome-icon">
-                                <Ic n="wallet" sz={38} c="#C47E0A" />
+                                <Ic n="wallet" sz={38} c="#9A3412" />
                             </div>
                             <div className="CM3-welcome-title">Accounts Payable</div>
                             <div className="CM3-welcome-sub">Select a vendor from the sidebar to view their payable ledger, or add a new vendor to get started.</div>
                             <button className="CM3-add-btn" style={{ marginTop: 8 }} onClick={() => { setNewLedgerCatId(null); setShowNew(true); }}>
-                                <Ic n="plus" sz={14} c="#fff" /> Open Ledger Account
+                                <Ic n="plus" sz={14} c="#faf9f7" /> Open Ledger Account
                             </button>
                         </div>
                     )}

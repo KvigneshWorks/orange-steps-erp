@@ -41,9 +41,9 @@ const CIVIL_TRADES = [
 ];
 
 const PAY_TYPES: { id: PayType; label: string; hint: string; path: string; color: string; bg: string; bd: string }[] = [
-    { id: 'daily', label: 'Daily', hint: 'Per Shift', path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', color: '#2563EB', bg: 'rgba(37,99,235,0.10)', bd: 'rgba(37,99,235,0.28)' },
-    { id: 'weekly', label: 'Weekly', hint: '7-Day Cycle', path: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', color: '#C47E0A', bg: 'rgba(196,126,10,0.10)', bd: 'rgba(196,126,10,0.28)' },
-    { id: 'monthly', label: 'Monthly', hint: 'Fixed Salary', path: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', color: '#60A5FA', bg: 'rgba(37,99,235,0.10)', bd: 'rgba(37,99,235,0.28)' },
+    { id: 'daily', label: 'Daily', hint: 'Per Shift', path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', color: '#C2410C', bg: 'rgba(37,99,235,0.10)', bd: 'rgba(37,99,235,0.28)' },
+    { id: 'weekly', label: 'Weekly', hint: '7-Day Cycle', path: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', color: '#9A3412', bg: 'rgba(196,126,10,0.10)', bd: 'rgba(196,126,10,0.28)' },
+    { id: 'monthly', label: 'Monthly', hint: 'Fixed Salary', path: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', color: '#F0834D', bg: 'rgba(37,99,235,0.10)', bd: 'rgba(37,99,235,0.28)' },
 ];
 
 const BLANK = () => ({
@@ -303,15 +303,15 @@ const CSS = `
 
 /* HERO */
 .WR-hero{border-radius:var(--r-xl);overflow:hidden;margin-bottom:20px;box-shadow:0 4px 24px rgba(37,99,235,0.18);animation:wr-in .3s ease both;}
-.WR-hero-top{background:linear-gradient(135deg,#1D4ED8 0%,#c47e0a 45%,#60A5FA 100%);padding:22px 26px 20px;position:relative;overflow:hidden;}
+.WR-hero-top{background:linear-gradient(135deg,#9A3412 0%,#9A3412 45%,#F0834D 100%);padding:22px 26px 20px;position:relative;overflow:hidden;}
 .WR-hero-top::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);}
 .WR-hero-top::after{content:'';position:absolute;bottom:-30px;right:80px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.04);}
 .WR-hero-row{display:flex;align-items:center;gap:16px;position:relative;}
 .WR-hero-icon{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.WR-hero-title{font-family:var(--font-display);font-size: 24.5px;font-style:italic;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.WR-hero-title{font-family:var(--font-display);font-size: 24.5px;font-style:italic;color:#faf9f7;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.2);}
 .WR-hero-sub{font-family:var(--font-mono);font-size: 8px;color:rgba(255,255,255,0.65);letter-spacing:2.5px;text-transform:uppercase;margin-top:5px;}
 .WR-hero-chips{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
-.WR-hero-chip{padding:6px 14px;border-radius:100px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.28);font-family:var(--font-mono);font-size: 8px;font-weight: 800;color:#fff;letter-spacing:1px;white-space:nowrap;}
+.WR-hero-chip{padding:6px 14px;border-radius:100px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.28);font-family:var(--font-mono);font-size: 8px;font-weight: 800;color:#faf9f7;letter-spacing:1px;white-space:nowrap;}
 .WR-hero-chip.accent{background:rgba(255,255,255,0.28);border-color:rgba(255,255,255,0.45);}
 
 /* TABS — flat, bordered segmented control (same clean language as the
@@ -322,9 +322,9 @@ const CSS = `
 .WR-tab:last-child{border-right:none;}
 .WR-tab:hover{color:var(--ember);background:var(--ember-ghost);transform:translateY(-1px);}
 .WR-tab:active{transform:translateY(0) scale(.96);}
-.WR-tab.active{color:#fff;background:var(--ember);}
+.WR-tab.active{color:#faf9f7;background:var(--ember);}
 .WR-tab-badge{padding:2px 8px;border-radius:100px;font-size: 8px;font-weight: 800;background:var(--ember-ghost);color:var(--ember);border:1px solid var(--ember-border);}
-.WR-tab.active .WR-tab-badge{background:rgba(255,255,255,.25);color:#fff;border-color:rgba(255,255,255,.4);}
+.WR-tab.active .WR-tab-badge{background:rgba(255,255,255,.25);color:#faf9f7;border-color:rgba(255,255,255,.4);}
 
 /* STATS */
 .WR-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;animation:wr-in .3s .08s ease both;}
@@ -333,7 +333,7 @@ const CSS = `
 .WR-stat:hover{box-shadow:0 6px 28px rgba(0,0,0,.10);transform:translateY(-2px);}
 .WR-stat::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .WR-stat.s-total::after{background:linear-gradient(90deg,var(--ember),rgba(37,99,235,0));}
-.WR-stat.s-active::after{background:linear-gradient(90deg,#2563EB,rgba(37,99,235,0));}
+.WR-stat.s-active::after{background:linear-gradient(90deg,#C2410C,rgba(37,99,235,0));}
 .WR-stat.s-inactive::after{background:linear-gradient(90deg,var(--text-4),rgba(100,116,139,0));}
 .WR-stat.s-trades::after{background:linear-gradient(90deg,var(--info),rgba(50,120,220,0));}
 .WR-stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -344,12 +344,12 @@ const CSS = `
 .WR-stat-lbl{font-family:var(--font-mono);font-size: 7.5px;font-weight: 800;letter-spacing:2px;text-transform:uppercase;color:var(--text-4);margin-bottom:4px;}
 .WR-stat-val{font-family:var(--font-mono);font-size: 19.5px;font-weight: 900;color:var(--text-1);line-height:1;}
 .WR-stat.s-total .WR-stat-val{color:var(--ember);}
-.WR-stat.s-active .WR-stat-val{color:#2563EB;}
+.WR-stat.s-active .WR-stat-val{color:#C2410C;}
 .WR-stat.s-trades .WR-stat-val{color:var(--info);}
 
 /* FORM CARD */
 .WR-form-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-card);overflow:visible;animation:wr-in .3s .1s ease both;}
-.WR-form-topbar{height:4px;background:linear-gradient(90deg,#60A5FA,#3B82F6,#60A5FA);border-radius:var(--r-xl) var(--r-xl) 0 0;}
+.WR-form-topbar{height:4px;background:linear-gradient(90deg,#F0834D,#DB5B1F,#F0834D);border-radius:var(--r-xl) var(--r-xl) 0 0;}
 .WR-form-header{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--border);background:linear-gradient(to bottom,rgba(37,99,235,.04),var(--white));}
 .WR-form-hdr-icon{width:40px;height:40px;border-radius:10px;background:var(--ember-ghost);border:1.5px solid var(--ember-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .WR-form-hdr-title{font-family:var(--font-body);font-size: 16px;font-weight: 800;font-style:normal;text-transform:uppercase;letter-spacing:.4px;color:var(--text-1);}
@@ -396,7 +396,7 @@ const CSS = `
 .WR-subname-text{font-family:var(--font-body);font-size: 10px;flex:1;color:var(--text-4);font-style:italic;}
 .WR-subname-text.linked{color:var(--text-1);font-style:normal;font-weight: 700;}
 .WR-subname-badge{padding:2px 8px;border-radius:100px;font-family:var(--font-mono);font-size: 7.5px;font-weight: 800;letter-spacing:1px;text-transform:uppercase;}
-.WR-subname-badge.ok{background:rgba(37,99,235,.10);border:1px solid rgba(37,99,235,.25);color:#2563EB;}
+.WR-subname-badge.ok{background:rgba(37,99,235,.10);border:1px solid rgba(37,99,235,.25);color:#C2410C;}
 
 /* ERP inputs used in form */
 .ERP-label{display:block;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-1);margin-bottom:7px;}
@@ -477,12 +477,12 @@ const CSS = `
 /* Footer — compact, flat, right-aligned buttons instead of one button
    stretched full-width with a shiny animated sweep. */
 .WR-form-footer{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--border);background:var(--off-white);}
-.WR-submit-btn{padding:9px 20px;background:var(--ember);color:#fff;border:none;border-radius:var(--r-md);font-family:var(--font-mono);font-size: 8.5px;font-weight: 800;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer;transition:background .18s ease,transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s ease;}
-.WR-submit-btn:hover:not(:disabled){background:var(--ember-mid,#3B82F6);transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,78,216,.28);}
+.WR-submit-btn{padding:9px 20px;background:var(--ember);color:#faf9f7;border:none;border-radius:var(--r-md);font-family:var(--font-mono);font-size: 8.5px;font-weight: 800;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer;transition:background .18s ease,transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s ease;}
+.WR-submit-btn:hover:not(:disabled){background:var(--ember-mid,#DB5B1F);transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,78,216,.28);}
 .WR-submit-btn:active{transform:translateY(0) scale(.96);}
 .WR-submit-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
 .WR-update-btn{background:var(--ember);}
-.WR-update-btn:hover:not(:disabled){background:var(--ember-mid,#3B82F6);}
+.WR-update-btn:hover:not(:disabled){background:var(--ember-mid,#DB5B1F);}
 .WR-cancel-btn{padding:9px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-md);font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.3px;text-transform:uppercase;color:var(--text-2);cursor:pointer;transition:all .18s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
 .WR-cancel-btn:hover{border-color:var(--error);color:var(--error);background:#FFF5F3;transform:translateY(-1px);}
 .WR-cancel-btn:active{transform:translateY(0) scale(.96);}
@@ -495,7 +495,7 @@ const CSS = `
 .WR-search-wrap{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--white);transition:all .18s;}
 .WR-search-wrap:focus-within{border-color:var(--ember-mid);box-shadow:0 0 0 3px var(--ember-ghost);}
 .WR-search{background:none;border:none;outline:none;font-family:var(--font-body);font-size: 10.5px;font-weight: 700;color:var(--text-1);width:180px;}
-.WR-pdf-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--r-md);background:linear-gradient(135deg,#2563EB,#1D4ED8);border:none;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.5px;text-transform:uppercase;color:#fff;cursor:pointer;transition:all .2s;}
+.WR-pdf-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--r-md);background:linear-gradient(135deg,#C2410C,#9A3412);border:none;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.5px;text-transform:uppercase;color:#faf9f7;cursor:pointer;transition:all .2s;}
 .WR-pdf-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.4);}
 .WR-table-wrap{overflow-x:auto;}
 .WR-table{width:100%;border-collapse:collapse;font-family:var(--font-body);border:1px solid var(--border);}
@@ -503,14 +503,14 @@ const CSS = `
 /* Same solid-orange header bar used by the Master Data tables (Category,
    Sub-Category, Identification Type…) — bumped a touch larger/bolder here since this
    table carries more columns and denser data. */
-.WR-table thead tr{background:var(--surface-2,#E9EEF5);border-bottom:2px solid var(--ember,#2563EB);}
-.WR-table th{font-family:var(--font-mono);font-size: 9.5px;font-weight: 800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-3,#27364A);padding:13px 14px;white-space:nowrap;text-align:center;border-right:1px solid var(--border,#E9EEF5);}
+.WR-table thead tr{background:var(--surface-2,#E8E2D8);border-bottom:2px solid var(--ember,#C2410C);}
+.WR-table th{font-family:var(--font-mono);font-size: 9.5px;font-weight: 800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-3,#3A3024);padding:13px 14px;white-space:nowrap;text-align:center;border-right:1px solid var(--border,#E8E2D8);}
 .WR-table th:last-child{border-right:none;}
 .WR-table td{padding:12px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);font-size: 10.5px;font-weight: 700;color:var(--text-1);vertical-align:middle;}
 .WR-table td:last-child{border-right:none;}
 .WR-table tr:last-child td{border-bottom:none;}
 .WR-table tbody tr{transition:background .12s;animation:wr-rowIn .32s ease both;}
-.WR-table tbody tr:nth-child(even) td{background:var(--off-white,#F8FAFC);}
+.WR-table tbody tr:nth-child(even) td{background:var(--off-white,#F5F3EF);}
 .WR-table tbody tr:hover td{background:var(--ember-ghost);}
 .WR-table tbody tr.inactive td{opacity:.62;}
 .WR-name{font-size: 13px;font-weight: 800;color:var(--ember);}
@@ -519,33 +519,33 @@ const CSS = `
 .WR-subcat-pill{display:inline-flex;align-items:center;padding:3px 8px;border-radius:6px;background:var(--off-white);border:1px solid var(--border);font-family:var(--font-mono);font-size: 8px;color:var(--text-3);}
 .WR-skill-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;background:var(--ember-ghost);border:1px solid var(--ember-border);font-family:var(--font-mono);font-size: 8px;font-weight: 700;color:var(--ember);}
 .WR-pay-badge{display:inline-flex;padding:3px 10px;border-radius:100px;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:.5px;text-transform:uppercase;}
-.WR-pay-badge.daily{background:rgba(37,99,235,.10);color:#2563EB;border:1px solid rgba(37,99,235,.25);}
-.WR-pay-badge.weekly{background:rgba(196,126,10,.10);color:#C47E0A;border:1px solid rgba(196,126,10,.25);}
+.WR-pay-badge.daily{background:rgba(37,99,235,.10);color:#C2410C;border:1px solid rgba(37,99,235,.25);}
+.WR-pay-badge.weekly{background:rgba(196,126,10,.10);color:#9A3412;border:1px solid rgba(196,126,10,.25);}
 .WR-pay-badge.monthly{background:var(--ember-ghost);color:var(--ember);border:1px solid var(--ember-border);}
 .WR-rate{font-family:var(--font-mono);font-size: 10.5px;font-weight: 800;color:var(--text-1);}
 .WR-rate-lbl{font-family:var(--font-mono);font-size: 8px;color:var(--text-4);}
 .WR-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;}
-.WR-status-dot.active{background:#2563EB;box-shadow:0 0 0 2px rgba(37,99,235,.2);}
+.WR-status-dot.active{background:#C2410C;box-shadow:0 0 0 2px rgba(37,99,235,.2);}
 .WR-status-dot.inactive{background:var(--text-4);}
 .WR-tbl-act{display:flex;align-items:center;gap:5px;}
 /* Tinted at rest (not just on hover) — same treatment as the Master Data
    tables' edit/delete icon buttons, so this table's action column reads
    consistently with the rest of the app. */
 .WR-act-btn{width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--ember-border);background:var(--ember-ghost);color:var(--ember);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s ease,background .18s ease,color .18s ease,border-color .18s ease;}
-.WR-act-btn:hover{transform:translateY(-2px) scale(1.08);background:var(--ember);color:#fff;border-color:var(--ember);box-shadow:0 5px 14px rgba(37,99,235,.32);}
+.WR-act-btn:hover{transform:translateY(-2px) scale(1.08);background:var(--ember);color:#faf9f7;border-color:var(--ember);box-shadow:0 5px 14px rgba(37,99,235,.32);}
 .WR-act-btn:active{transform:translateY(0) scale(.92);}
 .WR-act-btn.del{background:var(--error-bg);color:var(--error);border-color:var(--error-bd);}
-.WR-act-btn.del:hover{background:var(--error);color:#fff;border-color:var(--error);box-shadow:0 5px 14px rgba(217,59,85,.32);}
+.WR-act-btn.del:hover{background:var(--error);color:#faf9f7;border-color:var(--error);box-shadow:0 5px 14px rgba(217,59,85,.32);}
 
 /* TRASH */
 .WR-trash-bar{display:flex;align-items:center;gap:10px;padding:11px 20px;background:#fff8f8;border-bottom:1px solid rgba(217,59,85,.22);}
 .WR-trash-bar-lbl{font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:2px;text-transform:uppercase;color:#d93b55;}
 .WR-trash-row td{background:rgba(217,59,85,.02)!important;}
 .WR-trash-row:hover td{background:rgba(217,59,85,.05)!important;}
-.WR-restore-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.25);font-family:var(--font-mono);font-size: 8px;font-weight: 800;color:#2563EB;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.WR-restore-btn:hover{background:#2563EB;color:#fff;}
+.WR-restore-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.25);font-family:var(--font-mono);font-size: 8px;font-weight: 800;color:#C2410C;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.WR-restore-btn:hover{background:#C2410C;color:#faf9f7;}
 .WR-force-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;background:#fff0f0;border:1.5px solid var(--error);font-family:var(--font-mono);font-size: 8px;font-weight: 800;color:var(--error);cursor:pointer;transition:all .15s;white-space:nowrap;}
-.WR-force-btn:hover{background:var(--error);color:#fff;}
+.WR-force-btn:hover{background:var(--error);color:#faf9f7;}
 
 /* LOADER — themed ember ring + skeleton rows */
 @keyframes wr-spin2{to{transform:rotate(360deg);}}
@@ -565,7 +565,7 @@ const CSS = `
 .WR-skel-row:nth-child(2){animation-delay:.13s;}
 .WR-skel-row:nth-child(3){animation-delay:.21s;}
 .WR-skel-row:nth-child(4){animation-delay:.29s;}
-.WR-skel{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surface-2) 25%,#FFE0BD 50%,var(--surface-2) 75%);background-size:360px 100%;animation:wr-skel-shimmer 1.15s linear infinite;}
+.WR-skel{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surface-2) 25%,#FDE0CB 50%,var(--surface-2) 75%);background-size:360px 100%;animation:wr-skel-shimmer 1.15s linear infinite;}
 .WR-skel.tall{height:26px;border-radius:8px;}
 @media(max-width:720px){.WR-skel-row{grid-template-columns:28px 1fr 1fr;}.WR-skel-row .WR-skel:nth-child(n+4){display:none;}}
 
@@ -576,8 +576,8 @@ const CSS = `
 
 /* TOAST */
 .WR-toast{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:var(--r-md);font-family:var(--font-mono);font-size: 9px;font-weight: 800;letter-spacing:.5px;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:wr-in .2s ease both;}
-.WR-toast.ok{background:var(--ember);color:#fff;}
-.WR-toast.err{background:var(--error);color:#fff;}
+.WR-toast.ok{background:var(--ember);color:#faf9f7;}
+.WR-toast.err{background:var(--error);color:#faf9f7;}
 
 /* SUB NAMES MANAGER (referred workers) */
 .WR-subs-root{position:relative;margin-bottom:14px;}
@@ -585,9 +585,9 @@ const CSS = `
 .WR-subs-box:focus-within{border-color:var(--ember-mid);box-shadow:0 0 0 3px var(--ember-ghost);}
 .WR-subs-box.has{border-color:var(--ember-border);}
 .WR-sub-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 10px;border-radius:100px;background:var(--ember-ghost);border:1px solid var(--ember-border);font-family:var(--font-body);font-size: 9px;font-weight: 800;color:var(--ember);animation:wr-row .15s ease both;}
-.WR-sub-chip.pending{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.3);color:#2563EB;}
+.WR-sub-chip.pending{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.3);color:#C2410C;}
 .WR-sub-chip-x{width:15px;height:15px;border-radius:50%;border:none;background:rgba(0,0,0,.08);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .12s;}
-.WR-sub-chip-x:hover{background:var(--error);color:#fff;}
+.WR-sub-chip-x:hover{background:var(--error);color:#faf9f7;}
 .WR-subs-input{flex:1;min-width:130px;background:transparent;border:none;outline:none;font-family:var(--font-body);font-size: 10px;color:var(--text-1);caret-color:var(--ember);padding:4px 2px;}
 .WR-subs-input::placeholder{color:var(--text-4);font-style:italic;}
 .WR-subs-panel{position:absolute;top:100%;left:0;right:0;z-index:1001;background:var(--white);border:1.5px solid var(--ember);border-radius:0 0 var(--r-md) var(--r-md);border-top:none;box-shadow:0 12px 32px rgba(0,0,0,.12);max-height:180px;overflow-y:auto;}
@@ -597,7 +597,7 @@ const CSS = `
 .WR-subs-add{display:flex;align-items:center;gap:8px;padding:9px 13px;cursor:pointer;font-family:var(--font-body);font-size: 10px;font-weight: 800;color:var(--ember);border-top:1px dashed var(--ember-border);background:var(--ember-ghost);}
 .WR-subs-add:hover{background:rgba(37,99,235,.16);}
 .WR-subs-hint{font-family:var(--font-mono);font-size: 8px;color:var(--text-4);margin-top:5px;}
-.WR-subs-rates{margin-top:10px;padding:10px 12px;background:var(--off-white,#F8FAFC);border:1.5px dashed var(--border);border-radius:var(--r-md);display:flex;flex-direction:column;gap:7px;}
+.WR-subs-rates{margin-top:10px;padding:10px 12px;background:var(--off-white,#F5F3EF);border:1.5px dashed var(--border);border-radius:var(--r-md);display:flex;flex-direction:column;gap:7px;}
 .WR-subs-rates-lbl{font-family:var(--font-mono);font-size: 8px;color:var(--text-4);letter-spacing:.3px;line-height:1.5;}
 .WR-subs-rate-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .WR-subs-rate-name{font-family:var(--font-body);font-size: 9.5px;font-weight: 800;color:var(--text-2);}
@@ -619,7 +619,7 @@ const CSS = `
    Card-style treatment (accent bar + shadow) instead of a flat tinted box,
    so it reads as a distinct floating panel rather than part of the row. */
 .WR-tbl-sub-expanded{position:relative;display:flex;flex-direction:column;gap:8px;min-width:240px;padding:10px 12px 8px;background:var(--white);border:1.5px solid var(--ember-border);border-radius:12px;box-shadow:0 8px 22px rgba(37,99,235,.14);transform-origin:top center;animation:wr-sdd-drop-in .22s cubic-bezier(.22,1,.36,1) both;}
-.WR-tbl-sub-expanded::before{content:'';position:absolute;top:0;left:12px;right:12px;height:2.5px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--ember) 0%,#60A5FA 100%);}
+.WR-tbl-sub-expanded::before{content:'';position:absolute;top:0;left:12px;right:12px;height:2.5px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--ember) 0%,#F0834D 100%);}
 @keyframes wr-sdd-drop-in{0%{opacity:0;transform:translateY(-6px) scale(.96);}100%{opacity:1;transform:translateY(0) scale(1);}}
 /* Exit animation — played for ~200ms (matches the setTimeout in
    toggleSubRow) before the panel actually unmounts, so closing feels as
@@ -632,7 +632,7 @@ const CSS = `
 .WR-tbl-sub-hdr-lbl{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);}
 .WR-tbl-sub-hdr-count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:100px;background:var(--ember-ghost);color:var(--ember);font-size: 8.5px;font-weight:800;}
 .WR-tbl-sub-close{flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--text-4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s cubic-bezier(.34,1.56,.64,1);}
-.WR-tbl-sub-close:hover{background:var(--error);border-color:var(--error);color:#fff;transform:rotate(90deg) scale(1.1);}
+.WR-tbl-sub-close:hover{background:var(--error);border-color:var(--error);color:#faf9f7;transform:rotate(90deg) scale(1.1);}
 .WR-tbl-sub-close:active{transform:rotate(90deg) scale(.92);}
 /* Active/Inactive groups — small uppercase section label ahead of each
    cluster of rows, same "group header" language as other dropdown lists in
@@ -647,11 +647,11 @@ const CSS = `
 /* Labelled pill, not a bare tiny icon — reads clearly at a glance and gives
    the click target proper room instead of a cramped 22px dot. */
 .WR-tbl-sub-toggle{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:100px;font-family:var(--font-mono);font-size: 8.5px;font-weight: 800;letter-spacing:.6px;text-transform:uppercase;border:1.5px solid transparent;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);position:relative;}
-.WR-tbl-sub-toggle.deact{background:var(--ember-ghost);color:#1D4ED8;border-color:var(--ember-border);}
-.WR-tbl-sub-toggle.deact:hover{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#fff;border-color:transparent;transform:translateY(-1px) scale(1.05);box-shadow:0 5px 16px rgba(37,99,235,.4);}
+.WR-tbl-sub-toggle.deact{background:var(--ember-ghost);color:#9A3412;border-color:var(--ember-border);}
+.WR-tbl-sub-toggle.deact:hover{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#faf9f7;border-color:transparent;transform:translateY(-1px) scale(1.05);box-shadow:0 5px 16px rgba(37,99,235,.4);}
 .WR-tbl-sub-toggle.deact:hover svg{animation:wr-power-pulse .5s ease;}
 .WR-tbl-sub-toggle.act{background:rgba(30,156,106,.1);color:var(--success);border-color:rgba(30,156,106,.24);}
-.WR-tbl-sub-toggle.act:hover{background:var(--success);color:#fff;border-color:transparent;transform:translateY(-1px) scale(1.05);box-shadow:0 5px 16px rgba(30,156,106,.35);}
+.WR-tbl-sub-toggle.act:hover{background:var(--success);color:#faf9f7;border-color:transparent;transform:translateY(-1px) scale(1.05);box-shadow:0 5px 16px rgba(30,156,106,.35);}
 .WR-tbl-sub-toggle:active{transform:translateY(0) scale(.96);}
 .WR-tbl-sub-toggle:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
 @keyframes wr-power-pulse{0%{transform:scale(1);}50%{transform:scale(1.35);}100%{transform:scale(1);}}
@@ -659,21 +659,21 @@ const CSS = `
    distinct, deliberate action-glyph rather than a wordy pill; ring + pulse
    on hover keeps it clearly interactive and different from a plain icon. */
 .WR-tbl-sub-toggle.icon-only{width:26px;height:26px;padding:0;justify-content:center;border-radius:50%;gap:0;}
-.WR-tbl-sub-toggle.icon-only.deact{background:#fff;color:#1D4ED8;border-color:var(--ember-border);}
-.WR-tbl-sub-toggle.icon-only.deact:hover{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#fff;border-color:transparent;box-shadow:0 0 0 4px var(--ember-ghost),0 5px 14px rgba(37,99,235,.4);transform:scale(1.12) rotate(-8deg);}
-.WR-tbl-sub-toggle.icon-only.act{background:#fff;color:var(--success);border-color:rgba(30,156,106,.28);}
-.WR-tbl-sub-toggle.icon-only.act:hover{background:var(--success);color:#fff;border-color:transparent;box-shadow:0 0 0 4px rgba(30,156,106,.14),0 5px 14px rgba(30,156,106,.35);transform:scale(1.12);}
+.WR-tbl-sub-toggle.icon-only.deact{background:#faf9f7;color:#9A3412;border-color:var(--ember-border);}
+.WR-tbl-sub-toggle.icon-only.deact:hover{background:linear-gradient(135deg,var(--ember-mid),var(--ember));color:#faf9f7;border-color:transparent;box-shadow:0 0 0 4px var(--ember-ghost),0 5px 14px rgba(37,99,235,.4);transform:scale(1.12) rotate(-8deg);}
+.WR-tbl-sub-toggle.icon-only.act{background:#faf9f7;color:var(--success);border-color:rgba(30,156,106,.28);}
+.WR-tbl-sub-toggle.icon-only.act:hover{background:var(--success);color:#faf9f7;border-color:transparent;box-shadow:0 0 0 4px rgba(30,156,106,.14),0 5px 14px rgba(30,156,106,.35);transform:scale(1.12);}
 .WR-tbl-sub-toggle.icon-only:active{transform:scale(.92);}
 /* Small sequential number badge in front of each associate name — "1, 2, 3…" so
    a long referred-worker list is easy to count/scan at a glance. */
-.WR-tbl-subnum{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:var(--ember);color:#fff;font-family:var(--font-mono);font-size: 7.5px;font-weight:800;margin-right:5px;flex-shrink:0;}
+.WR-tbl-subnum{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:var(--ember);color:#faf9f7;font-family:var(--font-mono);font-size: 7.5px;font-weight:800;margin-right:5px;flex-shrink:0;}
 .WR-tbl-subchip.inactive .WR-tbl-subnum{background:var(--text-4);}
 /* Inline "Deactivated!"/"Activated!" confirmation that pops in right where
    the row's toggle button was, so the feedback appears in-column instead of
    only as a toast that's easy to miss while scanning a long sub-name list. */
 @keyframes wr-sub-msg-in{0%{opacity:0;transform:translateX(6px) scale(.9);}60%{opacity:1;transform:translateX(-2px) scale(1.05);}100%{opacity:1;transform:translateX(0) scale(1);}}
 .WR-tbl-sub-msg{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:100px;font-family:var(--font-mono);font-size: 8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;animation:wr-sub-msg-in .3s cubic-bezier(.34,1.56,.64,1) both;}
-.WR-tbl-sub-msg.deact{background:rgba(37,99,235,.12);color:#1D4ED8;}
+.WR-tbl-sub-msg.deact{background:rgba(37,99,235,.12);color:#9A3412;}
 .WR-tbl-sub-msg.act{background:rgba(30,156,106,.12);color:var(--success);}
 .WR-tbl-sub-collapse{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px;padding:6px;border-radius:7px;border:1px dashed var(--border);background:none;cursor:pointer;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-4);transition:all .15s;}
 .WR-tbl-sub-collapse svg{transform:rotate(180deg);}
@@ -685,7 +685,7 @@ const CSS = `
 .WR-seg-btn:last-child{border-right:none;}
 .WR-seg-btn:hover{background:var(--ember-ghost);color:var(--ember);}
 .WR-seg-btn:active{transform:scale(.94);}
-.WR-seg-btn.on{background:var(--ember);color:#fff;}
+.WR-seg-btn.on{background:var(--ember);color:#faf9f7;}
 .WR-seg-count{padding:1px 7px;border-radius:100px;background:rgba(0,0,0,.07);font-size: 8px;}
 .WR-seg-btn.on .WR-seg-count{background:rgba(255,255,255,.25);}
 
@@ -694,18 +694,18 @@ const CSS = `
 .WR-st-btn.deact{border-color:var(--border);color:var(--text-3);}
 .WR-st-btn.deact:hover{border-color:var(--error);color:var(--error);background:#fff6f4;transform:translateY(-1px);}
 .WR-st-btn.act{background:var(--ember-ghost);border-color:var(--ember-border);color:var(--ember);}
-.WR-st-btn.act:hover{background:var(--ember);color:#fff;transform:translateY(-1px);}
+.WR-st-btn.act:hover{background:var(--ember);color:#faf9f7;transform:translateY(-1px);}
 .WR-st-btn:active{transform:translateY(0) scale(.94);}
 
 /* ── REGISTER GRID + LIVE PREVIEW ── */
 .WR-reg-grid{display:grid;grid-template-columns:1fr 330px;gap:20px;align-items:start;animation:wr-pageSwap .42s cubic-bezier(.22,1,.36,1) both;}
 @media(max-width:1150px){.WR-reg-grid{grid-template-columns:1fr;}}
 .WR-preview{position:sticky;top:20px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--sh-card);overflow:hidden;animation:wr-in .35s .12s ease both;}
-.WR-prev-top{background:linear-gradient(135deg,#1D4ED8 0%,#c47e0a 50%,#60A5FA 100%);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden;}
+.WR-prev-top{background:linear-gradient(135deg,#9A3412 0%,#9A3412 50%,#F0834D 100%);padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden;}
 .WR-prev-top::before{content:'';position:absolute;top:-45px;right:-45px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07);}
 .WR-prev-top::after{content:'';position:absolute;bottom:-35px;left:-25px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.05);}
-.WR-prev-avatar{width:66px;height:66px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size: 22px;font-style:italic;font-weight: 800;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.25);position:relative;box-shadow:0 6px 20px rgba(0,0,0,.18);}
-.WR-prev-name{font-family:var(--font-display);font-size: 17.5px;font-style:italic;color:#fff;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.2);word-break:break-word;}
+.WR-prev-avatar{width:66px;height:66px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size: 22px;font-style:italic;font-weight: 800;color:#faf9f7;text-shadow:0 2px 6px rgba(0,0,0,.25);position:relative;box-shadow:0 6px 20px rgba(0,0,0,.18);}
+.WR-prev-name{font-family:var(--font-display);font-size: 17.5px;font-style:italic;color:#faf9f7;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.2);word-break:break-word;}
 .WR-prev-trade{font-family:var(--font-mono);font-size: 8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.78);margin-top:6px;position:relative;}
 .WR-prev-body{padding:6px 18px 10px;}
 .WR-prev-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed var(--border);}
@@ -717,7 +717,7 @@ const CSS = `
 .WR-prev-chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;max-width:180px;}
 .WR-prev-empty{font-family:var(--font-body);font-size: 9px;color:var(--text-4);font-style:italic;}
 .WR-prev-foot{padding:10px 18px;background:var(--off-white);border-top:1px solid var(--border);font-family:var(--font-mono);font-size: 8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-4);display:flex;align-items:center;gap:7px;}
-.WR-prev-pulse{width:6px;height:6px;border-radius:50%;background:#2563EB;animation:wr-pulse 1.6s infinite;flex-shrink:0;}
+.WR-prev-pulse{width:6px;height:6px;border-radius:50%;background:#C2410C;animation:wr-pulse 1.6s infinite;flex-shrink:0;}
 @keyframes wr-pulse{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.35)}50%{box-shadow:0 0 0 5px rgba(37,99,235,0)}}
 `;
 
@@ -1003,24 +1003,24 @@ export default function WorkforceRegister() {
             {/* ── STAT CARDS START ── */}
             <div className="ERP-stats">
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#60A5FA)' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#F0834D)' }} />
                     <div className="ERP-stat-label">Total Workers</div>
                     <div className="ERP-stat-val" style={{ color: 'var(--ember)', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : workers.length}</div>
                 </div>
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#2563EB,#60A5FA)' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C2410C,#F0834D)' }} />
                     <div className="ERP-stat-label">Active Workers</div>
-                    <div className="ERP-stat-val" style={{ color: '#2563EB', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : activeCount}</div>
+                    <div className="ERP-stat-val" style={{ color: '#C2410C', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : activeCount}</div>
                 </div>
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C47E0A,#3B82F6)' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#9A3412,#DB5B1F)' }} />
                     <div className="ERP-stat-label">Associate Names</div>
-                    <div className="ERP-stat-val" style={{ color: '#C47E0A', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : allWSubs.filter(s => s.is_active !== false).length}</div>
+                    <div className="ERP-stat-val" style={{ color: '#9A3412', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : allWSubs.filter(s => s.is_active !== false).length}</div>
                 </div>
                 <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#60A5FA,var(--ember-mid))' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#F0834D,var(--ember-mid))' }} />
                     <div className="ERP-stat-label">Trades</div>
-                    <div className="ERP-stat-val" style={{ color: '#60A5FA', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : [...new Set(workers.map(w => w.trade).filter(Boolean))].length}</div>
+                    <div className="ERP-stat-val" style={{ color: '#F0834D', fontSize: 16, fontWeight: 800 }}>{loading ? '--' : [...new Set(workers.map(w => w.trade).filter(Boolean))].length}</div>
                 </div>
             </div>
             {/* ── STAT CARDS END ── */}
@@ -1095,7 +1095,7 @@ export default function WorkforceRegister() {
                                             <>
                                                 <label className="ERP-label">Worker Name</label>
                                                 <div className="WR-name-card">
-                                                    <Ic n="check" s={16} c="#2563EB" />
+                                                    <Ic n="check" s={16} c="#C2410C" />
                                                     <div style={{ flex: 1 }}><div className="WR-name-card-lbl">Name Confirmed</div><div className="WR-name-card-val">{form.name}</div></div>
                                                     <button type="button" title="Clear & type manually"
                                                         onClick={() => { setF('bio_data_id', ''); setF('sub_name_id', ''); setF('name', ''); }}
@@ -1178,7 +1178,7 @@ export default function WorkforceRegister() {
                                                     </div>
                                                     <span className="WR-pay-lbl" style={form.salary_type === pt.id ? { color: pt.color } : {}}>{pt.label}</span>
                                                     <span className="WR-pay-hint">{pt.hint}</span>
-                                                    <span className="WR-pay-chk" style={{ background: pt.color }}><svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
+                                                    <span className="WR-pay-chk" style={{ background: pt.color }}><svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
                                                 </button>
                                             ))}
                                         </div>
@@ -1217,7 +1217,7 @@ export default function WorkforceRegister() {
                                                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: 'var(--text-3)', letterSpacing: 1, flex: 1 }}>WORKER STATUS</span>
                                                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                                                     <input type="checkbox" checked={form.is_active} onChange={e => setF('is_active', e.target.checked)} />
-                                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: form.is_active ? '#2563EB' : 'var(--text-4)', fontWeight: 800 }}>{form.is_active ? 'ACTIVE' : 'INACTIVE'}</span>
+                                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: form.is_active ? '#C2410C' : 'var(--text-4)', fontWeight: 800 }}>{form.is_active ? 'ACTIVE' : 'INACTIVE'}</span>
                                                 </label>
                                             </div>
                                         )}
@@ -1310,7 +1310,7 @@ export default function WorkforceRegister() {
                                 <span className="WR-prev-k">Status</span>
                                 <span>
                                     <span className={'WR-status-dot ' + (form.is_active ? 'active' : 'inactive')} />
-                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: form.is_active ? '#2563EB' : 'var(--text-4)' }}>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: form.is_active ? '#C2410C' : 'var(--text-4)' }}>
                                         {form.is_active ? 'ACTIVE' : 'INACTIVE'}
                                     </span>
                                 </span>
@@ -1538,7 +1538,7 @@ export default function WorkforceRegister() {
                                                         <span>
 
                                                             <span className={'WR-status-dot ' + (w.is_active ? 'active' : 'inactive')} />
-                                                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 700, color: w.is_active ? '#2563EB' : 'var(--text-4)' }}>{w.is_active ? 'Active' : 'Inactive'}</span>
+                                                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 700, color: w.is_active ? '#C2410C' : 'var(--text-4)' }}>{w.is_active ? 'Active' : 'Inactive'}</span>
                                                         </span>
                                                         {w.is_active ? (
                                                             <button className="WR-st-btn deact" onClick={() => toggleActive(w)} title="Worker left — mark inactive">

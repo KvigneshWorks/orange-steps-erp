@@ -42,7 +42,7 @@ function SkeletonRow() {
         <tr>
             {[44, 190, 200, 100, 100, 120, 160].map((w, i) => (
                 <td key={i} style={{ padding: '14px 16px' }}>
-                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E9EEF5 25%,#FFE0B2 50%,#E9EEF5 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
+                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E8E2D8 25%,#FDE0CB 50%,#E8E2D8 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
                 </td>
             ))}
         </tr>
@@ -50,6 +50,68 @@ function SkeletonRow() {
 }
 
 const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+
+/* Page-scoped only: every font on the Pending Approvals page rendered
+   uppercase + bolder, per explicit request. Scoped under .PA-allcaps so it
+   never leaks into any other page even though the underlying classes
+   (ERP-*, AS-*) are shared globally. */
+const PA_ALLCAPS_CSS = `
+.PA-allcaps, .PA-allcaps * {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-style: normal;
+}
+.PA-allcaps h1.ERP-title,
+.PA-allcaps .ERP-card-title {
+  font-weight: 900;
+}
+.PA-allcaps input,
+.PA-allcaps textarea {
+  text-transform: uppercase;
+}
+.PA-allcaps textarea::placeholder,
+.PA-allcaps input::placeholder {
+  text-transform: uppercase;
+}
+`;
+
+/* Per-filter empty-state icon + colour -- gives "No Pending Requests" /
+   "No Approved Requests Yet" / etc. a distinct, on-brand icon instead of
+   reusing one generic checkmark for every state. */
+const EMPTY_META: Record<'pending' | 'approved' | 'rejected' | 'all', { path: string; c: string; bg: string; bd: string }> = {
+    pending: { path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', c: '#F0834D', bg: 'rgba(240,131,77,0.12)', bd: 'rgba(240,131,77,0.30)' },
+    approved: { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', c: '#1E9C6A', bg: 'rgba(30,156,106,0.12)', bd: 'rgba(30,156,106,0.28)' },
+    rejected: { path: 'M6 18L18 6M6 6l12 12', c: '#D93B55', bg: 'rgba(217,59,85,0.12)', bd: 'rgba(217,59,85,0.26)' },
+    all: { path: 'M5 5h14l3 7v7a2 2 0 01-2 2H4a2 2 0 01-2-2v-7l3-7z M22 12h-6l-2 3h-4l-2-3H2', c: '#231C14', bg: 'rgba(35,28,20,0.08)', bd: 'rgba(35,28,20,0.20)' },
+};
+
+/* Page-scoped only: full-page layout (the card now fills whatever height
+   the page has instead of sitting short above a lot of empty warm-white
+   space), a de-duplicated / animated empty state with per-filter icon
+   rings, and a couple of small entrance touches. Scoped under
+   .PA-allcaps so none of it leaks into any other page that shares the
+   ERP-* / AS-* classes. */
+const PA_FULL_CSS = `
+.PA-allcaps.ERP-page { display: flex; flex-direction: column; }
+.PA-allcaps .ERP-card { flex: 1; min-height: 0; }
+.PA-allcaps .ERP-empty { flex: 1; }
+
+.PA-empty-ic-wrap { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.PA-empty-ic-wrap .ERP-empty-icon { margin-bottom: 0; animation: as-icon-pop .55s cubic-bezier(.22,1,.36,1) .1s both; }
+.PA-empty-ring {
+  position: absolute; width: 54px; height: 54px; border-radius: 50%;
+  border: 1.5px solid var(--pa-bd, var(--ember-border));
+  animation: as-ring-expand 2.2s cubic-bezier(.22,1,.36,1) infinite;
+}
+.PA-allcaps .ERP-empty-title { animation: as-banner-in .5s cubic-bezier(.22,1,.36,1) .22s both; }
+.PA-allcaps .ERP-empty-sub   { animation: as-banner-in .5s cubic-bezier(.22,1,.36,1) .3s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .PA-empty-ic-wrap .ERP-empty-icon, .PA-empty-ring, .PA-allcaps .ERP-empty-title, .PA-allcaps .ERP-empty-sub {
+    animation: none !important; opacity: 1 !important;
+  }
+}
+`;
 
 export default function PendingApprovals() {
     const [requests, setRequests] = useState<ApprovalRequest[]>([]);
@@ -119,16 +181,18 @@ export default function PendingApprovals() {
 
     const pendingCount = requests.filter(r => r.status === 'pending' && !isExpired(r)).length;
     const stats = [
-        { path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Awaiting Decision', val: filter === 'pending' ? pendingCount : requests.filter(r => r.status === 'pending').length, c: '#60A5FA', bg: 'rgba(245,166,35,0.1)', bd: 'rgba(245,166,35,0.28)' },
+        { path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Awaiting Decision', val: filter === 'pending' ? pendingCount : requests.filter(r => r.status === 'pending').length, c: '#F0834D', bg: 'rgba(240,131,77,0.1)', bd: 'rgba(240,131,77,0.28)' },
         { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Approved', val: requests.filter(r => r.status === 'approved').length, c: '#1E9C6A', bg: 'rgba(30,156,106,0.09)', bd: 'rgba(30,156,106,0.22)' },
         { path: 'M6 18L18 6M6 6l12 12', label: 'Rejected', val: requests.filter(r => r.status === 'rejected').length, c: '#D93B55', bg: 'rgba(217,59,85,0.09)', bd: 'rgba(217,59,85,0.22)' },
-        { path: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0', label: 'Total Requests', val: requests.length, c: '#0A1530', bg: 'rgba(10,21,48,0.06)', bd: 'rgba(10,21,48,0.16)' },
+        { path: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0', label: 'Total Requests', val: requests.length, c: '#231C14', bg: 'rgba(35,28,20,0.06)', bd: 'rgba(35,28,20,0.16)' },
     ];
 
     return (
-        <div className="ERP-page">
+        <div className="ERP-page PA-allcaps">
             <style>{ERP_CSS}</style>
             <style>{AS_CSS}</style>
+            <style>{PA_ALLCAPS_CSS}</style>
+            <style>{PA_FULL_CSS}</style>
 
             {/* ── HEADER ── */}
             <div className="ERP-hdr">
@@ -183,9 +247,9 @@ export default function PendingApprovals() {
                         className="AS-chip"
                         onClick={() => setFilter(chip.key as typeof filter)}
                         style={{
-                            border: `1px solid ${filter === chip.key ? 'var(--ember-border,#60A5FA)' : 'var(--border)'}`,
-                            background: filter === chip.key ? 'var(--ember-ghost,rgba(37,99,235,0.08))' : 'var(--white)',
-                            color: filter === chip.key ? 'var(--ember,#60A5FA)' : 'var(--text-3,#555)',
+                            border: `1px solid ${filter === chip.key ? 'var(--ember-border,#F0834D)' : 'var(--border)'}`,
+                            background: filter === chip.key ? 'var(--ember-ghost,rgba(194,65,12,0.08))' : 'var(--white)',
+                            color: filter === chip.key ? 'var(--ember,#F0834D)' : 'var(--text-3,#524532)',
                             animationDelay: `${i * 0.03}s`,
                         }}
                     >{chip.label}</button>
@@ -202,9 +266,11 @@ export default function PendingApprovals() {
                         </div>
                         <div>
                             <div className="ERP-card-title">Account Requests</div>
-                            <div className="ERP-card-sub">
-                                {loading ? 'Loading…' : requests.length === 0 ? 'Nothing here right now' : `${requests.length} request${requests.length !== 1 ? 's' : ''}`}
-                            </div>
+                            {(loading || requests.length > 0) && (
+                                <div className="ERP-card-sub">
+                                    {loading ? 'Loading…' : `${requests.length} request${requests.length !== 1 ? 's' : ''}`}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -221,9 +287,13 @@ export default function PendingApprovals() {
                 )}
 
                 {!loading && requests.length === 0 && (
-                    <div className="ERP-empty">
-                        <div className="ERP-empty-icon">
-                            <Ic d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" sz={28} c="var(--ember-light)" sw={1.8} />
+                    <div className="ERP-empty" key={filter}>
+                        <div className="PA-empty-ic-wrap" style={{ '--pa-bd': EMPTY_META[filter].bd } as CSSProperties}>
+                            <span className="PA-empty-ring" />
+                            <span className="PA-empty-ring" style={{ animationDelay: '.45s' }} />
+                            <div className="ERP-empty-icon" style={{ background: EMPTY_META[filter].bg, borderColor: EMPTY_META[filter].bd }}>
+                                <Ic d={EMPTY_META[filter].path} sz={28} c={EMPTY_META[filter].c} sw={1.8} />
+                            </div>
                         </div>
                         <div className="ERP-empty-title">
                             {filter === 'pending' ? 'No Pending Requests' : filter === 'approved' ? 'No Approved Requests Yet' : filter === 'rejected' ? 'No Rejected Requests' : 'No Requests Yet'}
@@ -268,10 +338,10 @@ export default function PendingApprovals() {
                                                 <td className="ERP-t-num ERP-center">{i + 1}</td>
                                                 <td>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                                                        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(10,21,48,.06)', color: '#0A1530', border: '1px solid rgba(10,21,48,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>{initials}</div>
+                                                        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(35,28,20,.06)', color: '#231C14', border: '1px solid rgba(35,28,20,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>{initials}</div>
                                                         <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                                             <span className="ERP-t-primary">{req.name}</span>
-                                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>{req.email}</span>
+                                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{req.email}</span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -284,14 +354,14 @@ export default function PendingApprovals() {
                                                         {effectiveStatus === 'expired' ? 'Expired' : effectiveStatus === 'pending' ? 'Pending' : effectiveStatus === 'approved' ? 'Approved' : 'Rejected'}
                                                     </span>
                                                     {req.status === 'rejected' && req.reject_reason && (
-                                                        <div style={{ fontSize: 9, color: 'var(--text-4,#999)', marginTop: 4, maxWidth: 180 }}>“{req.reject_reason}”</div>
+                                                        <div style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)', marginTop: 4, maxWidth: 180 }}>“{req.reject_reason}”</div>
                                                     )}
                                                 </td>
                                                 <td>
-                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>{fmtDate(req.created_at)}</span>
+                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{fmtDate(req.created_at)}</span>
                                                 </td>
                                                 <td>
-                                                    <span style={{ fontSize: 9.5, color: expired ? '#D93B55' : 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>
+                                                    <span style={{ fontSize: 9.5, color: expired ? '#D93B55' : 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>
                                                         {req.status === 'pending' ? fmtDate(req.expires_at) : '—'}
                                                     </span>
                                                 </td>
@@ -308,7 +378,7 @@ export default function PendingApprovals() {
                                                             </button>
                                                         </>
                                                     ) : (
-                                                        <span style={{ fontSize: 9, color: 'var(--text-4,#aaa)' }}>
+                                                        <span style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)' }}>
                                                             {req.decided_by ? `by ${req.decided_by}` : '—'}
                                                         </span>
                                                     )}

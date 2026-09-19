@@ -682,7 +682,7 @@
      chevron flipping direction. ── */
   .SB-toggle {
     position: absolute;
-    top: 76px;
+    top: 38px;
     transform: translateY(-50%);
     right: -17px;
     z-index: 200;
@@ -738,9 +738,9 @@
   }
 
   .SB.collapsed .SB-toggle {
-    background: var(--d-or);
-    border-color: var(--d-or);
-    box-shadow: 0 2px 10px rgba(194,65,12, 0.32);
+    background: #FAF9F7;
+    border-color: rgba(194,65,12, 0.28);
+    box-shadow: 0 2px 8px rgba(35,28,20, 0.14);
   }
 
   .SB-toggle-chevron {
@@ -751,7 +751,7 @@
   }
 
   .SB.collapsed .SB-toggle-chevron {
-    color: #faf9f7;
+    color: var(--d-or);
   }
 
   /* ── Nav ── */

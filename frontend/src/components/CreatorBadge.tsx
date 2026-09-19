@@ -10,7 +10,7 @@ export default function CreatorBadge({ name }: { name?: string | null }) {
                 fontFamily: 'var(--font-mono, monospace)',
                 fontSize: 9,
                 fontWeight: 700,
-                color: 'var(--text-4, #8a8a8a)',
+                color: 'var(--text-4, #6B5D48)',
                 whiteSpace: 'nowrap',
                 maxWidth: 110,
                 overflow: 'hidden',

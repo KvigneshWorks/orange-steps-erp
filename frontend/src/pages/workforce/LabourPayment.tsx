@@ -138,7 +138,7 @@ interface WorkerDetail {
 }
 
 const AVATAR_COLORS = [
-  'linear-gradient(135deg,#60A5FA,#2563EB)',
+  'linear-gradient(135deg,#F0834D,#C2410C)',
 ];
 
 const MODE_LABELS: Record<string, string> = {
@@ -177,11 +177,11 @@ function buildPageNumbers(total: number, current: number): (number | '…')[] {
 
 const MODE_META: Record<string, { label: string; color: string; icon: string }> = {
   cash: { label: 'Cash', color: '#1E9C6A', icon: 'cash' },
-  upi: { label: 'UPI', color: '#2870CC', icon: 'mobile' },
-  neft: { label: 'NEFT', color: '#C47E0A', icon: 'bank' },
-  bank_transfer: { label: 'Bank Transfer', color: '#0891B2', icon: 'transfer' },
-  cheque: { label: 'Cheque', color: '#9B45CC', icon: 'document' },
-  other: { label: 'Other', color: '#6B6B6B', icon: 'more' },
+  upi: { label: 'UPI', color: '#DB5B1F', icon: 'mobile' },
+  neft: { label: 'NEFT', color: '#9A3412', icon: 'bank' },
+  bank_transfer: { label: 'Bank Transfer', color: '#A6491D', icon: 'transfer' },
+  cheque: { label: 'Cheque', color: '#C2410C', icon: 'document' },
+  other: { label: 'Other', color: '#6B5D48', icon: 'more' },
 };
 
 const CSS = `
@@ -196,37 +196,37 @@ const CSS = `
    text that didn't otherwise specify one, and lifts the muted grays up to a
    noticeably darker, more legible shade. */
 .WP-page {
-  --text-3: #1E293B;
-  --text-4: #334155;
+  --text-3: #231C14;
+  --text-4: #6B5D48;
   /* Dedicated darker/bolder color for ₹ amount figures specifically —
      var(--ember) itself stays the vivid brand orange (still used for
      buttons/borders/badges/icons throughout this page); amount displays
      switch to this instead, wherever they were reading off --ember. */
-  --amt-strong: #1D4ED8;
+  --amt-strong: #9A3412;
   font-weight: 700;
   text-transform: uppercase;
 }
 .WP-page input, .WP-page select, .WP-page button, .WP-page textarea { font-weight: inherit; text-transform: none; }
 
 .WP-hero {
-  background:linear-gradient(135deg,#0F172A 0%,#2d1f08 40%,#0F172A 100%);
-  border-bottom:1.5px solid rgba(37,99,235,0.18);
+  background:linear-gradient(135deg,#231C14 0%,#3A3024 40%,#231C14 100%);
+  border-bottom:1.5px solid rgba(194,65,12,0.18);
   padding:24px 32px; position:relative; overflow:hidden;
 }
 .WP-hero::before {
   content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(37,99,235,0.07) 0%,transparent 70%);
+  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(194,65,12,0.07) 0%,transparent 70%);
   pointer-events:none;
 }
 .WP-hero-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; position:relative; }
 .WP-hero-icon {
   width:48px; height:48px; border-radius:13px; flex-shrink:0;
-  background:linear-gradient(135deg,#60A5FA,#2563EB);
+  background:linear-gradient(135deg,#F0834D,#C2410C);
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 16px rgba(37,99,235,0.35);
+  box-shadow:0 4px 16px rgba(194,65,12,0.35);
 }
-.WP-hero-title { font-family:var(--font-body); font-size: 19.5px; font-weight: 800; font-style:normal; color:#2563EB; margin:0 0 2px; }
-.WP-hero-sub { font-family:var(--font-mono); font-size: 8px; letter-spacing:2px; color:#334155; text-transform:uppercase; }
+.WP-hero-title { font-family:var(--font-body); font-size: 19.5px; font-weight: 800; font-style:normal; color:#C2410C; margin:0 0 2px; }
+.WP-hero-sub { font-family:var(--font-mono); font-size: 8px; letter-spacing:2px; color:#6B5D48; text-transform:uppercase; }
 .WP-hero-right { margin-left:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 
 .WP-body { padding:24px 32px; flex:1; }
@@ -238,21 +238,21 @@ const CSS = `
   font-size: 8px; font-weight: 800; letter-spacing:1.3px; text-transform:uppercase;
   transition:all 0.18s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; flex-shrink:0;
 }
-.WP-btn-primary { background:linear-gradient(135deg,#60A5FA,#2563EB); color:#fff; position:relative; overflow:hidden; }
+.WP-btn-primary { background:linear-gradient(135deg,#F0834D,#C2410C); color:#faf9f7; position:relative; overflow:hidden; }
 .WP-btn-primary::before {
   content:''; position:absolute; top:0; left:-80%; width:50%; height:100%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
   animation:wp-shine 3s ease-in-out infinite; pointer-events:none;
 }
 @keyframes wp-shine { 0%{left:-80%} 50%,100%{left:130%} }
-.WP-btn-primary:hover { transform:translateY(-1px); box-shadow:0 5px 16px rgba(37,99,235,0.4); }
-.WP-btn-green { background:linear-gradient(135deg,#60A5FA,#2563EB); color:#fff; box-shadow:0 4px 14px rgba(37,99,235,0.32); }
-.WP-btn-green:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(37,99,235,0.45); }
-.WP-btn-ghost { background:rgba(255,255,255,0.06); color:#bbb; border:1.5px solid rgba(255,255,255,0.1); }
-.WP-btn-ghost:hover { transform:translateY(-1px); background:rgba(255,255,255,0.1); color:#fff; }
+.WP-btn-primary:hover { transform:translateY(-1px); box-shadow:0 5px 16px rgba(194,65,12,0.4); }
+.WP-btn-green { background:linear-gradient(135deg,#F0834D,#C2410C); color:#faf9f7; box-shadow:0 4px 14px rgba(194,65,12,0.32); }
+.WP-btn-green:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(194,65,12,0.45); }
+.WP-btn-ghost { background:rgba(255,255,255,0.06); color:#8C7C63; border:1.5px solid rgba(255,255,255,0.1); }
+.WP-btn-ghost:hover { transform:translateY(-1px); background:rgba(255,255,255,0.1); color:#faf9f7; }
 .WP-btn-outline { background:transparent; color:var(--text-3); border:1.5px solid var(--border); }
 .WP-btn-outline:hover { transform:translateY(-1px); border-color:var(--ember-mid); color:var(--ember); background:var(--ember-ghost); }
-.WP-btn-red { background:linear-gradient(135deg,#D93B55,var(--ember)); color:#fff; }
+.WP-btn-red { background:linear-gradient(135deg,#D93B55,var(--ember)); color:#faf9f7; }
 .WP-btn-red:hover { transform:translateY(-1px); box-shadow:0 5px 16px rgba(239,68,68,0.35); }
 .WP-btn-sm { padding:4px 10px; font-size: 7.5px; letter-spacing:.9px; }
 .WP-btn:active:not(:disabled) { transform:translateY(0) scale(.95) !important; }
@@ -269,8 +269,8 @@ const CSS = `
   border-radius:50%; background:var(--ember-ghost); color:var(--ember); flex-shrink:0;
   transition:all .18s;
 }
-.WP-back-btn:hover { transform:translateY(-1px); border-color:var(--ember-mid); color:var(--ember); box-shadow:0 4px 14px rgba(37,99,235,.2); }
-.WP-back-btn:hover .WP-back-btn-ico { background:var(--ember); color:#fff; }
+.WP-back-btn:hover { transform:translateY(-1px); border-color:var(--ember-mid); color:var(--ember); box-shadow:0 4px 14px rgba(194,65,12,.2); }
+.WP-back-btn:hover .WP-back-btn-ico { background:var(--ember); color:#faf9f7; }
 .WP-back-btn:active { transform:translateY(0) scale(.95); }
 
 /* ── DAYBOOK-STYLE STAT CARD EXTRAS (badge + breakdown rows) ── */
@@ -323,9 +323,9 @@ const CSS = `
 }
 .LP-view-tab:last-child { border-right:none; }
 .LP-view-tab:hover { color:var(--ember); background:var(--ember-ghost); }
-.LP-view-tab.active { color:#fff; background:var(--ember); }
+.LP-view-tab.active { color:#faf9f7; background:var(--ember); }
 .LP-view-tab-badge { padding:2px 8px; border-radius:100px; font-size: 8px; font-weight: 800; background:var(--ember-ghost); color:var(--ember); border:1px solid var(--ember-border); }
-.LP-view-tab.active .LP-view-tab-badge { background:rgba(255,255,255,.25); color:#fff; border-color:rgba(255,255,255,.4); }
+.LP-view-tab.active .LP-view-tab-badge { background:rgba(255,255,255,.25); color:#faf9f7; border-color:rgba(255,255,255,.4); }
 
 /* ── EXPANDABLE ROW (All Payments client split) ── */
 .LP-expand-row td { background:var(--off-white); border-bottom:1px solid var(--border); padding:0 14px; animation:lp-hero-in .2s ease both; }
@@ -343,12 +343,12 @@ const CSS = `
 /* Bordered box-grid table format — same tabular, column-lined look as the
    Register/Attendance pages, scoped to this table only. */
 .LP-compact { border:1px solid var(--border); }
-.LP-compact thead tr { background:var(--surface-2,#E9EEF5) !important; border-bottom:2px solid var(--ember,#2563EB) !important; }
-.LP-compact th { color:var(--text-3,#27364A) !important; border-right:1px solid var(--border,#E9EEF5); }
+.LP-compact thead tr { background:var(--surface-2,#E8E2D8) !important; border-bottom:2px solid var(--ember,#C2410C) !important; }
+.LP-compact th { color:var(--text-3,#3A3024) !important; border-right:1px solid var(--border,#E8E2D8); }
 .LP-compact th:last-child { border-right:none; }
 .LP-compact td { padding:12px 16px; font-size: 10.5px; font-weight: 700; color:var(--text-1); border-right:1px solid var(--border); }
 .LP-compact td:last-child { border-right:none; }
-.LP-compact tbody tr:nth-child(even) td { background:var(--off-white,#F8FAFC); }
+.LP-compact tbody tr:nth-child(even) td { background:var(--off-white,#F5F3EF); }
 .LP-compact .ERP-t-num { color:var(--text-2); }
 
 /* ── ORANGE UI: exact match with the Master-Data view tables (BioData,
@@ -357,7 +357,7 @@ const CSS = `
    cell color with only the primary Name column staying accent-orange.
    Scoped to Wage Disbursement's view-page tables only, never touches the
    shared .ERP-tbl base elsewhere. ── */
-.LP-orange-tbl th { background: var(--surface-2, #E9EEF5) !important; color: var(--text-3, #27364A) !important; border-bottom: 2px solid var(--ember, #2563EB) !important; }
+.LP-orange-tbl th { background: var(--surface-2, #E8E2D8) !important; color: var(--text-3, #3A3024) !important; border-bottom: 2px solid var(--ember, #C2410C) !important; }
 .LP-orange-tbl.LP-compact th { font-size: 8px !important; font-weight: 800 !important; letter-spacing: 2.5px !important; padding: 12px 16px !important; }
 .LP-orange-tbl.LP-compact td { padding: 13px 16px; text-transform: uppercase; letter-spacing: .25px; }
 @keyframes lp-row-in { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
@@ -366,18 +366,18 @@ const CSS = `
    expands them — bouncier scale+slide than the flat .LP-anim-row fade, with
    a brief highlight sweep so each row reads as landing "one by one". */
 @keyframes lp-subrow-in {
-  0%   { opacity:0; transform:translateY(-8px) scale(.96); background:rgba(37,99,235,0.14); }
+  0%   { opacity:0; transform:translateY(-8px) scale(.96); background:rgba(194,65,12,0.14); }
   55%  { opacity:1; transform:translateY(2px) scale(1.015); }
   100% { opacity:1; transform:translateY(0) scale(1); background:transparent; }
 }
 .LP-subrow-anim { animation: lp-subrow-in .6s cubic-bezier(.34,1.56,.64,1) both; }
-.LP-row:hover { box-shadow:inset 3px 0 0 var(--ember); background:rgba(37,99,235,0.04); }
+.LP-row:hover { box-shadow:inset 3px 0 0 var(--ember); background:rgba(194,65,12,0.04); }
 .LP-row:active { transform:scale(.998); }
 .LP-row td { transition:color .15s; }
 .LP-mini-avatar {
   width:32px; height:32px; border-radius:9px; flex-shrink:0;
   display:inline-flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono); font-weight: 800; font-size: 9px; color:#fff; letter-spacing:.5px;
+  font-family:var(--font-mono); font-weight: 800; font-size: 9px; color:#faf9f7; letter-spacing:.5px;
   transition:transform .2s;
 }
 .LP-row:hover .LP-mini-avatar { transform:scale(1.12) rotate(-4deg); }
@@ -426,12 +426,12 @@ const CSS = `
 }
 .LP-pgn-btn:hover:not(:disabled):not(.on) {
   border-color:var(--ember-mid); color:var(--ember);
-  transform:translateY(-2px) scale(1.05); box-shadow:0 4px 12px rgba(37,99,235,.2);
+  transform:translateY(-2px) scale(1.05); box-shadow:0 4px 12px rgba(194,65,12,.2);
 }
 .LP-pgn-btn:active:not(:disabled) { transform:translateY(0) scale(.94); }
 .LP-pgn-btn.on {
-  background:linear-gradient(135deg,#60A5FA,#2563EB); border-color:transparent; color:#fff;
-  box-shadow:0 3px 12px rgba(37,99,235,.38); transform:translateY(-1px);
+  background:linear-gradient(135deg,#F0834D,#C2410C); border-color:transparent; color:#faf9f7;
+  box-shadow:0 3px 12px rgba(194,65,12,.38); transform:translateY(-1px);
   animation:lp-pgn-pop .3s ease both;
 }
 @keyframes lp-pgn-pop { from{transform:scale(.8) translateY(-1px); opacity:.6} to{transform:scale(1) translateY(-1px); opacity:1} }
@@ -497,14 +497,14 @@ const CSS = `
 .LP-run-line { animation: lp-run-line 1.2s ease-in-out infinite; }
 .LP-run-line.l2 { animation-delay: 0.16s; }
 .LP-run-line.l3 { animation-delay: 0.32s; }
-.LP-loader-title { font-family:var(--font-display); font-size: 16px; font-weight: 800; font-style:normal; color:#fff; text-align:center; }
+.LP-loader-title { font-family:var(--font-display); font-size: 16px; font-weight: 800; font-style:normal; color:#faf9f7; text-align:center; }
 .LP-loader-sub {
   font-family:var(--font-mono); font-size: 8px; letter-spacing:2.5px; text-transform:uppercase;
   color:rgba(255,255,255,.65); display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px;
 }
 .LP-loader-dots { display:inline-flex; gap:4px; }
 .LP-loader-dots span {
-  width:5px; height:5px; border-radius:50%; background:#60A5FA; display:inline-block;
+  width:5px; height:5px; border-radius:50%; background:#F0834D; display:inline-block;
   animation:wp-bounce 1s ease-in-out infinite;
 }
 .LP-loader-dots span:nth-child(2) { animation-delay:.15s; }
@@ -523,10 +523,10 @@ const CSS = `
   75%{transform:translateY(-2px) scale(1.005);}
   100%{opacity:1;transform:translateY(0) scale(1);}
 }
-@keyframes lp-avatar-ring { 0%{box-shadow:0 0 0 0 rgba(37,99,235,.4)} 100%{box-shadow:0 0 0 12px rgba(37,99,235,0)} }
+@keyframes lp-avatar-ring { 0%{box-shadow:0 0 0 0 rgba(194,65,12,.4)} 100%{box-shadow:0 0 0 12px rgba(194,65,12,0)} }
 .LP-hero {
   position:relative; overflow:hidden;
-  background:linear-gradient(135deg,rgba(37,99,235,.10) 0%,var(--white) 45%,rgba(37,99,235,.04) 100%);
+  background:linear-gradient(135deg,rgba(194,65,12,.10) 0%,var(--white) 45%,rgba(194,65,12,.04) 100%);
   border:1.5px solid var(--ember-border); border-radius:18px;
   padding:22px 26px; margin-bottom:20px;
   display:flex; align-items:center; gap:18px; flex-wrap:wrap;
@@ -534,18 +534,18 @@ const CSS = `
 }
 .LP-hero::before {
   content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--ember),#60A5FA,#ffd27a,#60A5FA,var(--ember));
+  background:linear-gradient(90deg,var(--ember),#F0834D,#FDE0CB,#F0834D,var(--ember));
   background-size:200% 100%; animation:lp-slide-grad 2.4s linear infinite;
 }
 .LP-hero::after {
   content:'₹'; position:absolute; right:20px; bottom:-30px;
   font-family:var(--font-display); font-style:italic; font-size: 105.5px;
-  color:rgba(37,99,235,.08); pointer-events:none; line-height:1;
+  color:rgba(194,65,12,.08); pointer-events:none; line-height:1;
 }
 .LP-hero-avatar {
   width:58px; height:58px; border-radius:16px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono); font-weight: 800; font-size: 16.5px; color:#fff; letter-spacing:.5px;
+  font-family:var(--font-mono); font-weight: 800; font-size: 16.5px; color:#faf9f7; letter-spacing:.5px;
   animation:lp-avatar-ring 2s ease-out infinite;
 }
 .LP-hero-name { font-family:var(--font-body); font-size: 18.5px; font-weight: 800; font-style:normal; color:var(--text-1); line-height:1.1; margin-bottom:6px; }
@@ -556,46 +556,46 @@ const CSS = `
   background:var(--white); border:1px solid var(--ember-border); color:var(--text-3);
   transition:all .18s;
 }
-.LP-chip:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(37,99,235,.18); }
+.LP-chip:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(194,65,12,.18); }
 .LP-chip b { color:var(--ember); font-weight: 800; }
 
 /* ── DETAIL PANELS · POLISH & ENTRANCE ── */
 .WP-layout > * { animation:wr-pageSwap .45s cubic-bezier(.22,1,.36,1) both; }
 .WP-layout > *:nth-child(2) { animation-delay:.12s; }
 .WP-panel { border-radius:16px; box-shadow:var(--sh-card); transition:box-shadow .25s; }
-.WP-panel:hover { box-shadow:0 10px 30px rgba(37,99,235,.09); }
+.WP-panel:hover { box-shadow:0 10px 30px rgba(194,65,12,.09); }
 .LP-panel-ico {
   width:26px; height:26px; border-radius:8px; flex-shrink:0;
-  background:linear-gradient(135deg,var(--ember-ghost),rgba(37,99,235,0.16)); border:1px solid var(--ember-border);
+  background:linear-gradient(135deg,var(--ember-ghost),rgba(194,65,12,0.16)); border:1px solid var(--ember-border);
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 2px 8px rgba(37,99,235,.15);
+  box-shadow:0 2px 8px rgba(194,65,12,.15);
 }
 .LP-count-pill {
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:.6px;
-  padding:3px 10px; border-radius:100px; background:var(--ember); color:#fff;
+  padding:3px 10px; border-radius:100px; background:var(--ember); color:#faf9f7;
   border:1px solid var(--ember); text-transform:uppercase; white-space:nowrap;
-  box-shadow:0 2px 8px rgba(37,99,235,.3);
+  box-shadow:0 2px 8px rgba(194,65,12,.3);
 }
 .LP-anim-row { animation:lp-row-in .35s ease both; }
 .LP-prog { height:3px; border-radius:100px; background:var(--off-white); overflow:hidden; margin-top:5px; width:100%; max-width:140px; border:1px solid var(--border); }
-.LP-prog i { display:block; height:100%; border-radius:100px; background:linear-gradient(90deg,#60A5FA,#2563EB); transition:width .6s ease; }
+.LP-prog i { display:block; height:100%; border-radius:100px; background:linear-gradient(90deg,#F0834D,#C2410C); transition:width .6s ease; }
 .LP-prog-lbl { font-family:var(--font-mono); font-size: 7px; color:var(--text-4); margin-top:3px; letter-spacing:.3px; }
 
 /* ── PAY FORM · STEP BADGES & MICRO-ANIMATIONS ── */
 .LP-step {
   width:16px; height:16px; border-radius:5px; flex-shrink:0;
-  background:linear-gradient(135deg,#60A5FA,#2563EB); color:#fff;
+  background:linear-gradient(135deg,#F0834D,#C2410C); color:#faf9f7;
   font-family:var(--font-mono); font-size: 8px; font-weight: 800;
   display:inline-flex; align-items:center; justify-content:center;
-  box-shadow:0 2px 8px rgba(37,99,235,.35);
+  box-shadow:0 2px 8px rgba(194,65,12,.35);
 }
 .LP-step-line {
   display:flex; align-items:center; gap:8px; margin:16px 0 12px;
   font-family:var(--font-mono); font-size: 8px; font-weight: 800;
-  letter-spacing:1.5px; text-transform:uppercase; color:#3B82F6;
+  letter-spacing:1.5px; text-transform:uppercase; color:#DB5B1F;
 }
 .WP-session { animation:lp-row-in .35s ease both; transition:background .15s; }
-.WP-session:hover { background:rgba(37,99,235,.04); }
+.WP-session:hover { background:rgba(194,65,12,.04); }
 
 /* ── MODE STICKER BADGE ── */
 .LP-mode-badge {
@@ -658,7 +658,7 @@ const CSS = `
 .LP-dd-clr:hover { color:var(--error); }
 .LP-dd-list { max-height:200px; overflow-y:auto; padding:3px 0; }
 .LP-dd-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px; cursor:pointer; transition:background .1s; }
-.LP-dd-item:hover { background:rgba(37,99,235,.07); }
+.LP-dd-item:hover { background:rgba(194,65,12,.07); }
 .LP-dd-item.sel { background:var(--ember-ghost); }
 .LP-dd-clear { color:var(--text-4); font-family:var(--font-body); font-size: 9px; font-style:normal; font-weight: 700; border-bottom:1px solid var(--border); padding:7px 12px; justify-content:flex-start; }
 .LP-dd-clear:hover { background:rgba(217,59,85,.06); color:var(--error); }
@@ -674,37 +674,37 @@ const CSS = `
    (filters, client/party pickers) is untouched. ── */
 .LP-dd-mode-txt { font-family:var(--font-body); font-size: 10.5px; font-weight: 700; color:var(--text-1); }
 .LP-dd-panel-mode { border-radius:9px; border:1.5px solid var(--ember-mid); }
-.LP-dd-list-mode { max-height:170px; padding:5px; scrollbar-width:thin; scrollbar-color:rgba(37,99,235,0.35) transparent; }
+.LP-dd-list-mode { max-height:170px; padding:5px; scrollbar-width:thin; scrollbar-color:rgba(194,65,12,0.35) transparent; }
 .LP-dd-list-mode::-webkit-scrollbar { width:6px; background:transparent; }
 .LP-dd-list-mode::-webkit-scrollbar-track { background:transparent; }
-.LP-dd-list-mode::-webkit-scrollbar-thumb { background:rgba(37,99,235,0.3); border-radius:100px; }
-.LP-dd-list-mode::-webkit-scrollbar-thumb:hover { background:rgba(37,99,235,0.5); }
+.LP-dd-list-mode::-webkit-scrollbar-thumb { background:rgba(194,65,12,0.3); border-radius:100px; }
+.LP-dd-list-mode::-webkit-scrollbar-thumb:hover { background:rgba(194,65,12,0.5); }
 .LP-dd-item-mode { border-radius:7px; padding:9px 10px; gap:10px; }
 .LP-dd-item-mode.sel { background:var(--ember-ghost); }
 .LP-dd-item-mode:hover .LP-dd-mode-txt { color:var(--ember); }
 @keyframes lp-dd-check-pop { 0%{opacity:0; transform:scale(0.4);} 60%{opacity:1; transform:scale(1.2);} 100%{opacity:1; transform:scale(1);} }
 .LP-dd-check {
-  width:16px; height:16px; border-radius:5px; border:2px solid var(--border,#D4D5D8); flex-shrink:0;
-  display:flex; align-items:center; justify-content:center; background:#fff;
+  width:16px; height:16px; border-radius:5px; border:2px solid var(--border,#D2C7B8); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; background:#faf9f7;
   transition:all .16s cubic-bezier(.34,1.56,.64,1);
 }
 .LP-dd-check svg { animation:lp-dd-check-pop .22s cubic-bezier(.34,1.56,.64,1) both; }
-.LP-dd-check.checked { border-color:var(--ember); background:linear-gradient(135deg,var(--ember-mid,#3B82F6),var(--ember)); }
+.LP-dd-check.checked { border-color:var(--ember); background:linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember)); }
 
 /* ── DAYBOOK SYNC SECTION (same pattern as Credit Management) ── */
 .LP-sync-toggle {
   margin-left:auto; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:1px;
-  text-transform:uppercase; color:#3B82F6; user-select:none;
+  text-transform:uppercase; color:#DB5B1F; user-select:none;
 }
-.LP-sync-toggle input { width:15px; height:15px; accent-color:#2563EB; cursor:pointer; margin:0; }
+.LP-sync-toggle input { width:15px; height:15px; accent-color:#C2410C; cursor:pointer; margin:0; }
 .LP-db-details-toggle {
   display:inline-flex; align-items:center; gap:5px; cursor:pointer;
   background:var(--white); border:1px solid var(--ember-border); border-radius:100px;
   padding:4px 10px; font-family:var(--font-mono); font-size: 7px; font-weight: 800;
   letter-spacing:.8px; text-transform:uppercase; color:var(--ember); transition:all .18s;
 }
-.LP-db-details-toggle:hover { background:var(--ember); color:#fff; border-color:var(--ember); }
+.LP-db-details-toggle:hover { background:var(--ember); color:#faf9f7; border-color:var(--ember); }
 .LP-db-details-toggle svg { transition:transform .2s ease; }
 .LP-db-details-toggle.open svg { transform:rotate(180deg); }
 .LP-db-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -712,12 +712,12 @@ const CSS = `
 .LP-db-span { grid-column:1/-1; }
 .LP-db-warn {
   display:flex; align-items:center; gap:6px; margin-bottom:10px; padding:7px 11px;
-  background:rgba(37,99,235,.08); border:1px solid rgba(37,99,235,.25); border-radius:8px;
+  background:rgba(194,65,12,.08); border:1px solid rgba(194,65,12,.25); border-radius:8px;
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 700; letter-spacing:.3px;
-  color:#92400e;
+  color:#9A3412;
 }
 .LP-db-warn button {
-  background:none; border:none; padding:0; margin:0; color:#2563EB; font-weight: 800;
+  background:none; border:none; padding:0; margin:0; color:#C2410C; font-weight: 800;
   text-decoration:underline; cursor:pointer; font-family:inherit; font-size:inherit;
 }
 .LP-hint { font-family:var(--font-mono); font-size: 7px; font-weight: 800; color:#1E9C6A; margin-top:4px; letter-spacing:.3px; }
@@ -752,7 +752,7 @@ const CSS = `
 .LP-db-entry-client { flex:1; font-weight: 700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .LP-db-entry-status { font-family:var(--font-mono); font-size: 7px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase; padding:2px 7px; border-radius:100px; flex-shrink:0; }
 .LP-db-entry-status.closed { background:rgba(30,156,106,.15); color:#1E9C6A; }
-.LP-db-entry-status.partial { background:rgba(196,126,10,.15); color:#92400e; }
+.LP-db-entry-status.partial { background:rgba(154,52,18,.15); color:#9A3412; }
 .LP-db-entry-amt { font-family:var(--font-mono); font-weight: 800; font-size: 9.5px; color:#1E9C6A; flex-shrink:0; }
 
 .WP-badge {
@@ -760,12 +760,12 @@ const CSS = `
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase;
 }
 .WP-badge-unpaid  { background:var(--ember-ghost); color:var(--ember); border:1px solid var(--ember-border); }
-.WP-badge-partial { background:rgba(196,126,10,0.10); color:#C47E0A; border:1px solid rgba(196,126,10,0.25); }
+.WP-badge-partial { background:rgba(154,52,18,0.10); color:#9A3412; border:1px solid rgba(154,52,18,0.25); }
 .WP-badge-clear   { background:var(--off-white); color:var(--text-3); border:1px solid var(--border); }
 .WP-badge-closed  { background:var(--ember-ghost); color:var(--ember); border:1px solid var(--ember-border); }
 
 .WP-detail-header {
-  background:linear-gradient(135deg,rgba(37,99,235,0.06) 0%,rgba(37,99,235,0.02) 100%);
+  background:linear-gradient(135deg,rgba(194,65,12,0.06) 0%,rgba(194,65,12,0.02) 100%);
   border:1px solid var(--ember-border); border-radius:11px;
   padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
 }
@@ -798,22 +798,22 @@ const CSS = `
 .WP-tbl { width:100%; border-collapse:collapse; table-layout:fixed; border:1px solid var(--border); }
 .WP-tbl th {
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:2.5px; text-transform:uppercase;
-  color:#fff; padding:9px 12px; border-bottom:none; border-right:1px solid rgba(255,255,255,.22);
-  background:linear-gradient(135deg,var(--ember-mid,#3B82F6),var(--ember,#2563EB)); text-align:center; white-space:nowrap; line-height:1.3;
+  color:#faf9f7; padding:9px 12px; border-bottom:none; border-right:1px solid rgba(255,255,255,.22);
+  background:linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember,#C2410C)); text-align:center; white-space:nowrap; line-height:1.3;
 }
 .WP-tbl th:last-child { border-right:none; }
 .WP-tbl td { padding:9px 12px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); font-size: 11px; color:var(--text-2); vertical-align:middle; transition:background .15s; line-height:1.35; text-align:center; text-transform:uppercase; letter-spacing:.25px; }
 .WP-tbl td:last-child { border-right:none; }
 .WP-tbl td, .WP-tbl th { overflow:hidden; text-overflow:ellipsis; }
 .WP-tbl tr:last-child td { border-bottom:none; }
-.WP-tbl tbody tr:not(.WP-tbl-total):hover td { background:rgba(37,99,235,0.05); }
+.WP-tbl tbody tr:not(.WP-tbl-total):hover td { background:rgba(194,65,12,0.05); }
 .WP-tbl tbody tr:not(.WP-tbl-total):hover .WP-tbl-name { color:var(--ember); }
 .WP-tbl-name { transition:color .15s; }
-.WP-tbl-total { background:rgba(37,99,235,0.04); animation:wp-total-in .3s ease both; }
+.WP-tbl-total { background:rgba(194,65,12,0.04); animation:wp-total-in .3s ease both; }
 @keyframes wp-total-in { from{opacity:0} to{opacity:1} }
 .WP-tbl-total td { font-family:var(--font-mono); font-weight: 900; color:var(--amt-strong); border-top:1.5px solid var(--border); border-bottom:none; padding-top:8px; padding-bottom:8px; }
 .WP-tbl-total td:first-child { text-transform:uppercase; letter-spacing:.8px; font-size: 8px; color:var(--text-3); }
-.WP-tbl-settled td:first-child { border-left:3px solid #C47E0A; opacity:0.7; }
+.WP-tbl-settled td:first-child { border-left:3px solid #9A3412; opacity:0.7; }
 .WP-tbl-outstanding td:first-child { border-left:3px solid rgba(239,68,68,0.4); }
 .WP-amt { font-family:var(--font-mono); font-weight: 800; white-space:nowrap; color:var(--text-1); font-size: 11px; }
 .WP-amt-due   { color:var(--amt-strong); }
@@ -829,14 +829,14 @@ const CSS = `
   display:inline-flex; align-items:center; gap:4px; margin-top:4px; padding:4px 9px;
   border-radius:100px; border:1px solid var(--ember-border); background:var(--ember-ghost);
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase;
-  color:#1D4ED8; cursor:pointer; transition:all .16s ease;
+  color:#9A3412; cursor:pointer; transition:all .16s ease;
 }
 .LP-subtoggle svg { transition:transform .18s ease; }
 .LP-subtoggle.open svg { transform:rotate(180deg); }
-.LP-subtoggle:hover { background:linear-gradient(135deg,var(--ember-mid,#3B82F6),var(--ember)); color:#fff; border-color:transparent; }
+.LP-subtoggle:hover { background:linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember)); color:#faf9f7; border-color:transparent; }
 .LP-subnum {
   display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px;
-  border-radius:50%; background:var(--ember); color:#fff; font-family:var(--font-mono);
+  border-radius:50%; background:var(--ember); color:#faf9f7; font-family:var(--font-mono);
   font-size: 8px; font-weight:800;
 }
 /* Full-width row separating the Person and Client groups inside one merged
@@ -844,7 +844,7 @@ const CSS = `
 .WP-tbl-section td {
   background:var(--ember-ghost); border-bottom:1px solid var(--ember-border);
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:1px;
-  text-transform:uppercase; color:#2563EB; padding:7px 12px; text-align:left;
+  text-transform:uppercase; color:#C2410C; padding:7px 12px; text-align:left;
 }
 .WP-tbl-section:first-child td { border-top:none; }
 
@@ -914,8 +914,8 @@ const CSS = `
   100%{ transform: scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes lp-cel-check-glow {
-  0%, 100% { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 0 rgba(29,78,216,0.35); }
-  50%      { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 10px rgba(29,78,216,0); }
+  0%, 100% { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 0 rgba(154,52,18,0.35); }
+  50%      { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 10px rgba(154,52,18,0); }
 }
 @keyframes lp-cel-confetti-pop { from{opacity:0;transform:scale(0)} to{opacity:1;transform:scale(1)} }
 @keyframes lp-cel-confetti-fly {
@@ -938,19 +938,19 @@ const CSS = `
 }
 .LP-cel-ov {
   position: absolute; inset: 0;
-  background: linear-gradient(160deg, #F1F5F9 0%, #F3E8FF 55%, #EDE9FE 100%);
-  border: 2px solid #BFDBFE;
+  background: linear-gradient(160deg, #F5F3EF 0%, #FBC9A8 55%, #FBC9A8 100%);
+  border: 2px solid #FBC9A8;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   z-index: 20; border-radius: 10.5px; overflow: hidden;
 }
 .LP-cel-ring {
   position: absolute; width: 180px; height: 180px; border-radius: 50%;
-  border: 2.5px solid rgba(29,78,216,0.18);
+  border: 2.5px solid rgba(154,52,18,0.18);
   animation: lp-cel-ring-pulse 1s ease-out 0.1s both;
 }
 .LP-cel-ring2 {
   position: absolute; width: 260px; height: 260px; border-radius: 50%;
-  border: 1.5px solid rgba(29,78,216,0.09);
+  border: 1.5px solid rgba(154,52,18,0.09);
   animation: lp-cel-ring-pulse 1.1s ease-out 0.25s both;
 }
 .LP-cel-sparkle {
@@ -964,36 +964,36 @@ const CSS = `
 }
 .LP-cel-check {
   width: 80px; height: 80px; border-radius: 50%;
-  background: linear-gradient(135deg, #2563EB, #3B82F6);
-  border: 3px solid rgba(29,78,216,0.18);
-  box-shadow: 0 8px 28px rgba(29,78,216,0.28);
+  background: linear-gradient(135deg, #C2410C, #DB5B1F);
+  border: 3px solid rgba(154,52,18,0.18);
+  box-shadow: 0 8px 28px rgba(154,52,18,0.28);
   display: flex; align-items: center; justify-content: center;
   animation: lp-cel-check-glow 1.4s ease-in-out 0.7s infinite;
 }
 .LP-cel-txt {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 17px; font-weight: 900; color: #2563EB;
+  font-size: 17px; font-weight: 900; color: #C2410C;
   letter-spacing: 3px; text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(29,78,216,0.10);
+  text-shadow: 0 1px 0 rgba(154,52,18,0.10);
 }
 .LP-cel-sub {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 10.5px; color: #92400e; margin-top: -8px; font-weight: 700;
+  font-size: 10.5px; color: #9A3412; margin-top: -8px; font-weight: 700;
 }
 .LP-cel-amt-badge {
   position: relative;
   padding: 8px 20px;
-  background: #fff;
-  border: 1.5px solid #BFDBFE;
-  box-shadow: 0 2px 12px rgba(29,78,216,0.10);
+  background: #faf9f7;
+  border: 1.5px solid #FBC9A8;
+  box-shadow: 0 2px 12px rgba(154,52,18,0.10);
   border-radius: 100px;
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 15px; font-weight: 800; color: #2563EB; margin-top: 4px;
+  font-size: 15px; font-weight: 800; color: #C2410C; margin-top: 4px;
   overflow: hidden;
 }
 .LP-cel-amt-badge::after {
   content: ''; position: absolute; top: 0; bottom: 0; width: 40%;
-  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(219,91,31,0.35), transparent);
   animation: lp-cel-badge-shimmer 1.6s ease-in-out 0.9s infinite;
 }
 .LP-cel-confetti {
@@ -1014,10 +1014,10 @@ const CSS = `
    instead get painted behind/under it, reading as overlapping text. */
 .LP-step2-head {
   display:flex; align-items:center; gap:7px; padding:8px 12px;
-  background:linear-gradient(135deg,rgba(37,99,235,.10),rgba(37,99,235,.04));
+  background:linear-gradient(135deg,rgba(194,65,12,.10),rgba(194,65,12,.04));
   border-bottom:1px solid var(--ember-border); border-radius:9.5px 9.5px 0 0;
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 800;
-  letter-spacing:1.2px; text-transform:uppercase; color:#3B82F6;
+  letter-spacing:1.2px; text-transform:uppercase; color:#DB5B1F;
 }
 .LP-step2-body { padding:13px 12px; }
 .LP-dd-trigger { min-height:46px; box-sizing:border-box; border-radius:10px; }
@@ -1026,7 +1026,7 @@ const CSS = `
 /* ── CLIENT PICK LIST (Step 1 — choose bills to close) ── */
 @keyframes wp-pick-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 .WP-client-pick { border:1px solid var(--ember-border); border-radius:11px; overflow:hidden; margin-bottom:14px; background:var(--white); animation:wp-pick-in .3s ease both; box-shadow:0 1px 5px rgba(0,0,0,.03); }
-.WP-pick-head { display:flex; align-items:center; gap:7px; padding:8px 12px; background:linear-gradient(135deg,rgba(37,99,235,.10),rgba(37,99,235,.04)); border-bottom:1px solid var(--ember-border); font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:1.2px; text-transform:uppercase; color:#3B82F6; }
+.WP-pick-head { display:flex; align-items:center; gap:7px; padding:8px 12px; background:linear-gradient(135deg,rgba(194,65,12,.10),rgba(194,65,12,.04)); border-bottom:1px solid var(--ember-border); font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:1.2px; text-transform:uppercase; color:#DB5B1F; }
 .WP-pick-actions { margin-left:auto; display:flex; gap:5px; }
 .WP-pick-link {
   display:inline-flex; align-items:center; gap:4px;
@@ -1035,10 +1035,10 @@ const CSS = `
   transition:all .18s cubic-bezier(.34,1.56,.64,1);
 }
 .WP-pick-link.all {
-  background:linear-gradient(135deg,#3B82F6,#2563EB); border:1px solid transparent;
-  color:#fff; box-shadow:0 2px 8px rgba(37,99,235,.3);
+  background:linear-gradient(135deg,#DB5B1F,#C2410C); border:1px solid transparent;
+  color:#faf9f7; box-shadow:0 2px 8px rgba(194,65,12,.3);
 }
-.WP-pick-link.all:hover { transform:translateY(-1px) scale(1.03); box-shadow:0 4px 14px rgba(37,99,235,.45); }
+.WP-pick-link.all:hover { transform:translateY(-1px) scale(1.03); box-shadow:0 4px 14px rgba(194,65,12,.45); }
 .WP-pick-link.none {
   background:var(--white); border:1px solid var(--border-2); color:var(--text-3);
 }
@@ -1055,14 +1055,14 @@ const CSS = `
 }
 .WP-pick-tablewrap::-webkit-scrollbar { width:6px; height:6px; }
 .WP-pick-tablewrap::-webkit-scrollbar-track { background:transparent; }
-.WP-pick-tablewrap::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#60A5FA,#2563EB); border-radius:100px; }
+.WP-pick-tablewrap::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#F0834D,#C2410C); border-radius:100px; }
 .WP-pick-tablewrap::-webkit-scrollbar-thumb:hover { background:var(--ember); }
 .WP-pick-table { width:100%; border-collapse:collapse; }
 .WP-pick-table thead th {
   position:sticky; top:0; z-index:1;
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:1.2px; text-transform:uppercase;
-  color:var(--text-3,#27364A); padding:8px 10px; border-bottom:2px solid var(--ember,#2563EB);
-  background:var(--surface-2,#E9EEF5); text-align:left; white-space:nowrap;
+  color:var(--text-3,#3A3024); padding:8px 10px; border-bottom:2px solid var(--ember,#C2410C);
+  background:var(--surface-2,#E8E2D8); text-align:left; white-space:nowrap;
 }
 .WP-pick-table tbody tr {
   cursor:pointer; border-bottom:1px solid var(--border);
@@ -1070,8 +1070,8 @@ const CSS = `
   animation:lp-subrow-in .5s cubic-bezier(.34,1.56,.64,1) both;
 }
 .WP-pick-table tbody tr:last-child { border-bottom:none; }
-.WP-pick-table tbody tr:hover { background:rgba(37,99,235,.06); }
-.WP-pick-table tbody tr.on { background:linear-gradient(90deg,rgba(37,99,235,.12),rgba(37,99,235,.04)); box-shadow:inset 3px 0 0 var(--ember); }
+.WP-pick-table tbody tr:hover { background:rgba(194,65,12,.06); }
+.WP-pick-table tbody tr.on { background:linear-gradient(90deg,rgba(194,65,12,.12),rgba(194,65,12,.04)); box-shadow:inset 3px 0 0 var(--ember); }
 .WP-pick-table td {
   padding:10px 12px; font-family:var(--font-body); font-size: 10px; color:var(--text-1);
   vertical-align:middle; white-space:nowrap;
@@ -1087,10 +1087,10 @@ const CSS = `
   cursor:pointer; flex-shrink:0; position:relative; transition:all .18s;
 }
 .WP-pick-chk:hover { border-color:var(--ember-mid); transform:scale(1.06); }
-.WP-pick-chk:checked { background:linear-gradient(135deg,#60A5FA,#2563EB); border-color:transparent; box-shadow:0 2px 8px rgba(37,99,235,.4); }
+.WP-pick-chk:checked { background:linear-gradient(135deg,#F0834D,#C2410C); border-color:transparent; box-shadow:0 2px 8px rgba(194,65,12,.4); }
 .WP-pick-chk:checked::after {
   content:''; position:absolute; left:5.5px; top:2px; width:4px; height:9px;
-  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+  border:solid #faf9f7; border-width:0 2px 2px 0; transform:rotate(45deg);
   animation:lp-chk-pop .18s ease both;
 }
 @keyframes lp-chk-pop { from{opacity:0; transform:rotate(45deg) scale(.5)} to{opacity:1; transform:rotate(45deg) scale(1)} }
@@ -1112,39 +1112,39 @@ const CSS = `
 .WP-pick-foot.warn-blink { background:rgba(217,59,85,.08); color:var(--error); font-weight: 700; animation:wp-warn-blink 1.1s ease-in-out 2; }
 @keyframes wp-warn-blink { 0%,100% { opacity:1; } 50% { opacity:.35; } }
 .LP-pick-prog { height:3px; border-radius:100px; background:var(--white); border:1px solid var(--border); overflow:hidden; margin-top:5px; }
-.LP-pick-prog i { display:block; height:100%; border-radius:100px; background:linear-gradient(90deg,#60A5FA,#2563EB); transition:width .45s ease; }
+.LP-pick-prog i { display:block; height:100%; border-radius:100px; background:linear-gradient(90deg,#F0834D,#C2410C); transition:width .45s ease; }
 .LP-max-chip {
   flex-shrink:0; padding:4px 10px; border-radius:100px; border:1px solid var(--ember-border);
   background:var(--ember-ghost); color:var(--ember); font-family:var(--font-mono);
   font-size: 8px; font-weight: 800; letter-spacing:1px; text-transform:uppercase;
   cursor:pointer; transition:all .18s;
 }
-.LP-max-chip:hover:not(:disabled) { background:var(--ember); color:#fff; transform:translateY(-1px); box-shadow:0 3px 10px rgba(37,99,235,.3); }
+.LP-max-chip:hover:not(:disabled) { background:var(--ember); color:#faf9f7; transform:translateY(-1px); box-shadow:0 3px 10px rgba(194,65,12,.3); }
 .LP-max-chip:disabled { opacity:.4; cursor:not-allowed; }
 
 .WP-split-preview {
-  background:linear-gradient(135deg,rgba(37,99,235,0.07),rgba(37,99,235,0.02));
-  border:1.5px solid rgba(37,99,235,0.32); border-radius:12px; overflow:hidden; margin-top:16px;
+  background:linear-gradient(135deg,rgba(194,65,12,0.07),rgba(194,65,12,0.02));
+  border:1.5px solid rgba(194,65,12,0.32); border-radius:12px; overflow:hidden; margin-top:16px;
   animation:wp-pick-in .3s ease both;
-  box-shadow:0 6px 20px rgba(37,99,235,.1);
+  box-shadow:0 6px 20px rgba(194,65,12,.1);
 }
 .WP-split-head {
-  padding:11px 16px; background:linear-gradient(135deg,#60A5FA,#2563EB); border-bottom:1px solid rgba(37,99,235,0.15);
+  padding:11px 16px; background:linear-gradient(135deg,#F0834D,#C2410C); border-bottom:1px solid rgba(194,65,12,0.15);
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:1.8px;
-  text-transform:uppercase; color:#fff; display:flex; align-items:center; gap:7px;
+  text-transform:uppercase; color:#faf9f7; display:flex; align-items:center; gap:7px;
 }
 .WP-split-tbl { width:100%; border-collapse:collapse; }
 .WP-split-tbl th {
   font-family:var(--font-mono); font-size: 7.5px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase;
-  color:var(--text-4); padding:9px 14px; border-bottom:1px solid rgba(37,99,235,0.15);
-  background:rgba(37,99,235,0.05); text-align:left;
+  color:var(--text-4); padding:9px 14px; border-bottom:1px solid rgba(194,65,12,0.15);
+  background:rgba(194,65,12,0.05); text-align:left;
 }
-.WP-split-tbl td { padding:10px 14px; font-family:var(--font-mono); font-size: 9.5px; border-bottom:1px solid rgba(37,99,235,0.1); }
+.WP-split-tbl td { padding:10px 14px; font-family:var(--font-mono); font-size: 9.5px; border-bottom:1px solid rgba(194,65,12,0.1); }
 .WP-split-tbl tr:last-child td { border-bottom:none; }
-.WP-split-closed { color:#C47E0A !important; font-weight: 800; }
+.WP-split-closed { color:#9A3412 !important; font-weight: 800; }
 .WP-split-bar {
   display:flex; align-items:center; gap:18px; padding:12px 16px;
-  border-top:1px solid rgba(37,99,235,0.15); background:rgba(37,99,235,0.08); flex-wrap:wrap;
+  border-top:1px solid rgba(194,65,12,0.15); background:rgba(194,65,12,0.08); flex-wrap:wrap;
 }
 .WP-split-bar-item { font-family:var(--font-mono); font-size: 9px; color:var(--text-4); }
 .WP-split-bar-item b { color:var(--text-1); }
@@ -1181,8 +1181,8 @@ const CSS = `
 }
 .WP-alloc-row:last-child { border-bottom:none; }
 .WP-alloc-name { color:var(--text-2); font-weight: 700; }
-.WP-alloc-closed  { color:#C47E0A; font-weight: 800; }
-.WP-alloc-partial { color:#3B82F6; font-weight: 800; }
+.WP-alloc-closed  { color:#9A3412; font-weight: 800; }
+.WP-alloc-partial { color:#DB5B1F; font-weight: 800; }
 
 /* ── ALLOCATION ROW — simple, single-line, professional ── */
 .LP-alloc-card {
@@ -1193,8 +1193,8 @@ const CSS = `
 .LP-alloc-card:hover { border-color:var(--border-2); }
 .LP-alloc-left { display:flex; align-items:center; gap:8px; min-width:0; }
 .LP-alloc-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
-.LP-alloc-dot.closed  { background:#C47E0A; }
-.LP-alloc-dot.partial { background:#3B82F6; }
+.LP-alloc-dot.closed  { background:#9A3412; }
+.LP-alloc-dot.partial { background:#DB5B1F; }
 .LP-alloc-card-name { font-family:var(--font-body); font-size: 10px; font-weight: 700; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .LP-alloc-status { font-family:var(--font-mono); font-size: 8px; letter-spacing:.5px; text-transform:uppercase; color:var(--text-4); }
 .LP-alloc-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
@@ -1209,15 +1209,15 @@ const CSS = `
   animation:wp-toast-in 0.2s ease both;
 }
 @keyframes wp-toast-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
-.WP-toast-ok  { background:#C47E0A; color:#fff; }
-.WP-toast-err { background:#D93B55; color:#fff; }
+.WP-toast-ok  { background:#9A3412; color:#faf9f7; }
+.WP-toast-err { background:#D93B55; color:#faf9f7; }
 
 .WP-loading {
   display:flex; align-items:center; justify-content:center; padding:64px 20px; gap:10px;
   font-family:var(--font-mono); font-size: 8px; letter-spacing:2px; text-transform:uppercase; color:var(--text-4);
 }
 .WP-loading-dot {
-  width:6px; height:6px; border-radius:50%; background:#60A5FA; display:inline-block;
+  width:6px; height:6px; border-radius:50%; background:#F0834D; display:inline-block;
   animation:wp-bounce 1s ease-in-out infinite;
 }
 .WP-loading-dot:nth-child(2) { animation-delay:.15s; }
@@ -1344,7 +1344,7 @@ function SIco({ n, s = 16, c = 'currentColor' }: { n: string; s?: number; c?: st
 // ── Success celebration (confetti/ring/stamp), ported from Credit Management's
 // SuccessCelebration so Record Payment gets the same colorful, premium
 // success moment instead of a plain toast. ──
-const LP_CONFETTI_COLORS = ['#2563EB', '#3B82F6', '#BFDBFE', '#fde68a', '#F3E8FF', '#fff', '#EDE9FE', '#60A5FA', '#fef3c7'];
+const LP_CONFETTI_COLORS = ['#C2410C', '#DB5B1F', '#FBC9A8', '#FDE0CB', '#FBC9A8', '#faf9f7', '#FBC9A8', '#F0834D', '#FDE0CB'];
 
 function LPConfettiPieces({ seed = 0, count = 22 }: { seed?: number; count?: number }) {
   const pieces = Array.from({ length: count }, (_, i) => {
@@ -1388,7 +1388,7 @@ function LPSparklePieces() {
       {sparks.map(s => (
         <svg key={s.id} className="LP-cel-sparkle" width={s.size} height={s.size} viewBox="0 0 24 24"
           style={{ left: s.left, top: s.top, animationDelay: s.delay }}
-          fill="#3B82F6">
+          fill="#DB5B1F">
           <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
         </svg>
       ))}
@@ -1415,7 +1415,7 @@ function LPSuccessCelebration({ title, sub, amountText, onDone, duration = 1800 
       <div className="LP-cel-ring2" />
       <div className="LP-cel-stamp-wrap">
         <div className="LP-cel-check">
-          <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6 9 17l-5-5" />
           </svg>
         </div>
@@ -1550,7 +1550,7 @@ function ModeDD({ value, onChange }: { value: string; onChange: (v: string) => v
               <div key={k} role="option" tabIndex={-1} aria-selected={value === k} className={`LP-dd-item LP-dd-item-mode${value === k ? ' sel' : ''}`} onClick={() => pick(k)}>
                 <span className={`LP-dd-check${value === k ? ' checked' : ''}`}>
                   {value === k && (
-                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
                   )}
@@ -2326,7 +2326,7 @@ export default function LabourPayment() {
               Click below to create them automatically — or run <code>php artisan migrate</code> in your terminal.
             </div>
             <button className="WP-btn WP-btn-primary" onClick={runSetup} disabled={settingUp}>
-              <Ico n="setup" s={14} c="#fff" />
+              <Ico n="setup" s={14} c="#faf9f7" />
               {settingUp ? 'Creating Tables…' : 'Create Tables Now'}
             </button>
           </div>
@@ -2425,7 +2425,7 @@ export default function LabourPayment() {
 
                   {/* PAYMENTS COUNT START */}
                   <div className="ERP-stat">
-                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#60A5FA)' }} />
+                    <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--info),#F0834D)' }} />
                     <div className="ERP-stat-label">Payments</div>
                     <div className="ERP-stat-val" style={{ color: 'var(--info)', fontSize: 13, fontWeight: 800 }}>
                       <AnimCount value={selectedWorker.sessions.length} />
@@ -2876,7 +2876,7 @@ export default function LabourPayment() {
                             <div className="WP-split-preview">
                               {/* Live Preview Start */}
                               <div className="WP-split-head">
-                                <Ico n="split" s={13} c="#fff" />
+                                <Ico n="split" s={13} c="#faf9f7" />
                                 Live Preview — Ordered Close (FIFO · oldest bill first)
                               </div>
                               {/* Live Preview End */}
@@ -2949,7 +2949,7 @@ export default function LabourPayment() {
 
                                 {/* Selected Start */}
                                 <div className="WP-split-bar-item">
-                                  Closed: <b style={{ color: '#C47E0A' }}>
+                                  Closed: <b style={{ color: '#9A3412' }}>
                                     {Object.values(splitPreview).filter(s => s.is_closed).length}
                                   </b>/{selectedPersons.length} selected
                                 </div>
@@ -2996,7 +2996,7 @@ export default function LabourPayment() {
                               onClick={handlePay}
                               disabled={saving || !payAmount || parsedAmount <= 0 || selectedPersons.length === 0 || parsedAmount > selectedOutstanding + 0.005}
                             >
-                              <Ico n="check" s={14} c="#fff" />
+                              <Ico n="check" s={14} c="#faf9f7" />
                               {saving
                                 ? (syncDaybook ? 'Saving & Syncing…' : 'Saving…')
                                 : (syncDaybook ? 'Confirm & Sync Payment' : 'Confirm Payment')}
@@ -3011,7 +3011,7 @@ export default function LabourPayment() {
                     ) : (
                       <div className="WP-panel" style={{ padding: '28px', textAlign: 'center' }}>
                         <div style={{ fontSize: 31.5, marginBottom: 8 }}>✅</div>
-                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, fontWeight: 800, color: '#C47E0A', letterSpacing: 1 }}>
+                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, fontWeight: 800, color: '#9A3412', letterSpacing: 1 }}>
                           ALL PAYMENTS CLEARED
                         </div>
                         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-4)', marginTop: 6 }}>
@@ -3116,7 +3116,7 @@ export default function LabourPayment() {
 
                             {!workerBioMatched && !dbDetailsOpen && (
                               <div className="LP-db-warn">
-                                <SIco n="alert" s={10} c="#2563EB" />
+                                <SIco n="alert" s={10} c="#C2410C" />
                                 No party auto-matched — <button type="button" onClick={() => setDbDetailsOpen(true)}>select one</button> before recording.
                               </div>
                             )}
@@ -3229,7 +3229,7 @@ export default function LabourPayment() {
                                 onClick={() => setExpandedSession(expandedSession === session.id ? null : session.id)}
                               >
                                 <div className="WP-session-icon">
-                                  <Ico n="check" s={16} c="#C47E0A" />
+                                  <Ico n="check" s={16} c="#9A3412" />
                                 </div>
                                 <div style={{ flex: 1 }}>
                                   <div className="WP-session-amount" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -3257,7 +3257,7 @@ export default function LabourPayment() {
                                       onClick={e => { e.stopPropagation(); askDeleteSession(session); }}
                                       title="Delete payment"
                                     >
-                                      <Ico n="trash" s={11} c="#fff" />
+                                      <Ico n="trash" s={11} c="#faf9f7" />
                                     </button>
                                   ) : (
                                     <CreatorBadge name={session.created_by_name} />
@@ -3475,7 +3475,7 @@ export default function LabourPayment() {
                                               onClick={e => { e.stopPropagation(); askDeleteSession(session); }}
                                               title="Delete payment"
                                             >
-                                              <Ico n="trash" s={11} c="#fff" />
+                                              <Ico n="trash" s={11} c="#faf9f7" />
                                             </button>
                                           ) : (
                                             <CreatorBadge name={session.created_by_name} />
@@ -3593,7 +3593,7 @@ export default function LabourPayment() {
 
                     {/* TOTAL WORKERS START */}
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#60A5FA)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#F0834D)' }} />
                       <div className="ERP-stat-label">Total Workers</div>
                       <div className="ERP-stat-val" style={{ color: 'var(--ember)', fontSize: 13, fontWeight: 800 }}>
                         <AnimCount value={pageSummary.total_workers} />
@@ -3603,7 +3603,7 @@ export default function LabourPayment() {
 
                     {/* TOTAL EARNED START */}
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#2563EB,#60A5FA)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C2410C,#F0834D)' }} />
                       <div className="ERP-stat-label">Total Earned</div>
                       <div className="ERP-stat-val" style={{ color: 'var(--amt-strong)', fontSize: 13, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
@@ -3614,7 +3614,7 @@ export default function LabourPayment() {
 
                     {/* TOTAL PAID START */}
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C47E0A,#3B82F6)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#9A3412,#DB5B1F)' }} />
                       <div className="ERP-stat-label">Total Paid</div>
                       <div className="ERP-stat-val" style={{ color: 'var(--amt-strong)', fontSize: 13, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
@@ -3625,7 +3625,7 @@ export default function LabourPayment() {
 
                     {/* TOTAL UNPAID START */}
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#60A5FA,var(--ember-mid))' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#F0834D,var(--ember-mid))' }} />
                       <div className="ERP-stat-label">Total Unpaid</div>
                       <div className="ERP-stat-val" style={{ color: 'var(--amt-strong)', fontSize: 13, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
@@ -3878,7 +3878,7 @@ export default function LabourPayment() {
                 {sessionsSummary && (
                   <div className="ERP-stats">
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#60A5FA)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,var(--ember),#F0834D)' }} />
                       <div className="ERP-stat-label">Total Paid</div>
                       <div className="ERP-stat-val" style={{ color: 'var(--amt-strong)', fontSize: 13, fontWeight: 800 }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--text-4)', verticalAlign: 'super', marginRight: 2 }}>₹</span>
@@ -3887,23 +3887,23 @@ export default function LabourPayment() {
                     </div>
 
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#2563EB,#60A5FA)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C2410C,#F0834D)' }} />
                       <div className="ERP-stat-label">Payment Sessions</div>
-                      <div className="ERP-stat-val" style={{ color: '#2563EB', fontSize: 13, fontWeight: 800 }}>
+                      <div className="ERP-stat-val" style={{ color: '#C2410C', fontSize: 13, fontWeight: 800 }}>
                         <AnimCount value={sessionsSummary.sessions_count} />
                       </div>
                     </div>
 
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#C47E0A,#3B82F6)' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#9A3412,#DB5B1F)' }} />
                       <div className="ERP-stat-label">Workers Paid</div>
-                      <div className="ERP-stat-val" style={{ color: '#C47E0A', fontSize: 13, fontWeight: 800 }}>
+                      <div className="ERP-stat-val" style={{ color: '#9A3412', fontSize: 13, fontWeight: 800 }}>
                         <AnimCount value={sessionsSummary.workers_paid} />
                       </div>
                     </div>
 
                     <div className="ERP-stat">
-                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#60A5FA,var(--ember-mid))' }} />
+                      <div className="ERP-stat-accent" style={{ background: 'linear-gradient(90deg,#F0834D,var(--ember-mid))' }} />
                       <div className="ERP-stat-label">By Mode</div>
                       <div className="LP-stat-rows" style={{ marginTop: 6 }}>
                         {sessionsSummary.by_mode.length === 0 ? (
@@ -4088,7 +4088,7 @@ export default function LabourPayment() {
                                           onClick={e => { e.stopPropagation(); askDeleteSession(s); }}
                                           title="Delete payment"
                                         >
-                                          <Ico n="trash" s={11} c="#fff" />
+                                          <Ico n="trash" s={11} c="#faf9f7" />
                                         </button>
                                       ) : (
                                         <CreatorBadge name={s.created_by_name} />
@@ -4183,7 +4183,7 @@ export default function LabourPayment() {
               <g className="LP-run-track">
                 <g transform="translate(25,5)">
                   <g className="LP-run-flip">
-                    <g className="LP-run-lines" opacity="0.55" stroke="var(--ember-light,#60A5FA)" strokeWidth="3.1" strokeLinecap="round">
+                    <g className="LP-run-lines" opacity="0.55" stroke="var(--ember-light,#F0834D)" strokeWidth="3.1" strokeLinecap="round">
                       <line className="LP-run-line l1" x1="-30" y1="32.5" x2="-10" y2="32.5" />
                       <line className="LP-run-line l2" x1="-25" y1="42.5" x2="-10" y2="42.5" />
                       <line className="LP-run-line l3" x1="-20" y1="52.5" x2="-10" y2="52.5" />
@@ -4191,32 +4191,32 @@ export default function LabourPayment() {
                     <g className="LP-run-figure">
                       <g transform="translate(14,22.5)">
                         <g className="LP-run-arm-back">
-                          <line x1="0" y1="0" x2="-16.3" y2="12.5" stroke="var(--ember-light,#60A5FA)" strokeWidth="9.4" strokeLinecap="round" />
-                          <circle cx="-16.3" cy="12.5" r="4.7" fill="var(--ember-light,#60A5FA)" />
+                          <line x1="0" y1="0" x2="-16.3" y2="12.5" stroke="var(--ember-light,#F0834D)" strokeWidth="9.4" strokeLinecap="round" />
+                          <circle cx="-16.3" cy="12.5" r="4.7" fill="var(--ember-light,#F0834D)" />
                         </g>
                       </g>
                       <g transform="translate(14,47.5)">
                         <g className="LP-run-leg-back">
-                          <line x1="0" y1="0" x2="-17.5" y2="22.5" stroke="var(--ember-light,#60A5FA)" strokeWidth="10.6" strokeLinecap="round" />
-                          <circle cx="-17.5" cy="22.5" r="5.4" fill="var(--ember-light,#60A5FA)" />
+                          <line x1="0" y1="0" x2="-17.5" y2="22.5" stroke="var(--ember-light,#F0834D)" strokeWidth="10.6" strokeLinecap="round" />
+                          <circle cx="-17.5" cy="22.5" r="5.4" fill="var(--ember-light,#F0834D)" />
                         </g>
                       </g>
 
                       <g transform="rotate(8,14,35)">
-                        <line x1="14" y1="18.8" x2="14" y2="48.8" stroke="var(--ember-light,#60A5FA)" strokeWidth="11.9" strokeLinecap="round" />
+                        <line x1="14" y1="18.8" x2="14" y2="48.8" stroke="var(--ember-light,#F0834D)" strokeWidth="11.9" strokeLinecap="round" />
                       </g>
-                      <circle cx="15" cy="8.1" r="10.6" fill="var(--ember-light,#60A5FA)" />
+                      <circle cx="15" cy="8.1" r="10.6" fill="var(--ember-light,#F0834D)" />
 
                       <g transform="translate(14,47.5)">
                         <g className="LP-run-leg-front">
-                          <line x1="0" y1="0" x2="18.8" y2="20" stroke="var(--ember-light,#60A5FA)" strokeWidth="11.3" strokeLinecap="round" />
-                          <circle cx="18.8" cy="20" r="5.7" fill="var(--ember-light,#60A5FA)" />
+                          <line x1="0" y1="0" x2="18.8" y2="20" stroke="var(--ember-light,#F0834D)" strokeWidth="11.3" strokeLinecap="round" />
+                          <circle cx="18.8" cy="20" r="5.7" fill="var(--ember-light,#F0834D)" />
                         </g>
                       </g>
                       <g transform="translate(14,22.5)">
                         <g className="LP-run-arm-front">
-                          <line x1="0" y1="0" x2="16.3" y2="10" stroke="var(--ember-light,#60A5FA)" strokeWidth="10" strokeLinecap="round" />
-                          <circle cx="16.3" cy="10" r="4.9" fill="var(--ember-light,#60A5FA)" />
+                          <line x1="0" y1="0" x2="16.3" y2="10" stroke="var(--ember-light,#F0834D)" strokeWidth="10" strokeLinecap="round" />
+                          <circle cx="16.3" cy="10" r="4.9" fill="var(--ember-light,#F0834D)" />
                         </g>
                       </g>
                     </g>

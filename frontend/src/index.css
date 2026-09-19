@@ -26,7 +26,7 @@
 /* ── Firefox scrollbar ── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #fe9307 transparent;
+  scrollbar-color: #EA580C transparent;
 }
 
 /* ── Base (dark pages — login, dashboard) ── */
@@ -42,10 +42,10 @@
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
-    #ff9f3a 0%,
-    #fe9307 35%,
-    #FF6B00 80%,
-    #E05F00 100%
+    #F0834D 0%,
+    #EA580C 35%,
+    #C2410C 80%,
+    #9A3412 100%
   );
   border-radius: 99px;
   border: 1px solid rgba(255,255,255,0.06);
@@ -57,10 +57,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
-    #fdc87a 0%,
-    #ff9f3a 25%,
-    #fe9307 60%,
-    #FF6B00 100%
+    #FBC9A8 0%,
+    #F0834D 25%,
+    #EA580C 60%,
+    #C2410C 100%
   );
   box-shadow:
     0 0 8px  rgba(254,147,7,0.55),
@@ -71,10 +71,10 @@
 ::-webkit-scrollbar-thumb:active {
   background: linear-gradient(
     180deg,
-    #ffe0a0 0%,
-    #fdc87a 20%,
-    #fe9307 55%,
-    #FF6B00 100%
+    #FDE0CB 0%,
+    #FBC9A8 20%,
+    #EA580C 55%,
+    #C2410C 100%
   );
   box-shadow:
     0 0 12px rgba(254,147,7,0.70),
@@ -102,9 +102,9 @@
 .ERP-scroll ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
-    #ff9f3a 0%,
-    #fe9307 40%,
-    #FF6B00 100%
+    #F0834D 0%,
+    #EA580C 40%,
+    #C2410C 100%
   );
   border: 1.5px solid rgba(255,255,255,0.55);
   box-shadow:
@@ -115,9 +115,9 @@
 .ERP-scroll ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
-    #fdc87a 0%,
-    #fe9307 45%,
-    #FF6B00 100%
+    #FBC9A8 0%,
+    #EA580C 45%,
+    #C2410C 100%
   );
   box-shadow:
     0 0 10px rgba(254,147,7,0.55),
@@ -131,12 +131,12 @@
 .sb-thin::-webkit-scrollbar        { width: 3px; height: 3px; }
 .sb-thin::-webkit-scrollbar-track  { background: transparent; }
 .sb-thin::-webkit-scrollbar-thumb  {
-  background: linear-gradient(180deg, #fe9307, #FF6B00);
+  background: linear-gradient(180deg, #EA580C, #C2410C);
   border-radius: 99px;
   border: none;
 }
 .sb-thin::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #fdc87a, #fe9307);
+  background: linear-gradient(180deg, #FBC9A8, #EA580C);
   box-shadow: 0 0 6px rgba(254,147,7,0.50);
 }
 
@@ -160,9 +160,9 @@
 ::-webkit-scrollbar-thumb:horizontal {
   background: linear-gradient(
     90deg,
-    #ff9f3a 0%,
-    #fe9307 40%,
-    #FF6B00 100%
+    #F0834D 0%,
+    #EA580C 40%,
+    #C2410C 100%
   );
 }
 
@@ -170,11 +170,11 @@
 aside::-webkit-scrollbar        { width: 3px; }
 aside::-webkit-scrollbar-track  { background: transparent; }
 aside::-webkit-scrollbar-thumb  {
-  background: linear-gradient(180deg, #fe9307, #FF6B00);
+  background: linear-gradient(180deg, #EA580C, #C2410C);
   border-radius: 99px;
 }
 aside::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #fdc87a, #fe9307);
+  background: linear-gradient(180deg, #FBC9A8, #EA580C);
   box-shadow: 0 0 6px rgba(254,147,7,0.45);
 }
 

@@ -46,19 +46,19 @@ function App() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '100vh',
-                background: '#0E0B07',
+                background: '#231C14',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '9.5px',
-                color: '#5A4A3A',
+                color: '#524532',
                 letterSpacing: '3px',
                 textTransform: 'uppercase',
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
                     <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
-                        <rect width="42" height="42" rx="9" fill="#1E1408" />
-                        <polygon points="21,4 36,12.5 36,29.5 21,38 6,29.5 6,12.5" stroke="#E8720C" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
+                        <rect width="42" height="42" rx="9" fill="#231C14" />
+                        <polygon points="21,4 36,12.5 36,29.5 21,38 6,29.5 6,12.5" stroke="#EA580C" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
                         <text x="21" y="23" textAnchor="middle" dominantBaseline="middle"
-                            fontFamily="serif" fontSize="9.5" fontWeight="700" fill="#E8720C">T</text>
+                            fontFamily="serif" fontSize="9.5" fontWeight="700" fill="#EA580C">T</text>
                     </svg>
                     <span>Loading…</span>
                 </div>

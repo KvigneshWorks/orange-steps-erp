@@ -99,24 +99,24 @@ const CSS = `
   --gr:  var(--success); --gr-t: var(--success-bg);  --gr-r: var(--success-bd);
   --rd:  var(--error);   --rd-t: var(--error-bg);   --rd-r: var(--error-bd);
   --gd:  var(--warn);    --gd-t: var(--warn-bg);    --gd-r: var(--warn-bd);
-  --pu:  #6A24B8; --pu-t: rgba(106,36,184,.07); --pu-r: rgba(106,36,184,.22);
+  --pu:  #C2410C; --pu-t: rgba(194,65,12,.07); --pu-r: rgba(194,65,12,.22);
   --co:  var(--info); --co-t: var(--info-bg);  --co-r: var(--info-bd);
   /* Collect Payment / Add Budget / wizard accents — all Project-theme
      orange now (three darker-to-brighter shades kept only so the three
      figures — e.g. Budget vs Collected vs GST — stay visually tellable
      apart), replacing the old teal/amber/purple trio. */
-  --jade:  #2563EB; --jade2: #3B82F6; --jade3: #60A5FA;
-  --jade-t: rgba(37,99,235,.08); --jade-g: rgba(37,99,235,.18); --jade-r: rgba(37,99,235,.26);
-  --gold:  #7C3AED; --gold2: #9333EA; --gold3: #A78BFA;
-  --gold-t: rgba(124,58,237,.08); --gold-g: rgba(124,58,237,.18); --gold-r: rgba(124,58,237,.26);
-  --iris:  #9A3412; --iris2: #1D4ED8;
-  --iris-t: rgba(29,78,216,.08); --iris-r: rgba(29,78,216,.24);
-  --cobalt: #1743AC; --cobalt2: #2563EB;
-  --cobalt-t: rgba(23,67,172,.08); --cobalt-r: rgba(23,67,172,.24);
-  --crimson: #B01F35; --crimson2: #DC2626;
-  --crimson-t: rgba(176,31,53,.08); --crimson-r: rgba(176,31,53,.24);
-  --emerald: #047054;
-  --emerald-t: rgba(4,112,84,.08); --emerald-r: rgba(4,112,84,.26);
+  --jade:  #C2410C; --jade2: #DB5B1F; --jade3: #F0834D;
+  --jade-t: rgba(194,65,12,.08); --jade-g: rgba(194,65,12,.18); --jade-r: rgba(194,65,12,.26);
+  --gold:  #C2410C; --gold2: #DB5B1F; --gold3: #FBC9A8;
+  --gold-t: rgba(194,65,12,.08); --gold-g: rgba(194,65,12,.18); --gold-r: rgba(194,65,12,.26);
+  --iris:  #9A3412; --iris2: #9A3412;
+  --iris-t: rgba(154,52,18,.08); --iris-r: rgba(154,52,18,.24);
+  --cobalt: #9A3412; --cobalt2: #C2410C;
+  --cobalt-t: rgba(154,52,18,.08); --cobalt-r: rgba(154,52,18,.24);
+  --crimson: #9A3412; --crimson2: #DB5B1F;
+  --crimson-t: rgba(154,52,18,.08); --crimson-r: rgba(154,52,18,.24);
+  --emerald: #A6491D;
+  --emerald-t: rgba(166,73,29,.08); --emerald-r: rgba(166,73,29,.26);
   --sh-sm:  var(--sh-card);
   --sh-md:  var(--sh-hover);
   --sh-lg:  0 10px 38px rgba(0,0,0,.11),0 20px 60px rgba(0,0,0,.06);
@@ -140,7 +140,7 @@ const CSS = `
 @keyframes CP-stagger   { from{opacity:0;transform:translateY(10px) scale(.985)} to{opacity:1;transform:none} }
 @keyframes CP-flip3d    { 0%{opacity:0;transform:perspective(600px) rotateX(90deg)} 60%{transform:perspective(600px) rotateX(-6deg);opacity:1} 100%{transform:perspective(600px) rotateX(0)} }
 @keyframes CP-float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-@keyframes CP-glow      { 0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.25)} 50%{box-shadow:0 0 0 6px rgba(59,130,246,.08)} }
+@keyframes CP-glow      { 0%,100%{box-shadow:0 0 0 0 rgba(219,91,31,.25)} 50%{box-shadow:0 0 0 6px rgba(219,91,31,.08)} }
 @keyframes CP-scanLine  { 0%{left:-60%;opacity:0} 20%{opacity:1} 80%{opacity:.7} 100%{left:120%;opacity:0} }
 @keyframes CP-pulseRing { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(1.7);opacity:0} }
 @keyframes CP-numTick   { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
@@ -149,7 +149,7 @@ const CSS = `
 @keyframes CP-rowIn     { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:none} }
 @keyframes CP-txIn      { from{opacity:0;transform:translateX(14px) scale(.97)} to{opacity:1;transform:none} }
 @keyframes CP-bdIn      { from{opacity:0} to{opacity:1} }
-@keyframes CP-pulseJade { 0%,100%{box-shadow:0 0 0 0 rgba(6,107,102,.5)} 60%{box-shadow:0 0 0 7px rgba(6,107,102,0)} }
+@keyframes CP-pulseJade { 0%,100%{box-shadow:0 0 0 0 rgba(194,65,12,.5)} 60%{box-shadow:0 0 0 7px rgba(194,65,12,0)} }
 
 /* ── SUCCESS CELEBRATION — ported from Accounts Payable's post-payment
    animation (confetti burst, twinkling sparkles, glow-pulsing check,
@@ -165,8 +165,8 @@ const CSS = `
   100%{ transform: scale(1) rotate(0deg); opacity: 1; }
 }
 @keyframes cp-check-glow {
-  0%, 100% { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 0 rgba(29,78,216,0.35); }
-  50%      { box-shadow: 0 8px 28px rgba(29,78,216,0.28), 0 0 0 10px rgba(29,78,216,0); }
+  0%, 100% { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 0 rgba(154,52,18,0.35); }
+  50%      { box-shadow: 0 8px 28px rgba(154,52,18,0.28), 0 0 0 10px rgba(154,52,18,0); }
 }
 @keyframes cp-confetti-fly {
   0%   { opacity:1; transform:translate(0,0) rotate(0deg); }
@@ -188,20 +188,20 @@ const CSS = `
 }
 .CP-closed-celebrate {
   position: absolute; inset: 0; z-index: 20; border-radius: 22px;
-  background: linear-gradient(160deg, #F1F5F9 0%, #F3E8FF 55%, #EDE9FE 100%);
-  border: 2px solid #BFDBFE;
+  background: linear-gradient(160deg, #F5F3EF 0%, #FBC9A8 55%, #FBC9A8 100%);
+  border: 2px solid #FBC9A8;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   overflow: hidden;
 }
 @media(max-width:640px){ .CP-closed-celebrate { border-radius: 18px 18px 0 0; } }
 .CP-closed-ring {
   position: absolute; width: 180px; height: 180px; border-radius: 50%;
-  border: 2.5px solid rgba(29,78,216,0.18);
+  border: 2.5px solid rgba(154,52,18,0.18);
   animation: cp-ring-pulse 1s ease-out 0.1s both;
 }
 .CP-closed-ring2 {
   position: absolute; width: 260px; height: 260px; border-radius: 50%;
-  border: 1.5px solid rgba(29,78,216,0.09);
+  border: 1.5px solid rgba(154,52,18,0.09);
   animation: cp-ring-pulse 1.1s ease-out 0.25s both;
 }
 .CP-sparkle { position: absolute; z-index: 2; pointer-events: none; animation: cp-sparkle-twinkle 1s ease-out both; }
@@ -212,35 +212,35 @@ const CSS = `
 }
 .CP-closed-check {
   width: 80px; height: 80px; border-radius: 50%;
-  background: linear-gradient(135deg, #2563EB, #3B82F6);
-  border: 3px solid rgba(29,78,216,0.18);
-  box-shadow: 0 8px 28px rgba(29,78,216,0.28);
+  background: linear-gradient(135deg, #C2410C, #DB5B1F);
+  border: 3px solid rgba(154,52,18,0.18);
+  box-shadow: 0 8px 28px rgba(154,52,18,0.28);
   display: flex; align-items: center; justify-content: center;
   animation: cp-check-glow 1.4s ease-in-out 0.7s infinite;
 }
 .CP-closed-txt {
   font-family: var(--ff-m,'JetBrains Mono',monospace);
-  font-size: 19.5px; font-weight: 900; color: #2563EB;
+  font-size: 19.5px; font-weight: 900; color: #C2410C;
   letter-spacing: 4px; text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(29,78,216,0.10);
+  text-shadow: 0 1px 0 rgba(154,52,18,0.10);
 }
-.CP-closed-sub { font-family: var(--ff-b,'Space Grotesk',sans-serif); font-size: 11.5px; color: #92400e; margin-top: -8px; font-weight: 700; }
+.CP-closed-sub { font-family: var(--ff-b,'Space Grotesk',sans-serif); font-size: 11.5px; color: #9A3412; margin-top: -8px; font-weight: 700; }
 .CP-closed-amt-badge {
-  position: relative; padding: 8px 20px; background: #fff;
-  border: 1.5px solid #BFDBFE; box-shadow: 0 2px 12px rgba(29,78,216,0.10);
+  position: relative; padding: 8px 20px; background: #faf9f7;
+  border: 1.5px solid #FBC9A8; box-shadow: 0 2px 12px rgba(154,52,18,0.10);
   border-radius: 100px; font-family: var(--ff-m,'JetBrains Mono',monospace);
-  font-size: 16px; font-weight: 800; color: #2563EB; margin-top: 4px; overflow: hidden;
+  font-size: 16px; font-weight: 800; color: #C2410C; margin-top: 4px; overflow: hidden;
 }
 .CP-closed-amt-badge::after {
   content: ''; position: absolute; top: 0; bottom: 0; width: 40%;
-  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(219,91,31,0.35), transparent);
   animation: cp-badge-shimmer 1.6s ease-in-out 0.9s infinite;
 }
 .CP-confetti-piece { position: absolute; border-radius: 3px; animation: cp-confetti-fly 1.1s ease-out both; }
 
 .CP-root { font-family:var(--ff-b); background:var(--surface); min-height:100%; color:var(--t1); position:relative; -webkit-font-smoothing:antialiased; }
 .CP-root *, .CP-root *::before, .CP-root *::after { box-sizing:border-box; }
-.CP-root::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle,rgba(107,107,107,0.07) 1px,transparent 1px); background-size:28px 28px; pointer-events:none; z-index:0; }
+.CP-root::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle,rgba(107,93,72,0.07) 1px,transparent 1px); background-size:28px 28px; pointer-events:none; z-index:0; }
 
 /* Page-open runner intro (see PageOpenIntro.tsx). Same mechanism as the
    main Accounts Payable / Cash Book pages: real content is hidden with
@@ -279,11 +279,11 @@ const CSS = `
 .CP-live-dot::after { content:''; position:absolute; inset:-3px; border-radius:50%; background:var(--or-g); animation:CP-pulseRing 2.2s ease-in-out infinite; }
 
 /* BUTTONS */
-.CP-btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 22px; border-radius:var(--r2); font-family:var(--ff-m); font-size: 9px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; border:none; background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%); color:#fff; box-shadow:var(--sh-or); transition:transform .2s,box-shadow .2s,background .2s; }
-.CP-btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:var(--sh-or2); background:linear-gradient(135deg,#60A5FA 0%,#2563EB 100%); }
+.CP-btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 22px; border-radius:var(--r2); font-family:var(--ff-m); font-size: 9px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; border:none; background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%); color:#faf9f7; box-shadow:var(--sh-or); transition:transform .2s,box-shadow .2s,background .2s; }
+.CP-btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:var(--sh-or2); background:linear-gradient(135deg,#F0834D 0%,#C2410C 100%); }
 .CP-btn-primary:disabled { opacity:.45; cursor:not-allowed; }
-.CP-btn-add-compact { display:inline-flex; align-items:center; gap:6px; padding:7px 15px; border-radius:999px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; border:none; background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%); color:#fff; box-shadow:0 4px 14px rgba(29,78,216,.32); transition:transform .18s ease,box-shadow .18s ease,background .18s ease; }
-.CP-btn-add-compact:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 7px 20px rgba(29,78,216,.45); background:linear-gradient(135deg,#60A5FA 0%,#2563EB 100%); }
+.CP-btn-add-compact { display:inline-flex; align-items:center; gap:6px; padding:7px 15px; border-radius:999px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; border:none; background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%); color:#faf9f7; box-shadow:0 4px 14px rgba(154,52,18,.32); transition:transform .18s ease,box-shadow .18s ease,background .18s ease; }
+.CP-btn-add-compact:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 7px 20px rgba(154,52,18,.45); background:linear-gradient(135deg,#F0834D 0%,#C2410C 100%); }
 .CP-btn-add-compact:active { transform:translateY(0) scale(.97); }
 
 /* Header-level "Add Client" action — sits in the page header next to the
@@ -298,9 +298,9 @@ const CSS = `
   display:inline-flex; align-items:center; gap:7px;
   height:34px; padding:0 16px 0 6px; border-radius:100px;
   font-family:var(--ff-m); font-size: 8.5px; font-weight: 800; letter-spacing:1.2px; text-transform:uppercase;
-  white-space:nowrap; cursor:pointer; border:none; color:#fff;
-  background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
-  box-shadow:0 4px 14px rgba(29,78,216,.32), 0 2px 6px rgba(29,78,216,.2);
+  white-space:nowrap; cursor:pointer; border:none; color:#faf9f7;
+  background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%);
+  box-shadow:0 4px 14px rgba(154,52,18,.32), 0 2px 6px rgba(154,52,18,.2);
   transition:transform .2s ease, box-shadow .2s ease;
   animation: CP-hdrAddPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
 }
@@ -314,25 +314,25 @@ const CSS = `
   background:linear-gradient(115deg, transparent, rgba(255,255,255,.35), transparent);
   transform:skewX(-20deg); transition:left .5s ease;
 }
-.CP-btn-header-add:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 20px rgba(29,78,216,.42), 0 3px 8px rgba(29,78,216,.28); }
+.CP-btn-header-add:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 20px rgba(154,52,18,.42), 0 3px 8px rgba(154,52,18,.28); }
 .CP-btn-header-add:hover::after { left:120%; }
 .CP-btn-header-add:active { transform:translateY(0) scale(.96); }
 @media(max-width:760px){ .ERP-hdr-right{ padding-top:0; } }
 .CP-btn-outline { display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 18px; border-radius:var(--r2); font-family:var(--ff-m); font-size: 9px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; background:transparent; border:1.5px solid var(--or); color:var(--ember); transition:all .2s; }
-.CP-btn-outline:hover { background:linear-gradient(135deg,#3B82F6,#2563EB); border-color:transparent; color:#fff; box-shadow:var(--sh-or); transform:translateY(-2px); }
+.CP-btn-outline:hover { background:linear-gradient(135deg,#DB5B1F,#C2410C); border-color:transparent; color:#faf9f7; box-shadow:var(--sh-or); transform:translateY(-2px); }
 .CP-btn-gold { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:var(--r2); font-family:var(--ff-m); font-size: 9px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap; cursor:pointer; background:var(--gd-t); border:1.5px solid var(--gd-r); color:var(--gd); transition:all .2s; }
-.CP-btn-gold:hover { background:var(--gd); color:#fff; border-color:var(--gd); transform:translateY(-2px); }
+.CP-btn-gold:hover { background:var(--gd); color:#faf9f7; border-color:var(--gd); transform:translateY(-2px); }
 .CP-btn-ghost { display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 16px; border-radius:var(--r2); font-family:var(--ff-m); font-size: 9px; font-weight: 800; letter-spacing:1.6px; text-transform:uppercase; white-space:nowrap; cursor:pointer; background:var(--w); border:1.5px solid var(--bd); color:var(--t3); transition:all .18s; box-shadow:var(--sh-sm); }
 .CP-btn-ghost:hover { border-color:var(--or-r); color:var(--or); background:var(--or-t); transform:translateY(-1px); }
 .CP-act { display:inline-flex; align-items:center; gap:4px; padding:5px 10px; border-radius:var(--r-sm); border:1px solid; font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:.8px; text-transform:uppercase; cursor:pointer; transition:all .15s; white-space:nowrap; }
 .CP-act-add  { background:var(--or-t); color:var(--or); border-color:var(--or-r); }
-.CP-act-add:hover  { background:var(--or); color:#fff; transform:translateY(-1px); }
+.CP-act-add:hover  { background:var(--or); color:#faf9f7; transform:translateY(-1px); }
 .CP-act-edit { background:var(--or-t); color:var(--or); border-color:var(--or-r); }
-.CP-act-edit:hover { background:var(--or); color:#fff; transform:translateY(-1px); }
+.CP-act-edit:hover { background:var(--or); color:#faf9f7; transform:translateY(-1px); }
 .CP-act-del  { background:var(--rd-t); color:var(--rd); border-color:var(--rd-r); }
-.CP-act-del:hover  { background:var(--rd); color:#fff; transform:translateY(-1px); }
+.CP-act-del:hover  { background:var(--rd); color:#faf9f7; transform:translateY(-1px); }
 .CP-act-jade { background:var(--jade-t); color:var(--jade); border-color:var(--jade-r); }
-.CP-act-jade:hover { background:var(--jade); color:#fff; transform:translateY(-1px); }
+.CP-act-jade:hover { background:var(--jade); color:#faf9f7; transform:translateY(-1px); }
 
 /* STATS */
 .CP-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:32px; }
@@ -372,10 +372,10 @@ const CSS = `
   grid-template-columns: 300px 1fr;
   flex: 1;
   min-height: 600px;
-  border: 1.5px solid var(--border,#E9EEF5);
+  border: 1.5px solid var(--border,#E8E2D8);
   border-radius: 16px;
   overflow: hidden;
-  background: var(--white,#fff);
+  background: var(--white,#faf9f7);
   box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   margin: 0 40px 32px;
   animation: erp-slide-up 0.45s 0.1s cubic-bezier(0.22,1,0.36,1) both;
@@ -385,32 +385,32 @@ const CSS = `
 
 /* ── SIDEBAR (left) ── */
 .CP-sb {
-  border-right: 1.5px solid var(--border,#E9EEF5);
+  border-right: 1.5px solid var(--border,#E8E2D8);
   display: flex; flex-direction: column;
-  background: #F8FAFC; overflow: hidden; height: 100%;
+  background: #F5F3EF; overflow: hidden; height: 100%;
 }
 
 /* Sidebar hero header */
 .CP-sb-hero {
   padding: 14px 14px 10px;
-  background: linear-gradient(135deg,#F3E8FF 0%,#fff 100%);
-  border-bottom: 1px solid var(--border,#E9EEF5);
+  background: linear-gradient(135deg,#FBC9A8 0%,#faf9f7 100%);
+  border-bottom: 1px solid var(--border,#E8E2D8);
   position: relative; overflow: hidden;
 }
 .CP-sb-hero::before {
   content:''; position:absolute; right:-20px; top:-20px;
   width:80px; height:80px; border-radius:50%;
-  background: radial-gradient(circle, rgba(29,78,216,0.07), transparent 70%);
+  background: radial-gradient(circle, rgba(154,52,18,0.07), transparent 70%);
   pointer-events:none;
 }
 .CP-sb-eyebrow {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
   font-size: 7px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--ember,#2563EB); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+  color: var(--ember,#C2410C); display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
 }
 .CP-sb-dot {
   width: 5px; height: 5px; border-radius: 50%;
-  background: var(--ember,#2563EB);
+  background: var(--ember,#C2410C);
   animation: sb-dot-pulse 2s ease-in-out infinite;
 }
 @keyframes sb-dot-pulse {
@@ -419,26 +419,26 @@ const CSS = `
 }
 .CP-sb-title {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 13px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 13px; font-weight: 800; color: var(--text-1,#231C14);
   margin-bottom: 8px;
 }
 
 /* Search */
 .CP-sb-search {
   display: flex; align-items: center; gap: 7px; padding: 8px 11px;
-  background: #fff; border: 1.5px solid var(--border,#E9EEF5);
+  background: #faf9f7; border: 1.5px solid var(--border,#E8E2D8);
   border-radius: 10px; transition: border-color 0.15s, box-shadow 0.15s;
 }
 .CP-sb-search:focus-within {
-  border-color: var(--ember,#2563EB);
-  box-shadow: 0 0 0 3px rgba(29,78,216,0.08);
+  border-color: var(--ember,#C2410C);
+  box-shadow: 0 0 0 3px rgba(154,52,18,0.08);
 }
 .CP-sb-search input {
   flex: 1; border: none; outline: none; font-size: 9.5px;
   color: var(--text-1); background: transparent;
   font-family: var(--font-mono);
 }
-.CP-sb-search input::placeholder { color: var(--text-4,#9ca3af); }
+.CP-sb-search input::placeholder { color: var(--text-4,#8C7C63); }
 
 /* Count row */
 .CP-sb-count {
@@ -451,20 +451,20 @@ const CSS = `
 }
 .CP-sb-count-num {
   font-family: var(--font-mono); font-size: 8px; font-weight: 800;
-  color: var(--ember,#2563EB); background: #F3E8FF;
-  padding: 1px 7px; border-radius: 100px; border: 1px solid #BFDBFE;
+  color: var(--ember,#C2410C); background: #FBC9A8;
+  padding: 1px 7px; border-radius: 100px; border: 1px solid #FBC9A8;
 }
 
 /* Client card list scroll */
 .CP-cli-list { flex: 1; overflow-y: auto; padding: 4px 0 8px; }
 .CP-cli-list::-webkit-scrollbar { width: 4px; }
-.CP-cli-list::-webkit-scrollbar-thumb { background: var(--border,#E9EEF5); border-radius: 2px; }
+.CP-cli-list::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 2px; }
 
 /* ── Client sidebar card (like CM3-vcard) ── */
 .CP-clicard {
   margin: 4px 10px; border-radius: 12px;
-  border: 1.5px solid var(--border,#E9EEF5);
-  background: #fff; cursor: pointer;
+  border: 1.5px solid var(--border,#E8E2D8);
+  background: #faf9f7; cursor: pointer;
   transition: all 0.18s; position: relative; overflow: hidden;
   animation: vc-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
 }
@@ -473,19 +473,19 @@ const CSS = `
   to   { opacity:1; transform:translateX(0); }
 }
 .CP-clicard:hover {
-  border-color: #BFDBFE;
-  box-shadow: 0 4px 16px rgba(29,78,216,0.1);
+  border-color: #FBC9A8;
+  box-shadow: 0 4px 16px rgba(154,52,18,0.1);
   transform: translateX(2px);
 }
 .CP-clicard.active {
-  border-color: var(--ember,#2563EB);
-  background: #F3E8FF;
-  box-shadow: 0 4px 20px rgba(29,78,216,0.15);
+  border-color: var(--ember,#C2410C);
+  background: #FBC9A8;
+  box-shadow: 0 4px 20px rgba(154,52,18,0.15);
   transform: translateX(3px);
 }
 .CP-clicard-accent {
   position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(180deg,#2563EB,#3B82F6);
+  background: linear-gradient(180deg,#C2410C,#DB5B1F);
   opacity: 0; transition: opacity 0.18s;
 }
 .CP-clicard:hover .CP-clicard-accent,
@@ -497,16 +497,16 @@ const CSS = `
   width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-mono); font-size: 10.5px; font-weight: 900;
-  background: #F3E8FF; border: 1.5px solid #BFDBFE; color: #2563EB;
+  background: #FBC9A8; border: 1.5px solid #FBC9A8; color: #C2410C;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.CP-clicard:hover .CP-clicard-av { transform: scale(1.1) rotate(-3deg); box-shadow: 0 4px 12px rgba(29,78,216,0.18); }
-.CP-clicard.active .CP-clicard-av { transform: scale(1.06); box-shadow: 0 4px 14px rgba(29,78,216,0.22); }
+.CP-clicard:hover .CP-clicard-av { transform: scale(1.1) rotate(-3deg); box-shadow: 0 4px 12px rgba(154,52,18,0.18); }
+.CP-clicard.active .CP-clicard-av { transform: scale(1.06); box-shadow: 0 4px 14px rgba(154,52,18,0.22); }
 
 .CP-clicard-info { flex: 1; min-width: 0; }
 .CP-clicard-name {
   font-family: var(--font-body,'Space Grotesk',sans-serif);
-  font-size: 10px; font-weight: 800; color: var(--text-1,#0F172A);
+  font-size: 10px; font-weight: 800; color: var(--text-1,#231C14);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .CP-clicard-meta {
@@ -518,10 +518,10 @@ const CSS = `
   padding: 0 12px 9px;
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.CP-clicard-bar-wrap { flex: 1; height: 3px; border-radius: 100px; background: #f1f5f9; overflow: hidden; }
+.CP-clicard-bar-wrap { flex: 1; height: 3px; border-radius: 100px; background: #F5F3EF; overflow: hidden; }
 .CP-clicard-bar-fill {
   height: 100%; border-radius: 100px;
-  background: linear-gradient(90deg,#2563EB,#3B82F6);
+  background: linear-gradient(90deg,#C2410C,#DB5B1F);
   transition: width 1s cubic-bezier(0.4,0,0.2,1);
 }
 .CP-clicard-bal {
@@ -537,7 +537,7 @@ const CSS = `
   transform: translateY(-50%);
   display: flex; align-items: center; justify-content: center;
   width: 20px; height: 20px; border-radius: 50%;
-  background: rgba(29,78,216,0.07); color: #2563EB;
+  background: rgba(154,52,18,0.07); color: #C2410C;
   opacity: 0.55; transition: opacity 0.2s, transform 0.2s;
   animation: CP-hint-slide 1.6s ease-in-out infinite;
 }
@@ -554,7 +554,7 @@ const CSS = `
 }
 @keyframes CP-card-attention {
   0%,100% { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-  50%     { box-shadow: 0 0 0 4px rgba(29,78,216,0.18), 0 4px 16px rgba(29,78,216,0.12); }
+  50%     { box-shadow: 0 0 0 4px rgba(154,52,18,0.18), 0 4px 16px rgba(154,52,18,0.12); }
 }
 
 /* Sidebar tap-hint when no client selected */
@@ -569,16 +569,16 @@ const CSS = `
 }
 .CP-sb-tap-icon {
   width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg,rgba(29,78,216,0.12),rgba(59,130,246,0.12));
-  border: 1.5px dashed rgba(29,78,216,0.35);
+  background: linear-gradient(135deg,rgba(154,52,18,0.12),rgba(219,91,31,0.12));
+  border: 1.5px dashed rgba(154,52,18,0.35);
   display: flex; align-items: center; justify-content: center;
   animation: CP-tap-pulse 1.8s ease-in-out infinite;
 }
 @keyframes CP-tap-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(29,78,216,0); }
-  50%     { box-shadow: 0 0 0 6px rgba(29,78,216,0.12); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(154,52,18,0); }
+  50%     { box-shadow: 0 0 0 6px rgba(154,52,18,0.12); }
 }
-.CP-sb-tap-label { font-family:var(--ff-m); font-size: 8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ember,#2563EB); }
+.CP-sb-tap-label { font-family:var(--ff-m); font-size: 8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ember,#C2410C); }
 
 /* ── RIGHT PANEL staggered entry ── */
 .CP-panel-enter { animation: CP-panel-in 0.38s cubic-bezier(0.22,1,0.36,1) both; }
@@ -599,22 +599,22 @@ const CSS = `
 
 /* ── MAIN PANEL (right) ── */
 .CP-main-panel {
-  overflow-y: auto; background: var(--white,#fff); height: 100%;
+  overflow-y: auto; background: var(--white,#faf9f7); height: 100%;
   display: flex; flex-direction: column;
 }
 
 /* Main panel header bar */
 .CP-main-hdr {
   padding: 14px 18px 12px;
-  background: linear-gradient(135deg,#F3E8FF 0%,#fff 100%);
-  border-bottom: 1px solid var(--border,#E9EEF5);
+  background: linear-gradient(135deg,#FBC9A8 0%,#faf9f7 100%);
+  border-bottom: 1px solid var(--border,#E8E2D8);
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 5;
 }
 .CP-main-hdr-left { display: flex; align-items: center; gap: 10px; }
 .CP-main-hdr-icon {
   width: 32px; height: 32px; border-radius: 9px;
-  background: #F3E8FF; border: 1.5px solid #BFDBFE;
+  background: #FBC9A8; border: 1.5px solid #FBC9A8;
   display: flex; align-items: center; justify-content: center;
 }
 .CP-main-hdr-title {
@@ -629,7 +629,7 @@ const CSS = `
 }
 
 /* Main panel content area */
-.CP-main-content { flex: 1; padding: 12px; background: var(--surface,#F1F5F9); overflow-y: auto; }
+.CP-main-content { flex: 1; padding: 12px; background: var(--surface,#F5F3EF); overflow-y: auto; }
 
 /* Empty state (no client selected) */
 .CP-main-empty {
@@ -638,7 +638,7 @@ const CSS = `
 }
 .CP-main-empty-icon {
   width: 60px; height: 60px; border-radius: 50%;
-  background: #F3E8FF; border: 1.5px solid #BFDBFE;
+  background: #FBC9A8; border: 1.5px solid #FBC9A8;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 16px; opacity: 0.7;
 }
@@ -657,8 +657,8 @@ const CSS = `
   display: grid;
   grid-template-columns: 68px 1fr 160px 88px;
   border-radius: 12px; overflow: hidden;
-  border: 1.5px solid var(--border,#E9EEF5);
-  background: #fff; margin-bottom: 8px;
+  border: 1.5px solid var(--border,#E8E2D8);
+  background: #faf9f7; margin-bottom: 8px;
   transition: box-shadow 0.22s, transform 0.22s, border-color 0.22s;
   animation: bc-in 0.32s cubic-bezier(0.4,0,0.2,1) both;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
@@ -667,29 +667,29 @@ const CSS = `
   from { opacity:0; transform:translateY(10px); }
   to   { opacity:1; transform:translateY(0); }
 }
-.CP-pjcard:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.12); transform: translateY(-2px); border-color: #BFDBFE; }
+.CP-pjcard:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.12); transform: translateY(-2px); border-color: #FBC9A8; }
 
 /* Left accent column */
 .CP-pjcard-left {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 12px 6px; gap: 6px;
-  border-right: 1px solid var(--border,#E9EEF5);
-  background: linear-gradient(160deg,#F3E8FF 0%,#F8FAFC 100%);
+  border-right: 1px solid var(--border,#E8E2D8);
+  background: linear-gradient(160deg,#FBC9A8 0%,#F5F3EF 100%);
   position: relative; overflow: hidden;
 }
 .CP-pjcard-left::before {
   content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
-  background: linear-gradient(180deg,#2563EB,#3B82F6);
-  box-shadow: 2px 0 8px rgba(29,78,216,0.2);
+  background: linear-gradient(180deg,#C2410C,#DB5B1F);
+  box-shadow: 2px 0 8px rgba(154,52,18,0.2);
 }
 .CP-pjcard-num {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 17.5px; font-weight: 900; color: var(--ember,#2563EB);
+  font-size: 17.5px; font-weight: 900; color: var(--ember,#C2410C);
   line-height: 1; letter-spacing: -1px;
 }
 .CP-pjcard-icon {
   width: 28px; height: 28px; border-radius: 8px;
-  background: rgba(29,78,216,0.08); border: 1.5px solid rgba(29,78,216,0.2);
+  background: rgba(154,52,18,0.08); border: 1.5px solid rgba(154,52,18,0.2);
   display: flex; align-items: center; justify-content: center;
   transition: transform .18s;
 }
@@ -715,28 +715,28 @@ const CSS = `
   font-family: var(--font-mono); font-size: 8px; font-weight: 800;
   border: 1px solid; white-space: nowrap; letter-spacing: 0.3px;
 }
-.CP-pjcard-chip-type { background:#F3E8FF; color:#2563EB; border-color:#BFDBFE; }
+.CP-pjcard-chip-type { background:#FBC9A8; color:#C2410C; border-color:#FBC9A8; }
 .CP-pjcard-chip-status-active    { background:#f0fdf4; color:#1E9C6A; border-color:#6ee7b7; }
-.CP-pjcard-chip-status-on_hold   { background:#fffbeb; color:#C47E0A; border-color:#fde68a; }
-.CP-pjcard-chip-status-completed { background:#eff6ff; color:#2870CC; border-color:#bfdbfe; }
+.CP-pjcard-chip-status-on_hold   { background:#FDE0CB; color:#9A3412; border-color:#FDE0CB; }
+.CP-pjcard-chip-status-completed { background:#FDE0CB; color:#DB5B1F; border-color:#FBC9A8; }
 .CP-pjcard-date {
   font-family: var(--font-mono); font-size: 8px; color: var(--text-4);
   display: flex; align-items: center; gap: 4px;
 }
 .CP-pjcard-prog-row { display:flex; align-items:center; gap:7px; margin-top:2px; }
-.CP-pjcard-prog-pct { font-family:var(--font-mono); font-size: 8px; font-weight: 800; color:var(--ember,#2563EB); flex-shrink:0; }
-.CP-pjcard-mini-bar { flex:1; height:5px; border-radius:100px; background:#f1f5f9; overflow:hidden; }
+.CP-pjcard-prog-pct { font-family:var(--font-mono); font-size: 8px; font-weight: 800; color:var(--ember,#C2410C); flex-shrink:0; }
+.CP-pjcard-mini-bar { flex:1; height:5px; border-radius:100px; background:#F5F3EF; overflow:hidden; }
 .CP-pjcard-mini-fill {
   height:100%; border-radius:100px;
-  background:linear-gradient(90deg,#2563EB,#3B82F6);
+  background:linear-gradient(90deg,#C2410C,#DB5B1F);
   transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 1px 3px rgba(29,78,216,0.3);
+  box-shadow: 0 1px 3px rgba(154,52,18,0.3);
 }
 /* Right amount */
 .CP-pjcard-right {
   display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
   padding: 11px 14px; gap: 5px; flex-shrink: 0;
-  border-left: 1px solid var(--border,#E9EEF5);
+  border-left: 1px solid var(--border,#E8E2D8);
 }
 .CP-pjcard-amt {
   font-family: var(--font-mono,'JetBrains Mono',monospace);
@@ -751,15 +751,15 @@ const CSS = `
   letter-spacing: 1px; text-transform: uppercase;
   padding: 3px 8px; border-radius: 100px; border: 1px solid;
 }
-.CP-pjcard-status.open  { background:#F3E8FF; color:#2563EB; border-color:#BFDBFE; }
+.CP-pjcard-status.open  { background:#FBC9A8; color:#C2410C; border-color:#FBC9A8; }
 .CP-pjcard-status.done  { background:#f0fdf4; color:#1E9C6A; border-color:#6ee7b7; }
 .CP-pjcard-bal-row { display:flex; gap:5px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
 .CP-pjcard-bal-lbl { font-family:var(--font-mono); font-size: 8px; color:var(--text-4); }
 /* Actions column — wide with labeled buttons */
 .CP-pjcard-acts {
   display: flex; flex-direction: column; align-items: stretch; justify-content: center;
-  padding: 8px 7px; gap: 5px; border-left: 1px solid var(--border,#E9EEF5);
-  background: linear-gradient(180deg,#F8FAFC,#F1F5F9);
+  padding: 8px 7px; gap: 5px; border-left: 1px solid var(--border,#E8E2D8);
+  background: linear-gradient(180deg,#F5F3EF,#F5F3EF);
 }
 .CP-pjcard-act {
   display: flex; align-items: center; justify-content: center; gap: 4px;
@@ -769,13 +769,13 @@ const CSS = `
   cursor: pointer; transition: all 0.18s; white-space: nowrap;
 }
 .CP-pjcard-act.pay { background:#f0fdf4; border-color:#6ee7b7; color:#1E9C6A; }
-.CP-pjcard-act.pay:hover { background:#1E9C6A; border-color:#1E9C6A; color:#fff; box-shadow:0 3px 12px rgba(5,150,105,0.3); transform:translateY(-1px); }
-.CP-pjcard-act.bgt { background:#F3E8FF; border-color:#BFDBFE; color:#2563EB; }
-.CP-pjcard-act.bgt:hover { background:#2563EB; border-color:#2563EB; color:#fff; box-shadow:0 3px 12px rgba(29,78,216,0.3); transform:translateY(-1px); }
-.CP-pjcard-act.edt { background:rgba(59,130,246,0.07); border-color:rgba(59,130,246,0.3); color:#2870CC; }
-.CP-pjcard-act.edt:hover { background:#2870CC; border-color:#2870CC; color:#fff; box-shadow:0 3px 12px rgba(59,130,246,0.3); transform:translateY(-1px); }
+.CP-pjcard-act.pay:hover { background:#1E9C6A; border-color:#1E9C6A; color:#faf9f7; box-shadow:0 3px 12px rgba(5,150,105,0.3); transform:translateY(-1px); }
+.CP-pjcard-act.bgt { background:#FBC9A8; border-color:#FBC9A8; color:#C2410C; }
+.CP-pjcard-act.bgt:hover { background:#C2410C; border-color:#C2410C; color:#faf9f7; box-shadow:0 3px 12px rgba(154,52,18,0.3); transform:translateY(-1px); }
+.CP-pjcard-act.edt { background:rgba(219,91,31,0.07); border-color:rgba(219,91,31,0.3); color:#DB5B1F; }
+.CP-pjcard-act.edt:hover { background:#DB5B1F; border-color:#DB5B1F; color:#faf9f7; box-shadow:0 3px 12px rgba(219,91,31,0.3); transform:translateY(-1px); }
 .CP-pjcard-act.del { background:rgba(239,68,68,0.07); border-color:rgba(239,68,68,0.25); color:#D93B55; }
-.CP-pjcard-act.del:hover { background:#D93B55; border-color:#D93B55; color:#fff; box-shadow:0 3px 12px rgba(239,68,68,0.3); transform:translateY(-1px); }
+.CP-pjcard-act.del:hover { background:#D93B55; border-color:#D93B55; color:#faf9f7; box-shadow:0 3px 12px rgba(239,68,68,0.3); transform:translateY(-1px); }
 /* Section header inside main panel */
 .CP-main-section-hdr {
   display: flex; align-items: center; justify-content: space-between;
@@ -788,30 +788,30 @@ const CSS = `
 }
 .CP-main-section-pill {
   font-family: var(--font-mono); font-size: 8px; font-weight: 800;
-  color: var(--ember,#2563EB); background: #F3E8FF;
-  padding: 2px 8px; border-radius: 100px; border: 1px solid #BFDBFE;
+  color: var(--ember,#C2410C); background: #FBC9A8;
+  padding: 2px 8px; border-radius: 100px; border: 1px solid #FBC9A8;
 }
 /* Client summary mini-stats inside right panel */
 .CP-main-stats {
   display: grid; grid-template-columns: repeat(4,1fr); gap: 10px;
-  padding: 14px 14px 12px; background: #fff;
-  border-bottom: 1.5px solid var(--border,#E9EEF5);
+  padding: 14px 14px 12px; background: #faf9f7;
+  border-bottom: 1.5px solid var(--border,#E8E2D8);
 }
 @media(max-width:900px){ .CP-main-stats{ grid-template-columns:repeat(2,1fr); } }
 .CP-main-stat {
   padding: 12px 14px 13px; border-radius: 12px;
-  background: var(--surface,#F1F5F9);
-  border: 1.5px solid var(--border,#E9EEF5);
+  background: var(--surface,#F5F3EF);
+  border: 1.5px solid var(--border,#E8E2D8);
   position: relative; overflow: hidden;
   transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
   animation: CP-stagger .35s cubic-bezier(.22,1,.36,1) both;
 }
 .CP-main-stat::before {
   content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background: var(--stat-ac, linear-gradient(90deg,#2563EB,#3B82F6));
+  background: var(--stat-ac, linear-gradient(90deg,#C2410C,#DB5B1F));
   border-radius:12px 12px 0 0; transition: height .18s;
 }
-.CP-main-stat:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.1); border-color:#BFDBFE; }
+.CP-main-stat:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.1); border-color:#FBC9A8; }
 .CP-main-stat:hover::before { height:4px; }
 .CP-main-stat-icon {
   width: 30px; height: 30px; border-radius: 8px;
@@ -833,10 +833,10 @@ const CSS = `
   font-family: var(--font-mono); font-size: 8px; color: var(--text-4); margin-top: 3px;
 }
 /* SKELETON */
-.CP-skel { background:linear-gradient(90deg,var(--off-white,#F1F5F9) 25%,var(--surface-3,#E9EEF5) 50%,var(--off-white,#F1F5F9) 75%); background-size:700px 100%; animation:CP-shimmer 1.4s infinite linear; border-radius:8px; }
+.CP-skel { background:linear-gradient(90deg,var(--off-white,#F5F3EF) 25%,var(--surface-3,#E8E2D8) 50%,var(--off-white,#F5F3EF) 75%); background-size:700px 100%; animation:CP-shimmer 1.4s infinite linear; border-radius:8px; }
 /* EMPTY / FOOTER */
 .CP-empty { display:flex; flex-direction:column; align-items:center; padding:60px 24px; text-align:center; }
-.CP-empty-ico { width:54px;height:54px;border-radius:50%;background:#F3E8FF;border:1.5px solid #BFDBFE;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;opacity:.7; }
+.CP-empty-ico { width:54px;height:54px;border-radius:50%;background:#FBC9A8;border:1.5px solid #FBC9A8;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;opacity:.7; }
 .CP-empty-ttl { font-family:var(--font-body);font-size: 16px;font-style:normal;text-transform:uppercase;font-weight: 800;letter-spacing:0.5px;color:var(--text-2);margin-bottom:6px; }
 .CP-empty-sub { font-family:var(--font-mono);font-size: 8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-4); }
 /* PROJECT DETAIL PANEL */
@@ -848,12 +848,12 @@ const CSS = `
 .CP-detail-stat::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--or),var(--or3)); }
 .CP-detail-stat-lbl { font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; color:var(--t4); margin-bottom:6px; }
 .CP-detail-stat-val { font-family:var(--ff-n); font-size: 17.5px; font-style:normal; font-weight: 800; animation:CP-numTick .4s ease both; font-variant-numeric:tabular-nums; }
-.CP-detail-prog { background:var(--w,#fff); border:1.5px solid rgba(29,78,216,0.18); border-radius:var(--r2); padding:14px 16px; margin-bottom:16px; }
+.CP-detail-prog { background:var(--w,#faf9f7); border:1.5px solid rgba(154,52,18,0.18); border-radius:var(--r2); padding:14px 16px; margin-bottom:16px; }
 .CP-detail-prog-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .CP-detail-prog-lbl { font-family:var(--ff-m); font-size: 8px; font-weight: 800; color:var(--t4); text-transform:uppercase; letter-spacing:1.5px; }
-.CP-detail-prog-pct { font-family:var(--ff-m); font-size: 16px; font-weight: 800; color:var(--ember,#2563EB); letter-spacing:-0.5px; }
-.CP-detail-prog-bar { height:7px; background:rgba(29,78,216,0.1); border-radius:99px; overflow:hidden; }
-.CP-detail-prog-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#1D4ED8,#1D4ED8); animation:CP-barFill .9s .1s cubic-bezier(.34,1.2,.64,1) both; min-width:3px; }
+.CP-detail-prog-pct { font-family:var(--ff-m); font-size: 16px; font-weight: 800; color:var(--ember,#C2410C); letter-spacing:-0.5px; }
+.CP-detail-prog-bar { height:7px; background:rgba(154,52,18,0.1); border-radius:99px; overflow:hidden; }
+.CP-detail-prog-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#9A3412,#9A3412); animation:CP-barFill .9s .1s cubic-bezier(.34,1.2,.64,1) both; min-width:3px; }
 .CP-detail-prog-foot { display:flex; gap:0; margin-top:10px; border-top:1px solid var(--bd); padding-top:10px; }
 .CP-detail-prog-kpi { display:flex; flex-direction:column; gap:2px; flex:1; }
 .CP-detail-prog-kpi:not(:last-child) { border-right:1px solid var(--bd); padding-right:12px; margin-right:12px; }
@@ -863,66 +863,66 @@ const CSS = `
 .CP-detail-actions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:4px; }
 /* TRANSACTION FEED — professional ERP ledger style */
 .CP-tx-feed { border-radius:var(--r2); overflow:hidden; border:1px solid var(--bd); background:var(--w); margin-bottom:12px; }
-.CP-tx-scroll { max-height:320px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(29,78,216,0.25) transparent; }
+.CP-tx-scroll { max-height:320px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(154,52,18,0.25) transparent; }
 .CP-tx-scroll::-webkit-scrollbar { width:5px; }
-.CP-tx-scroll::-webkit-scrollbar-thumb { background:rgba(29,78,216,0.22); border-radius:99px; }
+.CP-tx-scroll::-webkit-scrollbar-thumb { background:rgba(154,52,18,0.22); border-radius:99px; }
 .CP-tx-scroll::-webkit-scrollbar-track { background:transparent; }
-.CP-tx-feed-hdr { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--off-white,#F8FAFC); border-bottom:1.5px solid var(--bd); }
-.CP-tx-feed-title { display:flex; align-items:center; gap:7px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.8px; text-transform:uppercase; color:var(--ember,#2563EB); }
-.CP-tx-count-badge { background:rgba(29,78,216,0.1); color:var(--ember,#2563EB); font-family:var(--ff-m); font-size: 8px; font-weight: 800; padding:2px 9px; border-radius:20px; border:1px solid rgba(29,78,216,0.2); }
+.CP-tx-feed-hdr { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--off-white,#F5F3EF); border-bottom:1.5px solid var(--bd); }
+.CP-tx-feed-title { display:flex; align-items:center; gap:7px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.8px; text-transform:uppercase; color:var(--ember,#C2410C); }
+.CP-tx-count-badge { background:rgba(154,52,18,0.1); color:var(--ember,#C2410C); font-family:var(--ff-m); font-size: 8px; font-weight: 800; padding:2px 9px; border-radius:20px; border:1px solid rgba(154,52,18,0.2); }
 /* ERP ledger row */
 .CP-tx-item { display:grid; grid-template-columns:36px 1fr auto; align-items:center; gap:12px; padding:11px 14px; border-bottom:1px solid var(--bd); transition:background .12s; cursor:pointer; position:relative; animation:CP-txIn .32s cubic-bezier(.22,1,.36,1) both; }
-.CP-tx-item:hover { background:rgba(29,78,216,0.03); }
+.CP-tx-item:hover { background:rgba(154,52,18,0.03); }
 .CP-tx-item:last-child { border-bottom:none; }
-.CP-tx-item::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:2.5px; background:var(--ember,#2563EB); border-radius:0 2px 2px 0; opacity:0; transition:opacity .15s; }
+.CP-tx-item::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:2.5px; background:var(--ember,#C2410C); border-radius:0 2px 2px 0; opacity:0; transition:opacity .15s; }
 .CP-tx-item:hover::before { opacity:1; }
 /* Icon — neutral monochrome */
-.CP-tx-icon-erp { width:34px; height:34px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(29,78,216,0.07); border:1px solid rgba(29,78,216,0.16); }
+.CP-tx-icon-erp { width:34px; height:34px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(154,52,18,0.07); border:1px solid rgba(154,52,18,0.16); }
 .CP-tx-body { min-width:0; }
 .CP-tx-amount { font-family:var(--ff-m); font-size: 11px; font-weight: 800; color:var(--t1); line-height:1.2; font-variant-numeric:tabular-nums; white-space:nowrap; }
 .CP-tx-meta { display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap; }
 .CP-tx-date { font-family:var(--ff-m); font-size: 8px; color:var(--t4); display:flex; align-items:center; gap:3px; }
-.CP-tx-mode-badge { display:inline-flex; align-items:center; font-family:var(--ff-m); font-size: 7.5px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase; padding:2px 8px; border-radius:20px; border:1px solid; white-space:nowrap; background:rgba(29,78,216,0.07); color:var(--ember,#2563EB); border-color:rgba(29,78,216,0.18); }
+.CP-tx-mode-badge { display:inline-flex; align-items:center; font-family:var(--ff-m); font-size: 7.5px; font-weight: 800; letter-spacing:.5px; text-transform:uppercase; padding:2px 8px; border-radius:20px; border:1px solid; white-space:nowrap; background:rgba(154,52,18,0.07); color:var(--ember,#C2410C); border-color:rgba(154,52,18,0.18); }
 .CP-tx-ref { font-family:var(--ff-m); font-size: 8px; color:var(--t4); }
 .CP-tx-right { text-align:right; flex-shrink:0; }
-.CP-tx-total { font-family:var(--ff-m); font-size: 10.5px; color:var(--success,#1E7A5A); font-weight: 800; line-height:1.2; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.CP-tx-total { font-family:var(--ff-m); font-size: 10.5px; color:var(--success,#1E9C6A); font-weight: 800; line-height:1.2; font-variant-numeric:tabular-nums; white-space:nowrap; }
 .CP-tx-gst { font-family:var(--ff-m); font-size: 8px; color:var(--t4); margin-top:2px; }
-.CP-tx-view-more { display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; background:var(--off-white,#F8FAFC); border-top:1px solid var(--bd); font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:1px; color:var(--ember,#2563EB); cursor:pointer; transition:all .18s; }
-.CP-tx-view-more:hover { background:rgba(29,78,216,0.06); gap:14px; }
-.CP-tx-empty { display:flex; flex-direction:column; align-items:center; padding:32px 24px; background:var(--off-white,#F8FAFC); text-align:center; }
-.CP-tx-empty-icon { width:44px; height:44px; border-radius:50%; background:rgba(29,78,216,0.07); border:1.5px dashed rgba(29,78,216,0.25); display:flex; align-items:center; justify-content:center; margin-bottom:11px; }
+.CP-tx-view-more { display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; background:var(--off-white,#F5F3EF); border-top:1px solid var(--bd); font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:1px; color:var(--ember,#C2410C); cursor:pointer; transition:all .18s; }
+.CP-tx-view-more:hover { background:rgba(154,52,18,0.06); gap:14px; }
+.CP-tx-empty { display:flex; flex-direction:column; align-items:center; padding:32px 24px; background:var(--off-white,#F5F3EF); text-align:center; }
+.CP-tx-empty-icon { width:44px; height:44px; border-radius:50%; background:rgba(154,52,18,0.07); border:1.5px dashed rgba(154,52,18,0.25); display:flex; align-items:center; justify-content:center; margin-bottom:11px; }
 .CP-tx-empty-title { font-family:var(--ff-b); font-size: 11.5px; font-style:normal; text-transform:uppercase; font-weight: 800; letter-spacing:0.4px; color:var(--t3); margin-bottom:4px; }
 .CP-tx-empty-sub   { font-family:var(--ff-m); font-size: 8px; color:var(--t4); letter-spacing:1px; text-transform:uppercase; }
 /* ══ COLLECTION PROGRESS PANEL — warm ember theme, 2026 style ══ */
 .CP-prog-panel {
   margin:0 14px 10px; border-radius:18px;
-  border:1px solid var(--border,#E2E8F0); overflow:hidden;
-  background:var(--white,#FFFFFF);
-  box-shadow:0 1px 3px rgba(29,78,216,0.05), 0 12px 30px rgba(29,78,216,0.08);
+  border:1px solid var(--border,#E8E2D8); overflow:hidden;
+  background:var(--white,#FAF9F7);
+  box-shadow:0 1px 3px rgba(154,52,18,0.05), 0 12px 30px rgba(154,52,18,0.08);
   animation:bc-in 0.3s both;
 }
 .CP-prog-hdr {
   display:flex; align-items:center; justify-content:space-between; gap:10px;
   padding:13px 16px;
-  background:linear-gradient(120deg, var(--off-white,#F8FAFC) 0%, var(--surface,#F1F5F9) 55%, #FBEAD8 100%);
-  border-bottom:1px solid rgba(37,99,235,0.14);
+  background:linear-gradient(120deg, var(--off-white,#F5F3EF) 0%, var(--surface,#F5F3EF) 55%, #FBEAD8 100%);
+  border-bottom:1px solid rgba(194,65,12,0.14);
   position:relative; overflow:hidden;
 }
 .CP-prog-hdr::after {
   content:''; position:absolute; left:0; right:0; bottom:0; height:2px;
-  background:linear-gradient(90deg,#2563EB,#2563EB,#ffb347,transparent);
+  background:linear-gradient(90deg,#C2410C,#C2410C,#F0834D,transparent);
 }
 .CP-prog-hdr-left {
   display:flex; align-items:center; gap:8px;
   font-family:var(--ff-m); font-size: 8px; font-weight: 800;
-  letter-spacing:1.8px; text-transform:uppercase; color:#64748B;
+  letter-spacing:1.8px; text-transform:uppercase; color:#6B5D48;
 }
 .CP-prog-hdr-icon {
   width:24px; height:24px; border-radius:8px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(135deg,rgba(37,99,235,0.16),rgba(37,99,235,0.06));
-  border:1px solid rgba(37,99,235,0.28);
-  box-shadow:0 2px 6px rgba(37,99,235,0.12);
+  background:linear-gradient(135deg,rgba(194,65,12,0.16),rgba(194,65,12,0.06));
+  border:1px solid rgba(194,65,12,0.28);
+  box-shadow:0 2px 6px rgba(194,65,12,0.12);
 }
 .CP-prog-hdr-badge {
   font-family:var(--ff-m); font-size: 8px; font-weight: 800;
@@ -930,52 +930,52 @@ const CSS = `
   padding:5px 11px; border-radius:99px; white-space:nowrap;
   border:1px solid transparent;
 }
-.CP-prog-hdr-badge.good { background:rgba(37,99,235,0.12); color:#2563EB; border-color:rgba(37,99,235,0.28); }
-.CP-prog-hdr-badge.mid  { background:rgba(196,126,10,0.14); color:#3B82F6; border-color:rgba(196,126,10,0.28); }
+.CP-prog-hdr-badge.good { background:rgba(194,65,12,0.12); color:#C2410C; border-color:rgba(194,65,12,0.28); }
+.CP-prog-hdr-badge.mid  { background:rgba(154,52,18,0.14); color:#DB5B1F; border-color:rgba(154,52,18,0.28); }
 .CP-prog-hdr-badge.low  { background:rgba(220,38,38,0.12); color:#b91c1c; border-color:rgba(220,38,38,0.24); }
 .CP-prog-body {
   display:flex; align-items:center; gap:22px; padding:20px 18px;
-  background:radial-gradient(circle at 0% 0%, rgba(37,99,235,0.045), transparent 55%);
+  background:radial-gradient(circle at 0% 0%, rgba(194,65,12,0.045), transparent 55%);
 }
 .CP-prog-ring-wrap {
   flex-shrink:0; position:relative; display:flex; align-items:center; justify-content:center;
 }
 .CP-prog-ring-wrap::before {
   content:''; position:absolute; inset:-8px; border-radius:50%;
-  background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 72%);
+  background:radial-gradient(circle, rgba(194,65,12,0.12) 0%, transparent 72%);
 }
 .CP-prog-svg {
   width:136px; height:136px; display:block; position:relative;
-  filter:drop-shadow(0 6px 16px rgba(37,99,235,0.24));
+  filter:drop-shadow(0 6px 16px rgba(194,65,12,0.24));
 }
 /* Right side — elevated KPI cards */
 .CP-prog-stats { flex:1; display:flex; flex-direction:column; gap:9px; min-width:0; }
 .CP-kpi-card {
   position:relative; overflow:hidden;
-  background:linear-gradient(135deg,var(--white,#FFFFFF) 0%,var(--off-white,#F8FAFC) 100%);
-  border:1px solid var(--border,#E2E8F0); border-radius:13px;
+  background:linear-gradient(135deg,var(--white,#FAF9F7) 0%,var(--off-white,#F5F3EF) 100%);
+  border:1px solid var(--border,#E8E2D8); border-radius:13px;
   padding:10px 13px 11px;
-  box-shadow:0 1px 2px rgba(29,78,216,0.03);
+  box-shadow:0 1px 2px rgba(154,52,18,0.03);
   transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   animation:bc-in 0.35s both;
 }
 .CP-kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
-.CP-kpi-card.collected::before { background:linear-gradient(90deg,#2563EB,#2563EB,#ffb347); }
+.CP-kpi-card.collected::before { background:linear-gradient(90deg,#C2410C,#C2410C,#F0834D); }
 .CP-kpi-card.pending::before   { background:linear-gradient(90deg,#D93B55,#f87171); }
-.CP-kpi-card.total::before     { background:linear-gradient(90deg,#1D4ED8,#3B82F6); }
-.CP-kpi-card:hover { transform:translateY(-2px); box-shadow:0 10px 22px rgba(29,78,216,0.1); border-color:rgba(37,99,235,0.3); }
+.CP-kpi-card.total::before     { background:linear-gradient(90deg,#9A3412,#DB5B1F); }
+.CP-kpi-card:hover { transform:translateY(-2px); box-shadow:0 10px 22px rgba(154,52,18,0.1); border-color:rgba(194,65,12,0.3); }
 .CP-kpi-top { display:flex; align-items:center; gap:7px; margin-bottom:7px; }
 .CP-kpi-icon {
   width:21px; height:21px; border-radius:7px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
 }
-.CP-kpi-icon.collected { background:rgba(37,99,235,0.13); }
+.CP-kpi-icon.collected { background:rgba(194,65,12,0.13); }
 .CP-kpi-icon.pending   { background:rgba(220,38,38,0.13); }
-.CP-kpi-icon.total     { background:rgba(37,99,235,0.13); }
+.CP-kpi-icon.total     { background:rgba(194,65,12,0.13); }
 .CP-kpi-lbl { font-family:var(--ff-m); font-size: 8px; color:var(--t4); text-transform:uppercase; letter-spacing:1px; font-weight: 800; }
 .CP-kpi-val { font-family:var(--ff-m); font-size: 14px; font-weight: 800; letter-spacing:-0.3px; margin-bottom:7px; font-variant-numeric:tabular-nums; }
 /* Animated progress bar */
-.CP-kpi-bar-track { height:5px; background:rgba(29,78,216,0.07); border-radius:100px; overflow:hidden; margin-bottom:5px; }
+.CP-kpi-bar-track { height:5px; background:rgba(154,52,18,0.07); border-radius:100px; overflow:hidden; margin-bottom:5px; }
 @keyframes CP-bar-grow { from { width:0 !important; } }
 .CP-kpi-bar-fill { height:100%; border-radius:100px; animation:CP-bar-grow 1s cubic-bezier(0.4,0,0.2,1) both; }
 .CP-kpi-sub { font-family:var(--ff-m); font-size: 7.5px; color:var(--t4); letter-spacing:0.3px; }
@@ -987,13 +987,13 @@ const CSS = `
 .CP-pay-block { margin:0 14px 12px; border-radius:10px; border:1.5px solid var(--bd); overflow:hidden; }
 .CP-pay-block-hdr {
   display:flex; align-items:center; gap:7px; padding:7px 11px;
-  background:rgba(29,78,216,0.04); border-bottom:1px solid var(--bd);
+  background:rgba(154,52,18,0.04); border-bottom:1px solid var(--bd);
   font-family:var(--ff-m); font-size: 8px; font-weight: 800;
-  letter-spacing:1.5px; text-transform:uppercase; color:#2563EB;
+  letter-spacing:1.5px; text-transform:uppercase; color:#C2410C;
 }
 .CP-pay-block-badge {
   display:inline-flex; align-items:center; justify-content:center;
-  background:#2563EB; color:#fff; border-radius:100px;
+  background:#C2410C; color:#faf9f7; border-radius:100px;
   font-size: 7.5px; font-weight: 800; min-width:17px; height:17px;
   padding:0 5px; line-height:1; letter-spacing:0;
 }
@@ -1001,43 +1001,43 @@ const CSS = `
 .CP-pay-row {
   display:grid; grid-template-columns:minmax(64px,auto) 1fr minmax(78px,auto) auto;
   align-items:center; gap:6px; padding:6px 10px;
-  border-bottom:1px solid var(--bd); background:#fff;
+  border-bottom:1px solid var(--bd); background:#faf9f7;
   animation:bc-in 0.28s cubic-bezier(0.4,0,0.2,1) both;
   transition:background 0.12s;
 }
 .CP-pay-row:last-child { border-bottom:none; }
-.CP-pay-row:hover { background:rgba(37,99,235,0.045); }
+.CP-pay-row:hover { background:rgba(194,65,12,0.045); }
 .CP-pay-mode {
   font-family:var(--ff-m); font-size: 7px; font-weight: 800;
-  letter-spacing:0.6px; color:#2563EB;
-  background:rgba(29,78,216,0.08); border:1px solid rgba(29,78,216,0.18);
+  letter-spacing:0.6px; color:#C2410C;
+  background:rgba(154,52,18,0.08); border:1px solid rgba(154,52,18,0.18);
   border-radius:5px; padding:2px 6px; white-space:nowrap; flex-shrink:0;
   justify-self:start;
 }
 /* Highlighted, centered amount */
 .CP-pay-amt {
   font-family:var(--ff-m); font-size: 10px; font-weight: 900;
-  color:#2563EB; text-align:center; justify-self:center;
-  background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(37,99,235,0.04));
-  border:1px solid rgba(37,99,235,0.22); border-radius:7px;
+  color:#C2410C; text-align:center; justify-self:center;
+  background:linear-gradient(135deg,rgba(194,65,12,0.1),rgba(194,65,12,0.04));
+  border:1px solid rgba(194,65,12,0.22); border-radius:7px;
   padding:3px 10px; white-space:nowrap; letter-spacing:-0.2px;
 }
 /* Highlighted date pill */
 .CP-pay-date {
   display:inline-flex; align-items:center; gap:3px; justify-self:end;
-  font-family:var(--ff-m); font-size: 7.5px; font-weight: 800; color:#64748B;
-  background:var(--surface,#F1F5F9); border:1px solid var(--border,#E2E8F0);
+  font-family:var(--ff-m); font-size: 7.5px; font-weight: 800; color:#6B5D48;
+  background:var(--surface,#F5F3EF); border:1px solid var(--border,#E8E2D8);
   border-radius:6px; padding:3px 7px; white-space:nowrap;
 }
 .CP-pay-more {
   width:100%; display:flex; align-items:center; justify-content:center; gap:5px;
   padding:7px 12px; text-align:center;
   font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:0.5px; text-transform:uppercase;
-  color:#2563EB; cursor:pointer;
-  background:rgba(37,99,235,0.045); border:none; border-top:1px solid var(--bd);
+  color:#C2410C; cursor:pointer;
+  background:rgba(194,65,12,0.045); border:none; border-top:1px solid var(--bd);
   transition:background .15s, color .15s;
 }
-.CP-pay-more:hover { background:rgba(37,99,235,0.1); color:#1D4ED8; }
+.CP-pay-more:hover { background:rgba(194,65,12,0.1); color:#9A3412; }
 .CP-pay-empty {
   padding:14px 12px; text-align:center;
   font-family:var(--ff-m); font-size: 9px; color:var(--t4); font-style:italic;
@@ -1048,20 +1048,20 @@ const CSS = `
 }
 
 /* ── BUDGET HISTORY ── */
-.CP-bgt-hist { margin:0 14px 14px; border-radius:10px; border:1.5px solid rgba(37,99,235,0.25); background:linear-gradient(135deg,#F8FAFC,#fff); overflow:hidden; animation:bc-in 0.35s both; }
-.CP-bgt-hist-hdr { display:flex; align-items:center; gap:7px; padding:9px 14px 8px; background:rgba(37,99,235,0.07); border-bottom:1px solid rgba(37,99,235,0.15); font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; color:#1D4ED8; }
-.CP-bgt-hist-count { background:rgba(37,99,235,0.15); color:#1D4ED8; font-family:var(--ff-m); font-size: 8px; font-weight: 800; padding:1px 7px; border-radius:100px; border:1px solid rgba(37,99,235,0.3); margin-left:auto; }
+.CP-bgt-hist { margin:0 14px 14px; border-radius:10px; border:1.5px solid rgba(194,65,12,0.25); background:linear-gradient(135deg,#F5F3EF,#faf9f7); overflow:hidden; animation:bc-in 0.35s both; }
+.CP-bgt-hist-hdr { display:flex; align-items:center; gap:7px; padding:9px 14px 8px; background:rgba(194,65,12,0.07); border-bottom:1px solid rgba(194,65,12,0.15); font-family:var(--ff-m); font-size: 8px; font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; color:#9A3412; }
+.CP-bgt-hist-count { background:rgba(194,65,12,0.15); color:#9A3412; font-family:var(--ff-m); font-size: 8px; font-weight: 800; padding:1px 7px; border-radius:100px; border:1px solid rgba(194,65,12,0.3); margin-left:auto; }
 .CP-bgt-hist-list { padding:8px 12px 10px; display:flex; flex-direction:column; gap:6px; }
-.CP-bgt-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:#fff; border:1px solid rgba(37,99,235,0.15); animation:bc-in 0.3s cubic-bezier(0.4,0,0.2,1) both; transition:box-shadow .2s, border-color .2s; }
-.CP-bgt-item:hover { box-shadow:0 2px 10px rgba(37,99,235,0.1); border-color:rgba(37,99,235,0.3); }
+.CP-bgt-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:#faf9f7; border:1px solid rgba(194,65,12,0.15); animation:bc-in 0.3s cubic-bezier(0.4,0,0.2,1) both; transition:box-shadow .2s, border-color .2s; }
+.CP-bgt-item:hover { box-shadow:0 2px 10px rgba(194,65,12,0.1); border-color:rgba(194,65,12,0.3); }
 .CP-bgt-item-icon { font-size: 14px; flex-shrink:0; }
 .CP-bgt-item-body { flex:1; min-width:0; }
-.CP-bgt-item-amt { font-family:var(--ff-m); font-size: 10.5px; font-weight: 800; color:#1D4ED8; }
+.CP-bgt-item-amt { font-family:var(--ff-m); font-size: 10.5px; font-weight: 800; color:#9A3412; }
 .CP-bgt-item-reason { font-family:var(--ff-m); font-size: 8px; color:var(--t4); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .CP-bgt-item-date { display:flex; align-items:center; gap:4px; font-family:var(--ff-m); font-size: 8px; color:var(--t4); flex-shrink:0; }
 
 /* ── DETAIL STAT ANIMATED ── */
-.CP-detail-stat { animation:bc-in 0.3s cubic-bezier(0.4,0,0.2,1) both; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 6px; background:#fff; border:1px solid var(--bd); border-radius:10px; text-align:center; }
+.CP-detail-stat { animation:bc-in 0.3s cubic-bezier(0.4,0,0.2,1) both; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 6px; background:#faf9f7; border:1px solid var(--bd); border-radius:10px; text-align:center; }
 .CP-detail-stat-lbl { font-family:var(--ff-m); font-size: 8px; color:var(--t4); text-transform:uppercase; letter-spacing:1px; }
 .CP-detail-stat-val { font-family:var(--ff-m); font-size: 10.5px; font-weight: 800; }
 
@@ -1080,7 +1080,7 @@ const CSS = `
 .CP-skel { background:linear-gradient(90deg,var(--off-white) 25%,var(--surface-3) 50%,var(--off-white) 75%); background-size:700px 100%; animation:CP-shimmer 1.6s infinite linear; border-radius:var(--r2); }
 
 /* SPINNER */
-.CP-spinner    { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:CP-spin .65s linear infinite; }
+.CP-spinner    { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.3); border-top-color:#faf9f7; border-radius:50%; animation:CP-spin .65s linear infinite; }
 .CP-spinner-or { display:inline-block; width:14px; height:14px; border:2px solid var(--or-r); border-top-color:var(--or); border-radius:50%; animation:CP-spin .65s linear infinite; }
 
 /* MODAL SYSTEM */
@@ -1093,12 +1093,12 @@ const CSS = `
 .CP-modal-body { padding:20px 24px 28px; }
 .CP-modal-hdr  { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; gap:12px; }
 .CP-modal-hdr-l{ display:flex; align-items:center; gap:11px; }
-.CP-modal-ttl  { font-family:var(--ff-b); font-size: 15px; font-style:normal; text-transform:uppercase; font-weight: 800; letter-spacing:0.5px; color:#2563EB; line-height:1.1; }
-.CP-modal-sub  { font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:#2563EB; margin-top:3px; }
+.CP-modal-ttl  { font-family:var(--ff-b); font-size: 15px; font-style:normal; text-transform:uppercase; font-weight: 800; letter-spacing:0.5px; color:#C2410C; line-height:1.1; }
+.CP-modal-sub  { font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:#C2410C; margin-top:3px; }
 .CP-modal-ttl-ico { width:38px; height:38px; border-radius:var(--r2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 @keyframes CP-cls-pop { 0%{transform:rotate(0) scale(1)} 45%{transform:rotate(-14deg) scale(1.22)} 80%{transform:rotate(4deg) scale(0.95)} 100%{transform:rotate(0) scale(1)} }
 .CP-modal-cls  { width:42px; height:42px; border-radius:var(--r2); background:var(--cr2); border:1.5px solid var(--bd); cursor:pointer; font-size: 21px; display:flex; align-items:center; justify-content:center; color:var(--t3); transition:background .15s,border-color .15s,color .15s,box-shadow .15s; line-height:1; flex-shrink:0; }
-.CP-modal-cls:hover { background:var(--rd,#c0312a); border-color:var(--rd,#c0312a); color:#fff; box-shadow:0 0 0 3px rgba(192,49,42,.18),0 6px 16px rgba(192,49,42,.24); animation:CP-cls-pop .30s cubic-bezier(.34,1.56,.64,1) both; }
+.CP-modal-cls:hover { background:var(--rd,#D93B55); border-color:var(--rd,#D93B55); color:#faf9f7; box-shadow:0 0 0 3px rgba(217,59,85,.18),0 6px 16px rgba(217,59,85,.24); animation:CP-cls-pop .30s cubic-bezier(.34,1.56,.64,1) both; }
 
 /* FORM DIALOG SYSTEM — Add Client / Collect Payment / Add Budget / Add
    Project. Centered popup dialog over a dim/blurred backdrop, sized like
@@ -1117,7 +1117,7 @@ const CSS = `
 }
 .CP-fp-overlay {
   position: fixed; inset: 0; z-index: 10000;
-  background: rgba(15,23,42,0.52);
+  background: rgba(35,28,20,0.52);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
@@ -1125,7 +1125,7 @@ const CSS = `
 }
 .CP-fp-modal {
   position: relative;
-  background: var(--w,#fff);
+  background: var(--w,#faf9f7);
   border-radius: 22px; width: 100%; max-width: 960px; min-height: min(740px, 88dvh); max-height: min(94dvh, 92vh);
   box-shadow: 0 6px 28px rgba(0,0,0,0.10), 0 32px 88px rgba(0,0,0,0.24); border: none;
   /* The modal card itself no longer scrolls (overflow:hidden + flex column)
@@ -1158,13 +1158,13 @@ const CSS = `
 .CP-fp-close {
   display: flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
-  background: #fff; border: 1.5px solid #BFDBFE;
+  background: #faf9f7; border: 1.5px solid #FBC9A8;
   cursor: pointer; color: #9a3412;
   transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 .CP-fp-close svg { transition: transform 0.18s; }
-.CP-fp-close:hover { background: #F3E8FF; border-color: #60A5FA; color: #2563EB; transform: rotate(90deg); box-shadow: 0 3px 10px rgba(29,78,216,0.14); }
+.CP-fp-close:hover { background: #FBC9A8; border-color: #F0834D; color: #C2410C; transform: rotate(90deg); box-shadow: 0 3px 10px rgba(154,52,18,0.14); }
 .CP-fp-close:active { transform: rotate(90deg) scale(0.9); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
 /* modal tabs */
@@ -1222,12 +1222,12 @@ const CSS = `
 .CP-wtab.active { background:var(--w); color:var(--gd); }
 .CP-wtab.done   { background:var(--jade-t); color:var(--jade); }
 .CP-wnum { width:21px; height:21px; border-radius:50%; background:var(--bd); display:flex; align-items:center; justify-content:center; font-size: 9px; font-weight: 800; font-family:var(--ff-m); flex-shrink:0; }
-.CP-wtab.active .CP-wnum { background:var(--gd); color:#fff; }
-.CP-wtab.done   .CP-wnum { background:var(--jade); color:#fff; }
+.CP-wtab.active .CP-wnum { background:var(--gd); color:#faf9f7; }
+.CP-wtab.done   .CP-wnum { background:var(--jade); color:#faf9f7; }
 
 /* cci */
 .CP-cci { background:var(--gold-t); border:1px solid var(--gold-r); border-radius:var(--r2); padding:12px 14px; margin-bottom:16px; display:flex; align-items:center; gap:11px; }
-.CP-cci-av { width:38px; height:38px; border-radius:var(--r2); flex-shrink:0; background:linear-gradient(135deg,var(--or,#2563EB),var(--or2,#3B82F6)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--ff-d); font-size: 14px; font-style:italic; }
+.CP-cci-av { width:38px; height:38px; border-radius:var(--r2); flex-shrink:0; background:linear-gradient(135deg,var(--or,#C2410C),var(--or2,#DB5B1F)); color:#faf9f7; display:flex; align-items:center; justify-content:center; font-family:var(--ff-d); font-size: 14px; font-style:italic; }
 
 /* modal actions */
 .CP-modal-actions { display:flex; gap:9px; margin-top:22px; flex-wrap:wrap; padding-top:18px; border-top:1px solid var(--bd); align-items:center; }
@@ -1241,8 +1241,8 @@ const CSS = `
 .CP-pay-tbl-wrap::-webkit-scrollbar-thumb { background:var(--bd2); border-radius:4px; }
 .CP-pay-tbl { width:100%; border-collapse:collapse; font-size: 9px; }
 .CP-pay-tbl thead { position:sticky; top:0; z-index:5; }
-.CP-pay-tbl thead tr { background:var(--surface-2,#E9EEF5); border-bottom:2px solid var(--ember,#2563EB); }
-.CP-pay-tbl th { padding:9px 12px; text-align:left; white-space:nowrap; font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:.1em; color:var(--text-3,#27364A); background:transparent; border-bottom:none; border-right:1px solid var(--border,#E9EEF5); }
+.CP-pay-tbl thead tr { background:var(--surface-2,#E8E2D8); border-bottom:2px solid var(--ember,#C2410C); }
+.CP-pay-tbl th { padding:9px 12px; text-align:left; white-space:nowrap; font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:.1em; color:var(--text-3,#3A3024); background:transparent; border-bottom:none; border-right:1px solid var(--border,#E8E2D8); }
 .CP-pay-tbl th:last-child { border-right:none; }
 .CP-pay-tbl th.num, .CP-pay-tbl td.num { text-align:right; }
 .CP-pay-tbl td { padding:8px 12px; font-size: 9px; font-weight: 700; border-bottom:1px solid var(--bd); border-right:1px solid var(--bd); color:var(--t1); vertical-align:middle; white-space:nowrap; transition:background .1s; }
@@ -1250,8 +1250,8 @@ const CSS = `
 .CP-pay-tbl tbody tr { animation:bc-in 0.25s cubic-bezier(0.4,0,0.2,1) both; }
 .CP-pay-tbl tr:last-child td { border-bottom:none; }
 .CP-pay-tbl tbody tr:nth-child(even) td { background:var(--off-white,#FAF8F4); }
-.CP-pay-tbl tbody tr:hover td { background:var(--or-t,rgba(37,99,235,.07)); }
-.CP-pay-tbl tfoot td { padding:9px 12px; font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:var(--or,#2563EB); background:var(--or-t,rgba(37,99,235,.08)); border-top:2px solid var(--or-r,rgba(37,99,235,.3)); border-right:1px solid var(--bd); position:sticky; bottom:0; z-index:4; }
+.CP-pay-tbl tbody tr:hover td { background:var(--or-t,rgba(194,65,12,.07)); }
+.CP-pay-tbl tfoot td { padding:9px 12px; font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:var(--or,#C2410C); background:var(--or-t,rgba(194,65,12,.08)); border-top:2px solid var(--or-r,rgba(194,65,12,.3)); border-right:1px solid var(--bd); position:sticky; bottom:0; z-index:4; }
 .CP-pay-tbl tfoot td:last-child { border-right:none; }
 
 /* Pagination bar under Transaction History */
@@ -1261,14 +1261,14 @@ const CSS = `
 .CP-tx-page-btn {
   display:flex; align-items:center; justify-content:center; gap:4px;
   height:26px; padding:0 11px; border-radius:7px;
-  background:#fff; border:1.5px solid #BFDBFE; color:#9a3412;
+  background:#faf9f7; border:1.5px solid #FBC9A8; color:#9a3412;
   font-family:var(--ff-m); font-size: 8.5px; font-weight: 800;
   cursor:pointer; transition:background .16s,border-color .16s,color .16s,transform .16s,box-shadow .16s;
 }
-.CP-tx-page-btn:hover:not(:disabled) { background:#F3E8FF; border-color:#60A5FA; color:#2563EB; transform:translateY(-1px); box-shadow:0 3px 8px rgba(29,78,216,0.14); }
+.CP-tx-page-btn:hover:not(:disabled) { background:#FBC9A8; border-color:#F0834D; color:#C2410C; transform:translateY(-1px); box-shadow:0 3px 8px rgba(154,52,18,0.14); }
 .CP-tx-page-btn:active:not(:disabled) { transform:translateY(0) scale(0.96); }
 .CP-tx-page-btn:disabled { opacity:0.4; cursor:not-allowed; }
-.CP-tx-page-num { font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:#2563EB; min-width:20px; text-align:center; }
+.CP-tx-page-num { font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:#C2410C; min-width:20px; text-align:center; }
 
 /* Transaction summary cards (Total Transactions / Average Payment / Outstanding Balance) */
 .CP-tx-sumcard { position:relative; overflow:hidden; border-radius:11px; padding:12px 14px; transition:transform .16s,box-shadow .16s; }
@@ -1280,8 +1280,8 @@ const CSS = `
 .CP-tx-sumcard-val { font-family:var(--ff-m); font-size: 16px; font-weight: 800; line-height:1; font-variant-numeric:tabular-nums; }
 .CP-bud-tbl-wrap { border-radius:var(--r2); border:1.5px solid var(--bd); overflow-y:auto; overflow-x:hidden; background:var(--w); scrollbar-width:thin; box-shadow:0 2px 10px rgba(0,0,0,0.04); }
 .CP-bud-tbl { width:100%; border-collapse:collapse; font-size: 9px; }
-.CP-bud-tbl thead tr { background:var(--surface-2,#E9EEF5); border-bottom:2px solid var(--ember,#2563EB); }
-.CP-bud-tbl th { padding:9px 12px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:.1em; color:var(--text-3,#27364A); background:transparent; border-bottom:none; border-right:1px solid var(--border,#E9EEF5); text-align:left; white-space:nowrap; }
+.CP-bud-tbl thead tr { background:var(--surface-2,#E8E2D8); border-bottom:2px solid var(--ember,#C2410C); }
+.CP-bud-tbl th { padding:9px 12px; font-family:var(--ff-m); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:.1em; color:var(--text-3,#3A3024); background:transparent; border-bottom:none; border-right:1px solid var(--border,#E8E2D8); text-align:left; white-space:nowrap; }
 .CP-bud-tbl th:last-child { border-right:none; }
 .CP-bud-tbl th.num,.CP-bud-tbl td.num { text-align:right; }
 .CP-bud-tbl td { padding:8px 12px; font-size: 9px; font-weight: 700; border-bottom:1px solid var(--bd); border-right:1px solid var(--bd); color:var(--t1); white-space:nowrap; vertical-align:middle; }
@@ -1289,8 +1289,8 @@ const CSS = `
 .CP-bud-tbl tbody tr { animation:bc-in 0.25s cubic-bezier(0.4,0,0.2,1) both; }
 .CP-bud-tbl tr:last-child td { border-bottom:none; }
 .CP-bud-tbl tbody tr:nth-child(even) td { background:var(--off-white,#FAF8F4); }
-.CP-bud-tbl tbody tr:hover td { background:var(--or-t,rgba(37,99,235,.07)); }
-.CP-bud-tbl tfoot td { padding:9px 12px; font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:var(--or,#2563EB); background:var(--or-t,rgba(37,99,235,.08)); border-top:2px solid var(--or-r,rgba(37,99,235,.3)); border-right:1px solid var(--bd); position:sticky; bottom:0; }
+.CP-bud-tbl tbody tr:hover td { background:var(--or-t,rgba(194,65,12,.07)); }
+.CP-bud-tbl tfoot td { padding:9px 12px; font-family:var(--ff-m); font-size: 9px; font-weight: 800; color:var(--or,#C2410C); background:var(--or-t,rgba(194,65,12,.08)); border-top:2px solid var(--or-r,rgba(194,65,12,.3)); border-right:1px solid var(--bd); position:sticky; bottom:0; }
 .CP-bud-tbl tfoot td:last-child { border-right:none; }
 .CP-req-note { font-family:var(--ff-m); font-size: 8px; color:var(--t4); margin-top:10px; display:flex; align-items:center; gap:5px; }
 
@@ -1302,8 +1302,8 @@ const CSS = `
 .CP-dd-trigger:disabled { opacity:.5; cursor:not-allowed; background:var(--off-white); }
 .CP-dd-chev { width:14px; height:14px; color:var(--t4); transition:transform .2s,color .15s; flex-shrink:0; }
 .CP-dd-chev.open { transform:rotate(180deg); color:var(--or); }
-.CP-dd-clear { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:50%; font-size: 8px; color:var(--t4,#aaa); cursor:pointer; transition:background .12s,color .12s; }
-.CP-dd-clear:hover { background:rgba(192,49,42,.12); color:var(--rd,#c0312a); }
+.CP-dd-clear { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:50%; font-size: 8px; color:var(--t4,#8C7C63); cursor:pointer; transition:background .12s,color .12s; }
+.CP-dd-clear:hover { background:rgba(217,59,85,.12); color:var(--rd,#D93B55); }
 .CP-dd-panel { position:absolute; left:0; right:0; top:calc(100% + 4px); background:var(--w); border:1.5px solid var(--or2); border-radius:var(--r2); box-shadow:0 12px 32px rgba(0,0,0,.12); z-index:99999; overflow:hidden; animation:erp-slide-down .14s ease both; }
 .CP-dd-item { padding:10px 14px; font-family:var(--ff-b); font-size: 10.5px; font-weight: 700; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background .1s; color:var(--t2); border-bottom:1px solid var(--bd); }
 .CP-dd-item:last-child { border-bottom:none; }
@@ -1317,7 +1317,7 @@ const CSS = `
 .CP-dd-list::-webkit-scrollbar-thumb { background:var(--bd2); border-radius:3px; }
 .CP-dd-footer { padding:5px 12px; font-family:var(--ff-m); font-size: 8px; letter-spacing:.5px; color:var(--t4); border-top:1px solid var(--bd); background:var(--off-white); text-align:right; }
 .CP-bio-sel { display:flex; align-items:center; gap:9px; flex:1; min-width:0; }
-.CP-bio-av  { width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,var(--or,#2563EB),var(--or2,#3B82F6)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--ff-d); font-size: 9.5px; font-style:italic; flex-shrink:0; }
+.CP-bio-av  { width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,var(--or,#C2410C),var(--or2,#DB5B1F)); color:#faf9f7; display:flex; align-items:center; justify-content:center; font-family:var(--ff-d); font-size: 9.5px; font-style:italic; flex-shrink:0; }
 .CP-bio-nm  { font-size: 10.5px; font-weight: 800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .CP-bio-id  { font-family:var(--ff-m); font-size: 8px; color:var(--t4); margin-top:1px; }
 
@@ -1390,7 +1390,7 @@ const CSS = `
 @keyframes CP3d-shimmer { 0%{left:-100%} 100%{left:200%} }
 @keyframes CP3d-pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.7;transform:scale(1.08)} }
 @keyframes CP3d-pulse2 { 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:.4;transform:scale(1.15)} }
-@keyframes CP3d-glow { 0%,100%{box-shadow:0 8px 28px rgba(29,78,216,.1),0 2px 8px rgba(0,0,0,.05)} 50%{box-shadow:0 8px 36px rgba(29,78,216,.18),0 2px 12px rgba(0,0,0,.07)} }
+@keyframes CP3d-glow { 0%,100%{box-shadow:0 8px 28px rgba(154,52,18,.1),0 2px 8px rgba(0,0,0,.05)} 50%{box-shadow:0 8px 36px rgba(154,52,18,.18),0 2px 12px rgba(0,0,0,.07)} }
 @keyframes CP3d-bar-flow { 0%{background-position:0 0} 100%{background-position:60px 0} }
 @keyframes CP3d-orbit { 0%{transform:rotate(0deg) translateX(58px) rotate(0deg)} 100%{transform:rotate(360deg) translateX(58px) rotate(-360deg)} }
 @keyframes CP3d-orbit2 { 0%{transform:rotate(180deg) translateX(52px) rotate(-180deg)} 100%{transform:rotate(540deg) translateX(52px) rotate(-540deg)} }
@@ -1403,45 +1403,45 @@ const CSS = `
 @media(max-width:600px){ .CP-c3d{ margin:0 14px 16px; } }
 
 /* Main panel */
-.CP-c3d-panel { display:grid; grid-template-columns:260px 1fr; gap:0; background:#fff; border-radius:20px; overflow:hidden; position:relative; border:1.5px solid rgba(29,78,216,.18); box-shadow:0 8px 32px rgba(29,78,216,.12),0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.9); animation:CP3d-glow 3s ease-in-out infinite; }
+.CP-c3d-panel { display:grid; grid-template-columns:260px 1fr; gap:0; background:#faf9f7; border-radius:20px; overflow:hidden; position:relative; border:1.5px solid rgba(154,52,18,.18); box-shadow:0 8px 32px rgba(154,52,18,.12),0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.9); animation:CP3d-glow 3s ease-in-out infinite; }
 @media(max-width:900px){ .CP-c3d-panel{ grid-template-columns:1fr; } }
 
 /* Scan line */
-.CP-c3d-scan { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(59,130,246,.35),transparent); animation:CP3d-scanline 4s linear infinite; pointer-events:none; z-index:10; }
+.CP-c3d-scan { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(219,91,31,.35),transparent); animation:CP3d-scanline 4s linear infinite; pointer-events:none; z-index:10; }
 
 /* Grid bg */
-.CP-c3d-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(29,78,216,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(29,78,216,.04) 1px,transparent 1px); background-size:32px 32px; pointer-events:none; }
+.CP-c3d-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(154,52,18,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(154,52,18,.04) 1px,transparent 1px); background-size:32px 32px; pointer-events:none; }
 
 /* LEFT — ring section */
-.CP-c3d-left { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 28px; border-right:1.5px solid rgba(29,78,216,.12); background:linear-gradient(135deg,rgba(59,130,246,.07) 0%,rgba(29,78,216,.04) 60%,rgba(255,255,255,0) 100%); gap:16px; }
+.CP-c3d-left { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 28px; border-right:1.5px solid rgba(154,52,18,.12); background:linear-gradient(135deg,rgba(219,91,31,.07) 0%,rgba(154,52,18,.04) 60%,rgba(255,255,255,0) 100%); gap:16px; }
 .CP-c3d-ring-stage { position:relative; width:180px; height:180px; flex-shrink:0; }
 
 /* Orbiting dots */
 .CP-c3d-orb { position:absolute; top:50%; left:50%; width:8px; height:8px; margin:-4px; }
-.CP-c3d-orb-dot { width:8px; height:8px; border-radius:50%; background:radial-gradient(circle,#3B82F6,#2563EB); box-shadow:0 0 8px rgba(59,130,246,.6); }
+.CP-c3d-orb-dot { width:8px; height:8px; border-radius:50%; background:radial-gradient(circle,#DB5B1F,#C2410C); box-shadow:0 0 8px rgba(219,91,31,.6); }
 .CP-c3d-orb1 { animation:CP3d-orbit 4s linear infinite; }
 .CP-c3d-orb2 { animation:CP3d-orbit2 6s linear infinite; }
 
 /* Outer pulsing rings */
-.CP-c3d-pulse-ring { position:absolute; inset:-12px; border-radius:50%; border:1.5px solid rgba(29,78,216,.18); animation:CP3d-pulse 2.5s ease-in-out infinite; pointer-events:none; }
-.CP-c3d-pulse-ring2 { position:absolute; inset:-24px; border-radius:50%; border:1px solid rgba(59,130,246,.12); animation:CP3d-pulse2 3.2s ease-in-out infinite; pointer-events:none; }
+.CP-c3d-pulse-ring { position:absolute; inset:-12px; border-radius:50%; border:1.5px solid rgba(154,52,18,.18); animation:CP3d-pulse 2.5s ease-in-out infinite; pointer-events:none; }
+.CP-c3d-pulse-ring2 { position:absolute; inset:-24px; border-radius:50%; border:1px solid rgba(219,91,31,.12); animation:CP3d-pulse2 3.2s ease-in-out infinite; pointer-events:none; }
 
 /* SVG ring */
-.CP-c3d-ring-svg { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); filter:drop-shadow(0 0 6px rgba(59,130,246,.3)); }
-.CP-c3d-ring-track { fill:none; stroke:rgba(29,78,216,.08); stroke-width:10; }
+.CP-c3d-ring-svg { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); filter:drop-shadow(0 0 6px rgba(219,91,31,.3)); }
+.CP-c3d-ring-track { fill:none; stroke:rgba(154,52,18,.08); stroke-width:10; }
 .CP-c3d-ring-fill { fill:none; stroke-width:10; stroke-linecap:round; stroke-dasharray:502 502; stroke-dashoffset:502; animation:CP3d-ring-fill 1.8s .4s cubic-bezier(.34,1.2,.64,1) forwards; }
-.CP-c3d-ring-spin { fill:none; stroke:rgba(59,130,246,.25); stroke-width:2; stroke-dasharray:8 16; animation:CP3d-spin 8s linear infinite; }
-.CP-c3d-ring-spin2 { fill:none; stroke:rgba(29,78,216,.15); stroke-width:1.5; stroke-dasharray:4 20; animation:CP3d-spin-rev 12s linear infinite; }
+.CP-c3d-ring-spin { fill:none; stroke:rgba(219,91,31,.25); stroke-width:2; stroke-dasharray:8 16; animation:CP3d-spin 8s linear infinite; }
+.CP-c3d-ring-spin2 { fill:none; stroke:rgba(154,52,18,.15); stroke-width:1.5; stroke-dasharray:4 20; animation:CP3d-spin-rev 12s linear infinite; }
 
 /* Center label */
 .CP-c3d-center-lbl { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
-.CP-c3d-pct { font-family:var(--ff-m,monospace); font-size: 33.5px; font-weight: 900; color:var(--ember,#2563EB); letter-spacing:-2px; line-height:1; text-shadow:0 0 16px rgba(59,130,246,.25); }
-.CP-c3d-pct-sym { font-size: 17.5px; vertical-align:super; font-weight: 800; color:#3B82F6; }
-.CP-c3d-pct-lbl { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; color:rgba(29,78,216,.5); text-transform:uppercase; letter-spacing:2px; }
+.CP-c3d-pct { font-family:var(--ff-m,monospace); font-size: 33.5px; font-weight: 900; color:var(--ember,#C2410C); letter-spacing:-2px; line-height:1; text-shadow:0 0 16px rgba(219,91,31,.25); }
+.CP-c3d-pct-sym { font-size: 17.5px; vertical-align:super; font-weight: 800; color:#DB5B1F; }
+.CP-c3d-pct-lbl { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; color:rgba(154,52,18,.5); text-transform:uppercase; letter-spacing:2px; }
 
 /* Title below ring */
-.CP-c3d-title { font-family:var(--ff-d,serif); font-size: 13px; font-style:italic; color:var(--t1,#111); text-align:center; line-height:1.3; }
-.CP-c3d-sub { font-family:var(--ff-m,monospace); font-size: 8px; color:var(--t4,#aaa); text-transform:uppercase; letter-spacing:2px; text-align:center; }
+.CP-c3d-title { font-family:var(--ff-d,serif); font-size: 13px; font-style:italic; color:var(--t1,#231C14); text-align:center; line-height:1.3; }
+.CP-c3d-sub { font-family:var(--ff-m,monospace); font-size: 8px; color:var(--t4,#8C7C63); text-transform:uppercase; letter-spacing:2px; text-align:center; }
 
 /* RIGHT — stats section */
 .CP-c3d-right { display:flex; flex-direction:column; justify-content:center; padding:32px 36px; gap:24px; position:relative; }
@@ -1449,27 +1449,27 @@ const CSS = `
 /* Liquid bar */
 .CP-c3d-bar-wrap { }
 .CP-c3d-bar-lbl { display:flex; justify-content:space-between; margin-bottom:8px; }
-.CP-c3d-bar-lbl-txt { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; color:var(--t4,#aaa); text-transform:uppercase; letter-spacing:1.5px; }
-.CP-c3d-bar-lbl-pct { font-family:var(--ff-m,monospace); font-size: 9px; font-weight: 800; color:var(--ember,#2563EB); }
-.CP-c3d-bar-track { height:14px; border-radius:99px; background:rgba(29,78,216,.07); border:1px solid rgba(29,78,216,.12); overflow:hidden; position:relative; }
-.CP-c3d-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#2563EB 0%,#3B82F6 40%,#ffb347 60%,#3B82F6 80%,#2563EB 100%); background-size:200% 100%; animation:CP3d-liquid 2s linear infinite; position:relative; overflow:hidden; min-width:6px; transition:width 1.2s cubic-bezier(.34,1.2,.64,1); box-shadow:0 0 10px rgba(59,130,246,.35),inset 0 1px 0 rgba(255,255,255,.4); }
+.CP-c3d-bar-lbl-txt { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; color:var(--t4,#8C7C63); text-transform:uppercase; letter-spacing:1.5px; }
+.CP-c3d-bar-lbl-pct { font-family:var(--ff-m,monospace); font-size: 9px; font-weight: 800; color:var(--ember,#C2410C); }
+.CP-c3d-bar-track { height:14px; border-radius:99px; background:rgba(154,52,18,.07); border:1px solid rgba(154,52,18,.12); overflow:hidden; position:relative; }
+.CP-c3d-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#C2410C 0%,#DB5B1F 40%,#F0834D 60%,#DB5B1F 80%,#C2410C 100%); background-size:200% 100%; animation:CP3d-liquid 2s linear infinite; position:relative; overflow:hidden; min-width:6px; transition:width 1.2s cubic-bezier(.34,1.2,.64,1); box-shadow:0 0 10px rgba(219,91,31,.35),inset 0 1px 0 rgba(255,255,255,.4); }
 .CP-c3d-bar-shine { position:absolute; top:0; bottom:0; width:40%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); animation:CP3d-shimmer 2.4s ease-in-out infinite; }
 
 /* 3D Stat cards */
 .CP-c3d-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
 @media(max-width:600px){ .CP-c3d-cards{ grid-template-columns:1fr; } }
-.CP-c3d-card { background:#fff; border:1.5px solid rgba(29,78,216,.12); border-radius:14px; padding:16px 18px; position:relative; overflow:hidden; transform-style:preserve-3d; transition:transform .3s,box-shadow .3s; box-shadow:0 2px 12px rgba(29,78,216,.08); }
-.CP-c3d-card:hover { transform:translateY(-4px) rotateX(6deg) scale(1.02); box-shadow:0 12px 28px rgba(29,78,216,.14); }
+.CP-c3d-card { background:#faf9f7; border:1.5px solid rgba(154,52,18,.12); border-radius:14px; padding:16px 18px; position:relative; overflow:hidden; transform-style:preserve-3d; transition:transform .3s,box-shadow .3s; box-shadow:0 2px 12px rgba(154,52,18,.08); }
+.CP-c3d-card:hover { transform:translateY(-4px) rotateX(6deg) scale(1.02); box-shadow:0 12px 28px rgba(154,52,18,.14); }
 .CP-c3d-card-1 { animation:CP3d-float 4s ease-in-out infinite; }
 .CP-c3d-card-2 { animation:CP3d-float2 5s ease-in-out infinite; }
 .CP-c3d-card-3 { animation:CP3d-float3 3.5s ease-in-out infinite; }
-.CP-c3d-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(59,130,246,.05) 0%,transparent 60%); pointer-events:none; }
+.CP-c3d-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(219,91,31,.05) 0%,transparent 60%); pointer-events:none; }
 .CP-c3d-card-shine { position:absolute; top:-50%; left:-50%; width:60%; height:200%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); transform:skewX(-20deg); animation:CP3d-shimmer 3s ease-in-out infinite; }
 .CP-c3d-card-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; flex-shrink:0; }
-.CP-c3d-card-lbl { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:1.5px; color:var(--t4,#aaa); margin-bottom:4px; }
+.CP-c3d-card-lbl { font-family:var(--ff-m,monospace); font-size: 8px; font-weight: 800; text-transform:uppercase; letter-spacing:1.5px; color:var(--t4,#8C7C63); margin-bottom:4px; }
 .CP-c3d-card-val { font-family:var(--ff-m,monospace); font-size: 16px; font-weight: 800; letter-spacing:-0.5px; line-height:1; }
-.CP-c3d-card-sub { font-family:var(--ff-m,monospace); font-size: 8px; color:var(--t4,#aaa); margin-top:4px; }
-.CP-c3d-card-bar { height:3px; border-radius:99px; margin-top:10px; position:relative; overflow:hidden; background:rgba(29,78,216,.07); }
+.CP-c3d-card-sub { font-family:var(--ff-m,monospace); font-size: 8px; color:var(--t4,#8C7C63); margin-top:4px; }
+.CP-c3d-card-bar { height:3px; border-radius:99px; margin-top:10px; position:relative; overflow:hidden; background:rgba(154,52,18,.07); }
 .CP-c3d-card-bar-fill { height:100%; border-radius:99px; animation:CP3d-liquid 1.8s linear infinite; background-size:200% 100%; }
 
 
@@ -1531,7 +1531,7 @@ const Portal = ({ children }: { children: React.ReactNode }) => createPortal(chi
 /* ════════════════════════════════════════
    SUCCESS CELEBRATION
 ═══════════════════════════════════════════ */
-const CP_CONFETTI_COLORS = ['#2563EB', '#3B82F6', '#BFDBFE', '#fde68a', '#F3E8FF', '#fff', '#EDE9FE', '#60A5FA', '#fef3c7'];
+const CP_CONFETTI_COLORS = ['#C2410C', '#DB5B1F', '#FBC9A8', '#FDE0CB', '#FBC9A8', '#faf9f7', '#FBC9A8', '#F0834D', '#FDE0CB'];
 
 function CPConfettiPieces({ seed = 0, count = 22 }: { seed?: number; count?: number }) {
   const pieces = Array.from({ length: count }, (_, i) => {
@@ -1576,7 +1576,7 @@ function CPSparklePieces() {
       {sparks.map(s => (
         <svg key={s.id} className="CP-sparkle" width={s.size} height={s.size} viewBox="0 0 24 24"
           style={{ left: s.left, top: s.top, animationDelay: s.delay }}
-          fill="#3B82F6">
+          fill="#DB5B1F">
           <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
         </svg>
       ))}
@@ -1602,7 +1602,7 @@ function CPSuccessCelebration({ title, sub, amountText, onDone, duration = 1800 
       <div className="CP-closed-ring2" />
       <div className="CP-closed-stamp-wrap">
         <div className="CP-closed-check">
-          <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg width={42} height={42} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6 9 17l-5-5" />
           </svg>
         </div>
@@ -1670,20 +1670,20 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
         </span>
       </button>
       {open && createPortal(
-        <div ref={panelRef} style={{ ...pStyle, background: '#fff', border: '1.5px solid #3B82F6', borderRadius: 12, boxShadow: '0 12px 36px rgba(0,0,0,.16)', overflow: 'hidden', fontFamily: 'inherit' }}
+        <div ref={panelRef} style={{ ...pStyle, background: '#faf9f7', border: '1.5px solid #DB5B1F', borderRadius: 12, boxShadow: '0 12px 36px rgba(0,0,0,.16)', overflow: 'hidden', fontFamily: 'inherit' }}
           onMouseDown={e => e.stopPropagation()}>
           {/* Search Bar Start */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 12px', borderBottom: '1px solid #eee', background: '#F8FAFC', position: 'sticky', top: 0 }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#aaa" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 12px', borderBottom: '1px solid #E8E2D8', background: '#F5F3EF', position: 'sticky', top: 0 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8C7C63" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
             <input
               ref={searchRef}
-              style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: '#222', fontFamily: 'inherit', caret_color: '#3B82F6' } as any}
+              style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: '#231C14', fontFamily: 'inherit', caret_color: '#DB5B1F' } as any}
               placeholder="Search…"
               value={q}
               onChange={e => { setQ(e.target.value); compute(); }}
             />
             {q && (
-              <span style={{ cursor: 'pointer', color: '#aaa', fontSize: 9.5, lineHeight: 1, padding: '1px 3px', borderRadius: 4 }}
+              <span style={{ cursor: 'pointer', color: '#8C7C63', fontSize: 9.5, lineHeight: 1, padding: '1px 3px', borderRadius: 4 }}
                 onMouseDown={e => { e.stopPropagation(); setQ(''); }}>✕</span>
             )}
           </div>
@@ -1692,23 +1692,23 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
           {/* Options list Start */}
           <div style={{ maxHeight: 224, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,0,0,.12) transparent' }}>
             {filtered.length === 0
-              ? <div style={{ padding: '14px 16px', color: '#aaa', fontSize: 10.5, fontStyle: 'italic', textAlign: 'center' }}>No match found</div>
+              ? <div style={{ padding: '14px 16px', color: '#8C7C63', fontSize: 10.5, fontStyle: 'italic', textAlign: 'center' }}>No match found</div>
               : filtered.map(o => (
                 <div key={o.value}
                   role="option" tabIndex={-1} aria-selected={val === o.value}
                   style={{
                     padding: '10px 14px', fontSize: 11.5, fontWeight: val === o.value ? 800 : 600,
-                    color: val === o.value ? '#2563EB' : '#333',
-                    background: val === o.value ? 'rgba(59,130,246,.08)' : 'transparent',
-                    borderBottom: '1px solid #F1F5F9',
+                    color: val === o.value ? '#C2410C' : '#3A3024',
+                    background: val === o.value ? 'rgba(219,91,31,.08)' : 'transparent',
+                    borderBottom: '1px solid #F5F3EF',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     cursor: 'pointer', transition: 'background .1s',
                   }}
-                  onMouseEnter={e => { if (val !== o.value) (e.currentTarget as HTMLDivElement).style.background = '#F1F5F9'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = val === o.value ? 'rgba(59,130,246,.08)' : 'transparent'; }}
+                  onMouseEnter={e => { if (val !== o.value) (e.currentTarget as HTMLDivElement).style.background = '#F5F3EF'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = val === o.value ? 'rgba(219,91,31,.08)' : 'transparent'; }}
                   onClick={() => { onChange(o.value); setOpen(false); }}>
                   <span>{o.label}</span>
-                  {val === o.value && <span style={{ color: '#3B82F6', fontWeight: 800, fontSize: 11.5 }}>✓</span>}
+                  {val === o.value && <span style={{ color: '#DB5B1F', fontWeight: 800, fontSize: 11.5 }}>✓</span>}
                 </div>
               ))
             }
@@ -1716,7 +1716,7 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
           {/* Options List End */}
 
           {/* Footer Count Start */}
-          <div style={{ padding: '5px 12px', fontSize: 8, fontWeight: 800, letterSpacing: '.5px', color: '#bbb', borderTop: '1px solid #eee', background: '#F8FAFC', textAlign: 'right', textTransform: 'uppercase' }}>
+          <div style={{ padding: '5px 12px', fontSize: 8, fontWeight: 800, letterSpacing: '.5px', color: '#8C7C63', borderTop: '1px solid #E8E2D8', background: '#F5F3EF', textAlign: 'right', textTransform: 'uppercase' }}>
             {q ? `${filtered.length} of ${opts.length} matches` : `${opts.length} options`}
           </div>
           {/* Footer Count ENd */}
@@ -1788,7 +1788,7 @@ function BioDD({ options, value, onChange, loading }: {
             </div>
             : value
               ? <div className="CP-bio-sel">
-                <div className="CP-bio-av" style={{ background: 'rgba(29,78,216,0.15)', color: 'var(--ember,#2563EB)', fontWeight: 800 }}>{value.charAt(0).toUpperCase()}</div>
+                <div className="CP-bio-av" style={{ background: 'rgba(154,52,18,0.15)', color: 'var(--ember,#C2410C)', fontWeight: 800 }}>{value.charAt(0).toUpperCase()}</div>
                 <div style={{ minWidth: 0 }}>
                   <div className="CP-bio-nm">{value}</div>
                   <div className="CP-bio-id" style={{ fontStyle: 'italic', opacity: 0.7 }}>Click to relink…</div>
@@ -1801,18 +1801,18 @@ function BioDD({ options, value, onChange, loading }: {
       </button>
       {open && createPortal(
         <div ref={panelRef2} style={{
-          ...bioPStyle, background: 'var(--white,#fff)', border: '1.5px solid var(--ember-mid,#3B82F6)', borderRadius: 12,
+          ...bioPStyle, background: 'var(--white,#faf9f7)', border: '1.5px solid var(--ember-mid,#DB5B1F)', borderRadius: 12,
           boxShadow: '0 12px 32px rgba(0,0,0,.13)', overflow: 'hidden'
         }}
           onMouseDown={e => e.stopPropagation()}>
           <div style={{
-            padding: '7px 12px', background: 'rgba(29,78,216,.06)', borderBottom: '1px solid rgba(29,78,216,.12)',
-            fontSize: 8, fontFamily: 'JetBrains Mono,monospace', fontWeight: 800, color: 'var(--ember,#2563EB)', display: 'flex', alignItems: 'center', gap: 6
+            padding: '7px 12px', background: 'rgba(154,52,18,.06)', borderBottom: '1px solid rgba(154,52,18,.12)',
+            fontSize: 8, fontFamily: 'JetBrains Mono,monospace', fontWeight: 800, color: 'var(--ember,#C2410C)', display: 'flex', alignItems: 'center', gap: 6
           }}>
-            <Ic n="users" s={10} c="var(--ember,#2563EB)" />
+            <Ic n="users" s={10} c="var(--ember,#C2410C)" />
             Income clients · {options.length} available
           </div>
-          <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D4D5D8)', background: 'var(--off-white,#F8FAFC)' }}>
+          <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)' }}>
             <Ic n="search" s={12} />
             <input ref={inp} style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }} value={q} onChange={e => setQ(e.target.value)} placeholder="Search clients…" />
             {q && <button type="button" onClick={() => setQ('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>}
@@ -1823,27 +1823,27 @@ function BioDD({ options, value, onChange, loading }: {
               : filtered.map(r => (
                 <div key={r.id} role="option" tabIndex={-1} aria-selected={value === r.name} style={{
                   padding: '9px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10,
-                  background: value === r.name ? 'rgba(29,78,216,0.07)' : 'transparent',
-                  borderBottom: '1px solid var(--border,#D4D5D8)', transition: 'background 0.1s'
+                  background: value === r.name ? 'rgba(154,52,18,0.07)' : 'transparent',
+                  borderBottom: '1px solid var(--border,#D2C7B8)', transition: 'background 0.1s'
                 }}
-                  onMouseOver={e => { if (value !== r.name) (e.currentTarget as HTMLElement).style.background = 'rgba(59,130,246,0.05)'; }}
-                  onMouseOut={e => { (e.currentTarget as HTMLElement).style.background = value === r.name ? 'rgba(29,78,216,0.07)' : 'transparent'; }}
+                  onMouseOver={e => { if (value !== r.name) (e.currentTarget as HTMLElement).style.background = 'rgba(219,91,31,0.05)'; }}
+                  onMouseOut={e => { (e.currentTarget as HTMLElement).style.background = value === r.name ? 'rgba(154,52,18,0.07)' : 'transparent'; }}
                   onClick={() => { onChange(r.name, r.id_details || '', r); setOpen(false); setQ(''); }}>
                   <div style={{
                     width: 28, height: 28, borderRadius: 8,
-                    background: value === r.name ? 'var(--ember,#2563EB)' : 'var(--ember-ghost,rgba(59,130,246,.12))',
-                    color: value === r.name ? '#fff' : 'var(--ember,#2563EB)',
+                    background: value === r.name ? 'var(--ember,#C2410C)' : 'var(--ember-ghost,rgba(219,91,31,.12))',
+                    color: value === r.name ? '#faf9f7' : 'var(--ember,#C2410C)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                   }}><Ic n="user" s={13} /></div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 800, fontSize: 11.5, color: value === r.name ? 'var(--ember,#2563EB)' : 'var(--text-1)' }}>{r.name}</div>
+                    <div style={{ fontWeight: 800, fontSize: 11.5, color: value === r.name ? 'var(--ember,#C2410C)' : 'var(--text-1)' }}>{r.name}</div>
                     {r.id_details && <div style={{ fontSize: 8.5, color: 'var(--text-4)', fontFamily: 'JetBrains Mono,monospace', marginTop: 1 }}>{r.id_details}</div>}
                   </div>
-                  {value === r.name && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ember,#2563EB)" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" /></svg>}
+                  {value === r.name && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ember,#C2410C)" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" /></svg>}
                 </div>
               ))}
           </div>
-          <div style={{ padding: '5px 12px', fontFamily: 'JetBrains Mono,monospace', fontSize: 8, letterSpacing: '.5px', color: 'var(--text-4)', borderTop: '1px solid var(--border,#D4D5D8)', background: 'var(--off-white,#F8FAFC)', textAlign: 'right' }}>{filtered.length} records</div>
+          <div style={{ padding: '5px 12px', fontFamily: 'JetBrains Mono,monospace', fontSize: 8, letterSpacing: '.5px', color: 'var(--text-4)', borderTop: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)', textAlign: 'right' }}>{filtered.length} records</div>
         </div>,
         document.body
       )}
@@ -1909,18 +1909,18 @@ function SubDD({ subs, val, onChange, disabled, placeholder }: {
       </button>
       {open && createPortal(
         <div ref={panelRef3} style={{
-          ...subPStyle, background: 'var(--white,#fff)', border: '1.5px solid var(--ember-mid,#3B82F6)', borderRadius: 12,
+          ...subPStyle, background: 'var(--white,#faf9f7)', border: '1.5px solid var(--ember-mid,#DB5B1F)', borderRadius: 12,
           boxShadow: '0 12px 32px rgba(0,0,0,.13)', overflow: 'hidden'
         }}
           onMouseDown={e => e.stopPropagation()}>
           <div style={{
-            padding: '7px 12px', background: 'rgba(29,78,216,.06)', borderBottom: '1px solid rgba(29,78,216,.12)',
-            fontSize: 8, fontFamily: 'JetBrains Mono,monospace', fontWeight: 800, color: 'var(--ember,#2563EB)'
+            padding: '7px 12px', background: 'rgba(154,52,18,.06)', borderBottom: '1px solid rgba(154,52,18,.12)',
+            fontSize: 8, fontFamily: 'JetBrains Mono,monospace', fontWeight: 800, color: 'var(--ember,#C2410C)'
           }}>
             {subs.length} project names from BioData
           </div>
           {subs.length > 5 && (
-            <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D4D5D8)', background: 'var(--off-white,#F8FAFC)' }}>
+            <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)' }}>
               <Ic n="search" s={12} />
               <input style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }}
                 value={q} onChange={e => setQ(e.target.value)} placeholder="Filter names…" />
@@ -1930,22 +1930,22 @@ function SubDD({ subs, val, onChange, disabled, placeholder }: {
             {fsubs.map(s => (
               <div key={s} role="option" tabIndex={-1} aria-selected={val === s} style={{
                 padding: '9px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                background: val === s ? 'rgba(29,78,216,0.07)' : 'transparent', borderBottom: '1px solid var(--border,#D4D5D8)',
-                color: val === s ? 'var(--ember,#2563EB)' : 'var(--text-1)', fontWeight: val === s ? 800 : 600, fontSize: 12, transition: 'background 0.1s'
+                background: val === s ? 'rgba(154,52,18,0.07)' : 'transparent', borderBottom: '1px solid var(--border,#D2C7B8)',
+                color: val === s ? 'var(--ember,#C2410C)' : 'var(--text-1)', fontWeight: val === s ? 800 : 600, fontSize: 12, transition: 'background 0.1s'
               }}
-                onMouseOver={e => { if (val !== s) (e.currentTarget as HTMLElement).style.background = 'rgba(59,130,246,0.05)'; }}
-                onMouseOut={e => { (e.currentTarget as HTMLElement).style.background = val === s ? 'rgba(29,78,216,0.07)' : 'transparent'; }}
+                onMouseOver={e => { if (val !== s) (e.currentTarget as HTMLElement).style.background = 'rgba(219,91,31,0.05)'; }}
+                onMouseOut={e => { (e.currentTarget as HTMLElement).style.background = val === s ? 'rgba(154,52,18,0.07)' : 'transparent'; }}
                 onClick={() => { onChange(s); setOpen(false); setQ(''); }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: val === s ? 'var(--ember,#2563EB)' : 'var(--text-4)', flexShrink: 0 }} />{s}
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: val === s ? 'var(--ember,#C2410C)' : 'var(--text-4)', flexShrink: 0 }} />{s}
                 </span>
-                {val === s && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ember,#2563EB)" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" /></svg>}
+                {val === s && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ember,#C2410C)" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" /></svg>}
               </div>
             ))}
           </div>
           <div style={{
             padding: '5px 12px', fontFamily: 'JetBrains Mono,monospace', fontSize: 8, letterSpacing: '.5px', color: 'var(--text-4)',
-            borderTop: '1px solid var(--border,#D4D5D8)', background: 'var(--off-white,#F8FAFC)', textAlign: 'right'
+            borderTop: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)', textAlign: 'right'
           }}>{fsubs.length} of {subs.length}</div>
         </div>,
         document.body
@@ -2139,7 +2139,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
   const budgetStart = budgetPageClamped * BUDGET_PAGE_SIZE;
   const budgetVisible = budgetHistory.slice(budgetStart, budgetStart + BUDGET_PAGE_SIZE);
   const isCollect = tab === 'collect';
-  const accentGrad = isCollect ? 'linear-gradient(90deg,#066B66,#12BDB4)' : 'linear-gradient(90deg,#1D4ED8,#C47E0A)';
+  const accentGrad = isCollect ? 'linear-gradient(90deg,#C2410C,#F0834D)' : 'linear-gradient(90deg,#9A3412,#9A3412)';
 
   return (
     <Portal>
@@ -2166,8 +2166,8 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
             <div className="CP-modal-hdr">
               <div className="CP-modal-hdr-l">
                 <div className="CP-modal-ttl-ico" style={{
-                  background: isCollect ? 'rgba(6,107,102,.12)' : 'rgba(29,78,216,.12)',
-                  border: `1.5px solid ${isCollect ? 'rgba(6,107,102,.26)' : 'rgba(29,78,216,.26)'}`
+                  background: isCollect ? 'rgba(194,65,12,.12)' : 'rgba(154,52,18,.12)',
+                  border: `1.5px solid ${isCollect ? 'rgba(194,65,12,.26)' : 'rgba(154,52,18,.26)'}`
                 }}>
                   <Ic n={isCollect ? 'pay' : 'chart'} s={18} c={isCollect ? 'var(--jade)' : 'var(--gold)'} />
                 </div>
@@ -2549,11 +2549,11 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                           <div key={c.lbl} className="CP-tx-sumcard" style={{ background: c.bg, border: `1.5px solid ${c.bd}` }}>
                             <div className="CP-tx-sumcard-top" style={{ background: c.color }} />
                             <div className="CP-tx-sumcard-row">
-                              <div className="CP-tx-sumcard-ic" style={{ background: '#fff', border: `1.5px solid ${c.bd}`, color: c.color }}>
+                              <div className="CP-tx-sumcard-ic" style={{ background: '#faf9f7', border: `1.5px solid ${c.bd}`, color: c.color }}>
                                 <Ic n={c.icon} s={13} c={c.color} />
                               </div>
                               <div>
-                                <div className="CP-tx-sumcard-lbl" style={{ color: '#0F172A' }}>{c.lbl}</div>
+                                <div className="CP-tx-sumcard-lbl" style={{ color: '#231C14' }}>{c.lbl}</div>
                                 <div className="CP-tx-sumcard-val" style={{ color: c.color }}>{c.val}</div>
                               </div>
                             </div>
@@ -2676,7 +2676,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                           </tbody>
                           <tfoot>
                             <tr>
-                              <td colSpan={2} style={{ fontFamily: 'var(--ff-m)', fontSize: 8.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: '#0F172A' }}>Total Added ({budgetHistory.length})</td>
+                              <td colSpan={2} style={{ fontFamily: 'var(--ff-m)', fontSize: 8.5, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: '#231C14' }}>Total Added ({budgetHistory.length})</td>
                               <td className="num" style={{ color: 'var(--gold)', fontSize: 9, fontWeight: 800 }}>{fmt(totalBudgetAdded)}</td>
                               <td colSpan={3} />
                             </tr>
@@ -2983,7 +2983,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
       <Portal>
         <div className="CP-root CP-fp-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
           <div className="CP-fp-modal">
-            <div className="CP-modal-top" style={{ background: 'linear-gradient(90deg,#080C18,var(--gd) 60%,var(--or3))' }} />
+            <div className="CP-modal-top" style={{ background: 'linear-gradient(90deg,#231C14,var(--gd) 60%,var(--or3))' }} />
             <div className="CP-modal-body">
               <div className="CP-modal-hdr">
                 <div className="CP-modal-hdr-l">
@@ -3036,7 +3036,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
                     {isEdit
                       ? <button type="submit" className="CP-btn-primary" disabled={saving} style={{ background: 'linear-gradient(135deg,var(--gd),var(--or2))' }}>{saving ? <><span className="CP-spinner" />Updating…</> : '✓ Update Client'}</button>
                       : <>
-                        <button type="submit" className="CP-btn-primary" disabled={saving}>Next: Add Project <Ic n="arrow" s={12} c="#fff" /></button>
+                        <button type="submit" className="CP-btn-primary" disabled={saving}>Next: Add Project <Ic n="arrow" s={12} c="#faf9f7" /></button>
                         <button type="button" className="CP-btn-ghost" disabled={saving} onClick={handleSkipProject}>{saving ? <><span className="CP-spinner-or" />…</> : 'Save Client Only'}</button>
                       </>}
                     <button type="button" className="CP-btn-ghost" onClick={onClose}>Cancel</button>
@@ -3201,7 +3201,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
         <div className="CP-pjcard-left">
           <div className="CP-pjcard-num">{String(seqNum).padStart(2, '0')}</div>
           <div className="CP-pjcard-icon">
-            <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2.5} strokeLinecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
+            <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2.5} strokeLinecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
           </div>
         </div>
         {/* Left: seq + folder Icon End */}
@@ -3275,14 +3275,14 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
 
       {/* Expand: 3D ring + 2-col payments + budget history */}
       {open && (
-        <div style={{ marginBottom: 8, borderRadius: 12, border: '1.5px solid var(--border,#E9EEF5)', overflow: 'hidden', animation: 'CP-slideDown .28s cubic-bezier(0.4,0,0.2,1) both', background: '#F8FAFC' }}>
+        <div style={{ marginBottom: 8, borderRadius: 12, border: '1.5px solid var(--border,#E8E2D8)', overflow: 'hidden', animation: 'CP-slideDown .28s cubic-bezier(0.4,0,0.2,1) both', background: '#F5F3EF' }}>
 
           {/* ── COLLECTION PROGRESS PANEL ── */}
           <div className="CP-prog-panel">
             <div className="CP-prog-hdr">
               <div className="CP-prog-hdr-left">
                 <span className="CP-prog-hdr-icon">
-                  <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                  <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                 </span>
                 Collection Progress
               </div>
@@ -3297,9 +3297,9 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                 <svg viewBox="0 0 140 140" className="CP-prog-svg">
                   <defs>
                     <linearGradient id={`cg-${project.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#2563EB" />
-                      <stop offset="50%" stopColor="#2563EB" />
-                      <stop offset="100%" stopColor="#ffb347" />
+                      <stop offset="0%" stopColor="#C2410C" />
+                      <stop offset="50%" stopColor="#C2410C" />
+                      <stop offset="100%" stopColor="#F0834D" />
                     </linearGradient>
                     <filter id={`cglow-${project.id}`}>
                       <feGaussianBlur stdDeviation="3" result="blur" />
@@ -3307,9 +3307,9 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                     </filter>
                   </defs>
                   {/* Outer glow ring */}
-                  <circle cx="70" cy="70" r="62" fill="none" stroke="rgba(37,99,235,0.08)" strokeWidth="1.5" />
+                  <circle cx="70" cy="70" r="62" fill="none" stroke="rgba(194,65,12,0.08)" strokeWidth="1.5" />
                   {/* Track */}
-                  <circle cx="70" cy="70" r="52" fill="none" stroke="#E9EEF5" strokeWidth="14" strokeLinecap="round" />
+                  <circle cx="70" cy="70" r="52" fill="none" stroke="#E8E2D8" strokeWidth="14" strokeLinecap="round" />
                   {/* Progress arc */}
                   <circle
                     cx="70" cy="70" r="52"
@@ -3323,12 +3323,12 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                     style={{ transition: 'stroke-dasharray 1.2s cubic-bezier(0.4,0,0.2,1)' }}
                   />
                   {/* Inner fill */}
-                  <circle cx="70" cy="70" r="44" fill="#FFFFFF" />
-                  <circle cx="70" cy="70" r="44" fill="none" stroke="rgba(37,99,235,0.16)" strokeWidth="1" />
+                  <circle cx="70" cy="70" r="44" fill="#FAF9F7" />
+                  <circle cx="70" cy="70" r="44" fill="none" stroke="rgba(194,65,12,0.16)" strokeWidth="1" />
                   {/* Center % */}
-                  <text x="70" y="63" textAnchor="middle" fontSize="24" fontWeight="900" fontFamily="'Georgia',serif" fill="#2563EB">{balPct}%</text>
-                  <text x="70" y="77" textAnchor="middle" fontSize="7.5" fontWeight="800" fontFamily="monospace" fill="#64748B" letterSpacing="1.5">COLLECTED</text>
-                  <text x="70" y="91" textAnchor="middle" fontSize="8" fontWeight="800" fontFamily="monospace" fill="#1D4ED8">{fmtInr(project.total_collected)}</text>
+                  <text x="70" y="63" textAnchor="middle" fontSize="24" fontWeight="900" fontFamily="'Georgia',serif" fill="#C2410C">{balPct}%</text>
+                  <text x="70" y="77" textAnchor="middle" fontSize="7.5" fontWeight="800" fontFamily="monospace" fill="#6B5D48" letterSpacing="1.5">COLLECTED</text>
+                  <text x="70" y="91" textAnchor="middle" fontSize="8" fontWeight="800" fontFamily="monospace" fill="#9A3412">{fmtInr(project.total_collected)}</text>
                 </svg>
               </div>
               {/* Animated Donut ring */}
@@ -3340,13 +3340,13 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                 <div className="CP-kpi-card collected" style={{ animationDelay: '0.1s' }}>
                   <div className="CP-kpi-top">
                     <span className="CP-kpi-icon collected">
-                      <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                      <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                     </span>
                     <span className="CP-kpi-lbl">Collected</span>
                   </div>
-                  <div className="CP-kpi-val" style={{ color: '#2563EB' }}>{fmtInr(project.total_collected)}</div>
+                  <div className="CP-kpi-val" style={{ color: '#C2410C' }}>{fmtInr(project.total_collected)}</div>
                   <div className="CP-kpi-bar-track">
-                    <div className="CP-kpi-bar-fill" style={{ width: `${balPct}%`, background: 'linear-gradient(90deg,#2563EB,#2563EB,#ffb347)', animationDelay: '0.25s' }} />
+                    <div className="CP-kpi-bar-fill" style={{ width: `${balPct}%`, background: 'linear-gradient(90deg,#C2410C,#C2410C,#F0834D)', animationDelay: '0.25s' }} />
                   </div>
                   <div className="CP-kpi-sub">{balPct}% of total budget</div>
                 </div>
@@ -3372,13 +3372,13 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                 <div className="CP-kpi-card total" style={{ animationDelay: '0.3s' }}>
                   <div className="CP-kpi-top">
                     <span className="CP-kpi-icon total">
-                      <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" /></svg>
+                      <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="#9A3412" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" /></svg>
                     </span>
                     <span className="CP-kpi-lbl">Total Budget</span>
                   </div>
-                  <div className="CP-kpi-val" style={{ color: '#1D4ED8' }}>{fmtInr(project.total_budget)}</div>
+                  <div className="CP-kpi-val" style={{ color: '#9A3412' }}>{fmtInr(project.total_budget)}</div>
                   <div className="CP-kpi-bar-track">
-                    <div className="CP-kpi-bar-fill" style={{ width: '100%', background: 'linear-gradient(90deg,#1D4ED8,#3B82F6)', animationDelay: '0.55s' }} />
+                    <div className="CP-kpi-bar-fill" style={{ width: '100%', background: 'linear-gradient(90deg,#9A3412,#DB5B1F)', animationDelay: '0.55s' }} />
                   </div>
                   <div className="CP-kpi-sub">{project.total_gst > 0 ? `incl. ${fmtInr(project.total_gst)} GST` : 'Project ceiling'}</div>
                 </div>
@@ -3448,7 +3448,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
           {budgetHistory.length > 0 && (
             <div className="CP-bgt-hist">
               <div className="CP-bgt-hist-hdr">
-                <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" strokeWidth={2.5} strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /><circle cx="12" cy="12" r="10" /></svg>
+                <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="#9A3412" strokeWidth={2.5} strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /><circle cx="12" cy="12" r="10" /></svg>
                 Budget Additions
                 <span className="CP-bgt-hist-count">{budgetHistory.length}</span>
               </div>
@@ -3515,7 +3515,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
             <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>
           </div>
           <div className="CP-proj-avatar">
-            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
+            <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth={2.5} strokeLinecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
           </div>
           <div style={{ minWidth: 0 }}>
             <div className="CP-proj-name">{project.project_name || 'Unnamed Project'}</div>
@@ -3620,7 +3620,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
               </div>
               <div className="CP-detail-prog-kpi">
                 <span className="CP-detail-prog-kpi-lbl">Collected</span>
-                <span className="CP-detail-prog-kpi-val" style={{ color: '#ffb84d' }}>{fmt(project.total_collected)}</span>
+                <span className="CP-detail-prog-kpi-val" style={{ color: '#DB5B1F' }}>{fmt(project.total_collected)}</span>
               </div>
               <div className="CP-detail-prog-kpi">
                 <span className="CP-detail-prog-kpi-lbl">Balance</span>
@@ -3646,7 +3646,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
             <div className="CP-tx-feed" style={{ marginBottom: 14 }}>
               <div className="CP-tx-feed-hdr">
                 <div className="CP-tx-feed-title">Recent Transactions</div>
-                <div style={{ fontFamily: 'var(--ff-m)', fontSize: 9.5, fontWeight: 800, color: 'var(--success,#1E7A5A)' }}>
+                <div style={{ fontFamily: 'var(--ff-m)', fontSize: 9.5, fontWeight: 800, color: 'var(--success,#1E9C6A)' }}>
                   {fmt(asArray<Payment>(project.payments).reduce((s, p) => s + p.total_amount, 0))}
                 </div>
               </div>
@@ -3656,7 +3656,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                     style={{ animationDelay: `${Math.min(i, 8) * 40}ms` }}
                     onClick={() => setPayModal('collect')}>
                     <div className="CP-tx-icon-erp">
-                      <Ic n="pay" s={15} c="var(--ember,#2563EB)" />
+                      <Ic n="pay" s={15} c="var(--ember,#C2410C)" />
                     </div>
                     <div className="CP-tx-body">
                       <div className="CP-tx-amount">{fmt(pay.amount)}</div>
@@ -3676,7 +3676,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
             </div>
           ) : (
             <div className="CP-tx-empty" style={{ marginBottom: 14 }}>
-              <div className="CP-tx-empty-icon"><Ic n="pay" s={20} c="var(--ember,#2563EB)" /></div>
+              <div className="CP-tx-empty-icon"><Ic n="pay" s={20} c="var(--ember,#C2410C)" /></div>
               <div className="CP-tx-empty-title">No payments yet</div>
               <div className="CP-tx-empty-sub">Record first payment to see transactions</div>
             </div>
@@ -3687,7 +3687,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
             <button className="CP-btn-primary"
               style={{ background: 'linear-gradient(135deg,var(--jade),var(--jade2))', boxShadow: '0 4px 16px var(--jade-g)' }}
               onClick={() => setPayModal('collect')}>
-              <Ic n="pay" s={15} c="#fff" /> Add Payment
+              <Ic n="pay" s={15} c="#faf9f7" /> Add Payment
             </button>
             <button className="CP-btn-gold" onClick={() => setPayModal('budget')}>
               <Ic n="chart" s={14} /> Add Budget
@@ -3819,7 +3819,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
             {projects.length > 0 && <span className="CP-main-section-pill">{projects.length} total</span>}
             <button
               onClick={() => setAddProjModal(true)}
-              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'linear-gradient(135deg,#2563EB,#3B82F6)', color: '#fff', border: 'none', borderRadius: 8, fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 2px 10px rgba(29,78,216,0.25)' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px', background: 'linear-gradient(135deg,#C2410C,#DB5B1F)', color: '#faf9f7', border: 'none', borderRadius: 8, fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: 1.5, textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 2px 10px rgba(154,52,18,0.25)' }}>
               <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               Add Project
             </button>
@@ -3832,12 +3832,12 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
             ? (
               <div className="CP-empty">
                 <div className="CP-empty-ico">
-                  <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2}><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
+                  <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2}><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>
                 </div>
                 <div className="CP-empty-ttl" style={{ fontSize: 16 }}>No Projects Yet</div>
                 <div className="CP-empty-sub" style={{ marginBottom: 14 }}>Add the first project to get started</div>
                 <button onClick={() => setAddProjModal(true)}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'linear-gradient(135deg,#2563EB,#3B82F6)', color: '#fff', border: 'none', borderRadius: 10, fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 16px rgba(29,78,216,0.3)' }}>
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'linear-gradient(135deg,#C2410C,#DB5B1F)', color: '#faf9f7', border: 'none', borderRadius: 10, fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 16px rgba(154,52,18,0.3)' }}>
                   <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                   Add First Project
                 </button>
@@ -3931,7 +3931,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
         <div className="CP-cli-cell CP-cli-cell-rgt" onClick={e => e.stopPropagation()}>
           <div style={{ textAlign: 'right' }}>
             <div className="CP-money CP-money-bgt">{fmt(client.total_budget)}</div>
-            {client.total_additional > 0 && <div style={{ fontFamily: 'var(--ff-m)', fontSize: 8, color: 'var(--gd,#C47E0A)', marginTop: 1 }}>+{fmt(client.total_additional)} extra</div>}
+            {client.total_additional > 0 && <div style={{ fontFamily: 'var(--ff-m)', fontSize: 8, color: 'var(--gd,#9A3412)', marginTop: 1 }}>+{fmt(client.total_additional)} extra</div>}
           </div>
         </div>
         {/* BUDGET END */}
@@ -4110,9 +4110,9 @@ export default function ClientPortalFull() {
   );
 
   const STAT_CARDS = summary ? [
-    { icon: 'users', label: 'Total Clients', num: summary.total_clients, prefix: '', color: 'var(--ember,#2563EB)', ac: 'linear-gradient(180deg,#2563EB 0%,transparent 100%)', iconBg: 'rgba(29,78,216,0.09)', iconBd: 'rgba(29,78,216,0.2)', foot: `${summary.total_projects} active projects` },
-    { icon: 'bldg', label: 'Active Projects', num: summary.total_projects, prefix: '', color: 'var(--amber,#3B82F6)', ac: 'linear-gradient(180deg,#3B82F6 0%,transparent 100%)', iconBg: 'rgba(59,130,246,0.09)', iconBd: 'rgba(59,130,246,0.2)', foot: 'across all clients' },
-    { icon: 'wallet', label: 'Total Budget', num: summary.total_budget, prefix: '₹', color: 'var(--amber,#3B82F6)', ac: 'linear-gradient(180deg,#3B82F6 0%,transparent 100%)', iconBg: 'rgba(59,130,246,0.09)', iconBd: 'rgba(59,130,246,0.2)', foot: 'contracted value' },
+    { icon: 'users', label: 'Total Clients', num: summary.total_clients, prefix: '', color: 'var(--ember,#C2410C)', ac: 'linear-gradient(180deg,#C2410C 0%,transparent 100%)', iconBg: 'rgba(154,52,18,0.09)', iconBd: 'rgba(154,52,18,0.2)', foot: `${summary.total_projects} active projects` },
+    { icon: 'bldg', label: 'Active Projects', num: summary.total_projects, prefix: '', color: 'var(--amber,#DB5B1F)', ac: 'linear-gradient(180deg,#DB5B1F 0%,transparent 100%)', iconBg: 'rgba(219,91,31,0.09)', iconBd: 'rgba(219,91,31,0.2)', foot: 'across all clients' },
+    { icon: 'wallet', label: 'Total Budget', num: summary.total_budget, prefix: '₹', color: 'var(--amber,#DB5B1F)', ac: 'linear-gradient(180deg,#DB5B1F 0%,transparent 100%)', iconBg: 'rgba(219,91,31,0.09)', iconBd: 'rgba(219,91,31,0.2)', foot: 'contracted value' },
     { icon: 'coins', label: 'Amt Collected', num: summary.total_collected, prefix: '₹', color: '#1E9C6A', ac: 'linear-gradient(180deg,#1E9C6A 0%,transparent 100%)', iconBg: 'rgba(22,163,74,0.09)', iconBd: 'rgba(22,163,74,0.2)', foot: `${summary.collected_pct}% of budget` },
     { icon: 'chart', label: 'Balance Due', num: summary.total_balance, prefix: '₹', color: '#D93B55', ac: 'linear-gradient(180deg,#D93B55 0%,transparent 100%)', iconBg: 'rgba(220,38,38,0.09)', iconBd: 'rgba(220,38,38,0.2)', foot: 'outstanding amount' },
   ] : [];
@@ -4142,7 +4142,7 @@ export default function ClientPortalFull() {
             </div>
             <div className="ERP-hdr-right">
               <button className="CP-btn-header-add" onClick={() => setModal({ type: 'add' })}>
-                <span className="CP-btn-header-add-ic"><Ic n="plus" s={12} c="#fff" /></span>
+                <span className="CP-btn-header-add-ic"><Ic n="plus" s={12} c="#faf9f7" /></span>
                 Add Client
               </button>
             </div>
@@ -4186,7 +4186,7 @@ export default function ClientPortalFull() {
               </div>
               <div className="CP-sb-title">Clients</div>
               <div className="CP-sb-search">
-                <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} style={{ color: '#2563EB', flexShrink: 0 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} style={{ color: '#C2410C', flexShrink: 0 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                 <input
                   placeholder="Search clients…"
                   value={search}
@@ -4215,7 +4215,7 @@ export default function ClientPortalFull() {
                 : filtered.length === 0
                   ? <div className="CP-empty" style={{ minHeight: 200 }}>
                     <div className="CP-empty-ico">
-                      <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                      <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
                     </div>
                     <div className="CP-empty-ttl" style={{ fontSize: 14 }}>No clients</div>
                     <div className="CP-empty-sub">{search ? 'Try another name' : 'Add your first client'}</div>
@@ -4273,7 +4273,7 @@ export default function ClientPortalFull() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                   <div className="CP-sb-tap-hint" style={{ opacity: 1 }}>
                     <div className="CP-sb-tap-icon" style={{ width: 64, height: 64 }}>
-                      <Ic n="users" s={28} c="#2563EB" />
+                      <Ic n="users" s={28} c="#C2410C" />
                     </div>
                     <div className="CP-sb-tap-label" style={{ fontSize: 9, marginTop: 4 }}>
                       Select a client to view details

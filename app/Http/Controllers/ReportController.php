@@ -213,10 +213,10 @@ class ReportController extends Controller
             if ($search = $request->get('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('narration', 'like', "%{$search}%")
-                      ->orWhere('client_name', 'like', "%{$search}%")
-                      ->orWhereHas('bioData', fn($b) => $b->where('name', 'like', "%{$search}%"))
-                      ->orWhereHas('category', fn($c) => $c->where('name', 'like', "%{$search}%"))
-                      ->orWhere('payment_mode', 'like', "%{$search}%");
+                        ->orWhere('client_name', 'like', "%{$search}%")
+                        ->orWhereHas('bioData', fn($b) => $b->where('name', 'like', "%{$search}%"))
+                        ->orWhereHas('category', fn($c) => $c->where('name', 'like', "%{$search}%"))
+                        ->orWhere('payment_mode', 'like', "%{$search}%");
                 });
             }
 
@@ -261,17 +261,17 @@ class ReportController extends Controller
             ['from' => $from, 'to' => $to] = $this->dateRange($request);
 
             $vendors = CreditVendor::with([
-                    'category:id,name',
-                    'subCategory:id,name',
-                    'creditEntries' => fn($query) => $query
-                        ->whereNull('deleted_at')
-                        ->whereBetween('credit_date', [$from, $to])
-                        ->orderBy('credit_date', 'desc'),
-                    'creditPayments' => fn($query) => $query
-                        ->whereNull('deleted_at')
-                        ->whereBetween('payment_date', [$from, $to])
-                        ->orderBy('payment_date', 'desc'),
-                ])
+                'category:id,name',
+                'subCategory:id,name',
+                'creditEntries' => fn($query) => $query
+                    ->whereNull('deleted_at')
+                    ->whereBetween('credit_date', [$from, $to])
+                    ->orderBy('credit_date', 'desc'),
+                'creditPayments' => fn($query) => $query
+                    ->whereNull('deleted_at')
+                    ->whereBetween('payment_date', [$from, $to])
+                    ->orderBy('payment_date', 'desc'),
+            ])
                 ->whereNull('deleted_at')
                 ->orderBy('party_name')
                 ->get();
@@ -390,9 +390,9 @@ class ReportController extends Controller
 
             /* ── Client Portal Collections ──────────────────────────── */
             $payments = ClientPayment::with([
-                    'clientProject' => fn($q) => $q->withTrashed(),
-                    'clientProject.client',
-                ])
+                'clientProject' => fn($q) => $q->withTrashed(),
+                'clientProject.client',
+            ])
                 ->whereNull('client_payments.deleted_at')
                 ->whereBetween('payment_date', [$from, $to])
                 ->orderBy('payment_date', 'desc')
@@ -430,7 +430,7 @@ class ReportController extends Controller
                 ];
             }
             $clientCollections = array_values($clientMap);
-            usort($clientCollections, fn($a,$b) => $b['total'] <=> $a['total']);
+            usort($clientCollections, fn($a, $b) => $b['total'] <=> $a['total']);
             $totalClientCollected = array_sum(array_column($clientCollections, 'total'));
 
             /* ── Daybook Income Entries ──────────────────────────────── */

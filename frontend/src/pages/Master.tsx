@@ -131,7 +131,7 @@ function SkeletonRow() {
                 <td key={i} style={{ padding: '14px 16px' }}>
                     <div style={{
                         height: 13, borderRadius: 6, width: w,
-                        background: 'linear-gradient(90deg,#E9EEF5 25%,#DBEAFE 50%,#E9EEF5 75%)',
+                        background: 'linear-gradient(90deg,#E8E2D8 25%,#FBC9A8 50%,#E8E2D8 75%)',
                         backgroundSize: '400px 100%',
                         animation: 'erp-shimmer 1.4s infinite linear',
                     }} />
@@ -340,7 +340,7 @@ export default function Master() {
             {syncing && (
                 <div style={{
                     position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
-                    background: '#0F172A', color: '#60A5FA',
+                    background: '#231C14', color: '#F0834D',
                     padding: '8px 16px', borderRadius: 100,
                     fontSize: 9.5, fontFamily: 'monospace', fontWeight: 700,
                     display: 'flex', alignItems: 'center', gap: 8,
@@ -350,7 +350,7 @@ export default function Master() {
                     <span style={{
                         width: 8, height: 8, borderRadius: '50%',
                         border: '2px solid rgba(191,219,254,0.3)',
-                        borderTopColor: '#60A5FA',
+                        borderTopColor: '#F0834D',
                         display: 'inline-block',
                         animation: 'erp-spin 0.6s linear infinite',
                     }} />
@@ -409,7 +409,7 @@ export default function Master() {
                             {/* Form Header Start */}
                             <div className="ERP-form-hdr MD-form-hdr">
                                 <div className="ERP-form-icon-wrap MD-form-icon-wrap">
-                                    <Ic d={editId ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' : 'M12 4v16m-8-8h16'} sz={18} c="#fff" sw={1.8} />
+                                    <Ic d={editId ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' : 'M12 4v16m-8-8h16'} sz={18} c="#faf9f7" sw={1.8} />
                                 </div>
                                 <div>
                                     <div className="ERP-form-title MD-form-title">
@@ -516,7 +516,7 @@ export default function Master() {
                                     <button type="submit" className="ERP-btn primary" disabled={loading}>
                                         {loading
                                             ? <><span className="ERP-spinner" /> {editId ? 'Updating...' : 'Creating...'}</>
-                                            : <><Ic d="M5 13l4 4L19 7" sz={13} c="#fff" sw={2.2} /> {editId ? 'Update Account Head' : 'Create Account Head'}</>
+                                            : <><Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} /> {editId ? 'Update Account Head' : 'Create Account Head'}</>
                                         }
                                     </button>
                                     <button type="button" className="ERP-btn secondary"

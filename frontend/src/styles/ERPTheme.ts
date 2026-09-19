@@ -1167,6 +1167,44 @@ export const ERP_CSS = `
   box-shadow: 0 3px 10px rgba(217,59,85,0.3);
 }
 
+/* -- Generic bordered card shell (icon-wrap header + accent topbar) --
+   used by Pending Approvals / Recycle Bin / etc. wherever a page needs a
+   plain "table in a card" wrapper without a page-specific style block. -- */
+.ERP-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(15,23,42,.04), 0 20px 46px -26px rgba(15,23,42,.18);
+  overflow: hidden;
+  animation: erp-pop 0.4s ease both;
+}
+.ERP-card-topbar {
+  height: 3px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, var(--ember-light), var(--ember), var(--ember-mid));
+}
+.ERP-card-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px 24px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(194,65,12,.05), transparent);
+}
+.ERP-card-hdr-left { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.ERP-card-icon-wrap {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ember-ghost); border: 1px solid var(--ember-border);
+}
+.ERP-card-title { font-size: 14.5px; font-weight: 800; color: var(--text-1); }
+.ERP-card-sub { font-size: 10.5px; color: var(--text-4); margin-top: 2px; }
+
 .ERP-empty {
   display: flex;
   flex-direction: column;
@@ -1990,53 +2028,97 @@ export const ERP_CSS = `
    already imported on every page, this bar looks identical everywhere
    with zero per-page CSS duplication.
 ══════════════════════════════════════════════════════════════════ */
-@keyframes erp-pg-in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-@keyframes erp-pg-pop { from{transform:scale(.7)} to{transform:scale(1.08)} }
+@keyframes erp-pg-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes erp-pg-pop {
+  0%   { transform:scale(.6); }
+  55%  { transform:scale(1.14); }
+  100% { transform:scale(1.08); }
+}
+@keyframes erp-pg-ring {
+  from { transform:scale(1); opacity:.55; }
+  to   { transform:scale(1.85); opacity:0; }
+}
+@keyframes erp-pg-dot-pulse {
+  0%,100% { opacity:.45; transform:scale(1); }
+  50%     { opacity:1;   transform:scale(1.3); }
+}
 .ERP-pg {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 22px; border-top: 1px solid var(--border);
-  background: var(--off-white); flex-wrap: wrap; gap: 12px;
-  animation: erp-pg-in 0.35s cubic-bezier(0.22,1,0.36,1) both;
+  padding: 15px 22px; border-top: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--off-white), var(--surface,var(--off-white)));
+  flex-wrap: wrap; gap: 14px;
+  animation: erp-pg-in 0.4s cubic-bezier(0.22,1,0.36,1) both;
 }
-.ERP-pg-info { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--text-3); letter-spacing: 0.2px; }
+.ERP-pg-info {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  color: var(--text-3); letter-spacing: 0.2px;
+}
 .ERP-pg-info strong { color: var(--text-1); font-weight: 800; }
-.ERP-pg-info-sep { margin: 0 6px; color: var(--border-2); }
+.ERP-pg-info-range strong { color: var(--ember); }
+.ERP-pg-info-of { color: var(--text-4); text-transform: lowercase; }
+.ERP-pg-info-sep {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--ember-mid,var(--ember)); margin: 0 3px; flex-shrink: 0;
+  animation: erp-pg-dot-pulse 2.2s ease-in-out infinite;
+}
+.ERP-pg-info-page { color: var(--text-3); }
 .ERP-pg-btns {
-  display: flex; align-items: center; gap: 4px; padding: 4px;
+  display: flex; align-items: center; gap: 3px; padding: 4px;
   background: var(--white); border: 1.5px solid var(--border);
   border-radius: 999px; box-shadow: var(--sh-card);
 }
 .ERP-pg-btn {
-  display: flex; align-items: center; justify-content: center;
-  min-width: 30px; height: 30px; padding: 0 4px; border-radius: 999px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 28px; padding: 0 4px; border-radius: 999px;
   background: transparent; border: none; font-size: 10px; font-weight: 800;
   font-family: var(--font-body); color: var(--text-3); cursor: pointer;
-  transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .18s ease, color .18s ease, box-shadow .18s ease;
+  overflow: visible;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .18s ease, color .18s ease, box-shadow .2s ease;
 }
-.ERP-pg-btn:hover:not(:disabled) { color: var(--ember); background: var(--ember-ghost); transform: translateY(-1px) scale(1.06); }
-.ERP-pg-btn:active:not(:disabled) { transform: scale(0.9); transition-duration: .08s; }
+.ERP-pg-btn-num { position: relative; z-index: 1; }
+.ERP-pg-btn:hover:not(:disabled) { color: var(--ember); background: var(--ember-ghost); transform: translateY(-1.5px) scale(1.08); }
+.ERP-pg-btn:active:not(:disabled) { transform: scale(0.88); transition-duration: .08s; }
 .ERP-pg-btn.on {
   background: linear-gradient(135deg, var(--ember-mid,#DB5B1F), var(--ember));
-  color: #fff; box-shadow: 0 3px 10px rgba(194,65,12,0.4); transform: scale(1.08);
-  animation: erp-pg-pop .28s cubic-bezier(.34,1.56,.64,1);
+  color: #fff; box-shadow: 0 3px 12px rgba(194,65,12,0.42); transform: scale(1.08);
+  animation: erp-pg-pop .32s cubic-bezier(.34,1.56,.64,1);
 }
-.ERP-pg-btn.on:hover { transform: scale(1.1); }
+.ERP-pg-btn.on::after {
+  content: ''; position: absolute; inset: 0; border-radius: 999px;
+  border: 1.5px solid var(--ember-mid,var(--ember));
+  animation: erp-pg-ring .55s cubic-bezier(.22,1,.36,1) both;
+  pointer-events: none;
+}
+.ERP-pg-btn.on:hover { transform: scale(1.12); }
 .ERP-pg-edge { color: var(--text-4); }
 .ERP-pg-btn:disabled { opacity: .28; cursor: not-allowed; transform: none !important; }
+.ERP-pg-btn:disabled::after { display: none; }
+.ERP-pg-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--ember-ghost); }
 .ERP-pg-ellipsis {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 20px; height: 30px; font-size: 9px; font-weight: 800;
+  min-width: 18px; height: 28px; font-size: 9px; font-weight: 800;
   color: var(--text-4); letter-spacing: 1px;
 }
 .ERP-pg-per { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--text-3); }
+.ERP-pg-per-wrap { position: relative; display: inline-flex; align-items: center; }
 .ERP-pg-per-sel {
-  padding: 7px 12px; background: var(--white); border: 1.5px solid var(--border);
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  padding: 7px 24px 7px 12px; background: var(--white); border: 1.5px solid var(--border);
   border-radius: 999px; font-family: var(--font-mono); font-size: 9px; font-weight: 800;
-  color: var(--text-1); cursor: pointer; outline: none; transition: all .18s ease; box-shadow: var(--sh-card);
+  color: var(--text-1); cursor: pointer; outline: none;
+  transition: border-color .18s ease, color .18s ease, box-shadow .2s ease, transform .15s ease;
+  box-shadow: var(--sh-card);
 }
-.ERP-pg-per-sel:hover { border-color: var(--ember-border); color: var(--ember); }
+.ERP-pg-per-sel:hover { border-color: var(--ember-border); color: var(--ember); transform: translateY(-1px); }
 .ERP-pg-per-sel:focus { border-color: var(--ember-mid); box-shadow: 0 0 0 2px var(--ember-ghost); }
+.ERP-pg-per-chev {
+  position: absolute; right: 9px; color: var(--text-4); pointer-events: none;
+  transition: color .18s ease, transform .18s ease;
+}
+.ERP-pg-per-wrap:hover .ERP-pg-per-chev { color: var(--ember); transform: translateY(1px); }
 @media (max-width: 720px) {
   .ERP-pg { justify-content: center; text-align: center; }
 }
 `;
+

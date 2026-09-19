@@ -55,9 +55,9 @@ const RB_CSS = `
   text-transform:uppercase; cursor:pointer; border:1px solid; transition:all .18s;
 }
 .RB-group-btn.restore { background:rgba(30,156,106,.08); color:#1E9C6A; border-color:rgba(30,156,106,.24); }
-.RB-group-btn.restore:hover:not(:disabled) { background:#1E9C6A; color:#fff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(30,156,106,.3); }
+.RB-group-btn.restore:hover:not(:disabled) { background:#1E9C6A; color:#faf9f7; transform:translateY(-1px); box-shadow:0 4px 12px rgba(30,156,106,.3); }
 .RB-group-btn.danger  { background:rgba(217,59,85,.08); color:#D93B55; border-color:rgba(217,59,85,.22); }
-.RB-group-btn.danger:hover:not(:disabled) { background:#D93B55; color:#fff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(217,59,85,.3); }
+.RB-group-btn.danger:hover:not(:disabled) { background:#D93B55; color:#faf9f7; transform:translateY(-1px); box-shadow:0 4px 12px rgba(217,59,85,.3); }
 .RB-group-btn:disabled { opacity:.5; cursor:not-allowed; }
 
 .RB-float { display:inline-flex; animation:rb-float 3.4s ease-in-out infinite; }
@@ -84,11 +84,11 @@ const RB_CSS = `
 .RB-fx-card.RB-fx-restore { box-shadow:0 24px 60px -18px rgba(30,156,106,.38), 0 0 0 1px rgba(30,156,106,.14); }
 .RB-fx-card.RB-fx-delete  { box-shadow:0 24px 60px -18px rgba(217,59,85,.38), 0 0 0 1px rgba(217,59,85,.14); }
 .RB-fx-icon  { display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-.RB-fx-title { font-size:15px; font-weight:800; color:var(--text-1,#1a1a1a); margin-bottom:4px; letter-spacing:.1px; }
-.RB-fx-msg   { font-size:11px; color:var(--text-3,#666); line-height:1.55; padding:0 4px; }
-.RB-fx-bar   { position:absolute; left:0; bottom:0; height:3px; width:100%; transform-origin:left; background:linear-gradient(90deg,var(--ember,#2563EB),var(--ember-light,#60A5FA)); }
-.RB-fx-card.RB-fx-restore .RB-fx-bar { background:linear-gradient(90deg,#1E9C6A,#3ec98c); }
-.RB-fx-card.RB-fx-delete  .RB-fx-bar { background:linear-gradient(90deg,#D93B55,#f0637c); }
+.RB-fx-title { font-size:15px; font-weight:800; color:var(--text-1,#231C14); margin-bottom:4px; letter-spacing:.1px; }
+.RB-fx-msg   { font-size:11px; color:var(--text-3,#6B5D48); line-height:1.55; padding:0 4px; }
+.RB-fx-bar   { position:absolute; left:0; bottom:0; height:3px; width:100%; transform-origin:left; background:linear-gradient(90deg,var(--ember,#C2410C),var(--ember-light,#F0834D)); }
+.RB-fx-card.RB-fx-restore .RB-fx-bar { background:linear-gradient(90deg,#1E9C6A,#34D399); }
+.RB-fx-card.RB-fx-delete  .RB-fx-bar { background:linear-gradient(90deg,#D93B55,#F87171); }
 
 @media(prefers-reduced-motion: reduce){
   .RB-stat, .RB-group, .RB-chip, .RB-float { animation:none !important; }
@@ -136,7 +136,7 @@ function BinFxIcon({ kind }: { kind: 'restore' | 'delete' }) {
             {/* Celebratory  Start */}
             {!isDelete && [0, 1, 2].map(i => (
                 <motion.circle
-                    key={i} cx={12} cy={4} r="1" fill="#60A5FA"
+                    key={i} cx={12} cy={4} r="1" fill="#F0834D"
                     initial={{ opacity: 0, x: 0, y: 0 }}
                     animate={{ opacity: [0, 1, 0], x: [0, (i - 1) * 8], y: [0, -6 - i * 2] }}
                     transition={{ duration: 0.7, delay: 0.95 }}
@@ -153,22 +153,22 @@ interface TrashGroup { key: string; label: string; count: number; records: Trash
 
 /* ── Module colours ────────────────── */
 const MOD: Record<string, { dot: string; bg: string; color: string; border: string; icon: string }> = {
-    categories: { dot: '#2563EB', bg: '#F3E8FF', color: '#2563EB', border: '#DDD6FE', icon: 'M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' },
-    sub_categories: { dot: '#C47E0A', bg: '#fef3c7', color: '#C47E0A', border: '#fde68a', icon: 'M4 6h16M4 10h16M4 14h10' },
-    id_types: { dot: '#2563eb', bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe', icon: 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1' },
-    bio_data: { dot: '#16a34a', bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
-    sub_names: { dot: '#9333ea', bg: '#fdf4ff', color: '#9333ea', border: '#e9d5ff', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0' },
+    categories: { dot: '#C2410C', bg: '#FBC9A8', color: '#C2410C', border: '#FBC9A8', icon: 'M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' },
+    sub_categories: { dot: '#9A3412', bg: '#FDE0CB', color: '#9A3412', border: '#FDE0CB', icon: 'M4 6h16M4 10h16M4 14h10' },
+    id_types: { dot: '#C2410C', bg: '#FDE0CB', color: '#C2410C', border: '#FBC9A8', icon: 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1' },
+    bio_data: { dot: '#F0834D', bg: '#f0fdf4', color: '#F0834D', border: '#bbf7d0', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+    sub_names: { dot: '#DB5B1F', bg: '#FDE0CB', color: '#DB5B1F', border: '#FBC9A8', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0' },
     clients: { dot: '#D93B55', bg: '#fff1f2', color: '#D93B55', border: '#fecdd3', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' },
-    client_projects: { dot: '#0284c7', bg: '#f0f9ff', color: '#0284c7', border: '#bae6fd', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-    client_payments: { dot: '#15803d', bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0', icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z' },
-    daybook_entries: { dot: '#ca8a04', bg: '#fefce8', color: '#ca8a04', border: '#fef08a', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
-    credit_vendors: { dot: '#7C3AED', bg: '#F3E8FF', color: '#7C3AED', border: '#DDD6FE', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5' },
-    credit_entries: { dot: '#be185d', bg: '#fdf2f8', color: '#be185d', border: '#fbcfe8', icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
-    credit_payments: { dot: '#0f766e', bg: '#f0fdfa', color: '#0f766e', border: '#99f6e4', icon: 'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z' },
-    workers: { dot: '#60A5FA', bg: '#F3E8FF', color: '#c47e0a', border: '#fde68a', icon: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75M13 7a4 4 0 11-8 0 4 4 0 018 0z' },
+    client_projects: { dot: '#DB5B1F', bg: '#FDE0CB', color: '#DB5B1F', border: '#FBC9A8', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+    client_payments: { dot: '#9A3412', bg: '#f0fdf4', color: '#9A3412', border: '#bbf7d0', icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z' },
+    daybook_entries: { dot: '#A6491D', bg: '#FDE0CB', color: '#A6491D', border: '#FBC9A8', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
+    credit_vendors: { dot: '#C2410C', bg: '#FBC9A8', color: '#C2410C', border: '#FBC9A8', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5' },
+    credit_entries: { dot: '#EA580C', bg: '#FDE0CB', color: '#EA580C', border: '#fbcfe8', icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
+    credit_payments: { dot: '#D98255', bg: '#FDE0CB', color: '#D98255', border: '#FBC9A8', icon: 'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z' },
+    workers: { dot: '#F0834D', bg: '#FBC9A8', color: '#9A3412', border: '#FDE0CB', icon: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75M13 7a4 4 0 11-8 0 4 4 0 018 0z' },
 };
 
-const fallback = { dot: '#64748b', bg: '#f8fafc', color: '#64748b', border: '#cbd5e1', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8' };
+const fallback = { dot: '#6B5D48', bg: '#F5F3EF', color: '#6B5D48', border: '#D2C7B8', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8' };
 
 /* ── Skeleton row ────────── */
 function SkeletonRow() {
@@ -176,7 +176,7 @@ function SkeletonRow() {
         <tr>
             {[44, 160, 200, 100, 110, 120].map((w, i) => (
                 <td key={i} style={{ padding: '14px 16px' }}>
-                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E9EEF5 25%,#FFE0B2 50%,#E9EEF5 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
+                    <div style={{ height: 13, borderRadius: 6, width: w, background: 'linear-gradient(90deg,#E8E2D8 25%,#FDE0CB 50%,#E8E2D8 75%)', backgroundSize: '400px 100%', animation: 'erp-shimmer 1.4s infinite linear' }} />
                 </td>
             ))}
         </tr>
@@ -302,8 +302,8 @@ export default function RecycleBin() {
             {/* ── STATS ── */}
             <div className="ERP-stats">
                 {[
-                    { path: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16', label: 'Total Deleted', val: total, c: '#2563EB', bg: 'rgba(37,99,235,0.09)', bd: 'rgba(37,99,235,0.24)' },
-                    { path: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z', label: 'Modules', val: totalModules, c: '#2870CC', bg: 'rgba(40,112,204,0.09)', bd: 'rgba(40,112,204,0.22)' },
+                    { path: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16', label: 'Total Deleted', val: total, c: '#C2410C', bg: 'rgba(37,99,235,0.09)', bd: 'rgba(37,99,235,0.24)' },
+                    { path: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z', label: 'Modules', val: totalModules, c: '#DB5B1F', bg: 'rgba(40,112,204,0.09)', bd: 'rgba(40,112,204,0.22)' },
                     { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Restorable', val: total, c: '#1E9C6A', bg: 'rgba(30,156,106,0.09)', bd: 'rgba(30,156,106,0.22)' },
                     { path: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z', label: 'Permanent Risk', val: total, c: '#D93B55', bg: 'rgba(217,59,85,0.09)', bd: 'rgba(217,59,85,0.22)' },
                 ].map((s, i) => (
@@ -331,9 +331,9 @@ export default function RecycleBin() {
                             className="RB-chip"
                             onClick={() => setFilter(chip.key)}
                             style={{
-                                border: `1px solid ${filter === chip.key ? 'var(--ember-border,#60A5FA)' : 'var(--border)'}`,
+                                border: `1px solid ${filter === chip.key ? 'var(--ember-border,#F0834D)' : 'var(--border)'}`,
                                 background: filter === chip.key ? 'var(--ember-ghost,rgba(37,99,235,0.08))' : 'var(--white)',
-                                color: filter === chip.key ? 'var(--ember,#60A5FA)' : 'var(--text-3,#555)',
+                                color: filter === chip.key ? 'var(--ember,#F0834D)' : 'var(--text-3,#524532)',
                                 animationDelay: `${i * 0.03}s`,
                             }}
                         >{chip.label}</button>
@@ -402,8 +402,8 @@ export default function RecycleBin() {
                                         <div className="RB-group-ic">
                                             <Ic d={mc.icon} sz={14} c={mc.color} sw={1.8} />
                                         </div>
-                                        <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-2,#444)', letterSpacing: '.2px' }}>{group.label}</span>
-                                        <span style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 100, padding: '1px 8px', fontSize: 9, fontFamily: "'JetBrains Mono',monospace", color: 'var(--text-4,#888)' }}>{group.count}</span>
+                                        <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--text-2,#524532)', letterSpacing: '.2px' }}>{group.label}</span>
+                                        <span style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 100, padding: '1px 8px', fontSize: 9, fontFamily: "'JetBrains Mono',monospace", color: 'var(--text-4,#6B5D48)' }}>{group.count}</span>
                                     </div>
                                     <div style={{ display: 'flex', gap: 6 }}>
                                         <button className="RB-group-btn restore" disabled={!!busy} onClick={() => doRestoreAll(group.key, group.label)}>
@@ -459,13 +459,13 @@ export default function RecycleBin() {
                                                                     <span style={{ width: 18, height: 18, borderRadius: '50%', background: mc.bg, color: mc.color, border: `1px solid ${mc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 800, flexShrink: 0 }}>
                                                                         {(rec.deleted_by_name || 'U').trim().slice(0, 1).toUpperCase()}
                                                                     </span>
-                                                                    <span style={{ fontSize: 10, color: 'var(--text-2,#444)', fontWeight: 700 }}>{rec.deleted_by_name || 'Unknown'}</span>
+                                                                    <span style={{ fontSize: 10, color: 'var(--text-2,#524532)', fontWeight: 700 }}>{rec.deleted_by_name || 'Unknown'}</span>
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                                                    <Ic d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" sz={12} c="var(--text-4,#aaa)" sw={1.8} />
-                                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#888)', fontFamily: "'JetBrains Mono',monospace" }}>{rec.deleted_at}</span>
+                                                                    <Ic d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" sz={12} c="var(--text-4,#8C7C63)" sw={1.8} />
+                                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{rec.deleted_at}</span>
                                                                 </span>
                                                             </td>
                                                             <td className="ERP-center ERP-nowrap">
