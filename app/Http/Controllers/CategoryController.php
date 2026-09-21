@@ -48,6 +48,7 @@ class CategoryController extends Controller
         ]);
 
         Cache::forget(self::CACHE_KEY);
+        Cache::forget('master_data_all');
 
         return response()->json([
             'success' => true,
@@ -91,6 +92,7 @@ class CategoryController extends Controller
         ]);
 
         Cache::forget(self::CACHE_KEY);
+        Cache::forget('master_data_all');
 
         return response()->json([
             'success' => true,
@@ -109,6 +111,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
         Cache::forget(self::CACHE_KEY);
+        Cache::forget('master_data_all');
 
         return response()->json([
             'success' => true,

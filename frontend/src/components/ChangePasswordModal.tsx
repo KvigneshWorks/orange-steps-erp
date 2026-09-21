@@ -39,7 +39,7 @@ function PwField({
                     onChange={e => onChange(e.target.value)}
                     autoFocus={autoFocus}
                     placeholder={placeholder}
-                    autoComplete={label === 'Current Password' ? 'current-password' : 'new-password'}
+                    autoComplete="off"
                 />
                 <button type="button" className="cpm-eye" onClick={onToggleShow} tabIndex={-1} aria-label={show ? 'Hide password' : 'Show password'}>
                     {show ? EYE_OFF : EYE_OPEN}

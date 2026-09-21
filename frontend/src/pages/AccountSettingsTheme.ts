@@ -74,18 +74,41 @@ export const AS_CSS = `
 .AS-role.admin       { background:#FDE0CB; color:#DB5B1F; border-color:#FBC9A8; }
 .AS-role.super_admin { background:rgba(234,88,12,.09); color:#EA580C; border-color:rgba(234,88,12,.30); }
 
-/* ── Approve / Reject action buttons ── */
+/* ── Approve / Reject action buttons — premium text-pill treatment,
+   matching the All Accounts tab's Edit/Delete buttons: quiet tinted-ghost
+   at rest, confident gradient-fill + lift-with-shadow on hover, a crisp
+   press-scale on click, and (since these are the two buttons on the whole
+   page that genuinely need the admin's attention) a soft continuous
+   "needs action" ring-pulse at rest so a waiting request doesn't just
+   sit there looking inert. ── */
+.AS-act-cell { display:inline-flex; align-items:center; gap:7px; }
 .AS-act {
   display:inline-flex; align-items:center; gap:5px; padding:6px 13px; border-radius:8px;
-  font-family:var(--font-mono); font-size:8.5px; font-weight:800; letter-spacing:.06em;
-  text-transform:uppercase; cursor:pointer; border:1px solid; transition:all .18s;
+  font-family:var(--font-body); font-size:9.5px; font-weight:800; letter-spacing:.045em;
+  text-transform:uppercase; cursor:pointer; border:1.3px solid transparent; white-space:nowrap;
+  transition:transform .16s cubic-bezier(.22,1,.36,1), box-shadow .16s ease, background .16s ease, color .16s ease, border-color .16s ease;
 }
-.AS-act.approve { background:rgba(30,156,106,.08); color:#1E9C6A; border-color:rgba(30,156,106,.24); }
-.AS-act.approve:hover:not(:disabled) { background:#1E9C6A; color:#faf9f7; transform:translateY(-1px); box-shadow:0 4px 12px rgba(30,156,106,.3); }
-.AS-act.reject { background:rgba(217,59,85,.08); color:#D93B55; border-color:rgba(217,59,85,.22); }
-.AS-act.reject:hover:not(:disabled) { background:#D93B55; color:#faf9f7; transform:translateY(-1px); box-shadow:0 4px 12px rgba(217,59,85,.3); }
-.AS-act:disabled { opacity:.5; cursor:not-allowed; }
+.AS-act:active:not(:disabled) { transform:scale(.93); transition-duration:.08s; }
+.AS-act.approve {
+  background:rgba(30,156,106,.08); color:#1E9C6A; border-color:rgba(30,156,106,.24);
+  animation: as-act-pulse-ok 2.8s ease-in-out infinite;
+}
+.AS-act.approve:hover:not(:disabled) {
+  background:linear-gradient(135deg,#1E9C6A,#22B37F); color:#faf9f7; border-color:transparent;
+  transform:translateY(-1px); box-shadow:0 8px 16px -6px rgba(30,156,106,.45); animation-play-state:paused;
+}
+.AS-act.reject {
+  background:rgba(217,59,85,.08); color:#D93B55; border-color:rgba(217,59,85,.22);
+  animation: as-act-pulse-bad 2.8s ease-in-out .4s infinite;
+}
+.AS-act.reject:hover:not(:disabled) {
+  background:linear-gradient(135deg,#9A3412,#D93B55); color:#faf9f7; border-color:transparent;
+  transform:translateY(-1px); box-shadow:0 8px 16px -6px rgba(217,59,85,.4); animation-play-state:paused;
+}
+.AS-act:disabled { opacity:.5; cursor:not-allowed; animation:none; }
 .AS-act + .AS-act { margin-left: 6px; }
+@keyframes as-act-pulse-ok  { 0%,100% { box-shadow:0 0 0 0 rgba(30,156,106,0); }  50% { box-shadow:0 0 0 5px rgba(30,156,106,.16); } }
+@keyframes as-act-pulse-bad { 0%,100% { box-shadow:0 0 0 0 rgba(217,59,85,0); }   50% { box-shadow:0 0 0 5px rgba(217,59,85,.14); } }
 
 /* ── Row confirmation flash — Pending Approvals uses this so an
    approve/reject reads as a clear moment, not just a toast ── */
@@ -404,8 +427,9 @@ export const AS_CSS = `
   .AS-banner-meta .AS-pill, .AS-confetti span, .AS-banner-top,
   .AS-stage-glow, .AS-stage-ring, .AS-stage-ic.pop, .AS-stage-ic.shake,
   .AS-stage-item, .AS-stage-meta .AS-pill, .AS-create,
-  .AS-create-flow-item.now .AS-create-flow-dot { animation:none !important; }
-  .AS-stat, .AS-stat-grid > .ERP-stat, .AS-role-card { transition:none !important; }
+  .AS-create-flow-item.now .AS-create-flow-dot,
+  .AS-act.approve, .AS-act.reject { animation:none !important; box-shadow:none !important; }
+  .AS-stat, .AS-stat-grid > .ERP-stat, .AS-role-card, .AS-act { transition:none !important; }
   .as-draw-path { stroke-dashoffset:0 !important; }
 }
 `;

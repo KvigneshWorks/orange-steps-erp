@@ -197,10 +197,6 @@ const CSS = `
 .AT-scroll-hint svg { animation:at-bounce 1.4s infinite; color:var(--ember); }
 @keyframes at-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(3px)} }
 .AT-tbl-actions { display:flex; gap:6px; }
-.AT-tbl-act { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:var(--white); color:var(--text-3); cursor:pointer; transition:all .16s cubic-bezier(.34,1.56,.64,1); }
-.AT-tbl-act.edit:hover { background:var(--ember); border-color:var(--ember); color:#faf9f7; transform:translateY(-1px) scale(1.05); }
-.AT-tbl-act.del:hover { background:var(--error); border-color:var(--error); color:#faf9f7; transform:translateY(-1px) scale(1.05); }
-.AT-tbl-act:active { transform:translateY(0) scale(.92); }
 
 /* ── SKELETON ── */
 .AT-skeleton { background:linear-gradient(90deg,var(--off-white) 25%,var(--surface-3) 50%,var(--off-white) 75%); background-size:600px 100%; animation:erp-shimmer 1.6s infinite linear; border-radius:var(--r-sm); }
@@ -360,16 +356,24 @@ const CSS = `
 .WR-tbl-header { display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); background:var(--off-white); flex-wrap:wrap; }
 .WR-tbl-title { font-family:var(--font-body); font-size: 14px; font-weight: 800; font-style:normal; text-transform:uppercase; letter-spacing:.5px; color:var(--text-1); }
 .WR-tbl-actions { margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+/* Header/row typography, spacing, hover and stagger-entrance now match
+   the app-wide .ERP-tbl standard exactly (same font, size, letter-spacing,
+   sticky header, hover treatment, per-row entrance animation) so this
+   table reads identically to every other list view in the software. */
 .WR-table-wrap { overflow-x:auto; }
-.WR-table { width:100%; border-collapse:collapse; font-family:var(--font-body); border:1px solid var(--border); }
-.WR-table thead tr { background:var(--surface-2,#E8E2D8); border-bottom:2px solid var(--ember,#C2410C); }
-.WR-table th { font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:2px; text-transform:uppercase; color:var(--text-3,#3A3024); padding:11px 14px; white-space:nowrap; text-align:left; border-right:1px solid var(--border,#E8E2D8); }
-.WR-table th:last-child { border-right:none; }
-.WR-table td { padding:12px 14px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); font-size: 10.5px; font-weight: 700; color:var(--text-1); vertical-align:middle; }
-.WR-table td:last-child { border-right:none; }
+.WR-table { width:100%; border-collapse:collapse; font-family:var(--font-body); }
+.WR-table thead tr { background:var(--surface-2,#E8E2D8); }
+.WR-table th {
+  font-family:var(--font-mono); font-size:8px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--text-3,#3A3024); padding:12px 16px; white-space:nowrap; text-align:left;
+  border-bottom:2px solid var(--ember,#C2410C); position:sticky; top:0; z-index:10; background:var(--surface-2,#E8E2D8);
+}
+.WR-table td { padding:13px 16px; border-bottom:1px solid var(--border); font-size:10.5px; font-weight:700; color:var(--text-2); vertical-align:middle; }
 .WR-table tr:last-child td { border-bottom:none; }
-.WR-table tbody tr { transition:background .12s; animation:wr-rowIn .32s ease both; }
-.WR-table tbody tr:nth-child(even) td { background:var(--off-white,#F5F3EF); }
+.WR-table tbody tr { transition:background .15s, box-shadow .15s; animation:erp-stagger-in .4s cubic-bezier(.22,1,.36,1) both; }
+.WR-table tbody tr:nth-child(1) { animation-delay:.02s; } .WR-table tbody tr:nth-child(2) { animation-delay:.05s; }
+.WR-table tbody tr:nth-child(3) { animation-delay:.08s; } .WR-table tbody tr:nth-child(4) { animation-delay:.11s; }
+.WR-table tbody tr:nth-child(5) { animation-delay:.14s; } .WR-table tbody tr:nth-child(n+6) { animation-delay:.17s; }
 .WR-table tbody tr:hover td { background:var(--ember-ghost); }
 .WR-name { font-size: 11px; font-weight: 700; color:var(--text-1); }
 .WR-code { font-family:var(--font-mono); font-size: 8px; color:var(--text-4); margin-top:2px; }
@@ -519,7 +523,7 @@ function SearchDD({ items, value, onChange, placeholder = 'Select…', disabled 
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: 'var(--text-4)', flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
             </svg>
-            <input ref={searchRef} className="AT-SDD-search" placeholder="Search…" value={q} onChange={e => setQ(e.target.value)} />
+            <input autoComplete="off" ref={searchRef} className="AT-SDD-search" placeholder="Search…" value={q} onChange={e => setQ(e.target.value)} />
           </div>
           <div className="AT-SDD-list">
             {value !== null && (
@@ -638,7 +642,7 @@ function SubNameDD({ names, value, onToggle, onClear, onAdd, disabled = false, m
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: 'var(--text-4)', flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
             </svg>
-            <input
+            <input autoComplete="off"
               ref={searchRef}
               className="AT-SDD-search"
               placeholder="Search or type a new name…"
@@ -1496,7 +1500,7 @@ export default function AttendanceManagement() {
                         ) : selectedWorker ? (
                           <div className="AT-rate-box">
                             <span className="AT-rate-box-prefix">₹</span>
-                            <input
+                            <input autoComplete="off"
                               type="number"
                               min={0}
                               step="0.01"
@@ -1527,7 +1531,7 @@ export default function AttendanceManagement() {
                       <div className="AT-amount-wrap" style={amount > 0 ? { borderColor: 'var(--ember-border)' } : {}}>
                         <span className="AT-amount-prefix">₹</span>
                         {isSubEntry ? (
-                          <input
+                          <input autoComplete="off"
                             className="AT-amount-input"
                             type="number"
                             min="0"
@@ -1566,7 +1570,7 @@ export default function AttendanceManagement() {
                     <div className="AT-fld-label">Notes / Remarks</div>
 
                     <div className="AT-narration-wrap">
-                      <textarea
+                      <textarea autoComplete="off"
                         className="AT-narration"
                         rows={3}
                         placeholder="Add site notes, task description, or any remarks…"
@@ -1671,13 +1675,9 @@ export default function AttendanceManagement() {
                           <td style={{ textAlign: 'right' }}><div className="WR-rate">₹{rec.amount.toLocaleString('en-IN')}</div></td>
                           <td>
                             <div className="AT-tbl-actions">
-                              <button className="AT-tbl-act edit" title="Edit" onClick={() => handleEdit(rec)}>
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                              </button>
+                              <button className="ERP-tbtn edit" title="Edit" onClick={() => handleEdit(rec)}>Edit</button>
                               {canDelete(userRole) ? (
-                                <button className="AT-tbl-act del" title="Delete" onClick={() => setDeleteModal({ open: true, id: rec.id })}>
-                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
-                                </button>
+                                <button className="ERP-tbtn delete" title="Delete" onClick={() => setDeleteModal({ open: true, id: rec.id })}>Delete</button>
                               ) : (
                                 <CreatorBadge name={rec.created_by_name} />
                               )}
@@ -1762,7 +1762,7 @@ export default function AttendanceManagement() {
 
                 <div className="WR-search-wrap">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-4)" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-                  <input className="WR-search" placeholder="Search name, associate name, client" value={viewSearch} onChange={e => setViewSearch(e.target.value)} />
+                  <input autoComplete="off" className="WR-search" placeholder="Search name, associate name, client" value={viewSearch} onChange={e => setViewSearch(e.target.value)} />
                 </div>
               </div>
             </div>
@@ -1834,13 +1834,9 @@ export default function AttendanceManagement() {
                             <td>
                               {g.entries.length === 1 && (
                                 <div className="AT-tbl-actions">
-                                  <button className="AT-tbl-act edit" title="Edit" onClick={() => handleEdit(g.entries[0])}>
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                                  </button>
+                                  <button className="ERP-tbtn edit" title="Edit" onClick={() => handleEdit(g.entries[0])}>Edit</button>
                                   {canDelete(userRole) ? (
-                                    <button className="AT-tbl-act del" title="Delete" onClick={() => setDeleteModal({ open: true, id: g.entries[0].id })}>
-                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
-                                    </button>
+                                    <button className="ERP-tbtn delete" title="Delete" onClick={() => setDeleteModal({ open: true, id: g.entries[0].id })}>Delete</button>
                                   ) : (
                                     <CreatorBadge name={g.entries[0].created_by_name} />
                                   )}
@@ -1868,13 +1864,9 @@ export default function AttendanceManagement() {
                               <td style={{ maxWidth: 220, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-4)', fontStyle: rec.notes ? 'italic' : 'normal' }}>{rec.notes || '—'}</td>
                               <td>
                                 <div className="AT-tbl-actions">
-                                  <button className="AT-tbl-act edit" title="Edit" onClick={() => handleEdit(rec)}>
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                                  </button>
+                                  <button className="ERP-tbtn edit" title="Edit" onClick={() => handleEdit(rec)}>Edit</button>
                                   {canDelete(userRole) ? (
-                                    <button className="AT-tbl-act del" title="Delete" onClick={() => setDeleteModal({ open: true, id: rec.id })}>
-                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /></svg>
-                                    </button>
+                                    <button className="ERP-tbtn delete" title="Delete" onClick={() => setDeleteModal({ open: true, id: rec.id })}>Delete</button>
                                   ) : (
                                     <CreatorBadge name={rec.created_by_name} />
                                   )}

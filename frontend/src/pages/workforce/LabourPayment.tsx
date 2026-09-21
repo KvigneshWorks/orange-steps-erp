@@ -362,16 +362,15 @@ const CSS = `
 .LP-orange-tbl.LP-compact td { padding: 13px 16px; text-transform: uppercase; letter-spacing: .25px; }
 @keyframes lp-row-in { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
 .LP-row { cursor:pointer; animation:lp-row-in .38s ease both; transition:box-shadow .18s, background .18s; }
-/* Premium cascading reveal for sub-worker rows when the Show/Hide toggle
-   expands them — bouncier scale+slide than the flat .LP-anim-row fade, with
-   a brief highlight sweep so each row reads as landing "one by one". */
-@keyframes lp-subrow-in {
-  0%   { opacity:0; transform:translateY(-8px) scale(.96); background:rgba(194,65,12,0.14); }
-  55%  { opacity:1; transform:translateY(2px) scale(1.015); }
-  100% { opacity:1; transform:translateY(0) scale(1); background:transparent; }
-}
-.LP-subrow-anim { animation: lp-subrow-in .6s cubic-bezier(.34,1.56,.64,1) both; }
-.LP-row:hover { box-shadow:inset 3px 0 0 var(--ember); background:rgba(194,65,12,0.04); }
+/* Plain fade-in for sub-worker rows when the Show/Hide toggle expands
+   them. The earlier version scaled/translated the <tr> itself, which
+   table rows don't support cleanly — mid-animation it broke the row's
+   cell borders out of alignment with its neighbours (looked like a
+   glitchy boxed-grid row). Opacity-only avoids that entirely and reads
+   as professional rather than bouncy. */
+@keyframes lp-subrow-in { from { opacity:0; } to { opacity:1; } }
+.LP-subrow-anim { animation: lp-subrow-in .35s ease both; }
+.LP-row:hover { background:rgba(194,65,12,0.04); }
 .LP-row:active { transform:scale(.998); }
 .LP-row td { transition:color .15s; }
 .LP-mini-avatar {
@@ -456,47 +455,27 @@ const CSS = `
 .LP-skel-row td { padding:10px 14px; }
 .LP-skel-row { animation:lp-row-in .3s ease both; }
 
-/* ── PREMIUM LOADING OVERLAY (worker click) — running-man mascot, no card ── */
+/* ── PREMIUM LOADING OVERLAY (worker click) — plain themed spinner badge,
+   matching the app's standard .ERP-spinner ring language instead of a
+   novelty mascot animation. ── */
 @keyframes lp-fade { from{opacity:0} to{opacity:1} }
-@keyframes lp-slide-grad { from{background-position:0 0} to{background-position:200% 0} }
 .LP-overlay {
   position:fixed; inset:0; z-index:998;
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
   background:rgba(15,23,42,.45); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
   animation:lp-fade .25s ease both;
 }
-/* Running-figure mascot — same ember-theme structure as ConfirmDeleteModal's
-   cdm-run-* set (track→flip→figure→limb-joint pattern). Positioning is
-   always a plain SVG transform attribute; animation is always a separate
-   CSS class on its own nested element — a CSS transform on the same node
-   would silently replace the static attribute instead of combining with it. */
-@keyframes lp-run-track { 0%,100% { transform: translateX(0); } 50% { transform: translateX(150px); } }
-@keyframes lp-run-flip {
-  0%, 49.9%  { transform: scaleX(1); }
-  50%, 99.9% { transform: scaleX(-1); }
-  100%       { transform: scaleX(1); }
+.LP-loader-badge {
+  position:relative; width:60px; height:60px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember,#C2410C));
+  box-shadow:0 10px 28px rgba(194,65,12,.4);
 }
-@keyframes lp-run-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-@keyframes lp-run-arm-back  { 0%,100% { transform: rotate(38deg); } 50% { transform: rotate(-28deg); } }
-@keyframes lp-run-arm-front { 0%,100% { transform: rotate(-28deg); } 50% { transform: rotate(38deg); } }
-@keyframes lp-run-leg-back  { 0%,100% { transform: rotate(48deg); } 50% { transform: rotate(-38deg); } }
-@keyframes lp-run-leg-front { 0%,100% { transform: rotate(-38deg); } 50% { transform: rotate(48deg); } }
-@keyframes lp-run-line {
-  0%   { opacity: 0; transform: translateX(8px); }
-  45%  { opacity: 1; transform: translateX(0); }
-  100% { opacity: 0; transform: translateX(-8px); }
+.LP-loader-ring {
+  position:absolute; inset:-7px; border-radius:50%;
+  border:3px solid rgba(255,255,255,.16); border-top-color:#faf9f7;
+  animation: erp-spin 0.85s linear infinite;
 }
-.LP-run-wrap { display:flex; justify-content:center; align-items:flex-end; position:relative; min-height:84px; overflow:visible; }
-.LP-run-track { animation: lp-run-track 3.8s ease-in-out infinite; }
-.LP-run-flip { animation: lp-run-flip 3.8s linear infinite; }
-.LP-run-figure { animation: lp-run-bob 0.78s ease-in-out infinite; }
-.LP-run-arm-back  { transform-origin: 0 0; animation: lp-run-arm-back 0.78s ease-in-out infinite; }
-.LP-run-arm-front { transform-origin: 0 0; animation: lp-run-arm-front 0.78s ease-in-out infinite; }
-.LP-run-leg-back  { transform-origin: 0 0; animation: lp-run-leg-back 0.78s ease-in-out infinite; }
-.LP-run-leg-front { transform-origin: 0 0; animation: lp-run-leg-front 0.78s ease-in-out infinite; }
-.LP-run-line { animation: lp-run-line 1.2s ease-in-out infinite; }
-.LP-run-line.l2 { animation-delay: 0.16s; }
-.LP-run-line.l3 { animation-delay: 0.32s; }
 .LP-loader-title { font-family:var(--font-display); font-size: 16px; font-weight: 800; font-style:normal; color:#faf9f7; text-align:center; }
 .LP-loader-sub {
   font-family:var(--font-mono); font-size: 8px; letter-spacing:2.5px; text-transform:uppercase;
@@ -532,10 +511,14 @@ const CSS = `
   display:flex; align-items:center; gap:18px; flex-wrap:wrap;
   animation:wr-pageSwap .42s cubic-bezier(.22,1,.36,1) both; box-shadow:var(--sh-card);
 }
+/* Plain static top accent line — was a continuously sliding rainbow
+   gradient (lp-slide-grad, infinite loop); that read as an odd moving
+   line unique to this module, so it's now a fixed two-tone bar matching
+   the same static accent pattern used elsewhere (e.g. Attendance's
+   .AT-stat-card::before). */
 .LP-hero::before {
   content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--ember),#F0834D,#FDE0CB,#F0834D,var(--ember));
-  background-size:200% 100%; animation:lp-slide-grad 2.4s linear infinite;
+  background:linear-gradient(90deg,var(--ember) 0%,#F0834D 100%);
 }
 .LP-hero::after {
   content:'₹'; position:absolute; right:20px; bottom:-30px;
@@ -795,18 +778,24 @@ const CSS = `
 /* Separates two data sections sharing one merged panel card. */
 .WP-panel-divider { height:10px; background:var(--off-white); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
 
-.WP-tbl { width:100%; border-collapse:collapse; table-layout:fixed; border:1px solid var(--border); }
+/* Header/cell typography, sticky treatment and hover now match the
+   app-wide .ERP-tbl standard exactly, so this breakdown table reads like
+   every other list view in the software; the fixed column widths, totals
+   row and section-header rows stay as-is since they're structural, not
+   decorative. */
+.WP-tbl { width:100%; border-collapse:collapse; table-layout:fixed; }
 .WP-tbl th {
   font-family:var(--font-mono); font-size: 8px; font-weight: 800; letter-spacing:2.5px; text-transform:uppercase;
-  color:#faf9f7; padding:9px 12px; border-bottom:none; border-right:1px solid rgba(255,255,255,.22);
-  background:linear-gradient(135deg,var(--ember-mid,#DB5B1F),var(--ember,#C2410C)); text-align:center; white-space:nowrap; line-height:1.3;
+  color:var(--text-3,#3A3024); padding:12px 12px; border-bottom:2px solid var(--ember,#C2410C); border-right:none;
+  background:var(--surface-2,#E8E2D8); text-align:center; white-space:nowrap; line-height:1.3;
+  position:sticky; top:0; z-index:10;
 }
 .WP-tbl th:last-child { border-right:none; }
-.WP-tbl td { padding:9px 12px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); font-size: 11px; color:var(--text-2); vertical-align:middle; transition:background .15s; line-height:1.35; text-align:center; text-transform:uppercase; letter-spacing:.25px; }
+.WP-tbl td { padding:12px; border-bottom:1px solid var(--border); border-right:none; font-family:var(--font-body); font-size: 10.5px; font-weight:700; color:var(--text-2); vertical-align:middle; transition:background .15s, box-shadow .15s; line-height:1.35; text-align:center; text-transform:uppercase; letter-spacing:.25px; }
 .WP-tbl td:last-child { border-right:none; }
 .WP-tbl td, .WP-tbl th { overflow:hidden; text-overflow:ellipsis; }
 .WP-tbl tr:last-child td { border-bottom:none; }
-.WP-tbl tbody tr:not(.WP-tbl-total):hover td { background:rgba(194,65,12,0.05); }
+.WP-tbl tbody tr:not(.WP-tbl-total):hover td { background:var(--ember-ghost); }
 .WP-tbl tbody tr:not(.WP-tbl-total):hover .WP-tbl-name { color:var(--ember); }
 .WP-tbl-name { transition:color .15s; }
 .WP-tbl-total { background:rgba(194,65,12,0.04); animation:wp-total-in .3s ease both; }
@@ -1071,7 +1060,7 @@ const CSS = `
 }
 .WP-pick-table tbody tr:last-child { border-bottom:none; }
 .WP-pick-table tbody tr:hover { background:rgba(194,65,12,.06); }
-.WP-pick-table tbody tr.on { background:linear-gradient(90deg,rgba(194,65,12,.12),rgba(194,65,12,.04)); box-shadow:inset 3px 0 0 var(--ember); }
+.WP-pick-table tbody tr.on { background:linear-gradient(90deg,rgba(194,65,12,.12),rgba(194,65,12,.04)); }
 .WP-pick-table td {
   padding:10px 12px; font-family:var(--font-body); font-size: 10px; color:var(--text-1);
   vertical-align:middle; white-space:nowrap;
@@ -1608,7 +1597,7 @@ function ModeFilterDD({ value, onChange }: { value: string; onChange: (v: string
         <div className="LP-dd-panel" ref={panelRef}>
           <div className="LP-dd-search-row">
             <SIco n="searchS" s={13} c="var(--text-4)" />
-            <input
+            <input autoComplete="off"
               ref={inputRef}
               className="LP-dd-search"
               placeholder="Search payment mode…"
@@ -1702,7 +1691,7 @@ function LPDD({ options, value, onChange, placeholder, disabled = false, emptyMs
           {/* Set Name Start */}
           <div className="LP-dd-search-row">
             <SIco n="searchS" s={13} c="var(--text-4)" />
-            <input
+            <input autoComplete="off"
               ref={inputRef}
               className="LP-dd-search"
               placeholder="Search…"
@@ -1904,19 +1893,14 @@ export default function LabourPayment() {
     }
     setDbSub(subCatMatch ? String(subCatMatch.id) : '');
 
-    const subs = selectedWorker.earnings_breakdown?.subs ?? [];
-    if (subs.length > 0) {
-      const top = [...subs].sort((a, b) => b.earned - a.earned)[0];
-      const subName = top.sub_name;
-      const mSN = matched
-        ? masterSNs.find(sn => sn.bio_data_id === matched.id && sn.alternate_name.trim().toLowerCase() === subName.trim().toLowerCase())
-        : undefined;
-      setDbSN(mSN ? `id:${mSN.id}` : `name:${subName}`);
-    } else {
-      setDbSN('');
-    }
+    // Associate Name is no longer guessed here from "whichever sub-worker
+    // earned the most overall" — that had nothing to do with who actually
+    // gets settled in a given payment (see the effect below, which sets it
+    // from the real payment selection instead).
+    setDbSN('');
     setDbNarration(`Wage payment — ${selectedWorker.worker.name}`);
   }, [selectedWorker?.worker.id, masterBios, masterCats, masterSubs, masterSNs]);
+
 
   const runSetup = async () => {
     setSettingUp(true);
@@ -2192,6 +2176,28 @@ export default function LabourPayment() {
     [availablePersons, selectedPersons]
   );
 
+  // Keeps "Associate Name" (and therefore the Cash Book Sync preview) in
+  // sync with who is actually selected to be settled in this payment —
+  // Steps 1–2 above — instead of a static per-worker default. Unambiguous
+  // only when exactly one non-"own work" person is selected; for 0, 2+, or
+  // an own-work-only selection there's no single associate that applies (each
+  // Cash Book entry resolves its own associate automatically at save time —
+  // see handlePay), so it's left blank and the per-entry breakdown covers it.
+  useEffect(() => {
+    if (!selectedWorker) return;
+    const nonOwn = chosenPersonTargets.filter(p => !p.is_own);
+    if (nonOwn.length === 1 && nonOwn[0].person) {
+      const subName = nonOwn[0].person;
+      const matched = dbParty
+        ? masterSNs.find(sn => sn.bio_data_id === +dbParty && sn.alternate_name.trim().toLowerCase() === subName.trim().toLowerCase())
+        : undefined;
+      setDbSN(matched ? `id:${matched.id}` : `name:${subName}`);
+    } else if (chosenPersonTargets.length > 0) {
+      setDbSN('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosenPersonTargets, dbParty, masterSNs]);
+
   const selectedClientsOutstanding = useMemo(() => {
     if (!selectedWorker) return 0;
     return selectedWorker.client_breakdown
@@ -2261,7 +2267,26 @@ export default function LabourPayment() {
 
   const parsedAmount = parseFloat(payAmount) || 0;
   const balanceAfter = selectedWorker ? Math.max(0, selectedWorker.balance - parsedAmount) : 0;
-  const partyOptions = masterBios.map(b => ({ value: String(b.id), label: b.name, sub: b.category_name }));
+  // Party Name here is scoped to Labour/Wage bio-data only — this is the
+  // Wage Distribution payment screen, so showing every party across every
+  // category (clients, vendors, etc.) made the picker noisy and let a
+  // non-labour party get chosen by mistake. Same "labour-ish" match used
+  // for auto-picking the Expense Account Head above (labCat), applied by
+  // category id here — bio_data rows only carry category_id from the
+  // /master-data endpoint, never a category_name (that field was always
+  // undefined, which is why the very first version of this filter matched
+  // nothing and emptied the whole dropdown).
+  const labourCategoryIds = new Set(
+    masterCats
+      .filter(c => (c.type || '').toLowerCase() === 'expense' && /labou?r|wage|salar|worker/i.test(c.name))
+      .map(c => c.id)
+  );
+  const partyOptions = masterBios
+    .filter(b => b.category_id != null && labourCategoryIds.has(b.category_id))
+    .map(b => {
+      const catName = masterCats.find(c => c.id === b.category_id)?.name;
+      return { value: String(b.id), label: b.name, sub: catName };
+    });
   const expCatOptions = masterCats
     .filter(c => !c.type || c.type.toLowerCase() === 'expense')
     .map(c => ({ value: String(c.id), label: c.name }));
@@ -2673,7 +2698,7 @@ export default function LabourPayment() {
                                         style={{ animationDelay: `${Math.min(idx, 10) * 0.07}s` }}
                                       >
                                         <td className="WP-pick-chkcell" onClick={e => e.stopPropagation()}>
-                                          <input
+                                          <input autoComplete="off"
                                             type="checkbox"
                                             className="WP-pick-chk"
                                             checked={on}
@@ -2769,7 +2794,7 @@ export default function LabourPayment() {
                                           style={{ animationDelay: `${Math.min(idx, 10) * 0.07}s` }}
                                         >
                                           <td className="WP-pick-chkcell" onClick={e => e.stopPropagation()}>
-                                            <input
+                                            <input autoComplete="off"
                                               type="checkbox"
                                               className="WP-pick-chk"
                                               checked={on}
@@ -2825,7 +2850,7 @@ export default function LabourPayment() {
                                   <label className="WP-field-lbl">Amount</label>
                                   <div className="WP-amount-wrap">
                                     <span className="WP-amount-prefix">₹</span>
-                                    <input
+                                    <input autoComplete="off"
                                       type="number"
                                       className="WP-amount-input"
                                       placeholder="0"
@@ -2857,7 +2882,7 @@ export default function LabourPayment() {
                                 {/* Notes Start */}
                                 <div className="WP-field">
                                   <label className="WP-field-lbl">Notes (optional)</label>
-                                  <input
+                                  <input autoComplete="off"
                                     type="text"
                                     className="WP-notes"
                                     placeholder="advance, partial payment…"
@@ -3032,7 +3057,7 @@ export default function LabourPayment() {
                           <span className="LP-step">4</span>
                           Cash Book Sync
                           <label className="LP-sync-toggle">
-                            <input
+                            <input autoComplete="off"
                               type="checkbox"
                               checked={syncDaybook}
                               onChange={e => setSyncDaybook(e.target.checked)}
@@ -3146,14 +3171,14 @@ export default function LabourPayment() {
                                 {dbSubName && <span>Sub-cat: <b>{dbSubName}</b></span>}
                                 {dbSNName && <span>Associate Name: <b>{dbSNName}</b></span>}
                                 <span className="LP-db-span">Narration: <b>{dbNarration || '—'}</b></span>
-                                {/* Auto-fetched from this worker's own attendance — no manual
-                                    entry needed. This balance can be a mix of the worker's own
-                                    earnings plus every sub-worker under them (dinesh, saroj…),
-                                    so this always shows ALL of them and the count, regardless
-                                    of which single one (if any) is picked in Associate Name above. */}
-                                {!!selectedWorker?.earnings_breakdown?.subs?.length && (
+                                {/* Reflects exactly who was picked in Step 2 above for THIS
+                                    payment — not the worker's full sub-worker roster. Each name
+                                    here gets its own Cash Book entry with its own associate
+                                    name resolved automatically (see handlePay), independent of
+                                    the single Associate Name field above. */}
+                                {chosenPersonTargets.length > 0 && (
                                   <span className="LP-db-span">
-                                    Sub Workers Included: <b>{selectedWorker.earnings_breakdown.subs.length}</b> — {selectedWorker.earnings_breakdown.subs.map(s => s.sub_name).join(', ')}
+                                    Workers in This Payment: <b>{chosenPersonTargets.length}</b> — {chosenPersonTargets.map(p => p.is_own ? 'Own Work' : p.person).join(', ')}
                                   </span>
                                 )}
                               </div>
@@ -3382,7 +3407,7 @@ export default function LabourPayment() {
                             <span className="WP-search-icon">
                               <Ico n="search" s={15} c="var(--text-4)" />
                             </span>
-                            <input
+                            <input autoComplete="off"
                               type="text"
                               className="WP-search"
                               placeholder="Search client, notes…"
@@ -3663,7 +3688,7 @@ export default function LabourPayment() {
                         <span className="WP-search-icon">
                           <Ico n="search" s={15} c="var(--text-4)" />
                         </span>
-                        <input
+                        <input autoComplete="off"
                           type="text"
                           className="WP-search"
                           placeholder="Search worker…"
@@ -3814,10 +3839,9 @@ export default function LabourPayment() {
                                   </td>
                                   <td style={{ textAlign: 'center' }}>
                                     <button
-                                      className="ERP-act edit"
+                                      className="ERP-tbtn primary"
                                       onClick={e => { e.stopPropagation(); openWorker(w.id); }}
                                     >
-                                      <Ico n="pay" s={11} c="currentColor" />
                                       Pay
                                     </button>
                                   </td>
@@ -3953,7 +3977,7 @@ export default function LabourPayment() {
                         <span className="WP-search-icon">
                           <Ico n="search" s={15} c="var(--text-4)" />
                         </span>
-                        <input
+                        <input autoComplete="off"
                           type="text"
                           className="WP-search"
                           placeholder="Search worker, client, notes…"
@@ -4178,51 +4202,14 @@ export default function LabourPayment() {
       {/* ── PREMIUM LOADING OVERLAY START ── */}
       {detailLoading && (
         <div className="LP-overlay">
-          <div className="LP-run-wrap">
-            <svg width="235" height="83" viewBox="-10 0 235 83" fill="none" style={{ overflow: 'visible' }}>
-              <g className="LP-run-track">
-                <g transform="translate(25,5)">
-                  <g className="LP-run-flip">
-                    <g className="LP-run-lines" opacity="0.55" stroke="var(--ember-light,#F0834D)" strokeWidth="3.1" strokeLinecap="round">
-                      <line className="LP-run-line l1" x1="-30" y1="32.5" x2="-10" y2="32.5" />
-                      <line className="LP-run-line l2" x1="-25" y1="42.5" x2="-10" y2="42.5" />
-                      <line className="LP-run-line l3" x1="-20" y1="52.5" x2="-10" y2="52.5" />
-                    </g>
-                    <g className="LP-run-figure">
-                      <g transform="translate(14,22.5)">
-                        <g className="LP-run-arm-back">
-                          <line x1="0" y1="0" x2="-16.3" y2="12.5" stroke="var(--ember-light,#F0834D)" strokeWidth="9.4" strokeLinecap="round" />
-                          <circle cx="-16.3" cy="12.5" r="4.7" fill="var(--ember-light,#F0834D)" />
-                        </g>
-                      </g>
-                      <g transform="translate(14,47.5)">
-                        <g className="LP-run-leg-back">
-                          <line x1="0" y1="0" x2="-17.5" y2="22.5" stroke="var(--ember-light,#F0834D)" strokeWidth="10.6" strokeLinecap="round" />
-                          <circle cx="-17.5" cy="22.5" r="5.4" fill="var(--ember-light,#F0834D)" />
-                        </g>
-                      </g>
-
-                      <g transform="rotate(8,14,35)">
-                        <line x1="14" y1="18.8" x2="14" y2="48.8" stroke="var(--ember-light,#F0834D)" strokeWidth="11.9" strokeLinecap="round" />
-                      </g>
-                      <circle cx="15" cy="8.1" r="10.6" fill="var(--ember-light,#F0834D)" />
-
-                      <g transform="translate(14,47.5)">
-                        <g className="LP-run-leg-front">
-                          <line x1="0" y1="0" x2="18.8" y2="20" stroke="var(--ember-light,#F0834D)" strokeWidth="11.3" strokeLinecap="round" />
-                          <circle cx="18.8" cy="20" r="5.7" fill="var(--ember-light,#F0834D)" />
-                        </g>
-                      </g>
-                      <g transform="translate(14,22.5)">
-                        <g className="LP-run-arm-front">
-                          <line x1="0" y1="0" x2="16.3" y2="10" stroke="var(--ember-light,#F0834D)" strokeWidth="10" strokeLinecap="round" />
-                          <circle cx="16.3" cy="10" r="4.9" fill="var(--ember-light,#F0834D)" />
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </g>
+          <div className="LP-loader-badge">
+            <span className="LP-loader-ring" />
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M6.5 3h8l4 4v13a1 1 0 01-1 1h-11a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="#faf9f7" strokeWidth="1.6" strokeLinejoin="round" />
+              <path d="M14.5 3v4h4" stroke="#faf9f7" strokeWidth="1.6" strokeLinejoin="round" />
+              <line x1="8.5" y1="11.5" x2="15.5" y2="11.5" stroke="#faf9f7" strokeWidth="1.4" strokeLinecap="round" />
+              <line x1="8.5" y1="14.8" x2="15.5" y2="14.8" stroke="#faf9f7" strokeWidth="1.4" strokeLinecap="round" />
+              <line x1="8.5" y1="18.1" x2="12.5" y2="18.1" stroke="#faf9f7" strokeWidth="1.4" strokeLinecap="round" />
             </svg>
           </div>
 

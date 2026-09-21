@@ -192,6 +192,17 @@ const labelForType = (t?: string): string => ({ construction: 'Construction', in
 const labelForStatus = (s?: string): string => ({ active: 'Active', on_hold: 'On Hold', completed: 'Completed' }[s || ''] || s || '—');
 const labelForMode = (m?: string): string => ({ cash: 'Cash', upi: 'UPI', neft: 'NEFT', cheque: 'Cheque', bank_transfer: 'Bank Transfer', other: 'Other' }[m || ''] || m || '—');
 const today = (): string => new Date().toISOString().slice(0, 10);
+// Bounded default for the Cash Book Report's date filter -- was '2000-01-01'
+// (effectively "all time"), which meant every fresh load of this report
+// fetched and processed the daybook's entire history before the user ever
+// touched a date picker. Same class of load-time bug already fixed on
+// Daybook Transactions; this page just hadn't been checked yet. Users can
+// still widen the range with the date pickers, this only changes the
+// starting point.
+const startOfMonth = (): string => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+};
 const monthStart = (): string => new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().slice(0, 10);
 const resolveVendorBalance = (v: CreditVendor): number => parseFloat(String(v.balance ?? v.outstanding_balance ?? 0));
 const resolveVendorCredit = (v: CreditVendor): number => parseFloat(String(v.total_credit ?? v.total_credit_amount ?? 0));
@@ -931,7 +942,7 @@ function ColumnSelector({ columns, visible, onChange, premium = false }: {
                     <div className="T-coldrop-list">
                         {columns.map(col => (
                             <label key={col.key} className="T-coldrop-item" style={{ opacity: col.required ? 0.5 : 1, cursor: col.required ? 'not-allowed' : 'pointer' }}>
-                                <input type="checkbox" checked={visible.has(col.key)} onChange={() => !col.required && toggle(col.key)} disabled={col.required} />
+                                <input autoComplete="off" type="checkbox" checked={visible.has(col.key)} onChange={() => !col.required && toggle(col.key)} disabled={col.required} />
                                 <span style={{ fontWeight: visible.has(col.key) ? 700 : 500 }}>{col.label || col.key}</span>
                                 {col.required && <span className="T-fixed-tag">FIXED</span>}
                             </label>
@@ -1052,7 +1063,7 @@ function MultiSelectDD({ opts, values, onChange, placeholder, disabled = false, 
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                             <circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" />
                         </svg>
-                        <input ref={inp} className="TD-search-inp" value={q}
+                        <input autoComplete="off" ref={inp} className="TD-search-inp" value={q}
                             onChange={e => setQ(e.target.value)} placeholder="Search…" />
                         {q && (
                             <button className="TD-search-clear" onClick={() => setQ('')}>
@@ -1206,7 +1217,7 @@ function TDrop({ value, onChange, opts, placeholder = 'All', minWidth = 200, dis
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                             <circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" />
                         </svg>
-                        <input ref={inputRef} className="TD-search-inp" value={q}
+                        <input autoComplete="off" ref={inputRef} className="TD-search-inp" value={q}
                             onChange={e => setQ(e.target.value)} placeholder="Search…" />
                         {q && (
                             <button className="TD-search-clear" onClick={() => setQ('')}>
@@ -1395,7 +1406,7 @@ function SearchDD({ opts, value, onChange, placeholder, disabled = false, accent
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                             <circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" />
                         </svg>
-                        <input ref={inp} className="TD-search-inp" value={q}
+                        <input autoComplete="off" ref={inp} className="TD-search-inp" value={q}
                             onChange={e => setQ(e.target.value)} placeholder="Search…" />
                         {q && (
                             <button className="TD-search-clear" onClick={() => setQ('')}>
@@ -1698,9 +1709,9 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     // fetch/filter. The pickers write to the *Draft pair instead, so picking
     // From Date alone never triggers a reload; only clicking "Apply filters"
     // (commitDbFilters) copies the draft dates across.
-    const [fromDate, setFromDate] = useState('2000-01-01');
+    const [fromDate, setFromDate] = useState(startOfMonth());
     const [toDate, setToDate] = useState(today());
-    const [fromDateDraft, setFromDateDraft] = useState('2000-01-01');
+    const [fromDateDraft, setFromDateDraft] = useState(startOfMonth());
     const [toDateDraft, setToDateDraft] = useState(today());
     const [dbFromTouched, setDbFromTouched] = useState(false);
     const [dbToTouched, setDbToTouched] = useState(false);
@@ -1798,9 +1809,13 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const [crPaymentModeFiltersDraft, setCrPaymentModeFiltersDraft] = useState<string[]>([]);
     const [crClientNameFiltersDraft, setCrClientNameFiltersDraft] = useState<string[]>([]);
     const [crSearchPulse, setCrSearchPulse] = useState(false);
-    const [crDateFrom, setCrDateFrom] = useState('2000-01-01');
+    // Same bounded-default fix as the daybook fromDate/fromDateDraft above --
+    // this drove the Credit report's fetch, which loads every vendor's
+    // credit entries/payments in the applied range: '2000-01-01' meant the
+    // full history, for every vendor, on every fresh load of this tab.
+    const [crDateFrom, setCrDateFrom] = useState(startOfMonth());
     const [crDateTo, setCrDateTo] = useState(today());
-    const [crDateFromDraft, setCrDateFromDraft] = useState('2000-01-01');
+    const [crDateFromDraft, setCrDateFromDraft] = useState(startOfMonth());
     const [crDateToDraft, setCrDateToDraft] = useState(today());
     const [crDateFromTouched, setCrDateFromTouched] = useState(false);
     const [crDateToTouched, setCrDateToTouched] = useState(false);
@@ -2393,7 +2408,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         setCrLoading(true); setServerError(false);
         try {
             const token = tk(); if (!token) { setCrVendors([]); return; }
-            const params = { from_date: crDateFrom || '2000-01-01', to_date: crDateTo || today() };
+            const params = { from_date: crDateFrom || startOfMonth(), to_date: crDateTo || today() };
             let summary: CreditSummary | null = null, vendors: CreditVendor[] = [];
 
             try {
@@ -4201,7 +4216,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                                         <span className="T-ffield-lbl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" /></svg>Search</span>
                                         <div className="T-fsearch" style={{ maxWidth: 'none', width: '100%', borderRadius: 10 }}>
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" /></svg>
-                                            <input placeholder="Search narration or party…" value={dbFilterDraft.search} onChange={e => { setDbFilterDraft(f => ({ ...f, search: e.target.value })); }}
+                                            <input autoComplete="off" placeholder="Search narration or party…" value={dbFilterDraft.search} onChange={e => { setDbFilterDraft(f => ({ ...f, search: e.target.value })); }}
                                                 onKeyDown={e => { if (e.key === 'Enter') commitDbFilters(); }} />
                                         </div>
                                     </div>

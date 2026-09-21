@@ -129,7 +129,6 @@ interface RecentProject {
     created_at: string;
     raw_budget?: number;
 }
-
 /* ──────────────────────────────────────
     NAV STRUCTURE
 ───────────────────────────────────────── */
@@ -821,7 +820,7 @@ function DashContent({
         return 'hold';
     };
 
-    const displayProjects = recentProjects.slice(0, 8).map(p => ({
+    const displayProjects = recentProjects.slice(0, 4).map(p => ({
         id: p.id,
         name: p.project_name || p.client_name,
         sub: p.client_name,
@@ -1169,45 +1168,47 @@ function DashContent({
                             <button className="TB-btn" onClick={() => onNavigate('client')}>View All →</button>
                         </div>
 
-                        {displayProjects.length === 0 ? (
-                            <div className="DH-empty">
-                                <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>
-                                <div className="DH-empty-tt">No projects yet</div>
-                                <div className="DH-empty-sb">Add one from Accounts Receivable</div>
-                            </div>
-                        ) : (
-                            <div>
-                                {displayProjects.map((a, i) => {
-                                    const statusColor = a.status === 'active' ? '#C2410C' : a.status === 'pending' ? '#DB5B1F' : a.status === 'review' ? '#EA580C' : '#9A3412';
-                                    const initials = (a.name || '?').trim().slice(0, 2).toUpperCase();
-                                    return (
-                                        <div className="DH-proj-row" key={a.id} style={{ animationDelay: `${i * 0.05}s` }}>
-                                            <div className="DH-proj-avatar" style={{ background: `linear-gradient(135deg,${statusColor},${statusColor}bb)` }}>{initials}</div>
-                                            <div className="DH-proj-body">
-                                                <div className="DH-proj-name">{a.name}</div>
-                                                <div className="DH-proj-sub">{a.sub}</div>
+                        <div style={{ minHeight: 220, maxHeight: 280, overflowY: 'auto' }}>
+                            {displayProjects.length === 0 ? (
+                                <div className="DH-empty">
+                                    <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>
+                                    <div className="DH-empty-tt">No projects yet</div>
+                                    <div className="DH-empty-sb">Add one from Accounts Receivable</div>
+                                </div>
+                            ) : (
+                                <div>
+                                    {displayProjects.map((a, i) => {
+                                        const statusColor = a.status === 'active' ? '#C2410C' : a.status === 'pending' ? '#DB5B1F' : a.status === 'review' ? '#EA580C' : '#9A3412';
+                                        const initials = (a.name || '?').trim().slice(0, 2).toUpperCase();
+                                        return (
+                                            <div className="DH-proj-row" key={a.id} style={{ animationDelay: `${i * 0.05}s` }} onClick={() => onNavigate('client')}>
+                                                <div className="DH-proj-avatar" style={{ background: `linear-gradient(135deg,${statusColor},${statusColor}bb)` }}>{initials}</div>
+                                                <div className="DH-proj-body">
+                                                    <div className="DH-proj-name">{a.name}</div>
+                                                    <div className="DH-proj-sub">{a.sub}</div>
+                                                </div>
+                                                <span className={`pill ${a.status}`} style={{ flexShrink: 0 }}>
+                                                    {a.status === 'active' ? '● Active' : a.status === 'pending' ? '○ Pending' : a.status === 'review' ? '◈ Review' : '⊘ Hold'}
+                                                </span>
+                                                <div className="DH-proj-track"><div className="DH-proj-fill" style={{ width: `${a.progress}%` }} /></div>
+                                                <span className="DH-proj-val">{a.value}</span>
                                             </div>
-                                            <span className={`pill ${a.status}`} style={{ flexShrink: 0 }}>
-                                                {a.status === 'active' ? '● Active' : a.status === 'pending' ? '○ Pending' : a.status === 'review' ? '◈ Review' : '⊘ Hold'}
-                                            </span>
-                                            <div className="DH-proj-track"><div className="DH-proj-fill" style={{ width: `${a.progress}%` }} /></div>
-                                            <span className="DH-proj-val">{a.value}</span>
+                                        );
+                                    })}
+                                    {displayProjects.length > 0 && displayProjects.length < 4 && (
+                                        <div className="PL-add" onClick={() => onNavigate('client')}>
+                                            <div className="PL-add-ico">
+                                                <svg width="15" height="15" fill="none" stroke="var(--d-or)" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                                            </div>
+                                            <div>
+                                                <div className="PL-add-tt">Add another project</div>
+                                                <div className="PL-add-sb">Create it in Accounts Receivable to track budget &amp; collections here</div>
+                                            </div>
                                         </div>
-                                    );
-                                })}
-                                {displayProjects.length > 0 && displayProjects.length < 4 && (
-                                    <div className="PL-add" onClick={() => onNavigate('client')}>
-                                        <div className="PL-add-ico">
-                                            <svg width="15" height="15" fill="none" stroke="var(--d-or)" strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-                                        </div>
-                                        <div>
-                                            <div className="PL-add-tt">Add another project</div>
-                                            <div className="PL-add-sb">Create it in Accounts Receivable to track budget &amp; collections here</div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     {/* Recent Projects End */}
                 </div>
@@ -1225,7 +1226,7 @@ function DashContent({
                         </div>
                         <button className="TB-btn" onClick={() => onNavigate('client')}>View Receivables →</button>
                     </div>
-                    <div style={{ maxHeight: 280, overflowY: 'auto' }}>
+                    <div style={{ minHeight: 220, maxHeight: 280, overflowY: 'auto' }}>
                         {notifications.length === 0 ? (
                             <div className="DH-empty">
                                 <svg width="26" height="26" fill="none" stroke="rgba(30,156,106,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
@@ -1264,7 +1265,7 @@ function DashContent({
                         </div>
                         <button className="TB-btn" onClick={() => onNavigate('txn-credit')}>View Payables →</button>
                     </div>
-                    <div style={{ maxHeight: 280, overflowY: 'auto' }}>
+                    <div style={{ minHeight: 220, maxHeight: 280, overflowY: 'auto' }}>
                         {creditNotifs.length === 0 ? (
                             <div className="DH-empty">
                                 <svg width="26" height="26" fill="none" stroke="rgba(194,65,12,0.3)" strokeWidth="1.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
@@ -1961,7 +1962,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                         </div>
                         <button className="TB-btn" onClick={() => onNavigate('txn-credit')}>View Payables →</button>
                     </div>
-                    <div style={{ maxHeight: 280, overflowY: 'auto' }}>
+                    <div style={{ minHeight: 220, maxHeight: 280, overflowY: 'auto' }}>
                         {creditLoading ? (
                             <div className="SK" style={{ height: 200, borderRadius: 14 }} />
                         ) : creditNotifs.length === 0 ? (

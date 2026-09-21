@@ -167,5 +167,6 @@ class SubCategoryController extends Controller
     {
         Cache::forever('sub_categories_cache_version', $this->getSubCategoryCacheVersion() + 1);
         Cache::forget('sub_categories_list');
+        Cache::forget('master_data_all');
     }
 }

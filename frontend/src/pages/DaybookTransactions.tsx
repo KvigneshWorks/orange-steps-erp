@@ -221,7 +221,7 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, lab
     <div ref={panelRef} className="SDD-panel" style={panelStyle}>
       <div className="SDD-search-row">
         <Icon name="search" size={12} color="var(--text-4)" />
-        <input ref={inputRef} className="SDD-search" placeholder="Search…"
+        <input autoComplete="off" ref={inputRef} className="SDD-search" placeholder="Search…"
           value={query} onChange={e => setQuery(e.target.value)} />
         {query && <button className="SDD-clr" onClick={() => setQuery('')}><Icon name="x" size={9} /></button>}
       </div>
@@ -354,7 +354,7 @@ function MultiSearchDD({ options, value, onChange, placeholder, disabled = false
     <div ref={panelRef} className="SDD-panel" style={panelStyle}>
       <div className="SDD-search-row">
         <Icon name="search" size={12} color="var(--text-4)" />
-        <input ref={inputRef} className="SDD-search" placeholder="Search…"
+        <input autoComplete="off" ref={inputRef} className="SDD-search" placeholder="Search…"
           value={query} onChange={e => setQuery(e.target.value)} />
         {query && <button className="SDD-clr" onClick={() => setQuery('')}><Icon name="x" size={9} /></button>}
       </div>
@@ -531,7 +531,7 @@ function IncomeNameFilter({
             {/* Search  Bar Start */}
             <div className="INF2-search-wrap">
               <Icon name="search" size={14} color="var(--text-4)" />
-              <input
+              <input autoComplete="off"
                 ref={inputRef}
                 className="INF2-search"
                 placeholder="Search party names…"
@@ -4482,6 +4482,13 @@ function EditModal({
   const isCr = entryType === 'income';
   const typeClass = isCr ? 'cr' : 'dr';
   const availSub = form.category_id ? subCats.filter(s => s.category_id === +form.category_id) : subCats;
+  // Party Name options narrow to the selected Account Head, same relation the
+  // filter sidebar already uses (bio_data.category_id) -- a party with no
+  // category_id set stays visible regardless, so older/uncategorized entries
+  // aren't hidden.
+  const availBio = form.category_id
+      ? bioData.filter(b => !b.category_id || b.category_id === +form.category_id)
+      : bioData;
   const availSubNames = form.bio_data_id ? subNames.filter(s => s.bio_data_id === +form.bio_data_id) : subNames;
   const parsedAmount = parseFloat(form.amount) || 0;
 
@@ -4602,7 +4609,7 @@ function EditModal({
                 <div className="TX-field-lbl"><Icon name="cash" size={10} />Amount<span className="TX-field-req">*</span></div>
                 <div className="TX-amt-wrap">
                   <div className="TX-amt-pfx">₹</div>
-                  <input ref={amountInputRef} type="number" className="ERP-input TX-amt-in" value={form.amount}
+                  <input autoComplete="off" ref={amountInputRef} type="number" className="ERP-input TX-amt-in" value={form.amount}
                     onChange={e => { setF('amount')(e); if (errorField === 'amount') setErrorField(null); }}
                     min="0.01" step="0.01" placeholder="0.00" />
                 </div>
@@ -4648,7 +4655,7 @@ function EditModal({
                 <SearchDD
                   options={categories.map(c => ({ value: String(c.id), label: `${c.name} (${c.type === 'income' ? 'CR' : 'DR'})` }))}
                   value={form.category_id}
-                  onChange={v => { setForm(f => ({ ...f, category_id: v, sub_category_id: '' })); if (errorField === 'category_id') setErrorField(null); }}
+                  onChange={v => { setForm(f => ({ ...f, category_id: v, sub_category_id: '', bio_data_id: '', sub_name_id: '' })); if (errorField === 'category_id') setErrorField(null); }}
                   placeholder="— Select Account Head —" />
                 {selectedCat && (
                   <div className={`TX-cat-preview ${selectedCat.type === 'income' ? 'cr' : 'dr'}`}>
@@ -4679,10 +4686,13 @@ function EditModal({
               <div className={'TX-field' + (errorField === 'bio_data_id' ? ' err' : '')} ref={bioFieldRef}>
                 <div className="TX-field-lbl"><Icon name="building" size={10} />Party Name<span className="TX-field-req">*</span></div>
                 <SearchDD
-                  options={bioData.map(b => ({ value: String(b.id), label: b.name }))}
+                  options={availBio.map(b => ({ value: String(b.id), label: b.name }))}
                   value={form.bio_data_id}
                   onChange={v => { setForm(f => ({ ...f, bio_data_id: v, sub_name_id: '' })); if (errorField === 'bio_data_id') setErrorField(null); }}
-                  placeholder="— Select Party Name —" />
+                  placeholder={!form.category_id ? '— Select Party Name —' : '— Select Party Name —'} />
+                {form.category_id && (
+                  <div className="TX-field-hint">{availBio.length} related party name{availBio.length === 1 ? '' : 's'}</div>
+                )}
                 {errorField === 'bio_data_id' && (
                   <div className="TX-field-error-msg"><Icon name="warning" size={11} color="currentColor" />Please fill out this field</div>
                 )}
@@ -4721,7 +4731,7 @@ function EditModal({
               {/* Client Name Start */}
               <div className="TX-field">
                 <div className="TX-field-lbl"><Icon name="client" size={10} />Client Name</div>
-                <input type="text" className="ERP-input" value={form.client_name} onChange={setF('client_name')} placeholder="Optional" />
+                <input autoComplete="off" type="text" className="ERP-input" value={form.client_name} onChange={setF('client_name')} placeholder="Optional" />
               </div>
               {/* Client Name End */}
               <div />
@@ -4729,7 +4739,7 @@ function EditModal({
               {/* Narration Start */}
               <div className="TX-field span2">
                 <div className="TX-field-lbl"><Icon name="note" size={10} />Narration</div>
-                <textarea className="ERP-input" value={form.narration} onChange={setF('narration') as any}
+                <textarea autoComplete="off" className="ERP-input" value={form.narration} onChange={setF('narration') as any}
                   rows={3} placeholder="Purpose, reference, remarks…"
                   style={{ resize: 'vertical', lineHeight: 1.6, minHeight: 72 }} />
               </div>

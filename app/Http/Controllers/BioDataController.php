@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BioData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class BioDataController extends Controller
 {
@@ -94,6 +95,8 @@ class BioDataController extends Controller
             'created_by_name' => $user->name ?? 'System',
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'success' => true,
             'message' => 'Bio Data registered successfully',
@@ -129,6 +132,8 @@ class BioDataController extends Controller
             'created_by_name' => $user->name ?? 'System',
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'success' => true,
             'message' => 'Bio Data updated successfully',
@@ -144,6 +149,8 @@ class BioDataController extends Controller
 
         $bio = BioData::findOrFail($id);
         $bio->delete(); // soft delete — moves to Recycle Bin
+
+        Cache::forget('master_data_all');
 
         return response()->json([
             'success' => true,

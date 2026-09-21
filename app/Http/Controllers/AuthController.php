@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserApprovalRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
@@ -141,6 +142,115 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'data'    => $users,
+        ]);
+    }
+
+    /**
+     * Edit an existing account (Super Admin only — "All Accounts" tab).
+     * Name, email and role are all editable here. Guards against demoting
+     * the very last remaining Super Admin away from that role, which
+     * would leave nobody able to manage accounts at all.
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $target = User::findOrFail($id);
+
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $target->id,
+            'role'  => 'required|in:super_admin,admin,user',
+        ]);
+
+        if ($target->role === 'super_admin' && $request->role !== 'super_admin') {
+            $otherSuperAdmins = User::where('role', 'super_admin')->where('id', '!=', $target->id)->count();
+            if ($otherSuperAdmins === 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot change this account\'s role — it is the last remaining Super Admin.',
+                ], 422);
+            }
+        }
+
+        $target->name  = trim($request->name);
+        $target->email = strtolower(trim($request->email));
+        $target->role  = $request->role;
+        $target->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Account updated successfully',
+            'data'    => $target->only(['id', 'name', 'email', 'role', 'created_at']),
+        ]);
+    }
+
+    /**
+     * Permanently delete an account (Super Admin only — "All Accounts"
+     * tab). This is a genuine hard delete from the users table — the
+     * User model has no SoftDeletes trait/column — not the app's usual
+     * move-to-Recycle-Bin pattern used elsewhere, per explicit request
+     * to remove the account fully from the database.
+     *
+     * Guards, in order:
+     *  1. Can't delete your own logged-in account (would lock you out
+     *     mid-session).
+     *  2. Can't delete the last remaining Super Admin (would lock
+     *     everyone out of account management).
+     *  3. Can't delete an account that has ever created real business
+     *     records. `projects.user_id` and `cad_revisions.user_id` are
+     *     onDelete('cascade') in this schema — deleting through those
+     *     would silently wipe that user's projects/CAD revisions, so
+     *     they're checked and blocked explicitly rather than letting the
+     *     cascade run. clients/client_projects/client_payments/workers/
+     *     attendance_records/worker_payments .created_by are
+     *     onDelete('restrict') — checked the same way here for a clean
+     *     message instead of a raw SQL foreign-key error. Every other
+     *     created_by/added_by/inspector_id/deleted_by column on this
+     *     table across the schema is onDelete('set null') and is safe to
+     *     let happen automatically.
+     */
+    public function destroyUser(Request $request, $id)
+    {
+        $target = User::findOrFail($id);
+
+        if ((int) $request->user()->id === (int) $target->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You cannot delete your own account while logged in.',
+            ], 422);
+        }
+
+        if ($target->role === 'super_admin') {
+            $otherSuperAdmins = User::where('role', 'super_admin')->where('id', '!=', $target->id)->count();
+            if ($otherSuperAdmins === 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot delete this account — it is the last remaining Super Admin.',
+                ], 422);
+            }
+        }
+
+        $blockers = [];
+        if (DB::table('projects')->where('user_id', $target->id)->exists()) $blockers[] = 'projects';
+        if (DB::table('cad_revisions')->where('user_id', $target->id)->exists()) $blockers[] = 'CAD revisions';
+        if (DB::table('clients')->where('created_by', $target->id)->exists()) $blockers[] = 'clients';
+        if (DB::table('client_projects')->where('created_by', $target->id)->exists()) $blockers[] = 'client projects';
+        if (DB::table('client_payments')->where('created_by', $target->id)->exists()) $blockers[] = 'client payments';
+        if (DB::table('workers')->where('created_by', $target->id)->exists()) $blockers[] = 'workers';
+        if (DB::table('attendance_records')->where('created_by', $target->id)->exists()) $blockers[] = 'attendance records';
+        if (DB::table('worker_payments')->where('created_by', $target->id)->exists()) $blockers[] = 'worker payments';
+
+        if (!empty($blockers)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete this account — it has created ' . implode(', ', $blockers) . '. Those records need to be reassigned or removed first.',
+            ], 422);
+        }
+
+        $target->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Account permanently deleted',
         ]);
     }
 

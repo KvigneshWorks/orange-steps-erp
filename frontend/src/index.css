@@ -236,3 +236,26 @@ body {
   .DB3-root { gap: 12px; }
   .DB3-panel { position: static; max-height: none; }
 }
+
+/* ─── App-wide: never let a browser-autofilled value visually clash with
+   our theme, and strip its yellow/blue highlight everywhere, not just on
+   the Sign In page. Every text/email/tel/number/search/date input and
+   textarea across the software now also carries autoComplete="off" in
+   its own JSX, which is the primary fix (stops the browser's "previously
+   typed in this field" suggestion dropdown and most autofill); this is
+   the belt-and-suspenders visual layer for the rare case a browser still
+   slips a saved value in despite that. ─── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-1, #231C14);
+  -webkit-box-shadow: 0 0 0 1000px var(--white, #FAF9F7) inset;
+  box-shadow: 0 0 0 1000px var(--white, #FAF9F7) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}

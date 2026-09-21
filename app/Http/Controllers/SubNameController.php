@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubName;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SubNameController extends Controller
 {
@@ -47,6 +48,8 @@ class SubNameController extends Controller
             'created_by_name'  => $user->name ?? 'System',
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'success' => true,
             'message' => 'Sub-Name created successfully',
@@ -78,6 +81,8 @@ class SubNameController extends Controller
             'created_by_name'  => $user->name ?? 'System',
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'success' => true,
             'message' => 'Sub-Name updated successfully',
@@ -92,6 +97,8 @@ class SubNameController extends Controller
         }
         $subName = SubName::findOrFail($id);
         $subName->delete();
+
+        Cache::forget('master_data_all');
 
         return response()->json([
             'success' => true,

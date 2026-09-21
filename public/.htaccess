@@ -34,14 +34,30 @@ DirectoryIndex index.html index.php
     RewriteRule ^ index.html [L]
 </IfModule>
 
-# Prevent browser caching of API/PHP responses
+# Prevent ANY caching (browser, reverse proxy, or LiteSpeed's own page/object
+# cache) of API/PHP responses. Standard Cache-Control alone isn't always
+# enough on LiteSpeed hosting -- its LSCache layer can still serve a cached
+# copy unless explicitly told via X-LiteSpeed-Cache-Control, which is why
+# that header is set here too.
 <FilesMatch "\.php$">
     <IfModule mod_headers.c>
-        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0, private"
         Header set Pragma "no-cache"
         Header set Expires "Thu, 01 Jan 1970 00:00:00 GMT"
+        Header set X-LiteSpeed-Cache-Control "no-cache"
+        Header set Surrogate-Control "no-store"
     </IfModule>
 </FilesMatch>
+
+# Same no-cache guarantee, explicitly scoped to the /api/ path prefix (belt
+# and suspenders in case a future rewrite ever serves API responses through
+# something other than a bare .php filename match above).
+<IfModule mod_headers.c>
+    SetEnvIf Request_URI "^/api/" IS_API_REQUEST
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0, private" env=IS_API_REQUEST
+    Header set X-LiteSpeed-Cache-Control "no-cache" env=IS_API_REQUEST
+    Header set Surrogate-Control "no-store" env=IS_API_REQUEST
+</IfModule>
 
 # Compress text-based responses (JS/CSS/HTML/JSON/SVG) so pages transfer faster
 <IfModule mod_deflate.c>
@@ -61,3 +77,32 @@ DirectoryIndex index.html index.php
         Header set Cache-Control "public, max-age=2592000"
     </FilesMatch>
 </IfModule>
+
+# Block direct download of anything that should never sit in the public
+# webroot in the first place -- database dumps, deployment/source zips,
+# editor/manual backup files, and diagnostic scripts. This is a safety net,
+# not a substitute for actually deleting stray files: if one of these ever
+# lands in public_html/public/ again (a quick backup, an old deploy zip left
+# behind), it's still unreachable from a browser instead of being one guessed
+# URL away from a full data dump.
+<FilesMatch "\.(sql|sql\.gz|zip|tar|tar\.gz|bak|bak-.*|env)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Diagnostic/one-off scripts that were only ever meant to be run once by hand
+# and should never be reachable in production.
+<FilesMatch "^check-environment\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

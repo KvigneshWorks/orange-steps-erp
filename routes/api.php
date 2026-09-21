@@ -91,6 +91,8 @@
         // "All Accounts" tab in Account Settings — super_admin only.
         Route::middleware('role')->prefix('users')->group(function () {
             Route::get('/', [AuthController::class, 'listAllUsers']);
+            Route::put('/{id}', [AuthController::class, 'updateUser']);
+            Route::delete('/{id}', [AuthController::class, 'destroyUser']);
         });
 
         Route::middleware('role:admin,user')->group(function () {

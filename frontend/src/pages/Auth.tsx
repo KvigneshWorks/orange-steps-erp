@@ -112,6 +112,25 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     useKeyboardFieldNav(rootRef);
 
+    // Chrome/Edge/Safari match saved logins to a field mainly by its name+id,
+    // not just autoComplete. A fresh random suffix on every page load means
+    // this form never looks like "the same field" the browser saved a value
+    // against before, so there's nothing for it to offer or slip in.
+    const fieldSuffix = useRef(Math.random().toString(36).slice(2, 9)).current;
+
+    // Chrome/Edge/Safari's native "pick a saved account" dropdown shows up
+    // specifically for type="password" fields. WebKit/Blink browsers also
+    // support -webkit-text-security, which can visually mask a plain
+    // type="text" field the same way a password field looks -- so on those
+    // browsers we render this as text (with the CSS mask on) instead of a
+    // real password field, and the browser has nothing to offer a picker
+    // for. Firefox has no -webkit-text-security support, so it falls back
+    // to a genuine type="password" field there -- never plain, readable text.
+    const [maskSupported] = useState(() => {
+        try { return CSS.supports('-webkit-text-security', 'disc'); }
+        catch { return false; }
+    });
+
     const restartSlideTimer = () => {
         if (slideTimer.current) clearTimeout(slideTimer.current);
         slideTimer.current = setTimeout(() => setSlide(s => (s + 1) % FEATURE_SLIDES.length), 4200);
@@ -136,8 +155,9 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
     };
 
     const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const field = e.target.dataset.field as 'email' | 'password';
         setFieldError(false);
-        setLoginData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setLoginData(prev => ({ ...prev, [field]: e.target.value }));
     };
 
     // The readOnly-until-focused trick (below) stops most browsers from
@@ -150,8 +170,8 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
     // or password, no matter which path the browser used to fill it.
     const clearIfAutofilled = (e: React.AnimationEvent<HTMLInputElement>) => {
         if (e.animationName !== 'AS-autofillDetect') return;
-        const name = e.currentTarget.name;
-        setLoginData(prev => (prev[name as 'email' | 'password'] ? { ...prev, [name]: '' } : prev));
+        const field = e.currentTarget.dataset.field as 'email' | 'password';
+        setLoginData(prev => (prev[field] ? { ...prev, [field]: '' } : prev));
     };
 
     const submitLogin = async (e: React.FormEvent) => {
@@ -306,8 +326,8 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                                     lands in the real fields below, and combined with the
                                     readOnly-until-focused trick on those real fields, no
                                     previously-saved email/password ever shows on this page */}
-                                <input type="text" name="fakeuser_" style={{ display: 'none' }} readOnly tabIndex={-1} />
-                                <input type="password" name="fakepass_" style={{ display: 'none' }} readOnly tabIndex={-1} />
+                                <input type="text" name={`fakeuser_${fieldSuffix}`} autoComplete="off" data-lpignore="true" data-1p-ignore="true" style={{ display: 'none' }} readOnly tabIndex={-1} />
+                                <input type="password" name={`fakepass_${fieldSuffix}`} autoComplete="new-password" data-lpignore="true" data-1p-ignore="true" style={{ display: 'none' }} readOnly tabIndex={-1} />
 
                                 <div className={`A-field ${fieldError ? 'has-error' : ''}`}>
                                     <label className="A-field-label">Email Address</label>
@@ -315,12 +335,16 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                                         <input
                                             type="email"
                                             className="A-input"
-                                            placeholder="you@company.com"
-                                            name="email"
-                                            id="wn-login-email"
+                                            placeholder="Enter your registered email address"
+                                            name={`em_${fieldSuffix}`}
+                                            data-field="email"
+                                            id={`wn-login-email-${fieldSuffix}`}
                                             value={loginData.email}
                                             onChange={handleLoginChange}
                                             autoComplete="off"
+                                            data-lpignore="true"
+                                            data-1p-ignore="true"
+                                            data-form-type="other"
                                             readOnly
                                             onFocus={e => e.currentTarget.removeAttribute('readonly')}
                                             onAnimationStart={clearIfAutofilled}
@@ -338,17 +362,22 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                                     <label className="A-field-label">Password</label>
                                     <div className="A-input-wrap">
                                         <input
-                                            type={showPass ? 'text' : 'password'}
+                                            type={maskSupported ? 'text' : (showPass ? 'text' : 'password')}
                                             className="A-input"
-                                            placeholder="••••••••••"
-                                            name="password"
-                                            id="wn-login-password"
+                                            placeholder="Enter your password"
+                                            name={`pw_${fieldSuffix}`}
+                                            data-field="password"
+                                            id={`wn-login-password-${fieldSuffix}`}
                                             value={loginData.password}
                                             onChange={handleLoginChange}
                                             autoComplete="new-password"
+                                            data-lpignore="true"
+                                            data-1p-ignore="true"
+                                            data-form-type="other"
                                             readOnly
                                             onFocus={e => e.currentTarget.removeAttribute('readonly')}
                                             onAnimationStart={clearIfAutofilled}
+                                            style={maskSupported && !showPass ? ({ WebkitTextSecurity: 'disc' } as React.CSSProperties) : undefined}
                                         />
                                         <button
                                             type="button"

@@ -254,7 +254,7 @@ function SDD({
 
             <div className="CM3-sdd-search">
                 <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="var(--text-4,#6B5D48)" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-                <input ref={inp} value={q} onChange={e => setQ(e.target.value)} placeholder="Type to search…" className="CM3-sdd-inp" />
+                <input autoComplete="off" ref={inp} value={q} onChange={e => setQ(e.target.value)} placeholder="Type to search…" className="CM3-sdd-inp" />
                 {q && <button onClick={() => { setQ(''); inp.current?.focus(); }} className="CM3-sdd-clr">
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>}
@@ -403,7 +403,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
             {/* Search row */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid #E8E2D8', background: '#F5F3EF' }}>
                 <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#8C7C63" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-                <input
+                <input autoComplete="off"
                     autoFocus
                     value={q}
                     onChange={e => setQ(e.target.value)}
@@ -658,7 +658,14 @@ const CSS = `
   color: var(--text-1,#231C14); background: transparent;
 }
 .CM3-search input::placeholder { color: var(--text-4,#6B5D48); }
-.CM3-alloc-search { margin-bottom: 4px; position: sticky; top: 0; z-index: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+.CM3-alloc-search-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; position: sticky; top: 0; z-index: 1; }
+.CM3-alloc-search { box-shadow: 0 4px 10px rgba(0,0,0,0.03); flex: 1; margin-bottom: 0 !important; }
+.CM3-alloc-client-count {
+  flex-shrink: 0; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.4px; color: #9A3412; background: #FDE0CB; border: 1px solid #FBC9A8;
+  border-radius: 100px; padding: 6px 12px; white-space: nowrap;
+  animation: cm3-chip-pop 0.22s ease both;
+}
 
 /* ── Add vendor button ── */
 .CM3-add-btn {
@@ -1320,15 +1327,7 @@ const CSS = `
 .CM3-billtbl-status.overdue { color: #D93B55; }
 .CM3-billtbl-status.near    { color: #9A3412; }
 .CM3-billtbl-status.closed  { color: #1E9C6A; }
-.CM3-billtbl-acts { display: flex; gap: 4px; justify-content: flex-end; }
-.CM3-billtbl-act {
-  width: 25px; height: 25px; border-radius: 7px; border: 1px solid var(--border,#E8E2D8);
-  background: #faf9f7; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--text-4,#6B5D48); transition: all 0.16s; flex-shrink: 0;
-}
-.CM3-billtbl-act:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
-.CM3-billtbl-act.edit:hover { background: #FDE0CB; color: #DB5B1F; border-color: #FBC9A8; }
-.CM3-billtbl-act.del:hover  { background: #fef2f2; color: #D93B55; border-color: #fecaca; }
+.CM3-billtbl-acts { display: flex; gap: 6px; justify-content: flex-end; }
 
 /* Custom checkbox to match theme (used in header + row checks) */
 .CM3-billtbl-cb {
@@ -1468,12 +1467,13 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 /* Action col */
 .CM3-pmc-acts {
   display: flex; flex-direction: column; flex-shrink: 0;
-  border-left: 1px solid var(--border,#E8E2D8); align-self: stretch; width: 32px;
+  border-left: 1px solid var(--border,#E8E2D8); align-self: stretch; width: 58px;
 }
 .CM3-pmc-act {
   flex: 1; background: none; border: none; cursor: pointer;
   color: var(--text-4,#6B5D48);
   display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-size: 8px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
   transition: background 0.14s, color 0.14s;
 }
 .CM3-pmc-act + .CM3-pmc-act { border-top: 1px solid var(--border,#E8E2D8); }
@@ -1490,6 +1490,10 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 @keyframes cm3-row-pop-in {
   from { opacity:0; transform:translateY(10px) scale(0.98); }
   to   { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes cm3-client-row-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes cm3-pulse-red {
   0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
@@ -2007,37 +2011,73 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 }
 
 /* ── BILL ALLOCATION STEP (Select Client / Select Bill) ──
-   Centered popup dialog, matching the other 3 forms — sized bigger than a
-   plain form dialog since it hosts a real data table, but still a floating
-   card over a dim/blurred backdrop rather than taking over the screen. */
+   Full-size ERP form dialog, not a compact popup -- this is a real ledger
+   operation (choosing which client/bill a repayment posts against), so it
+   gets the same generous scale as a proper accounting-software form: wide
+   card, roomy padding, bigger type. Still a floating card over a dim/blurred
+   backdrop rather than a full-screen takeover. */
 .CM3-alloc-overlay {
   position: fixed; inset: 0;
-  background: rgba(35,28,20,0.52);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  z-index: 11000; display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: rgba(35,28,20,0.55);
+  backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);
+  z-index: 11000; display: flex; align-items: center; justify-content: center; padding: 28px;
   animation: cm3-overlay-in 0.22s ease both;
 }
 .CM3-alloc-modal {
-  background: var(--white,#faf9f7); border-radius: 22px; width: 100%; max-width: 860px;
-  box-shadow: 0 6px 28px rgba(0,0,0,0.10), 0 32px 88px rgba(0,0,0,0.24);
+  background: var(--white,#faf9f7); border-radius: 24px; width: 100%; max-width: 1080px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.11), 0 40px 100px rgba(0,0,0,0.26);
   overflow: hidden; display: flex; flex-direction: column;
-  animation: cm3-modal-in 0.42s cubic-bezier(0.22,1,0.36,1) both;
-  max-height: min(92dvh, 88vh);
+  animation: cm3-modal-in 0.46s cubic-bezier(0.22,1,0.36,1) both;
+  max-height: min(94dvh, 90vh);
 }
-@media (max-width: 1080px) {
-    .CM3-alloc-modal { max-width: calc(100vw - 32px); }
+@media (max-width: 1240px) {
+    .CM3-alloc-modal { max-width: calc(100vw - 48px); }
 }
 @media (max-width: 640px) {
     .CM3-alloc-overlay { padding: 0; align-items: flex-end; }
-    .CM3-alloc-modal { max-width: 100%; border-radius: 18px 18px 0 0; max-height: min(94dvh,94vh); }
+    .CM3-alloc-modal { max-width: 100%; border-radius: 18px 18px 0 0; max-height: min(96dvh,96vh); }
 }
 .CM3-alloc-hdr {
-  padding: 18px 22px 16px; border-bottom: 1.5px solid var(--border,#E8E2D8); flex-shrink: 0;
+  padding: 26px 32px 22px; border-bottom: 1.5px solid var(--border,#E8E2D8); flex-shrink: 0;
   background: var(--surface,#F5F3EF); position: relative;
 }
 /* "Back" — this step sits inside the repayment wizard, so dismissing it
    returns to the previous step rather than closing the whole flow; kept as
    a labeled control (not a bare X) so that distinction stays legible. */
+.CM3-alloc-back-fab {
+  position: absolute; top: 16px; right: 22px;
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid #FBC9A8;
+  background: linear-gradient(135deg, #FBC9A8 0%, #F0834D 150%);
+  color: #9A3412;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(154,52,18,0.16);
+  animation: cm3-back-pop 0.36s cubic-bezier(0.34,1.56,0.64,1) both,
+             cm3-back-ring 2.6s ease-in-out 0.7s infinite;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.CM3-alloc-back-fab svg { display: block; transform: rotate(180deg); transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+.CM3-alloc-back-fab:hover {
+  background: linear-gradient(135deg, #F0834D 0%, #C2410C 150%); border-color: #C2410C; color: #faf9f7;
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 8px 20px rgba(154,52,18,0.34);
+}
+.CM3-alloc-back-fab:hover svg { transform: rotate(180deg) translateX(-2px) scale(1.1); }
+.CM3-alloc-back-fab:active { transform: translateY(0) scale(0.92); box-shadow: 0 2px 6px rgba(0,0,0,0.10); }
+@keyframes cm3-back-pop {
+  from { opacity: 0; transform: scale(0.4) rotate(-90deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes cm3-back-ring {
+  0%, 100% { box-shadow: 0 2px 8px rgba(154,52,18,0.16), 0 0 0 0 rgba(154,52,18,0.24); }
+  50%      { box-shadow: 0 2px 8px rgba(154,52,18,0.16), 0 0 0 7px rgba(154,52,18,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .CM3-alloc-back-fab { animation: none; }
+}
+/* Kept for the other repayment-step modal's "Cancel" (text+icon pill) --
+   unrelated to the Back control above, left as-is. */
 .CM3-alloc-close {
   position: absolute; top: 16px; right: 22px;
   display: flex; align-items: center; gap: 7px;
@@ -2064,14 +2104,14 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-close:hover .CM3-alloc-close-ic { border-color: #F0834D; }
 .CM3-alloc-close:hover svg { transform: rotate(180deg) translateX(3px); }
 .CM3-alloc-close:active { transform: translateY(0) scale(0.96); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.CM3-alloc-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 13.5px; font-weight: 800; font-style: normal; color: #231C14; text-transform: uppercase; letter-spacing: 0.3px; }
-.CM3-alloc-sub { font-size: 9.5px; font-weight: 700; color: #524532; margin-top: 4px; }
+.CM3-alloc-title { font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 17px; font-weight: 800; font-style: normal; color: #231C14; text-transform: uppercase; letter-spacing: 0.3px; }
+.CM3-alloc-sub { font-size: 11.5px; font-weight: 700; color: #524532; margin-top: 5px; }
 /* Icon badge next to the title — matches the icon-boxes on the other 3 full
    pages (Ledger/Bill/Payment) and gives this step a pop-in entrance. */
 @keyframes cm3-badge-pop { from{opacity:0; transform:scale(0.5) rotate(-10deg);} to{opacity:1; transform:scale(1) rotate(0);} }
-.CM3-alloc-hdr-row { display: flex; align-items: center; gap: 12px; }
+.CM3-alloc-hdr-row { display: flex; align-items: center; gap: 16px; }
 .CM3-alloc-hdr-ic {
-  width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+  width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: #faf9f7; border: 1.5px solid #FBC9A8;
   animation: cm3-badge-pop 0.32s cubic-bezier(0.34,1.56,0.64,1) both;
@@ -2080,7 +2120,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 @keyframes cm3-chip-pulse { 0%,100%{ box-shadow:0 0 0 0 rgba(154,52,18,0.28); } 50%{ box-shadow:0 0 0 5px rgba(154,52,18,0); } }
 .CM3-alloc-chip { display:inline-flex; align-items:center; gap:5px; padding: 4px 10px; border-radius: 6px; font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; margin-top: 8px; background: var(--white,#faf9f7); border: 1px solid var(--border,#E8E2D8); color: #524532; animation: cm3-chip-pop 0.22s ease both; }
 .CM3-alloc-chip.amber { color: #9A3412; border-color: #FDE0CB; background: #FDE0CB; animation: cm3-chip-pop 0.22s ease both, cm3-chip-pulse 1.8s ease-in-out 0.3s infinite; }
-.CM3-alloc-body { flex: 1; overflow-y: auto; padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+.CM3-alloc-body { flex: 1; overflow-y: auto; padding: 26px 32px; display: flex; flex-direction: column; gap: 14px; min-height: 0; }
 .CM3-alloc-body::-webkit-scrollbar { width: 3px; }
 .CM3-alloc-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 /* Bill picker — real table (rows & columns), orange header + warm-white body,
@@ -2088,8 +2128,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
    The wrap scrolls its own body with a sticky header, so a client with many bills
    scrolls inside the table instead of stretching the whole modal off-screen. */
 .CM3-alloc-billtbl-wrap {
-  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px;
-  max-height: 48vh; overflow-y: auto; overflow-x: hidden;
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 14px;
+  max-height: 52vh; overflow-y: auto; overflow-x: hidden;
 }
 .CM3-alloc-billtbl-wrap::-webkit-scrollbar { width: 6px; }
 .CM3-alloc-billtbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
@@ -2098,8 +2138,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-billtbl thead th {
   background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
-  padding: 9px 12px; text-align: left; white-space: nowrap;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
+  padding: 13px 16px; text-align: left; white-space: nowrap;
   border-bottom: 2px solid var(--ember,#C2410C);
   position: sticky; top: 0; z-index: 1;
 }
@@ -2113,20 +2153,20 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-billtbl tbody tr.bill-row.selected td:first-child { box-shadow: inset 4px 0 0 0 #C2410C; }
 .CM3-alloc-billtbl tbody tr.bill-row.selected td { background: #fff1e6; }
 .CM3-alloc-billtbl tbody tr.bill-row.closed-bill { opacity: 0.45; pointer-events: none; }
-.CM3-alloc-billtbl td { padding: 9px 12px; vertical-align: middle; }
+.CM3-alloc-billtbl td { padding: 13px 16px; vertical-align: middle; font-size: 11px; }
 .CM3-alloc-billtbl-check-cell { width: 30px; }
-.CM3-alloc-billtbl-inv { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #231C14; }
-.CM3-alloc-billtbl-client { font-size: 9px; font-weight: 800; color: #C2410C; }
-.CM3-alloc-billtbl-amt { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #3A3024; white-space: nowrap; }
-.CM3-alloc-billtbl-date { font-size: 9px; color: #524532; white-space: nowrap; }
+.CM3-alloc-billtbl-inv { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 10.5px; font-weight: 800; color: #231C14; }
+.CM3-alloc-billtbl-client { font-size: 10.5px; font-weight: 800; color: #C2410C; }
+.CM3-alloc-billtbl-amt { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 10.5px; font-weight: 800; color: #3A3024; white-space: nowrap; }
+.CM3-alloc-billtbl-date { font-size: 10.5px; color: #524532; white-space: nowrap; }
 .CM3-alloc-billtbl-bal-cell { text-align: right; }
-.CM3-alloc-billtbl-bal { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 9px; font-weight: 800; color: #231C14; white-space: nowrap; }
+.CM3-alloc-billtbl-bal { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 11.5px; font-weight: 800; color: #231C14; white-space: nowrap; }
 .CM3-alloc-billtbl-preview-row td { padding: 0 12px 9px; background: #FBC9A8; border-bottom: 1px solid var(--border,#E8E2D8); }
 /* Checkbox-style bill selector — square, animated check glyph pops in,
    filled orange (will close the bill) or amber (partial payment) when picked. */
 @keyframes cm3-check-pop { 0%{opacity:0; transform:scale(0.4);} 60%{opacity:1; transform:scale(1.2);} 100%{opacity:1; transform:scale(1);} }
 .CM3-alloc-check {
-  width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--border,#D2C7B8);
+  width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--border,#D2C7B8);
   flex-shrink: 0; display: flex; align-items: center; justify-content: center;
   background: #faf9f7; transition: all 0.16s cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -2199,8 +2239,8 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 /* Client picker — real table (rows & columns), bigger modal, readable font.
    Scrolls its own body with a sticky header once the client list runs long. */
 .CM3-alloc-tbl-wrap {
-  border: 1.5px solid var(--border,#E8E2D8); border-radius: 12px;
-  max-height: 48vh; overflow-y: auto; overflow-x: hidden;
+  border: 1.5px solid var(--border,#E8E2D8); border-radius: 14px;
+  max-height: 46vh; overflow-y: auto; overflow-x: hidden;
 }
 .CM3-alloc-tbl-wrap::-webkit-scrollbar { width: 6px; }
 .CM3-alloc-tbl-wrap::-webkit-scrollbar-thumb { background: var(--border,#E8E2D8); border-radius: 3px; }
@@ -2209,13 +2249,14 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-tbl thead th {
   background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
   font-family: var(--font-mono,'JetBrains Mono',monospace);
-  font-size: 8px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
-  padding: 9px 12px; text-align: left;
+  font-size: 8.5px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
+  padding: 9px 16px; text-align: left;
   border-bottom: 2px solid var(--ember,#C2410C);
   position: sticky; top: 0; z-index: 1;
 }
 .CM3-alloc-tbl tbody tr {
-  cursor: pointer; animation: cm3-row-pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+  cursor: pointer; animation: cm3-client-row-in 0.34s cubic-bezier(0.22,1,0.36,1) both;
+  transition: transform 0.16s cubic-bezier(0.22,1,0.36,1);
 }
 .CM3-alloc-tbl tbody tr:nth-child(odd) td { background: var(--surface,#F5F3EF); }
 .CM3-alloc-tbl tbody tr td { transition: background 0.18s, box-shadow 0.2s; box-shadow: inset 0 0 0 0 transparent; }
@@ -2223,24 +2264,26 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-tbl tbody tr:not(:last-child) td { border-bottom: 1px solid var(--border,#E8E2D8); }
 .CM3-alloc-tbl tbody tr:hover td { background: #FBC9A8; }
 .CM3-alloc-tbl tbody tr:active td { background: #ffe9d5; }
-.CM3-alloc-tbl td { padding: 9px 12px; vertical-align: middle; }
+.CM3-alloc-tbl td { padding: 9px 16px; vertical-align: middle; }
 .CM3-alloc-tbl-name {
-  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10px; font-weight: 800; color: #231C14;
-  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 11.5px; font-weight: 800; color: #231C14;
+  display: flex; align-items: center; gap: 10px;
 }
 .CM3-alloc-tbl-avatar {
-  width: 24px; height: 24px; border-radius: 8px; flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg,#DB5B1F,#C2410C); color: #faf9f7;
-  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10px; font-weight: 800;
+  font-family: var(--font-body,'Space Grotesk',sans-serif); font-size: 10.5px; font-weight: 800;
   box-shadow: 0 2px 6px rgba(154,52,18,0.22);
+  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
 }
+.CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-avatar { transform: scale(1.1) rotate(-4deg); }
 .CM3-alloc-tbl-bills-pill {
-  display: inline-flex; align-items: center; font-size: 9px; font-weight: 800;
+  display: inline-flex; align-items: center; font-size: 9.5px; font-weight: 800;
   color: #524532; background: var(--white,#faf9f7); border: 1px solid var(--border,#E8E2D8);
   border-radius: 100px; padding: 3px 10px;
 }
-.CM3-alloc-tbl-due { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 10.5px; font-weight: 800; color: #231C14; text-align: right; }
+.CM3-alloc-tbl-due { font-family: var(--font-mono,'JetBrains Mono',monospace); font-size: 11.5px; font-weight: 800; color: #231C14; text-align: right; }
 .CM3-alloc-tbl-chev { text-align: right; width: 80px; white-space: nowrap; }
 .CM3-alloc-tbl-chev svg { color: #6B5D48; transition: transform 0.2s, color 0.2s; vertical-align: middle; }
 .CM3-alloc-tbl-select {
@@ -2251,7 +2294,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-select { opacity: 1; transform: translateX(0); }
 .CM3-alloc-tbl tbody tr:hover .CM3-alloc-tbl-chev svg { color: #C2410C; transform: translateX(3px); }
 
-.CM3-alloc-footer { padding: 16px 22px; border-top: 1.5px solid var(--border,#E8E2D8); display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--surface,#F0ECE6); }
+.CM3-alloc-footer { padding: 22px 32px; border-top: 1.5px solid var(--border,#E8E2D8); display: flex; gap: 12px; justify-content: flex-end; flex-shrink: 0; background: var(--surface,#F0ECE6); }
 
 /* ── BILL CLOSED / PAYMENT CELEBRATION ──
    Now the single success signal (no more redundant toast alongside it), so it
@@ -2813,7 +2856,7 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                         </div>
                         <div className={`CM3-field${errorField === 'bill_number' ? ' err' : ''}`} ref={billFieldRef}>
                             <label className="CM3-label">Bill / Invoice No <span className="req">*</span></label>
-                            <input ref={billInputRef} type="text" className="CM3-input" placeholder="Enter bill / invoice number…" value={form.bill_number}
+                            <input autoComplete="off" ref={billInputRef} type="text" className="CM3-input" placeholder="Enter bill / invoice number…" value={form.bill_number}
                                 onChange={e => { setF('bill_number', e.target.value); if (errorField === 'bill_number') setErrorField(null); }} />
                             {errorField === 'bill_number' && <div className="CM3-field-err-msg">Bill / Invoice No is required</div>}
                         </div>
@@ -2841,7 +2884,7 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                     <div className="CM3-grid2">
                         <div className={`CM3-field${errorField === 'credit_amount' ? ' err' : ''}`} ref={amountFieldRef}>
                             <label className="CM3-label">Credit Amount (₹) <span className="req">*</span></label>
-                            <input ref={amountInputRef} type="number" step="1" min="0" className="CM3-input" placeholder="0" value={form.credit_amount}
+                            <input autoComplete="off" ref={amountInputRef} type="number" step="1" min="0" className="CM3-input" placeholder="0" value={form.credit_amount}
                                 onChange={e => { setF('credit_amount', e.target.value.replace(/[.,].*$/, '')); if (errorField === 'credit_amount') setErrorField(null); }} />
                             {errorField === 'credit_amount' && <div className="CM3-field-err-msg">Enter a valid amount greater than 0</div>}
                         </div>
@@ -2861,11 +2904,11 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                         </div>
                         <div className="CM3-field">
                             <label className="CM3-label">Notes</label>
-                            <input type="text" className="CM3-input" placeholder="Internal remark…" value={form.notes} onChange={e => setF('notes', e.target.value)} />
+                            <input autoComplete="off" type="text" className="CM3-input" placeholder="Internal remark…" value={form.notes} onChange={e => setF('notes', e.target.value)} />
                         </div>
                         <div className="CM3-field" style={{ gridColumn: '1/-1' }}>
                             <label className="CM3-label">Description</label>
-                            <input type="text" className="CM3-input" placeholder="Work done / material supplied…" value={form.description} onChange={e => setF('description', e.target.value)} />
+                            <input autoComplete="off" type="text" className="CM3-input" placeholder="Work done / material supplied…" value={form.description} onChange={e => setF('description', e.target.value)} />
                         </div>
                     </div>
                     {/* ── 04 Priority & Notes ── */}
@@ -3064,7 +3107,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
     });
 
     const liveOpen = sortedEntries.filter(e => !e.is_paid && !justClosed.has(e.id));
-    const liveClosed = sortedEntries.filter(e => e.is_paid || justClosed.has(e.id));
     const selBill = liveOpen.find(e => e.id === selected);
     const applyAmount = selBill ? Math.round(Math.min(remaining, selBill.bill_balance)) : 0;
     const wouldClose = selBill ? remaining >= selBill.bill_balance : false;
@@ -3179,12 +3221,12 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
 
                 {/* ── HEADER ── */}
                 <div className="CM3-alloc-hdr">
-                    <button className="CM3-alloc-close" onClick={onClose} title="Back">
-                        <span className="CM3-alloc-close-ic"><Ic n="arrow" sz={11} /></span> Back
+                    <button className="CM3-alloc-back-fab" onClick={onClose} title="Back" aria-label="Back">
+                        <Ic n="arrow" sz={16} />
                     </button>
                     <div className="CM3-alloc-hdr-row">
                         <div className="CM3-alloc-hdr-ic">
-                            <Ic n={isDone ? 'check' : !selectedClient ? 'client' : 'receipt'} sz={17} c="#C2410C" />
+                            <Ic n={isDone ? 'check' : !selectedClient ? 'client' : 'receipt'} sz={22} c="#C2410C" />
                         </div>
                         <div>
                             <div className="CM3-alloc-title">
@@ -3226,13 +3268,22 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                     {!selectedClient ? (
                         <>
                             {clientGroups.length > 0 && (
-                                <div className="CM3-search CM3-alloc-search">
-                                    <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="var(--text-4)" strokeWidth={2.5} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-                                    <input placeholder="Search client…" value={clientSearch}
-                                        onChange={e => setClientSearch(e.target.value)} autoFocus />
-                                    {clientSearch && (
-                                        <button onClick={() => setClientSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', lineHeight: 1, padding: 0 }}>✕</button>
-                                    )}
+                                <div className="CM3-alloc-search-row">
+                                    <div className="CM3-search CM3-alloc-search">
+                                        <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="var(--text-4)" strokeWidth={2.5} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+                                        <input autoComplete="off" placeholder="Search client…" value={clientSearch}
+                                            onChange={e => setClientSearch(e.target.value)} autoFocus />
+                                        {clientSearch && (
+                                            <button onClick={() => setClientSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', lineHeight: 1, padding: 0 }}>✕</button>
+                                        )}
+                                    </div>
+                                    {/* Total count stays visible regardless of scroll position -- the
+                                        list below has a fixed max-height and scrolls internally, so
+                                        with a long client list this is the only place that still shows
+                                        "how many total" once you've scrolled past the first screenful. */}
+                                    <span className="CM3-alloc-client-count">
+                                        {filteredClientGroups.length}{clientSearch ? ` of ${clientGroups.length}` : ''} {clientGroups.length === 1 ? 'client' : 'clients'}
+                                    </span>
                                 </div>
                             )}
                             {filteredClientGroups.length === 0 && clientSearch && (
@@ -3254,7 +3305,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                         <tbody>
                                             {filteredClientGroups.map((g, gIdx) => (
                                                 <tr key={g.name}
-                                                    style={{ animationDelay: `${gIdx * 30}ms` }}
+                                                    style={{ animationDelay: `${Math.min(gIdx, 10) * 30}ms` }}
                                                     onClick={() => setSelectedClient(g.name)}
                                                     title={`Select ${g.name}`}>
                                                     <td className="CM3-alloc-tbl-name">
@@ -3312,7 +3363,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                                     <tr className={`bill-row${isSel ? ' selected' : ''}`} style={{ animationDelay: `${bIdx * 30}ms` }} onClick={() => setSelected(e.id)}>
                                                         <td className="CM3-alloc-billtbl-check-cell">
                                                             <div className={`CM3-alloc-check${isSel ? (willClose ? ' will-close' : ' will-partial') : ''}`}>
-                                                                {isSel && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
+                                                                {isSel && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#faf9f7" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>}
                                                             </div>
                                                         </td>
                                                         <td className="CM3-alloc-billtbl-inv">#{billNum} · {e.bill_number || `ID ${e.id}`}</td>
@@ -3361,24 +3412,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                         </>
                     )}
 
-                    {liveClosed.length > 0 && (
-                        <div style={{ marginTop: 4 }}>
-                            <div style={{ fontSize: 8, fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--text-4)', marginBottom: 6, paddingTop: 6, borderTop: '1px solid var(--border)' }}>Already Closed</div>
-                            {liveClosed.map(e => {
-                                const billNum = String(sortedEntries.indexOf(e) + 1).padStart(2, '0');
-                                const wasJustClosed = justClosed.has(e.id);
-                                return (
-                                    <div key={e.id} className="CM3-alloc-bill closed-bill" style={{ background: wasJustClosed ? '#FBC9A8' : undefined }}>
-                                        <div className="CM3-alloc-info">
-                                            <div className="CM3-alloc-bill-num">BILL NUM: {billNum} · {e.bill_number || `#${e.id}`}</div>
-                                            <div className="CM3-alloc-bill-desc">{e.description || `Bill ${billNum}`}</div>
-                                        </div>
-                                        <span className="CM3-alloc-bill-closed-tag">{wasJustClosed ? '✓ Just Closed' : '✓ Closed'}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
                 </div>
                 {/* ── BODY ── */}
 
@@ -3838,7 +3871,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         {/* Amount Paid Start */}
                         <div className={`CM3-field${errorField === 'amount_paid' ? ' err' : ''}`} ref={amountFieldRef}>
                             <label className="CM3-label">Amount Paid (₹) <span className="req">*</span></label>
-                            <input ref={amountInputRef} type="number" step="1" min="0" className="CM3-input"
+                            <input autoComplete="off" ref={amountInputRef} type="number" step="1" min="0" className="CM3-input"
                                 placeholder={`Max: ${fmt(vendor.balance)}`}
                                 value={form.amount_paid}
                                 onChange={e => { setF('amount_paid', e.target.value.replace(/[.,].*$/, '')); if (errorField === 'amount_paid') setErrorField(null); }}
@@ -3858,14 +3891,14 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         {/* Reference Number Start */}
                         <div className="CM3-field">
                             <label className="CM3-label">Reference / UTR</label>
-                            <input type="text" className="CM3-input" placeholder="Cheque / UPI ID / UTR…" value={form.reference} onChange={e => setF('reference', e.target.value)} />
+                            <input autoComplete="off" type="text" className="CM3-input" placeholder="Cheque / UPI ID / UTR…" value={form.reference} onChange={e => setF('reference', e.target.value)} />
                         </div>
                         {/* Reference Number End */}
 
                         {/* Notes Start */}
                         <div className="CM3-field" style={{ gridColumn: '1/-1' }}>
                             <label className="CM3-label">Notes</label>
-                            <input type="text" className="CM3-input" placeholder="Internal note…" value={form.notes} onChange={e => setF('notes', e.target.value)} />
+                            <input autoComplete="off" type="text" className="CM3-input" placeholder="Internal note…" value={form.notes} onChange={e => setF('notes', e.target.value)} />
                         </div>
                         {/* Notes End */}
                     </div>
@@ -3875,7 +3908,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                     {!isEdit && <><div className="CM3-section"><span className="CM3-section-tag">02 — Cash Book Sync</span><div className="CM3-section-rule" /></div>
                         <div className="CM3-db-box">
                             <label className="CM3-db-toggle">
-                                <input type="checkbox" checked={form.sync_to_daybook}
+                                <input autoComplete="off" type="checkbox" checked={form.sync_to_daybook}
                                     onChange={e => setF('sync_to_daybook', e.target.checked)}
                                     style={{ width: 16, height: 16, accentColor: PAYMENT_COLOR.primary }} />
                                 <div>
@@ -3928,7 +3961,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                                         </div>
                                         <div className="CM3-field" style={{ gridColumn: '1/-1' }}>
                                             <label className="CM3-field-label">Cash Book Narration</label>
-                                            <input type="text" className="CM3-input" value={form.daybook_narration}
+                                            <input autoComplete="off" type="text" className="CM3-input" value={form.daybook_narration}
                                                 onChange={e => setF('daybook_narration', e.target.value)}
                                                 placeholder="Narration for daybook entry…" />
                                         </div>
@@ -4252,9 +4285,9 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                                                         </td>
                                                         <td>
                                                             <div className="CM3-billtbl-acts">
-                                                                <button className="CM3-billtbl-act edit" title="Edit" onClick={() => setEditEntry(e)}><Ic n="edit" sz={11} /></button>
+                                                                <button className="ERP-tbtn edit" title="Edit" onClick={() => setEditEntry(e)}>Edit</button>
                                                                 {canDelete(userRole) ? (
-                                                                    <button className="CM3-billtbl-act del" title="Delete" onClick={() => handleDelEntry(e.id)}><Ic n="trash" sz={11} /></button>
+                                                                    <button className="ERP-tbtn delete" title="Delete" onClick={() => handleDelEntry(e.id)}>Delete</button>
                                                                 ) : (
                                                                     <CreatorBadge name={e.created_by_name} />
                                                                 )}
@@ -4379,9 +4412,9 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
 
                                         {/* ACTION BUTTON START */}
                                         <div className="CM3-pmc-acts">
-                                            <button className="CM3-pmc-act edit" title="Edit" onClick={() => setEditPayment(pm)}><Ic n="edit" sz={10} /></button>
+                                            <button className="CM3-pmc-act edit" title="Edit" onClick={() => setEditPayment(pm)}>Edit</button>
                                             {canDelete(userRole) ? (
-                                                <button className="CM3-pmc-act del" title="Delete" onClick={() => handleDelPayment(pm.id)}><Ic n="trash" sz={10} /></button>
+                                                <button className="CM3-pmc-act del" title="Delete" onClick={() => handleDelPayment(pm.id)}>Delete</button>
                                             ) : (
                                                 <CreatorBadge name={pm.created_by_name} />
                                             )}
@@ -4832,7 +4865,7 @@ export default function CreditManagement() {
                         <div className="CM3-sb-title">Vendors</div>
                         <div className="CM3-search">
                             <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="var(--text-4)" strokeWidth={2.5} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-                            <input placeholder="Search vendors…" value={search}
+                            <input autoComplete="off" placeholder="Search vendors…" value={search}
                                 onChange={e => setSearch(e.target.value)} />
                             {search && (
                                 <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', lineHeight: 1, padding: 0 }}>✕</button>

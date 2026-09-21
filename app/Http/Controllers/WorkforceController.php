@@ -246,8 +246,11 @@ class WorkforceController extends Controller
 
         $created = 0;
         $shifts  = (float)$data['shifts_worked'];
+        // Prefetch every worker in one query instead of one Worker::find() per id --
+        // this loop can run over the whole team on a bulk-mark action.
+        $workersById = Worker::whereIn('id', $data['worker_ids'])->get()->keyBy('id');
         foreach ($data['worker_ids'] as $wid) {
-            $worker = Worker::find($wid);
+            $worker = $workersById->get($wid);
             if (!$worker || !$worker->is_active) continue;
 
             $effRate = $worker->effective_daily_rate;

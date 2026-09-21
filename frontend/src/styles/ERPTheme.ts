@@ -89,7 +89,13 @@ export const ERP_CSS = `
 @keyframes erp-bar-fill   { from { width:0; } to { width:100%; } }
 @keyframes erp-float      { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
 @keyframes erp-glow-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(219,91,31,0.30); } 50% { box-shadow:0 0 0 8px rgba(219,91,31,0); } }
-@keyframes erp-stagger-in { from { opacity:0; transform:translateY(14px) scale(0.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+/* translateY-only — no scale(). Scaling a <tr> breaks its cell borders'
+   pixel alignment against neighbouring rows mid-animation (shows as a
+   glitchy "boxed"/misaligned row for a frame), which is exactly what
+   scale(0.985→1) here was doing on the very first staggered rows across
+   every table using this baseline (.ERP-tbl, .WR-table, etc.) — caught in
+   a user screenshot. translateY alone doesn't have that problem. */
+@keyframes erp-stagger-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 @keyframes erp-gradient-x { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
 
 /* ultra animation utilities */
@@ -215,24 +221,14 @@ export const ERP_CSS = `
   animation: erp-pulse-dot 2s ease-in-out infinite;
 }
 
+/* Plain, sober divider line — no gradient taper, no rotated-square
+   ("diamond") marker at the left edge; that decorative accent read as
+   unprofessional/gimmicky, so it's gone app-wide (this class is shared
+   across every view page via ERPTheme.ts). */
 .ERP-divider {
-  position: relative;
   height: 1px;
-  background: linear-gradient(to right, var(--ember) 0%, rgba(194,65,12,0.3) 40%, transparent 70%);
+  background: var(--border);
   margin-bottom: 28px;
-  z-index: 1;
-}
-
-.ERP-divider::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: -3px;
-  width: 7px;
-  height: 7px;
-  background: var(--ember);
-  border-radius: 1px;
-  transform: rotate(45deg);
 }
 
 .ERP-stats {
@@ -1042,9 +1038,13 @@ export const ERP_CSS = `
 .ERP-tbl tbody tr:nth-child(7)  { animation-delay: 0.20s; }
 .ERP-tbl tbody tr:nth-child(8)  { animation-delay: 0.23s; }
 .ERP-tbl tbody tr:nth-child(n+9){ animation-delay: 0.26s; }
+/* Plain background tint on hover — no inset-shadow "line". A box-shadow
+   set at the <tr> level still paints per <td> in a collapsed-border
+   table, so it showed up as a stray line down the left edge of EVERY
+   column, not just the row's own edge (MD flagged this as too much
+   motion — kept it to a slight, professional hover only). */
 .ERP-tbl tbody tr:hover {
   background: var(--ember-ghost);
-  box-shadow: inset 3px 0 0 var(--ember-mid);
 }
 .ERP-tbl tbody tr:last-child td { border-bottom: none; }
 
@@ -1803,28 +1803,58 @@ export const ERP_CSS = `
 .MD-tbl-tag.ember   { color: var(--ember); }
 .MD-tbl-tag.muted   { color: var(--text-4); font-weight: 800; }
 
-/* Icon-only action buttons — replaces text+icon .ERP-act. Hover-only
-   lift/scale/glow animation, nothing continuous or blinking. */
-.MD-act-ico {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px;
-  border-radius: var(--r-sm);
-  border: 1px solid;
+/* Small text-label action buttons — app-wide standard (replaces every
+   icon-only action button across the software except Cash Book, which
+   keeps its own look on request). Quiet tinted-ghost at rest, a
+   confident gradient-fill + lift-with-shadow on hover, a crisp
+   press-scale on click. .MD-act-ico is the Master Data family's own
+   name for this same button (Category/Sub Category/Bio Data/Sub
+   Name/ID Type); .ERP-tbtn is the identical style for every other
+   page (Recycle Bin, Credit Management, Client Portal, Workforce, …).
+   Both share one visual language so "Edit"/"Delete" reads the same
+   everywhere in the app. */
+.MD-act-ico, .ERP-tbtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  padding: 6px 13px; border-radius: 8px;
+  font-family: var(--font-body); font-size: 9px; font-weight: 800; letter-spacing: .045em;
+  text-transform: uppercase; white-space: nowrap;
+  border: 1.3px solid transparent;
   cursor: pointer;
-  transition: transform .2s cubic-bezier(0.22,1,0.36,1), box-shadow .2s ease, background .18s ease, color .18s ease, border-color .18s ease;
+  transition: transform .16s cubic-bezier(.22,1,.36,1), box-shadow .16s ease, background .16s ease, color .16s ease, border-color .16s ease;
 }
-.MD-act-ico + .MD-act-ico { margin-left: 7px; }
-.MD-act-ico.edit { background: var(--ember-ghost); color: var(--ember); border-color: var(--ember-border); }
-.MD-act-ico.edit:hover {
-  background: var(--ember); color: #fff; border-color: var(--ember);
-  transform: translateY(-2px) scale(1.08);
-  box-shadow: 0 5px 14px rgba(194,65,12,0.32);
+.MD-act-ico:active:not(:disabled), .ERP-tbtn:active:not(:disabled) { transform: scale(.93); transition-duration: .08s; }
+.MD-act-ico:disabled, .ERP-tbtn:disabled { opacity: .5; cursor: not-allowed; }
+.MD-act-ico + .MD-act-ico, .ERP-tbtn + .ERP-tbtn { margin-left: 7px; }
+
+.MD-act-ico.edit, .ERP-tbtn.edit { background: var(--ember-ghost); color: var(--ember); border-color: var(--ember-border); }
+.MD-act-ico.edit:hover:not(:disabled), .ERP-tbtn.edit:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--ember), #EA580C); color: #fff; border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -6px rgba(194,65,12,.45);
 }
-.MD-act-ico.delete { background: var(--error-bg); color: var(--error); border-color: var(--error-bd); }
-.MD-act-ico.delete:hover {
-  background: var(--error); color: #fff; border-color: var(--error);
-  transform: translateY(-2px) scale(1.08);
-  box-shadow: 0 5px 14px rgba(217,59,85,0.32);
+.MD-act-ico.delete, .ERP-tbtn.delete { background: var(--error-bg); color: var(--error); border-color: var(--error-bd); }
+.MD-act-ico.delete:hover:not(:disabled), .ERP-tbtn.delete:hover:not(:disabled) {
+  background: linear-gradient(135deg, #9A3412, var(--error)); color: #fff; border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -6px rgba(217,59,85,.4);
+}
+.ERP-tbtn.restore { background: var(--success-bg, rgba(30,156,106,.08)); color: var(--success, #1E9C6A); border-color: var(--success-bd, rgba(30,156,106,.24)); }
+.ERP-tbtn.restore:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1E9C6A, #22B37F); color: #fff; border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -6px rgba(30,156,106,.4);
+}
+.ERP-tbtn.add, .ERP-tbtn.primary { background: var(--ember-ghost); color: var(--ember); border-color: var(--ember-border); }
+.ERP-tbtn.add:hover:not(:disabled), .ERP-tbtn.primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--ember), #EA580C); color: #fff; border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -6px rgba(194,65,12,.45);
+}
+.ERP-tbtn.neutral { background: rgba(107,93,72,.08); color: var(--text-3,#6B5D48); border-color: rgba(107,93,72,.20); }
+.ERP-tbtn.neutral:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6B5D48, #8C7C63); color: #fff; border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -6px rgba(107,93,72,.35);
 }
 
 /* ══════════════════════════════════════════════════════════════════

@@ -1675,7 +1675,7 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
           {/* Search Bar Start */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 12px', borderBottom: '1px solid #E8E2D8', background: '#F5F3EF', position: 'sticky', top: 0 }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8C7C63" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-            <input
+            <input autoComplete="off"
               ref={searchRef}
               style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: '#231C14', fontFamily: 'inherit', caret_color: '#DB5B1F' } as any}
               placeholder="Search…"
@@ -1814,7 +1814,7 @@ function BioDD({ options, value, onChange, loading }: {
           </div>
           <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)' }}>
             <Ic n="search" s={12} />
-            <input ref={inp} style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }} value={q} onChange={e => setQ(e.target.value)} placeholder="Search clients…" />
+            <input autoComplete="off" ref={inp} style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }} value={q} onChange={e => setQ(e.target.value)} placeholder="Search clients…" />
             {q && <button type="button" onClick={() => setQ('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>}
           </div>
           <div style={{ maxHeight: bioListMaxH, overflowY: 'auto', scrollbarWidth: 'thin' }}>
@@ -1894,7 +1894,7 @@ function SubDD({ subs, val, onChange, disabled, placeholder }: {
   );
 
   if (subs.length === 0) return (
-    <input className="CP-input" value={val} onChange={e => onChange(e.target.value)} placeholder={placeholder || 'Enter project name…'} autoFocus />
+    <input autoComplete="off" className="CP-input" value={val} onChange={e => onChange(e.target.value)} placeholder={placeholder || 'Enter project name…'} autoFocus />
   );
 
   const fsubs = subs.filter(s => s.toLowerCase().includes(q.toLowerCase()));
@@ -1922,7 +1922,7 @@ function SubDD({ subs, val, onChange, disabled, placeholder }: {
           {subs.length > 5 && (
             <div style={{ padding: '7px 12px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid var(--border,#D2C7B8)', background: 'var(--off-white,#F5F3EF)' }}>
               <Ic n="search" s={12} />
-              <input style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }}
+              <input autoComplete="off" style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 11.5, color: 'var(--text-1)', fontFamily: 'var(--font-body)' }}
                 value={q} onChange={e => setQ(e.target.value)} placeholder="Filter names…" />
             </div>
           )}
@@ -2232,14 +2232,14 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                     {/* Amount Start */}
                     <div className="CP-field">
                       <label className="CP-label">Amount (₹) <span className="req">*</span></label>
-                      <input className="CP-input" type="number" name="amount" value={cf.amount} onChange={hc} min="0" step="0.01" placeholder="0.00" required />
+                      <input autoComplete="off" className="CP-input" type="number" name="amount" value={cf.amount} onChange={hc} min="0" step="0.01" placeholder="0.00" required />
                     </div>
                     {/* Amount End */}
 
                     {/* GST Start */}
                     <div className="CP-field">
                       <label className="CP-label">GST (₹) <span className="opt">(opt)</span></label>
-                      <input className="CP-input" type="number" name="gst_amount" value={cf.gst_amount} onChange={hc} min="0" step="0.01" placeholder="0" />
+                      <input autoComplete="off" className="CP-input" type="number" name="gst_amount" value={cf.gst_amount} onChange={hc} min="0" step="0.01" placeholder="0" />
                     </div>
                     {/* GST End */}
 
@@ -2252,7 +2252,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                   <div className="CP-g2">
                     <div className="CP-field">
                       <label className="CP-label">Reference No. <span className="opt">(opt)</span></label>
-                      <input className="CP-input" name="reference_number" value={cf.reference_number} onChange={hc} placeholder="UTR / Cheque no." />
+                      <input autoComplete="off" className="CP-input" name="reference_number" value={cf.reference_number} onChange={hc} placeholder="UTR / Cheque no." />
                     </div>
                     <div className="CP-field">
                       <label className="CP-label">
@@ -2267,7 +2267,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                   {/* Notes Start */}
                   <div className="CP-field" style={{ marginTop: 10 }}>
                     <label className="CP-label">Notes <span className="opt">(opt)</span></label>
-                    <input className="CP-input" name="notes" value={cf.notes} onChange={hc} placeholder="Remarks…" />
+                    <input autoComplete="off" className="CP-input" name="notes" value={cf.notes} onChange={hc} placeholder="Remarks…" />
                   </div>
                   {/* Notes End */}
 
@@ -2470,22 +2470,13 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                                         style={{ padding: '4px 8px' }}
                                         onClick={() => handleEditPay(pay)}
                                         title="Edit Payment"
-                                      >
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                                          <path d="M17 3l4 4-7 7H10v-4l7-7z" />
-                                          <path d="M3 21h18" />
-                                        </svg>
-                                      </button>
+                                      >Edit</button>
                                       <button
                                         className="CP-act CP-act-del"
                                         style={{ padding: '4px 8px' }}
                                         onClick={() => handleDeletePay(pay.id)}
                                         title="Delete Payment"
-                                      >
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                                          <path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4h6v3" />
-                                        </svg>
-                                      </button>
+                                      >Delete</button>
                                     </div>
                                   </td>
                                 </tr>
@@ -2589,7 +2580,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                   <div className="CP-g2">
                     <div className="CP-field">
                       <label className="CP-label">Extra Amount (₹) <span className="req">*</span></label>
-                      <input className="CP-input" type="number" min="1" step="0.01" value={budgetAmt} onChange={e => setBudgetAmt(e.target.value)} placeholder="e.g. 150000" required autoFocus />
+                      <input autoComplete="off" className="CP-input" type="number" min="1" step="0.01" value={budgetAmt} onChange={e => setBudgetAmt(e.target.value)} placeholder="e.g. 150000" required autoFocus />
                     </div>
                     <div className="CP-field">
                       <label className="CP-label"><Ic n="cal" s={10} /> Date Added <span className="req">*</span></label>
@@ -2601,7 +2592,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                   {/* Reason Start */}
                   <div className="CP-field" style={{ marginTop: 10 }}>
                     <label className="CP-label">Reason / Notes <span className="opt">(opt)</span></label>
-                    <input className="CP-input" type="text" value={budgetReason} onChange={e => setBudgetReason(e.target.value)} placeholder="e.g. Scope change, extra flooring…" />
+                    <input autoComplete="off" className="CP-input" type="text" value={budgetReason} onChange={e => setBudgetReason(e.target.value)} placeholder="e.g. Scope change, extra flooring…" />
                   </div>
                   {/* Reason End */}
 
@@ -2663,12 +2654,8 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
                                 <td style={{ fontFamily: 'var(--ff-m)', fontSize: 9, fontWeight: 700, color: 'var(--t3)' }}>{fmtDate(b.created_at)}</td>
                                 <td style={{ textAlign: 'center' }}>
                                   <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
-                                    <button type="button" className="CP-act CP-act-edit" style={{ padding: '4px 8px' }} title="Edit Budget Entry" onClick={() => handleEditBudget(b)}>
-                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 3l4 4-7 7H10v-4l7-7z" /><path d="M3 21h18" /></svg>
-                                    </button>
-                                    <button type="button" className="CP-act CP-act-del" style={{ padding: '4px 8px' }} title="Delete Budget Entry" onClick={() => handleDeleteBudget(b.id)}>
-                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4h6v3" /></svg>
-                                    </button>
+                                    <button type="button" className="CP-act CP-act-edit" style={{ padding: '4px 8px' }} title="Edit Budget Entry" onClick={() => handleEditBudget(b)}>Edit</button>
+                                    <button type="button" className="CP-act CP-act-del" style={{ padding: '4px 8px' }} title="Delete Budget Entry" onClick={() => handleDeleteBudget(b.id)}>Delete</button>
                                   </div>
                                 </td>
                               </tr>
@@ -2786,11 +2773,11 @@ function EditProjectModal({ clientId, project, subNames, onClose, onSaved }: {
               </div>
               <div className="CP-g2" style={{ marginTop: 10 }}>
                 <div className="CP-field"><label className="CP-label">Start Date <span className="req">*</span></label><CalendarDD value={pf.start_date} onChange={v => setPf(p => ({ ...p, start_date: v }))} /></div>
-                <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} required min="0" step="0.01" /></div>
+                <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input autoComplete="off" className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} required min="0" step="0.01" /></div>
               </div>
               <div className="CP-field" style={{ marginTop: 10 }}>
                 <label className="CP-label">Notes <span className="opt">(opt)</span></label>
-                <input className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} />
+                <input autoComplete="off" className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} />
               </div>
               <div className="CP-modal-actions">
                 <button type="submit" className="CP-btn-primary" disabled={saving}
@@ -2863,11 +2850,11 @@ function AddProjectModal({ clientId, clientName, subNames, onClose, onSaved }: {
               </div>
               <div className="CP-g2" style={{ marginTop: 10 }}>
                 <div className="CP-field"><label className="CP-label">Start Date <span className="req">*</span></label><CalendarDD value={pf.start_date} onChange={v => setPf(p => ({ ...p, start_date: v }))} /></div>
-                <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} required min="0" step="0.01" placeholder="e.g. 2500000" /></div>
+                <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input autoComplete="off" className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} required min="0" step="0.01" placeholder="e.g. 2500000" /></div>
               </div>
               <div className="CP-field" style={{ marginTop: 10 }}>
                 <label className="CP-label">Notes <span className="opt">(opt)</span></label>
-                <input className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} placeholder="Additional notes…" />
+                <input autoComplete="off" className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} placeholder="Additional notes…" />
               </div>
               {parseFloat(pf.total_budget) > 0 && (
                 <div className="CP-preview gold" style={{ marginTop: 12, gap: 14 }}>
@@ -3014,7 +3001,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
                   </div>
                   <div className="CP-field" style={{ marginBottom: 12 }}>
                     <label className="CP-label">ID Number <span className="req">*</span></label>
-                    <input className="CP-input" value={cf.id_number} onChange={e => setCf(p => ({ ...p, id_number: e.target.value }))} placeholder="Auto-filled from BioData" />
+                    <input autoComplete="off" className="CP-input" value={cf.id_number} onChange={e => setCf(p => ({ ...p, id_number: e.target.value }))} placeholder="Auto-filled from BioData" />
                   </div>
                   {selectedBio && (
                     <div className="CP-cci">
@@ -3029,7 +3016,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
                   <div className="CP-modal-divider"><span className="CP-modal-div-tag jade">02 — Description</span><div className="CP-modal-div-line" /></div>
                   <div className="CP-field">
                     <label className="CP-label">Notes <span className="opt">(opt)</span></label>
-                    <textarea className="CP-textarea CP-input" value={cf.notes} onChange={e => setCf(p => ({ ...p, notes: e.target.value }))} placeholder="Any notes about this client…" />
+                    <textarea autoComplete="off" className="CP-textarea CP-input" value={cf.notes} onChange={e => setCf(p => ({ ...p, notes: e.target.value }))} placeholder="Any notes about this client…" />
                   </div>
                   <p className="CP-req-note"><span style={{ color: 'var(--rd)' }}>*</span> Required fields</p>
                   <div className="CP-modal-actions">
@@ -3066,11 +3053,11 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
                   <div className="CP-modal-divider" style={{ marginTop: 18 }}><span className="CP-modal-div-tag jade">02 — Budget & Timeline</span><div className="CP-modal-div-line" /></div>
                   <div className="CP-g2">
                     <div className="CP-field"><label className="CP-label"><Ic n="cal" s={10} /> Start Date <span className="req">*</span></label><CalendarDD value={pf.start_date} onChange={v => setPf(p => ({ ...p, start_date: v }))} /></div>
-                    <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} min="0" step="0.01" placeholder="e.g. 2500000" required /></div>
+                    <div className="CP-field"><label className="CP-label">Budget (₹) <span className="req">*</span></label><input autoComplete="off" className="CP-input" type="number" value={pf.total_budget} onChange={e => setPf(p => ({ ...p, total_budget: e.target.value }))} min="0" step="0.01" placeholder="e.g. 2500000" required /></div>
                   </div>
                   <div className="CP-field" style={{ marginTop: 10 }}>
                     <label className="CP-label">Notes <span className="opt">(opt)</span></label>
-                    <input className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} placeholder="Extra notes…" />
+                    <input autoComplete="off" className="CP-input" value={pf.type_notes} onChange={e => setPf(p => ({ ...p, type_notes: e.target.value }))} placeholder="Extra notes…" />
                   </div>
                   {parseFloat(pf.total_budget) > 0 && (
                     <div className="CP-preview gold" style={{ marginTop: 12, gap: 14 }}>
@@ -3416,13 +3403,9 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                         </span>
                         <div style={{ display: 'flex', gap: 4, marginLeft: 6 }}>
                           <button type="button" className="CP-act CP-act-edit" style={{ padding: '3px 7px' }} title="Edit Payment"
-                            onClick={() => { setEditingPayment(pay); setPayModal('collect'); }}>
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 3l4 4-7 7H10v-4l7-7z" /><path d="M3 21h18" /></svg>
-                          </button>
+                            onClick={() => { setEditingPayment(pay); setPayModal('collect'); }}>Edit</button>
                           <button type="button" className="CP-act CP-act-del" style={{ padding: '3px 7px' }} title="Delete Payment"
-                            onClick={() => setDeleteModal({ open: true, type: 'payment', id: pay.id, name: `payment of ${fmtInr(pay.total_amount)}`, loading: false })}>
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4h6v3" /></svg>
-                          </button>
+                            onClick={() => setDeleteModal({ open: true, type: 'payment', id: pay.id, name: `payment of ${fmtInr(pay.total_amount)}`, loading: false })}>Delete</button>
                         </div>
                       </div>
                     );
@@ -3468,13 +3451,9 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
                       </div>
                       <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
                         <button type="button" className="CP-act CP-act-edit" style={{ padding: '3px 7px' }} title="Edit Budget Entry"
-                          onClick={() => { setEditingBudget(bh); setPayModal('budget'); }}>
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 3l4 4-7 7H10v-4l7-7z" /><path d="M3 21h18" /></svg>
-                        </button>
+                          onClick={() => { setEditingBudget(bh); setPayModal('budget'); }}>Edit</button>
                         <button type="button" className="CP-act CP-act-del" style={{ padding: '3px 7px' }} title="Delete Budget Entry"
-                          onClick={() => setDeleteModal({ open: true, type: 'budget_history', id: bh.id, name: `budget addition of ${fmtInr(bh.extra_amount)}`, loading: false })}>
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-13M9 7V4h6v3" /></svg>
-                        </button>
+                          onClick={() => setDeleteModal({ open: true, type: 'budget_history', id: bh.id, name: `budget addition of ${fmtInr(bh.extra_amount)}`, loading: false })}>Delete</button>
                       </div>
                     </div>
                   );
@@ -3568,19 +3547,10 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
           <span className="CP-money CP-money-bal">{fmt(project.balance)}</span>
           {/* Pay Start */}
           <div style={{ display: 'flex', gap: 3, marginLeft: 4 }}>
-            <button className="CP-act CP-act-jade" title="Add Payment" onClick={() => setPayModal('collect')}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>
-              Pay
-            </button>
-            <button className="CP-act CP-act-add" title="Add Budget" onClick={() => setPayModal('budget')}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
-            </button>
-            <button className="CP-act CP-act-edit" title="Edit" onClick={() => setEditModal(true)}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-            </button>
-            <button className="CP-act CP-act-del" title="Delete" onClick={handleDeleteProject}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2" /></svg>
-            </button>
+            <button className="CP-act CP-act-jade" title="Add Payment" onClick={() => setPayModal('collect')}>Pay</button>
+            <button className="CP-act CP-act-add" title="Add Budget" onClick={() => setPayModal('budget')}>Budget</button>
+            <button className="CP-act CP-act-edit" title="Edit" onClick={() => setEditModal(true)}>Edit</button>
+            <button className="CP-act CP-act-del" title="Delete" onClick={handleDeleteProject}>Delete</button>
           </div>
           {/* Pay End */}
         </div>
@@ -3955,16 +3925,9 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
         <div className="CP-cli-cell" onClick={e => e.stopPropagation()} style={{ gap: 6, flexWrap: 'wrap' }}>
           <span className="CP-money CP-money-bal">{fmt(client.total_balance)}</span>
           <div style={{ display: 'flex', gap: 3, marginLeft: 'auto' }}>
-            <button className="CP-act CP-act-add" title="Add project" onClick={() => setAddProjModal(true)}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              Proj
-            </button>
-            <button className="CP-act CP-act-edit" title="Edit" onClick={() => setEditClientModal(true)}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-            </button>
-            <button className="CP-act CP-act-del" title="Delete" onClick={e => { e.stopPropagation(); setDeleteModal({ open: true, type: 'client', id: client.id, name: client.name, loading: false }); }}>
-              <svg width={8} height={8} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2" /></svg>
-            </button>
+            <button className="CP-act CP-act-add" title="Add project" onClick={() => setAddProjModal(true)}>Proj</button>
+            <button className="CP-act CP-act-edit" title="Edit" onClick={() => setEditClientModal(true)}>Edit</button>
+            <button className="CP-act CP-act-del" title="Delete" onClick={e => { e.stopPropagation(); setDeleteModal({ open: true, type: 'client', id: client.id, name: client.name, loading: false }); }}>Delete</button>
           </div>
         </div>
         {/* Balance Actions End */}
@@ -3995,7 +3958,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
           ) : projects.length === 0 ? (
             <div style={{ padding: '24px 24px 24px 64px', display: 'flex', alignItems: 'center', gap: 12 }}>
               <span style={{ fontFamily: 'var(--ff-m)', fontSize: 10.5, color: 'var(--t4)' }}>No projects yet.</span>
-              <button className="CP-act CP-act-add" onClick={() => setAddProjModal(true)}><Ic n="plus" s={9} /> Add First Project</button>
+              <button className="CP-act CP-act-add" onClick={() => setAddProjModal(true)}>Add First Project</button>
             </div>
           ) : (
             projects.map((p, i) => (
@@ -4005,7 +3968,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
           )}
 
           <div style={{ padding: '12px 24px 12px 64px', borderTop: '1px solid var(--bd)', display: 'flex', gap: 8 }}>
-            <button className="CP-act CP-act-add" onClick={() => setAddProjModal(true)}><Ic n="plus" s={9} /> Add New Project</button>
+            <button className="CP-act CP-act-add" onClick={() => setAddProjModal(true)}>Add New Project</button>
           </div>
         </div>
       )}
@@ -4142,7 +4105,6 @@ export default function ClientPortalFull() {
             </div>
             <div className="ERP-hdr-right">
               <button className="CP-btn-header-add" onClick={() => setModal({ type: 'add' })}>
-                <span className="CP-btn-header-add-ic"><Ic n="plus" s={12} c="#faf9f7" /></span>
                 Add Client
               </button>
             </div>
@@ -4187,7 +4149,7 @@ export default function ClientPortalFull() {
               <div className="CP-sb-title">Clients</div>
               <div className="CP-sb-search">
                 <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} style={{ color: '#C2410C', flexShrink: 0 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-                <input
+                <input autoComplete="off"
                   placeholder="Search clients…"
                   value={search}
                   onChange={e => setSearch(e.target.value)}

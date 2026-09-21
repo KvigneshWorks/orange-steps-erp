@@ -22,13 +22,13 @@ const RP_CSS = `
 }
 .RP-card:hover { transform:translateY(-3px); box-shadow:0 18px 36px -12px rgba(15,23,42,.20); }
 @media(prefers-reduced-motion: reduce){ .RP-card { transition:none !important; } }
-.RP-topbar { height:4px; }
+.RP-topbar { height:4px; position:relative; overflow:hidden; }
 .RP-hdr { display:flex; align-items:center; gap:11px; padding:18px 18px 14px; }
 .RP-ic-wrap { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.RP-title { font-size:13.5px; font-weight:800; color:var(--text-1,#231C14); }
+.RP-title { font-size:13.5px; font-weight:800; color:var(--text-1,#231C14); text-transform:uppercase; letter-spacing:.035em; font-style:normal; }
 .RP-sub { font-size:9.5px; color:var(--text-4,#6B5D48); font-family:'JetBrains Mono',monospace; margin-top:2px; }
 .RP-list { list-style:none; margin:0; padding:0 18px 20px; display:flex; flex-direction:column; gap:9px; }
-.RP-item { display:flex; align-items:flex-start; gap:8px; font-size:11px; line-height:1.4; color:var(--text-2,#3A3024); }
+.RP-item { display:flex; align-items:flex-start; gap:8px; font-size:11.5px; line-height:1.55; color:var(--text-2,#3A3024); font-weight:500; }
 .RP-item.no { color:var(--text-4,#8C7C63); }
 .RP-item svg { flex-shrink:0; margin-top:2px; }
 `;
@@ -59,6 +59,11 @@ const RP_PREMIUM_CSS = `
   content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%;
   background: radial-gradient(circle, var(--rp-bg, rgba(194,65,12,.10)) 0%, transparent 72%);
   pointer-events: none;
+  animation: rp-glow-pulse 4.2s ease-in-out infinite;
+}
+@keyframes rp-glow-pulse {
+  0%, 100% { opacity: .65; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.1); }
 }
 .RP-card:hover {
   transform: translateY(-5px);
@@ -69,9 +74,21 @@ const RP_PREMIUM_CSS = `
 .RP-ic-ring {
   position: absolute; inset: -6px; border-radius: 14px;
   border: 1.5px solid color-mix(in srgb, var(--rp-c, var(--ember)) 26%, transparent);
+  transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s ease;
 }
+.RP-card:hover .RP-ic-ring { transform: scale(1.1); border-color: color-mix(in srgb, var(--rp-c, var(--ember)) 45%, transparent); }
+.RP-card:hover .RP-ic-wrap svg { transition: transform .3s cubic-bezier(.22,1,.36,1); transform: scale(1.08); }
 
-.RP-title { font-family: var(--font-body); font-weight: 800; letter-spacing: -.1px; color: var(--rp-c, var(--text-1,#231C14)); }
+.RP-topbar::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 25%, rgba(255,255,255,.6) 50%, transparent 75%);
+  transform: translateX(-120%);
+  animation: rp-sweep 2.6s cubic-bezier(.4,0,.2,1) .6s infinite;
+}
+@keyframes rp-sweep { to { transform: translateX(120%); } }
+
+.RP-title { font-family: var(--font-body); font-weight: 800; letter-spacing: .035em; color: var(--rp-c, var(--text-1,#231C14)); }
 
 .RP-badges { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
 .RP-badge {
@@ -81,7 +98,11 @@ const RP_PREMIUM_CSS = `
 }
 .RP-badge.no { animation-delay: .36s; }
 @keyframes rp-badge-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-.RP-badge.ok { color: var(--rp-c, var(--ember)); background: var(--rp-bg, var(--ember-ghost)); border-color: color-mix(in srgb, var(--rp-c, var(--ember)) 32%, transparent); }
+.RP-badge.ok { color: var(--rp-c, var(--ember)); background: var(--rp-bg, var(--ember-ghost)); border-color: color-mix(in srgb, var(--rp-c, var(--ember)) 32%, transparent); animation: rp-badge-in .4s cubic-bezier(.22,1,.36,1) .3s both, rp-badge-pulse 3.6s ease-in-out 1.2s infinite; }
+@keyframes rp-badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--rp-c, var(--ember)) 0%, transparent); }
+  50%      { box-shadow: 0 0 0 4px color-mix(in srgb, var(--rp-c, var(--ember)) 16%, transparent); }
+}
 .RP-badge.no { color: var(--text-4,#8C7C63); background: rgba(140,124,99,.08); border-color: rgba(140,124,99,.22); }
 .RP-badge-num { display: inline-block; font-variant-numeric: tabular-nums; }
 
@@ -106,8 +127,12 @@ const RP_PREMIUM_CSS = `
 
 @media (prefers-reduced-motion: reduce) {
   .RP-card, .RP-ic-wrap, .RP-badge, .RP-item, .rp-draw,
-  .RP-page .ERP-divider, .RP-page .ERP-req-note {
-    animation: none !important; opacity: 1 !important; transform: none !important;
+  .RP-page .ERP-divider, .RP-page .ERP-req-note, .RP-topbar::after,
+  .RP-card::before, .RP-badge.ok {
+    animation: none !important; opacity: 1 !important; transform: none !important; box-shadow: none !important;
+  }
+  .RP-ic-ring, .RP-card:hover .RP-ic-ring, .RP-card:hover .RP-ic-wrap svg {
+    transition: none !important; transform: none !important;
   }
 }
 `;
@@ -254,7 +279,7 @@ export default function RolesPermissions() {
             <style>{RP_CSS}</style>
             <style>{RP_PREMIUM_CSS}</style>
 
-            <PageHeader eyebrow="Account Settings" title="Roles" titleEm="& Permissions" />
+            <PageHeader eyebrow="Account Settings" title="Roles" titleEm="& Permissions" titleClassName="MD-page-title" />
 
             <div className="ERP-divider" />
 

@@ -5029,6 +5029,7 @@
   .DH-pulse-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: stretch;
     gap: 16px;
     margin-top: 16px;
   }
@@ -5036,6 +5037,7 @@
   .DH-dues-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: stretch;
     gap: 16px;
     margin-top: 16px;
   }
@@ -5226,13 +5228,14 @@
     gap: 12px;
     padding: 10px 8px;
     border-radius: 12px;
-    cursor: default;
+    cursor: pointer;
     transition: background .2s, transform .2s;
     animation: dhRise .4s cubic-bezier(.22, 1, .36, 1) both;
   }
 
   .DH-proj-row:hover {
     background: rgba(194,65,12, .05);
+    transform: translateX(3px);
   }
 
   .DH-proj-avatar {

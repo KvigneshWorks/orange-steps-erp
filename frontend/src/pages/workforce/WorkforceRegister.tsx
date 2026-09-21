@@ -146,7 +146,7 @@ function SDD({ label, required, optional, options, value, onChange, placeholder,
 
             {open && (
                 <div className="WR-sdd-panel" ref={panelRef}>
-                    <div className="WR-sdd-search-row"><Ic n="search" s={13} c="var(--text-4)" /><input ref={inp} className="WR-sdd-search" placeholder="Search..." value={q} onChange={e => setQ(e.target.value)} />{q && <button className="WR-sdd-clr" type="button" onClick={() => setQ('')}><Ic n="x" s={10} /></button>}</div>
+                    <div className="WR-sdd-search-row"><Ic n="search" s={13} c="var(--text-4)" /><input autoComplete="off" ref={inp} className="WR-sdd-search" placeholder="Search..." value={q} onChange={e => setQ(e.target.value)} />{q && <button className="WR-sdd-clr" type="button" onClick={() => setQ('')}><Ic n="x" s={10} /></button>}</div>
                     <div className="WR-sdd-list">
                         {value && <div className="WR-sdd-item WR-sdd-clear" role="option" tabIndex={-1} aria-selected={false} onClick={() => pick('')}><Ic n="x" s={10} c="var(--text-4)" /><span>Clear selection</span></div>}
                         {filtered.length === 0 ? <div className="WR-sdd-empty"><Ic n="inbox" s={14} c="var(--text-4)" />{q ? `No match for "${q}"` : emptyMsg}</div> : filtered.map(opt => (
@@ -186,7 +186,7 @@ function SkillCombo({ value, onChange, extraSkills }: { value: string; onChange:
         <div className="WR-cmb-root" ref={ref}>
             <div className={'WR-cmb-wrap' + (open ? ' open' : '')}>
                 <Ic n="tool" s={14} c="var(--ember)" />
-                <input ref={inputRef} className="WR-cmb-input" placeholder="Search trade" value={q} onChange={e => { setQ(e.target.value); onChange(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} />
+                <input autoComplete="off" ref={inputRef} className="WR-cmb-input" placeholder="Search trade" value={q} onChange={e => { setQ(e.target.value); onChange(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} />
                 {q && <button className="WR-cmb-clr" type="button" onMouseDown={e => { e.preventDefault(); clear(); }}><Ic n="x" s={12} /></button>}
                 <span className={'WR-cmb-chev' + (open ? ' open' : '')}><Ic n="chevD" s={13} /></span>
             </div>
@@ -253,7 +253,7 @@ function SubNamesManager({ chips, onAdd, onRemove, onRateChange, suggestions }: 
                         </button>
                     </span>
                 ))}
-                <input
+                <input autoComplete="off"
                     ref={inpRef}
                     className="WR-subs-input"
                     placeholder={chips.length ? 'Add another' : 'Add associate name'}
@@ -293,7 +293,7 @@ function SubNamesManager({ chips, onAdd, onRemove, onRateChange, suggestions }: 
                             <span className="WR-subs-rate-name">{c.name}</span>
                             <div className="WR-subs-rate-input-wrap">
                                 <span className="WR-subs-rate-prefix">₹</span>
-                                <input
+                                <input autoComplete="off"
                                     type="number"
                                     min={0}
                                     step="0.01"
@@ -524,19 +524,18 @@ const CSS = `
 .WR-pdf-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--r-md);background:linear-gradient(135deg,#C2410C,#9A3412);border:none;font-family:var(--font-mono);font-size: 8px;font-weight: 800;letter-spacing:1.5px;text-transform:uppercase;color:#faf9f7;cursor:pointer;transition:all .2s;}
 .WR-pdf-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.4);}
 .WR-table-wrap{overflow-x:auto;}
-.WR-table{width:100%;border-collapse:collapse;font-family:var(--font-body);border:1px solid var(--border);}
-/* Bordered box grid + solid header bar, matching the report-page table look. */
-/* Same solid-orange header bar used by the Master Data tables (Category,
-   Sub-Category, Identification Type…) — bumped a touch larger/bolder here since this
-   table carries more columns and denser data. */
-.WR-table thead tr{background:var(--surface-2,#E8E2D8);border-bottom:2px solid var(--ember,#C2410C);}
-.WR-table th{font-family:var(--font-mono);font-size: 9.5px;font-weight: 800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-3,#3A3024);padding:13px 14px;white-space:nowrap;text-align:center;border-right:1px solid var(--border,#E8E2D8);}
-.WR-table th:last-child{border-right:none;}
-.WR-table td{padding:12px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);font-size: 10.5px;font-weight: 700;color:var(--text-1);vertical-align:middle;}
-.WR-table td:last-child{border-right:none;}
+.WR-table{width:100%;border-collapse:collapse;font-family:var(--font-body);}
+/* Header/row typography, spacing, hover and stagger-entrance now match the
+   app-wide .ERP-tbl standard exactly, so this table reads identically to
+   every other list view in the software. */
+.WR-table thead tr{background:var(--surface-2,#E8E2D8);}
+.WR-table th{font-family:var(--font-mono);font-size:8px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-3,#3A3024);padding:12px 16px;white-space:nowrap;text-align:left;border-bottom:2px solid var(--ember,#C2410C);position:sticky;top:0;z-index:10;background:var(--surface-2,#E8E2D8);}
+.WR-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--text-2);vertical-align:middle;}
 .WR-table tr:last-child td{border-bottom:none;}
-.WR-table tbody tr{transition:background .12s;animation:wr-rowIn .32s ease both;}
-.WR-table tbody tr:nth-child(even) td{background:var(--off-white,#F5F3EF);}
+.WR-table tbody tr{transition:background .15s, box-shadow .15s;animation:erp-stagger-in .4s cubic-bezier(.22,1,.36,1) both;}
+.WR-table tbody tr:nth-child(1){animation-delay:.02s;} .WR-table tbody tr:nth-child(2){animation-delay:.05s;}
+.WR-table tbody tr:nth-child(3){animation-delay:.08s;} .WR-table tbody tr:nth-child(4){animation-delay:.11s;}
+.WR-table tbody tr:nth-child(5){animation-delay:.14s;} .WR-table tbody tr:nth-child(n+6){animation-delay:.17s;}
 .WR-table tbody tr:hover td{background:var(--ember-ghost);}
 .WR-table tbody tr.inactive td{opacity:.62;}
 .WR-name{font-size: 13px;font-weight: 800;color:var(--ember);}
@@ -557,11 +556,6 @@ const CSS = `
 /* Tinted at rest (not just on hover) — same treatment as the Master Data
    tables' edit/delete icon buttons, so this table's action column reads
    consistently with the rest of the app. */
-.WR-act-btn{width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--ember-border);background:var(--ember-ghost);color:var(--ember);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s ease,background .18s ease,color .18s ease,border-color .18s ease;}
-.WR-act-btn:hover{transform:translateY(-2px) scale(1.08);background:var(--ember);color:#faf9f7;border-color:var(--ember);box-shadow:0 5px 14px rgba(37,99,235,.32);}
-.WR-act-btn:active{transform:translateY(0) scale(.92);}
-.WR-act-btn.del{background:var(--error-bg);color:var(--error);border-color:var(--error-bd);}
-.WR-act-btn.del:hover{background:var(--error);color:#faf9f7;border-color:var(--error);box-shadow:0 5px 14px rgba(217,59,85,.32);}
 
 /* TRASH */
 .WR-trash-bar{display:flex;align-items:center;gap:10px;padding:11px 20px;background:#fff8f8;border-bottom:1px solid rgba(217,59,85,.22);}
@@ -1175,7 +1169,7 @@ export default function WorkforceRegister() {
                                         ) : (
                                             <div style={{ marginBottom: 14 }}>
                                                 <label className="ERP-label">Or Enter Name Manually{editId && <span style={{ color: 'var(--error)', fontSize: 9.5, marginLeft: 2 }}>*</span>}</label>
-                                                <input className="ERP-input" placeholder="Worker name" value={form.name} onChange={e => setF('name', e.target.value)} required={!form.bio_data_id} />
+                                                <input autoComplete="off" className="ERP-input" placeholder="Worker name" value={form.name} onChange={e => setF('name', e.target.value)} required={!form.bio_data_id} />
                                                 <div className="ERP-hint">Select from Party Master, or type manually</div>
                                             </div>
                                         )}
@@ -1212,7 +1206,7 @@ export default function WorkforceRegister() {
                                         <div className="WR-sec"><span className="WR-sec-num">02</span><span className="WR-sec-lbl">Identity</span><div className="WR-sec-rule" /></div>
                                         <div style={{ marginBottom: 14 }}>
                                             <label className="ERP-label">Worker Code <span className="ERP-label-opt">auto-generated if blank</span></label>
-                                            <input className="ERP-input" placeholder="Auto-generated" value={form.worker_code} onChange={e => setF('worker_code', e.target.value)} />
+                                            <input autoComplete="off" className="ERP-input" placeholder="Auto-generated" value={form.worker_code} onChange={e => setF('worker_code', e.target.value)} />
                                             <div className="ERP-hint">Leave blank to auto-assign</div>
                                         </div>
                                     </div>
@@ -1264,7 +1258,7 @@ export default function WorkforceRegister() {
                                         {/* RS Start */}
                                         <div className="WR-rate-wrap">
                                             <span className="WR-rate-pfx">Rs</span>
-                                            <input type="number" className="WR-rate-inp" min="0" step="50" placeholder="0"
+                                            <input autoComplete="off" type="number" className="WR-rate-inp" min="0" step="50" placeholder="0"
                                                 value={rateVal || ''}
                                                 onChange={e => setF(form.salary_type === 'monthly' ? 'monthly_salary' : 'daily_rate', e.target.value)} required />
                                             <div className="WR-rate-tag">
@@ -1280,13 +1274,13 @@ export default function WorkforceRegister() {
                                         <div className="WR-sec"><span className="WR-sec-num">05</span><span className="WR-sec-lbl">Remarks</span><div className="WR-sec-rule" /></div>
                                         <div style={{ marginBottom: editId ? 14 : 0 }}>
                                             <label className="ERP-label">Description <span className="ERP-label-opt">optional</span></label>
-                                            <textarea className="ERP-textarea" rows={4} placeholder="Remarks" value={form.description || ''} onChange={e => setF('description', e.target.value)} />
+                                            <textarea autoComplete="off" className="ERP-textarea" rows={4} placeholder="Remarks" value={form.description || ''} onChange={e => setF('description', e.target.value)} />
                                         </div>
                                         {editId && (
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'var(--off-white)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
                                                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: 'var(--text-3)', letterSpacing: 1, flex: 1 }}>WORKER STATUS</span>
                                                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                                                    <input type="checkbox" checked={form.is_active} onChange={e => setF('is_active', e.target.checked)} />
+                                                    <input autoComplete="off" type="checkbox" checked={form.is_active} onChange={e => setF('is_active', e.target.checked)} />
                                                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: form.is_active ? '#C2410C' : 'var(--text-4)', fontWeight: 800 }}>{form.is_active ? 'ACTIVE' : 'INACTIVE'}</span>
                                                 </label>
                                             </div>
@@ -1434,7 +1428,7 @@ export default function WorkforceRegister() {
                             {/* Search Start */}
                             <div className="WR-search-wrap">
                                 <Ic n="search" s={13} c="var(--text-4)" />
-                                <input className="WR-search" placeholder="Search name, associate name, trade, code" value={search} onChange={e => setSearch(e.target.value)} />
+                                <input autoComplete="off" className="WR-search" placeholder="Search name, associate name, trade, code" value={search} onChange={e => setSearch(e.target.value)} />
                             </div>
                             {/* Search End */}
                         </div>
@@ -1550,11 +1544,11 @@ export default function WorkforceRegister() {
                                                         </span>
                                                         {w.is_active ? (
                                                             <button className="WR-st-btn deact" onClick={() => toggleActive(w)} title="Worker left — mark inactive">
-                                                                <Ic n="power" s={11} c="currentColor" /> Deactivate
+                                                                Deactivate
                                                             </button>
                                                         ) : (
                                                             <button className="WR-st-btn act" onClick={() => toggleActive(w)} title="Worker returned — mark active">
-                                                                <Ic n="check" s={11} c="currentColor" /> Activate
+                                                                Activate
                                                             </button>
                                                         )}
                                                     </div>
@@ -1563,9 +1557,9 @@ export default function WorkforceRegister() {
                                                 {/* Center Button Start */}
                                                 <td style={{ textAlign: 'center' }}>
                                                     <div className="WR-tbl-act" style={{ justifyContent: 'center' }}>
-                                                        <button className="WR-act-btn" onClick={() => startEdit(w)} title="Edit"><Ic n="edit" s={14} c="currentColor" /></button>
+                                                        <button className="ERP-tbtn edit" onClick={() => startEdit(w)} title="Edit">Edit</button>
                                                         {canDelete(userRole) ? (
-                                                            <button className="WR-act-btn del" onClick={() => setDeleteModal({ open: true, id: w.id, name: w.name, loading: false })} title="Move to Recycle Bin"><Ic n="trash" s={14} c="currentColor" /></button>
+                                                            <button className="ERP-tbtn delete" onClick={() => setDeleteModal({ open: true, id: w.id, name: w.name, loading: false })} title="Move to Recycle Bin">Delete</button>
                                                         ) : (
                                                             <CreatorBadge name={w.created_by_name} />
                                                         )}

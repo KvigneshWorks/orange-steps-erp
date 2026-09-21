@@ -792,7 +792,7 @@ export default function IncomeStatement() {
                             {/* Search Start */}
                             <div className="IS-search-wrap">
                                 <span className="IS-search-ico"><Icon name="search" size={13} /></span>
-                                <input className="IS-search-in" placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
+                                <input autoComplete="off" className="IS-search-in" placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
                             </div>
                             {/* Search End */}
 

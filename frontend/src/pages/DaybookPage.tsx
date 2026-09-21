@@ -194,7 +194,7 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, emp
                     <div className="DB-SDD-panel" ref={panelRef}>
                         <div className="DB-SDD-search-row">
                             <Icon name="search" size={13} color="var(--text-4)" />
-                            <input ref={inputRef} className="DB-SDD-search" placeholder="Search…"
+                            <input autoComplete="off" ref={inputRef} className="DB-SDD-search" placeholder="Search…"
                                 value={query} onChange={e => setQuery(e.target.value)} />
                             {query && <button className="DB-SDD-clr" onClick={() => setQuery('')}><Icon name="x" size={10} /></button>}
                         </div>
@@ -1625,7 +1625,10 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
     useEffect(() => {
         setOverallStats(computeOverallStats(allEntries, categories));
     }, [allEntries, categories]);
-    const recentEntries = [...allEntries].sort((a, b) => b.id - a.id).slice(0, 15);
+    // Defensive: allEntries can momentarily hold a non-array value if an
+    // API response ever comes back malformed (see loaders below) -- spreading
+    // a non-array here used to crash the whole page ("X is not iterable").
+    const recentEntries = (Array.isArray(allEntries) ? [...allEntries] : []).sort((a, b) => b.id - a.id).slice(0, 15);
     const recentEntryKey = recentEntries.map(e => e.id).join(',');
 
     useEffect(() => {
@@ -1686,12 +1689,13 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
         (async () => {
             try {
                 const cached = memCache.get('daybook:all');
-                if (cached) {
+                if (Array.isArray(cached)) {
                     setAllEntries(cached);
                     return;
                 }
                 const { data } = await axiosInstance.get('daybook/all', { headers: authHeader() });
-                const list: DaybookEntry[] = data.entries?.data || data.entries || data || [];
+                const rawList = data?.entries?.data ?? data?.entries ?? data;
+                const list: DaybookEntry[] = Array.isArray(rawList) ? rawList : [];
                 setAllEntries(list);
                 memCache.set('daybook:all', list, 2 * 60 * 1000); // 2-min TTL
             } catch (e) {
@@ -1776,7 +1780,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                 autoJumpDone.current = true;
                 try {
                     const allCached = memCache.get('daybook:all');
-                    const allList: DaybookEntry[] = allCached || [];
+                    const allList: DaybookEntry[] = Array.isArray(allCached) ? allCached : [];
                     if (allList.length > 0) {
                         const lastDate = allList[0].transaction_date;
                         if (lastDate && lastDate !== date) {
@@ -1786,7 +1790,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                         }
                     } else {
                         const { data: allData } = await axiosInstance.get('daybook/all', { headers: authHeader() });
-                        const fetchedAll: DaybookEntry[] = allData.entries || [];
+                        const fetchedAll: DaybookEntry[] = Array.isArray(allData?.entries) ? allData.entries : [];
                         memCache.set('daybook:all', fetchedAll, 2 * 60 * 1000);
                         if (fetchedAll.length > 0) {
                             const lastDate = fetchedAll[0].transaction_date;
@@ -1836,7 +1840,8 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
             setTimeout(async () => {
                 try {
                     const { data } = await axiosInstance.get('daybook/all', { headers: authHeader() });
-                    const list: DaybookEntry[] = data.entries?.data || data.entries || data || [];
+                    const _rawList = data?.entries?.data ?? data?.entries ?? data;
+                    const list: DaybookEntry[] = Array.isArray(_rawList) ? _rawList : [];
                     setAllEntries(list);
                     memCache.set('daybook:all', list, 2 * 60 * 1000);
                 } catch { }
@@ -1912,7 +1917,8 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
             setTimeout(async () => {
                 try {
                     const { data } = await axiosInstance.get('daybook/all', { headers: authHeader() });
-                    const list: DaybookEntry[] = data.entries?.data || data.entries || data || [];
+                    const _rawList = data?.entries?.data ?? data?.entries ?? data;
+                    const list: DaybookEntry[] = Array.isArray(_rawList) ? _rawList : [];
                     setAllEntries(list);
                     memCache.set('daybook:all', list, 2 * 60 * 1000);
                 } catch { }
@@ -2352,7 +2358,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                     {/* Debited Amount Start */}
                                     <div className={'DB-amount-wrap' + (errorField === 'amount' ? ' DB-field-error' : '')}>
                                         <span className="DB-amount-prefix">₹</span>
-                                        <input ref={amountInputRef} type="number" step="0.01" min="0" className="DB-amount-input"
+                                        <input autoComplete="off" ref={amountInputRef} type="number" step="0.01" min="0" className="DB-amount-input"
                                             value={form.amount}
                                             onChange={e => { setF('amount', e.target.value); if (errorField === 'amount') setErrorField(null); }}
                                             placeholder="0.00" />
@@ -2381,7 +2387,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
                                         Narration <span className="ERP-label-opt">optional</span>
                                     </label>
                                     <div className="DB-narration-wrap">
-                                        <textarea className="DB-narration"
+                                        <textarea autoComplete="off" className="DB-narration"
                                             placeholder="Add a note or remark about this transaction…"
                                             value={form.narration}
                                             onChange={e => setF('narration', e.target.value)}

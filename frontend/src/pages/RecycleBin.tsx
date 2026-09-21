@@ -5,6 +5,7 @@ import { toast } from '../services/toast';
 import { ERP_CSS } from './ERPTheme';
 import { Ic } from '../components/Icon';
 import RecycleBinDeleteModal from '../components/RecycleBinDeleteModal';
+import Pagination from '../components/Pagination';
 import { tiltMove, tiltLeave } from '../utils/tilt3d';
 
 const RB_CSS = `
@@ -46,6 +47,7 @@ const RB_CSS = `
   transition:transform .3s cubic-bezier(.2,.8,.3,1), box-shadow .3s ease;
 }
 .RB-group:hover { transform:translateY(-3px); box-shadow:0 14px 30px -12px rgba(15,23,42,.16); }
+.RB-group-pgn { padding:8px 16px 14px; border-top:1px solid var(--border); }
 .RB-group-hdr { position:relative; display:flex; align-items:center; justify-content:space-between; padding:12px 18px 12px 16px; gap:12px; flex-wrap:wrap; border-left:4px solid var(--rb-c); }
 .RB-group-ic  { width:30px; height:30px; border-radius:9px; background:var(--rb-bg); border:1px solid var(--rb-bd); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .RB-group-dot { width:7px; height:7px; border-radius:50%; background:var(--rb-c); flex-shrink:0; box-shadow:0 0 6px var(--rb-c); }
@@ -67,8 +69,8 @@ const RB_CSS = `
 .RB-group-btn { padding:5px 11px; }
 .RB-group-btn.restore:hover:not(:disabled),
 .RB-group-btn.danger:hover:not(:disabled) { transform:translateY(-1px) scale(1.03); }
-.ERP-act.edit, .ERP-act.delete { transition:transform .16s ease, box-shadow .16s ease, background .16s, color .16s; }
-.ERP-act.edit:hover:not(:disabled), .ERP-act.delete:hover:not(:disabled) { transform:translateY(-1px) scale(1.05); }
+.ERP-tbtn.restore, .ERP-tbtn.delete { transition:transform .16s ease, box-shadow .16s ease, background .16s, color .16s; }
+.ERP-tbtn.restore:hover:not(:disabled), .ERP-tbtn.delete:hover:not(:disabled) { transform:translateY(-1px) scale(1.05); }
 
 /* ── Bin success FX overlay ── */
 .RB-fx-backdrop {
@@ -191,6 +193,8 @@ export default function RecycleBin() {
     const [total, setTotal] = useState(0);
     const [filter, setFilter] = useState('all');
     const [busy, setBusy] = useState('');
+    const [perPage, setPerPage] = useState(10);
+    const [groupPage, setGroupPage] = useState<Record<string, number>>({});
     const [deleteModal, setDeleteModal] = useState<{ open: boolean; type: string; id: number | null; label: string; all: boolean; loading: boolean }>({ open: false, type: '', id: null, label: '', all: false, loading: false });
     const hasFetched = useRef(false);
     const [binFx, setBinFx] = useState<{ show: boolean; kind: 'restore' | 'delete'; title: string; message: string }>({ show: false, kind: 'restore', title: '', message: '' });
@@ -386,6 +390,10 @@ export default function RecycleBin() {
                     {!loading && filtered.map((group, gi) => {
                         const mc = MOD[group.key] ?? fallback;
                         const raKey = `ra-${group.key}`;
+                        const gPage = groupPage[group.key] || 1;
+                        const gTotalPages = Math.max(1, Math.ceil(group.records.length / perPage));
+                        const gSafePage = Math.min(gPage, gTotalPages);
+                        const pagedRecords = group.records.slice((gSafePage - 1) * perPage, gSafePage * perPage);
                         return (
                             <motion.div
                                 key={group.key}
@@ -409,10 +417,10 @@ export default function RecycleBin() {
                                         <button className="RB-group-btn restore" disabled={!!busy} onClick={() => doRestoreAll(group.key, group.label)}>
                                             {busy === raKey
                                                 ? <><span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} /> Restoring…</>
-                                                : <><Ic d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" sz={10} c="currentColor" sw={2} /> Restore All</>}
+                                                : 'Restore All'}
                                         </button>
                                         <button className="RB-group-btn danger" disabled={!!busy} onClick={() => setDeleteModal({ open: true, type: group.key, id: null, label: `all ${group.count} ${group.label}`, all: true, loading: false })}>
-                                            <Ic d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" sz={10} c="currentColor" sw={2} /> Delete All
+                                            Delete All
                                         </button>
                                     </div>
                                 </div>
@@ -432,7 +440,7 @@ export default function RecycleBin() {
                                         </thead>
                                         <tbody>
                                             <AnimatePresence mode="popLayout">
-                                                {group.records.map((rec, i) => {
+                                                {pagedRecords.map((rec, i) => {
                                                     const rKey = `r-${group.key}-${rec.id}`;
                                                     const dKey = `d-${group.key}-${rec.id}`;
                                                     const initials = rec.name.trim().slice(0, 2).toUpperCase() || '??';
@@ -443,7 +451,7 @@ export default function RecycleBin() {
                                                             initial={false}
                                                             exit={{ opacity: 0, x: 24, transition: { duration: 0.22, ease: 'easeIn' } }}
                                                         >
-                                                            <td className="ERP-t-num ERP-center">{i + 1}</td>
+                                                            <td className="ERP-t-num ERP-center">{(gSafePage - 1) * perPage + i + 1}</td>
                                                             <td>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                                                                     <div style={{ width: 32, height: 32, borderRadius: 8, background: mc.bg, color: mc.color, border: `1px solid ${mc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>{initials}</div>
@@ -469,15 +477,15 @@ export default function RecycleBin() {
                                                                 </span>
                                                             </td>
                                                             <td className="ERP-center ERP-nowrap">
-                                                                <button className="ERP-act edit" disabled={!!busy} onClick={() => doRestore(group.key, rec.id, rec.name)}>
+                                                                <button className="ERP-tbtn restore" disabled={!!busy} onClick={() => doRestore(group.key, rec.id, rec.name)}>
                                                                     {busy === rKey
-                                                                        ? <><span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} /></>
-                                                                        : <><Ic d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" sz={11} c="currentColor" sw={1.8} /> Restore</>}
+                                                                        ? <span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} />
+                                                                        : 'Restore'}
                                                                 </button>
-                                                                <button className="ERP-act delete" disabled={!!busy} onClick={() => setDeleteModal({ open: true, type: group.key, id: rec.id, label: `"${rec.name}"`, all: false, loading: false })}>
+                                                                <button className="ERP-tbtn delete" disabled={!!busy} onClick={() => setDeleteModal({ open: true, type: group.key, id: rec.id, label: `"${rec.name}"`, all: false, loading: false })}>
                                                                     {busy === dKey
-                                                                        ? <><span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} /></>
-                                                                        : <><Ic d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" sz={11} c="currentColor" sw={1.8} /> Delete</>}
+                                                                        ? <span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} />
+                                                                        : 'Delete'}
                                                                 </button>
                                                             </td>
                                                         </motion.tr>
@@ -487,6 +495,19 @@ export default function RecycleBin() {
                                         </tbody>
                                     </table>
                                 </div>
+                                {group.records.length > 0 && (
+                                    <div className="RB-group-pgn">
+                                        <Pagination
+                                            page={gSafePage}
+                                            totalPages={gTotalPages}
+                                            onPageChange={(p) => setGroupPage(gp => ({ ...gp, [group.key]: p }))}
+                                            total={group.records.length}
+                                            perPage={perPage}
+                                            onPerPageChange={(n) => { setPerPage(n); setGroupPage({}); }}
+                                            itemLabel="records"
+                                        />
+                                    </div>
+                                )}
                             </motion.div>
                         );
                     })}

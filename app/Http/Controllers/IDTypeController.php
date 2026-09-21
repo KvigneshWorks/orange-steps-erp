@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class IDTypeController extends Controller
 {
@@ -42,6 +43,8 @@ class IDTypeController extends Controller
             'created_by_name' => Auth::user()?->name,
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'message' => 'ID Type created successfully!',
             'data'    => $idType
@@ -72,6 +75,8 @@ class IDTypeController extends Controller
             'description'    => $request->description,
         ]);
 
+        Cache::forget('master_data_all');
+
         return response()->json([
             'message' => 'ID Type updated successfully!',
             'data'    => $idType
@@ -89,6 +94,8 @@ class IDTypeController extends Controller
         $idType = IDType::findOrFail($id);
         $name = $idType->type_name;
         $idType->delete();
+
+        Cache::forget('master_data_all');
 
         return response()->json(['message' => "\"{$name}\" moved to Recycle Bin"]);
     }
