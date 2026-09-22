@@ -177,7 +177,7 @@ export default function Master() {
             setFetching(true);
         }
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('categories', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -224,7 +224,7 @@ export default function Master() {
         const { id, name } = deleteModal;
         setDeleteModal(d => ({ ...d, loading: true }));
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axiosInstance.delete(`/api/categories/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -246,7 +246,7 @@ export default function Master() {
         setLoading(true);
         setMessage('');
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             let finalData = { ...data };
             let response;
             if (editId) {

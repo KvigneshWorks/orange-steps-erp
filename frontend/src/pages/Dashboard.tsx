@@ -7,6 +7,14 @@ import { PageHeader } from '../components/ui';
 import { getStoredRole } from '../utils/roleAccess';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 import './Dashboard.css';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import {
+    setStats as setStatsAction,
+    setLoading as setLoadingAction,
+    setPortalSummary as setPortalSummaryAction,
+    setSummaryLoading as setSummaryLoadingAction,
+    setRecentProjects as setRecentProjectsAction,
+} from '../store/dashboardSlice';
 
 const MasterData = lazy(() => import('./MasterData'));
 const DaybookPage = lazy(() => import('./DaybookPage'));
@@ -129,6 +137,7 @@ interface RecentProject {
     created_at: string;
     raw_budget?: number;
 }
+
 /* ──────────────────────────────────────
     NAV STRUCTURE
 ───────────────────────────────────────── */
@@ -266,7 +275,6 @@ function getNav(role?: string) {
     }
     return NAV_STRUCTURE;
 }
-
 /* ──────────────────────────────────────
    NAV ICONS
 ───────────────────────────────────────── */
@@ -291,7 +299,6 @@ function NavIcon({ type, active = false }: { type: string; active?: boolean }) {
         default: return <svg {...s} viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>;
     }
 }
-
 /* ──────────────────────────────────────
    SESSION ICON
 ───────────────────────────────────────── */
@@ -309,7 +316,6 @@ function SessIcon({ type, size = 12, color = 'currentColor' }: { type: string; s
         default: return null;
     }
 }
-
 /* ──────────────────────────────────────
    ANIMATED COUNTER
 ───────────────────────────────────────── */
@@ -335,7 +341,6 @@ function AnimCounter({ target, duration = 1200 }: { target: string; duration?: n
     if (!isNum) return <>{target}</>;
     return <>{Number.isInteger(display) ? display : display.toFixed(1)}</>;
 }
-
 /* ──────────────────────────────────────
    MONTHLY COLLECTION TREND
 ───────────────────────────────────────── */
@@ -1434,7 +1439,7 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
     const fmt = (n: number) => n >= 100000 ? `₹${(n / 100000).toFixed(1)}L` : n >= 1000 ? `₹${(n / 1000).toFixed(1)}K` : `₹${n}`;
 
     useEffect(() => {
-        const tk = localStorage.getItem('token');
+        const tk = sessionStorage.getItem('token');
         if (!tk) return;
         const H = { Authorization: `Bearer ${tk}` };
         setLoading(true);
@@ -1738,7 +1743,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
     const fmt = (n: number) => n >= 100000 ? `₹${(n / 100000).toFixed(1)}L` : n >= 1000 ? `₹${(n / 1000).toFixed(1)}K` : `₹${n}`;
 
     useEffect(() => {
-        const tk = localStorage.getItem('token');
+        const tk = sessionStorage.getItem('token');
         if (!tk) return;
         const H = { Authorization: `Bearer ${tk}` };
 
@@ -1824,8 +1829,6 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
             iconPath: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></>,
             metrics: [{ v: 3, l: 'Insights' }],
         },
-        // 'Deletion Log' intentionally excluded — Super Admin / Studio Owner
-        // only now (matches ADMIN_ALLOWED / the backend trash routes).
     ];
 
     return (
@@ -2176,9 +2179,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const [autoClosing, setAutoClosing] = useState(false);
     const [mobOpen, setMobOpen] = useState(false);
     const clockRef = useRef<HTMLSpanElement>(null);
+    const dispatch = useAppDispatch();
+    const { stats, loading, portalSummary, summaryLoading, recentProjects } = useAppSelector(s => s.dashboard);
     const [user, setUser] = useState<User | null>(null);
-    const [stats, setStats] = useState<DashboardStats | null>(null);
-    const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [notifications, setNotifications] = useState<DueNotification[]>([]);
     const [creditNotifs, setCreditNotifs] = useState<CreditDue[]>([]);
@@ -2205,11 +2208,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const [lastSession, setLastSession] = useState<SessionInfo | null>(null);
     const [monthlyRevenue, setMonthlyRevenue] = useState<MonthlyData[]>([]);
     const [monthlyLoading, setMonthlyLoading] = useState(true);
-    const [portalSummary, setPortalSummary] = useState<PortalSummary | null>(null);
-    const [summaryLoading, setSummaryLoading] = useState(true);
     const [typeDist, setTypeDist] = useState<TypeDist[]>([]);
     const [typeDistLoading, setTypeDistLoading] = useState(true);
-    const [recentProjects, setRecentProjects] = useState<RecentProject[]>([]);
     const notifPanelRef = useRef<HTMLDivElement>(null);
     const { shaking, clearShake } = useBellShake(notifications.length + creditNotifs.length + pendingApprovals.length);
 
@@ -2219,12 +2219,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             const isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
             const browser = /Edg/i.test(ua) ? 'Edge' : /Chrome/i.test(ua) ? 'Chrome' : /Firefox/i.test(ua) ? 'Firefox' : /Safari/i.test(ua) ? 'Safari' : 'Browser';
             const os = /Windows NT 10/i.test(ua) ? 'Windows 10' : /Windows/i.test(ua) ? 'Windows' : /Mac OS X/i.test(ua) ? 'macOS' : /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Linux/i.test(ua) ? 'Linux' : 'Unknown';
-            const stored = localStorage.getItem('erp_session');
+            const stored = sessionStorage.getItem('erp_session');
             const parsed = stored ? JSON.parse(stored) : null;
             const live: SessionInfo = { loginAt: parsed?.loginAt ?? new Date().toISOString(), browser, os, device: isMobile ? 'Mobile' : 'Desktop' };
             setSession(live);
-            if (!stored) localStorage.setItem('erp_session', JSON.stringify(live));
-            const ls = localStorage.getItem('erp_last_session');
+            if (!stored) sessionStorage.setItem('erp_session', JSON.stringify(live));
+            const ls = sessionStorage.getItem('erp_last_session');
             if (ls) setLastSession(JSON.parse(ls));
         } catch { /* ignore */ }
     }, []);
@@ -2339,7 +2339,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const hasFetched = useRef(false);
 
     const fetchUser = useCallback(async () => {
-        const tk = localStorage.getItem('token');
+        const tk = sessionStorage.getItem('token');
         if (tk) {
             try {
                 const r = await axiosInstance.get('auth/me', { headers: { Authorization: `Bearer ${tk}` } });
@@ -2354,18 +2354,18 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 }
             } catch { }
         }
-        try { const s = localStorage.getItem('user'); if (s) { const p = JSON.parse(s); if (p?.name) setUser(p); } } catch { }
+        try { const s = sessionStorage.getItem('user'); if (s) { const p = JSON.parse(s); if (p?.name) setUser(p); } } catch { }
     }, []);
 
     const fetchOverview = useCallback(async () => {
-        const tk = localStorage.getItem('token');
+        const tk = sessionStorage.getItem('token');
         if (!tk) return;
         const roleNow = getStoredRole();
         if (roleNow === 'user' || roleNow === 'admin') return;
         const H = { Authorization: `Bearer ${tk}` };
 
-        setLoading(true);
-        setSummaryLoading(true);
+        dispatch(setLoadingAction(true));
+        dispatch(setSummaryLoadingAction(true));
         setTypeDistLoading(true);
         setMonthlyLoading(true);
 
@@ -2373,10 +2373,10 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             const res = await axiosInstance.get('dashboard/overview', { headers: H });
             const d = res.data?.data;
             if (!d) return;
-            if (d.stats) setStats(d.stats);
-            if (d.summary) setPortalSummary(d.summary);
+            if (d.stats) dispatch(setStatsAction(d.stats));
+            if (d.summary) dispatch(setPortalSummaryAction(d.summary));
             const raw: RecentProject[] = d.recentProjects || [];
-            setRecentProjects(raw);
+            dispatch(setRecentProjectsAction(raw));
             if (raw.length > 0) {
                 const map: Record<string, { count: number; budget: number; collected: number }> = {};
                 for (const p of raw) {
@@ -2415,9 +2415,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 axiosInstance.get('client-portal/monthly-revenue', { headers: H }),
                 axiosInstance.get('client-portal/upcoming-dues', { headers: H }),
             ]);
-            if (sR.status === 'fulfilled') setStats(sR.value.data?.data ?? sR.value.data);
-            if (sumR.status === 'fulfilled') setPortalSummary(sumR.value.data?.data ?? null);
-            if (recR.status === 'fulfilled') setRecentProjects(recR.value.data?.data || []);
+            if (sR.status === 'fulfilled') dispatch(setStatsAction(sR.value.data?.data ?? sR.value.data));
+            if (sumR.status === 'fulfilled') dispatch(setPortalSummaryAction(sumR.value.data?.data ?? null));
+            if (recR.status === 'fulfilled') dispatch(setRecentProjectsAction(recR.value.data?.data || []));
             if (revR.status === 'fulfilled') setMonthlyRevenue(revR.value.data?.data || []);
             if (dueR.status === 'fulfilled') {
                 const dues = dueR.value.data?.data || [];
@@ -2428,8 +2428,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 setCreditNotifs(cr.data?.data || []);
             } catch { /* silent */ }
         } finally {
-            setLoading(false);
-            setSummaryLoading(false);
+            dispatch(setLoadingAction(false));
+            dispatch(setSummaryLoadingAction(false));
             setTypeDistLoading(false);
             setMonthlyLoading(false);
         }
@@ -2458,7 +2458,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
        dashboard refresh, so a new request from an Admin's "Create
        Account" page shows up here quickly. */
     const fetchPendingApprovals = useCallback(async () => {
-        const tk = localStorage.getItem('token');
+        const tk = sessionStorage.getItem('token');
         if (!tk || getStoredRole() !== 'super_admin') { setPendingApprovals([]); return; }
         try {
             const res = await axiosInstance.get('approval-requests?status=pending', { headers: { Authorization: `Bearer ${tk}` } });
@@ -2498,12 +2498,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     }, [fetchOverview]);
 
     const handleLogout = async () => {
-        try { const t = localStorage.getItem('token'); if (t) await axiosInstance.post('auth/logout', {}, { headers: { Authorization: `Bearer ${t}` } }); }
+        try { const t = sessionStorage.getItem('token'); if (t) await axiosInstance.post('auth/logout', {}, { headers: { Authorization: `Bearer ${t}` } }); }
         catch { } finally {
             const base = import.meta.env.BASE_URL || '/';
             window.history.pushState({ nav: 'login' }, '', `${base}login`);
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
             toast.info('Signed Out', 'You have been logged out safely');
             onLogout();
         }

@@ -683,7 +683,7 @@ function IncomeNameFilter({
   );
 }
 
-const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authHeader = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 function formatDate(d: string) {
   if (!d) return '—';
   return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });

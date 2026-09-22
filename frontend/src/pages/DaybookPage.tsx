@@ -299,7 +299,7 @@ function saveMaster(data: MasterData) {
     try { localStorage.setItem(MKEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
 }
 
-const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authHeader = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 const todayDate = () => new Date().toISOString().split('T')[0];
 const EMPTY_FORM = (): FormData => ({
     transaction_date: todayDate(),

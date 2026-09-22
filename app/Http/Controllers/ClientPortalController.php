@@ -114,6 +114,7 @@ class ClientPortalController extends Controller
         $data['created_by'] = Auth::id();
         $client = Client::create($data);
         $client->load(['projects.payments']);
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -158,6 +159,7 @@ class ClientPortalController extends Controller
 
         $client->update($data);
         $client->load(['projects.payments']);
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -170,6 +172,7 @@ class ClientPortalController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->delete();
+        DashboardController::clearCache();
         return response()->json(['success' => true, 'message' => 'Client deleted successfully']);
     }
 
@@ -243,6 +246,7 @@ class ClientPortalController extends Controller
         $data['created_by'] = Auth::id();
         $project = ClientProject::create($data);
         $project->load('payments');
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -281,6 +285,7 @@ class ClientPortalController extends Controller
         ]);
         $project->update($data);
         $project->load('payments');
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -294,6 +299,7 @@ class ClientPortalController extends Controller
         $client  = Client::findOrFail($clientId);
         $project = $client->projects()->findOrFail($projectId);
         $project->delete();
+        DashboardController::clearCache();
 
         return response()->json(['success' => true, 'message' => 'Project deleted successfully']);
     }
@@ -431,6 +437,7 @@ class ClientPortalController extends Controller
                 $project->update(['total_budget' => (float) $project->total_budget + $diff]);
             }
             $project->refresh();
+            DashboardController::clearCache();
 
             return response()->json([
                 'success' => true,
@@ -460,6 +467,7 @@ class ClientPortalController extends Controller
 
             $project->update(['total_budget' => max(0, (float) $project->total_budget - (float) $history->extra_amount)]);
             $history->delete();
+            DashboardController::clearCache();
 
             return response()->json(['success' => true, 'message' => 'Budget entry deleted successfully']);
         } catch (Exception $e) {
@@ -500,6 +508,7 @@ class ClientPortalController extends Controller
             ]);
 
             $project->refresh();
+            DashboardController::clearCache();
 
             return response()->json([
                 'success' => true,
@@ -542,6 +551,7 @@ class ClientPortalController extends Controller
         $data['gst_amount']        = $data['gst_amount'] ?? 0;
 
         $payment = ClientPayment::create($data);
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -566,6 +576,7 @@ class ClientPortalController extends Controller
 
         $data['gst_amount'] = $data['gst_amount'] ?? 0;
         $payment->update($data);
+        DashboardController::clearCache();
 
         return response()->json([
             'success' => true,
@@ -578,6 +589,7 @@ class ClientPortalController extends Controller
     {
         $payment = ClientPayment::findOrFail($paymentId);
         $payment->delete();
+        DashboardController::clearCache();
 
         return response()->json(['success' => true, 'message' => 'Payment deleted successfully']);
     }

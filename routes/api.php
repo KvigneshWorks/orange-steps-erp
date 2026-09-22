@@ -26,8 +26,12 @@
 
     // ───────────────────────────────────────────────────────
     //  SETUP — adds deleted_at columns, call once in browser
+    //  Gated behind auth+admin: this runs schema-altering queries, so it
+    //  must never be reachable by an anonymous request. It is idempotent
+    //  (skips columns that already exist), so this is safe to leave in
+    //  place for a future fresh environment rather than deleting it.
     // ─────────────────────────────────────────────────────────
-    Route::get('/setup/soft-deletes', function () {
+    Route::middleware(['auth:sanctum', 'role:admin'])->get('/setup/soft-deletes', function () {
         $tables = ['categories', 'sub_categories', 'id_types', 'sub_names', 'bio_data'];
         $added = [];
         $skipped = [];

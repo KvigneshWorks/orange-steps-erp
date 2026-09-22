@@ -26,6 +26,8 @@ class InspectionController extends Controller
                 'inspector_id' => auth()->id() ?? 1,
             ]);
 
+            DashboardController::clearCache();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Inspection created successfully',

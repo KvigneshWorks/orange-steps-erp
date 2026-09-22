@@ -14,7 +14,7 @@ export interface StoredUser {
 
 export function getStoredUser(): StoredUser | null {
     try {
-        const raw = localStorage.getItem('user');
+        const raw = sessionStorage.getItem('user');
         if (!raw) return null;
         const parsed = JSON.parse(raw);
         return parsed?.name ? parsed : null;

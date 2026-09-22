@@ -97,7 +97,7 @@ export default function IDType() {
         }
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('id-types', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -189,7 +189,7 @@ export default function IDType() {
             setIdTypes(prev => [tempItem, ...prev]);
         }
 
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         try {
             if (editingId) {
                 await axiosInstance.put(`/api/id-types/${editingId}`, formData, {
@@ -229,7 +229,7 @@ export default function IDType() {
         const tempId = Date.now();
         const tempItem: IDType = { id: tempId, type_name: data.type_name, format_pattern: data.format_pattern || '', description: data.description || '', is_active: true };
         setIdTypes(prev => [tempItem, ...prev]);
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         try {
             const response = await axiosInstance.post('id-types', data, { headers: { Authorization: `Bearer ${token}` } });
             const newItem = response.data.data || response.data;
@@ -273,7 +273,7 @@ export default function IDType() {
         setIdTypes(prev => prev.filter(t => t.id !== id));
 
         setSubmitting(true);
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         try {
             await axiosInstance.delete(`/api/id-types/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }

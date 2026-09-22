@@ -27,6 +27,8 @@ class CADRevisionController extends Controller
                 'revision_number' => $validated['revision_number'] ?? 1,
             ]);
 
+            DashboardController::clearCache();
+
             return response()->json([
                 'success' => true,
                 'message' => 'CAD revision created successfully',

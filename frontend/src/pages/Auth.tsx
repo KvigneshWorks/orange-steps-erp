@@ -4,6 +4,8 @@ import { toast } from '../services/toast';
 import { ERP_CSS } from './ERPTheme';
 import './Auth.css';
 import { useKeyboardFieldNav } from '../utils/keyboardNav';
+import { useAppDispatch } from '../store/hooks';
+import { setCredentials } from '../store/authSlice';
 
 interface AuthProps {
     onLoginSuccess: () => void;
@@ -92,6 +94,7 @@ const FEATURE_SLIDES = [
 // Admin (pending Super Admin approval) or directly by a Super Admin, via
 // the Account Settings module. This component is Sign In only.
 export default function Auth({ onLoginSuccess }: AuthProps) {
+    const dispatch = useAppDispatch();
     const [loginData, setLoginData] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState<'success' | 'error'>('success');
@@ -186,8 +189,9 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                 email: loginData.email.trim().toLowerCase(),
             });
             if (res.data.token) {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user', JSON.stringify(res.data.user));
+                dispatch(setCredentials({ user: res.data.user, token: res.data.token }));
+                sessionStorage.setItem('token', res.data.token);
+                sessionStorage.setItem('user', JSON.stringify(res.data.user));
                 // Clear any stale local cache on login
                 try {
                     Object.keys(localStorage).forEach(k => {
@@ -195,13 +199,13 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                     });
                 } catch { }
                 // Save session info for navbar display
-                const prev = localStorage.getItem('erp_session');
-                if (prev) localStorage.setItem('erp_last_session', prev);
+                const prev = sessionStorage.getItem('erp_session');
+                if (prev) sessionStorage.setItem('erp_last_session', prev);
                 const ua = navigator.userAgent;
                 const isMobile = /Mobi|Android|iPhone|iPad/i.test(ua);
                 const browser = /Edg/i.test(ua) ? 'Edge' : /Chrome/i.test(ua) ? 'Chrome' : /Firefox/i.test(ua) ? 'Firefox' : /Safari/i.test(ua) ? 'Safari' : 'Browser';
                 const os = /Windows/i.test(ua) ? 'Windows' : /Mac/i.test(ua) ? 'macOS' : /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Linux/i.test(ua) ? 'Linux' : 'Unknown OS';
-                localStorage.setItem('erp_session', JSON.stringify({ loginAt: new Date().toISOString(), browser, os, device: isMobile ? 'mobile' : 'desktop' }));
+                sessionStorage.setItem('erp_session', JSON.stringify({ loginAt: new Date().toISOString(), browser, os, device: isMobile ? 'mobile' : 'desktop' }));
                 localStorage.removeItem('erp_bell_seen_at');
                 setMessage('Login successful! Redirecting…');
                 setMessageType('success');

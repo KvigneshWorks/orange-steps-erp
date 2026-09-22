@@ -17,6 +17,23 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
+    /**
+     * Clear every cached dashboard section (stats, portal summary,
+     * recent projects, monthly revenue, projects list). Call this from
+     * any controller after a write that changes client/project/payment/
+     * inspection/BOQ/CAD-revision data, so the dashboard reflects the
+     * change immediately instead of waiting for each cache key's TTL
+     * to expire on its own.
+     */
+    public static function clearCache(): void
+    {
+        Cache::forget('dashboard_stats');
+        Cache::forget('dashboard_portal_summary');
+        Cache::forget('dashboard_recent_projects');
+        Cache::forget('dashboard_monthly_revenue');
+        Cache::forget('dashboard_projects');
+    }
+
     public function stats(): JsonResponse
     {
         try {

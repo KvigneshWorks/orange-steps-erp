@@ -153,7 +153,7 @@ export default function SubName() {
 
     const fetchBioData = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('bio-data', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -166,7 +166,7 @@ export default function SubName() {
     const fetchData = async () => {
         try {
             setFetching(true);
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('sub-names', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -187,7 +187,7 @@ export default function SubName() {
         setLoading(true);
         setMessage('');
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const headers = { Authorization: `Bearer ${token}` };
             const payload = { ...data, bio_data_id: Number(data.bio_data_id) };
             if (editId) {
@@ -277,7 +277,7 @@ export default function SubName() {
         const { id, name } = deleteModal;
         setDeleteModal(d => ({ ...d, loading: true }));
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axiosInstance.delete(`/api/sub-names/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });

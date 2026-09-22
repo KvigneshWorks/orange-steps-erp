@@ -21,7 +21,7 @@ import { getStoredRole } from '../utils/roleAccess';
  *   the moment the Super Admin decides — no refresh needed.
  */
 
-const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authH = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 const POLL_MS = 4000;
 
 interface FormState {

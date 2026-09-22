@@ -3,13 +3,16 @@ import Dashboard from './pages/Dashboard';
 import Auth from './pages/Auth';
 import ToastContainer from './components/ToastContainer';
 import axiosInstance from './services/axiosConfig';
+import { useAppDispatch } from './store/hooks';
+import { logout as logoutAction } from './store/authSlice';
 
 function App() {
+    const dispatch = useAppDispatch();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) {
             setIsAuthenticated(false);
             setLoading(false);
@@ -22,8 +25,8 @@ function App() {
         axiosInstance.get('auth/me')
             .then(() => setIsAuthenticated(true))
             .catch(() => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('user');
                 setIsAuthenticated(false);
             })
             .finally(() => setLoading(false));
@@ -34,8 +37,9 @@ function App() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        dispatch(logoutAction());
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
         setIsAuthenticated(false);
     };
 

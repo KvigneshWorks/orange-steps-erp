@@ -21,7 +21,7 @@ class NotificationService {
 
   async fetchCreditNotifications(): Promise<Notification[]> {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) return [];
 
       const response = await axiosInstance.get('credit-management/upcoming-dues', {
@@ -51,7 +51,7 @@ class NotificationService {
 
   async fetchClientPaymentNotifications(): Promise<Notification[]> {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) return [];
 
       const response = await axiosInstance.get('client-portal/upcoming-dues?days=30', {

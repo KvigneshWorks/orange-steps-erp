@@ -24,6 +24,8 @@ class BOQController extends Controller
 
             $boq = BOQ::create($validated);
 
+            DashboardController::clearCache();
+
             return response()->json([
                 'success' => true,
                 'message' => 'BOQ created successfully',

@@ -50,7 +50,7 @@ function SkeletonRow() {
     );
 }
 
-const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authH = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 
 /* Page-scoped only: every font on the Pending Approvals page rendered
    uppercase + bolder, per explicit request. Scoped under .PA-allcaps so it

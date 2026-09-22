@@ -176,7 +176,7 @@ export default function SubCategory() {
 
     const fetchCategories = useCallback(async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('categories', {
                 headers: { Authorization: `Bearer ${token}` },
                 timeout: 10000,
@@ -197,7 +197,7 @@ export default function SubCategory() {
             setSyncing(true);
         }
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axiosInstance.get('sub-categories', {
                 headers: { Authorization: `Bearer ${token}` },
                 timeout: 30000,
@@ -256,7 +256,7 @@ export default function SubCategory() {
         const { id, name } = deleteModal;
         setDeleteModal(d => ({ ...d, loading: true }));
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axiosInstance.delete(`/api/sub-categories/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
                 timeout: 10000,
@@ -282,7 +282,7 @@ export default function SubCategory() {
         const originalSubCategories = [...subCategories];
         const originalEditId = editId;
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const headers = { Authorization: `Bearer ${token}` };
             if (editId) {
                 const response = await axiosInstance.put(`/api/sub-categories/${editId}`, data, { headers });

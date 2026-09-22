@@ -295,7 +295,7 @@ const EMPTY: FormData = {
 };
 
 const authH = () => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
         console.warn('No token found in localStorage');
         return {};
@@ -366,7 +366,7 @@ export default function BioData() {
     const fetchAll = async () => {
         try {
             setFetching(true);
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             if (!token) {
                 console.warn('No authentication token found');
                 setFetching(false);
@@ -393,7 +393,7 @@ export default function BioData() {
             console.error('Fetch error:', err);
             if (err.response?.status === 401) {
                 // Token expired or invalid
-                localStorage.removeItem('token');
+                sessionStorage.removeItem('token');
                 // Optionally redirect to login
                 // window.location.href = '/login';
             }

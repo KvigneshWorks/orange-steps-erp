@@ -73,7 +73,7 @@ const PRIORITY_CONFIG = {
 const PAYMENT_MODES = ['Cash', 'UPI', 'NEFT', 'Cheque', 'Bank Transfer', 'Others'];
 const CREDIT_COLOR = { primary: '#D93B55', light: '#fef2f2', border: '#fecaca', mid: '#D93B55', gradient: 'linear-gradient(135deg, #D93B55, #b91c1c)' };
 const PAYMENT_COLOR = { primary: '#A6491D', light: '#FDE0CB', border: '#FBC9A8', mid: '#A6491D', gradient: 'linear-gradient(135deg, #A6491D, #9A3412)' };
-const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authHeader = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 const fmt = (n: number) =>
     `₹${Math.round(Number(n) || 0).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 const fmtDate = (d: string | null) => {

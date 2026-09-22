@@ -2000,7 +2000,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
     if (hasFetched) return;
     setLoadingPays(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${clientId}/projects/${project.id}`,
         { headers: { Authorization: `Bearer ${token}` } });
       setPayments(asArray(res.data.data?.payments));
@@ -2011,7 +2011,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
   const fetchBudgetHistory = useCallback(async () => {
     if (budgetHistFetched) return;
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${clientId}/projects/${project.id}/budget-history`,
         { headers: { Authorization: `Bearer ${token}` } });
       setBudgetHistory(asArray(res.data.data ?? res.data));
@@ -2032,7 +2032,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
     if (!cf.payment_date || !cf.amount) { setMsg('Fill required fields'); toast.warning('Required Fields', 'Payment date and amount are required.'); return; }
     setSaving(true); setMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const h = { Authorization: `Bearer ${token}` };
       const payload = { ...cf, amount: parseFloat(cf.amount), gst_amount: cf.gst_amount ? parseFloat(cf.gst_amount) : 0 };
       if (editPayId) await axiosInstance.put(`/api/client-portal/payments/${editPayId}`, payload, { headers: h });
@@ -2056,7 +2056,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
   const confirmDeletePay = async () => {
     setDeleteModal(d => ({ ...d, loading: true }));
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axiosInstance.delete(`/api/client-portal/payments/${deleteModal.id}`, { headers: { Authorization: `Bearer ${token}` } });
       setPayments(p => p.filter(x => x.id !== deleteModal.id));
       onSaved();
@@ -2084,7 +2084,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
     if (!budgetAmt || parseFloat(budgetAmt) <= 0) { setBudgetMsg('Enter valid amount'); toast.warning('Invalid Amount', 'Please enter a valid budget amount greater than 0.'); return; }
     setBudgetSaving(true); setBudgetMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const payload = { extra_amount: parseFloat(budgetAmt), reason: budgetReason, date_added: budgetDate };
       if (editBudgetId) await axiosInstance.put(`/api/client-portal/budget-history/${editBudgetId}`, payload, { headers: { Authorization: `Bearer ${token}` } });
       else await axiosInstance.post(`/api/client-portal/clients/${clientId}/projects/${project.id}/add-budget`, payload, { headers: { Authorization: `Bearer ${token}` } });
@@ -2112,7 +2112,7 @@ function PaymentModal({ project: initProject, clientId, initialTab = 'collect', 
   const confirmDeleteBudget = async () => {
     setDeleteBudgetModal(d => ({ ...d, loading: true }));
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axiosInstance.delete(`/api/client-portal/budget-history/${deleteBudgetModal.id}`, { headers: { Authorization: `Bearer ${token}` } });
       setBudgetHistory(bh => bh.filter(x => x.id !== deleteBudgetModal.id));
       onSaved();
@@ -2740,7 +2740,7 @@ function EditProjectModal({ clientId, project, subNames, onClose, onSaved }: {
     if (!pf.total_budget || parseFloat(pf.total_budget) <= 0) { setMsg('Valid Budget is required'); toast.warning('Budget Required', 'Please enter a valid budget amount.'); return; }
     setSaving(true); setMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axiosInstance.put(`/api/client-portal/clients/${clientId}/projects/${project.id}`,
         { ...pf, project_name: pf.project_name || '', total_budget: parseFloat(pf.total_budget) },
         { headers: { Authorization: `Bearer ${token}` } });
@@ -2812,7 +2812,7 @@ function AddProjectModal({ clientId, clientName, subNames, onClose, onSaved }: {
     if (!pf.total_budget || parseFloat(pf.total_budget) <= 0) { setMsg('Valid Budget is required'); toast.warning('Budget Required', 'Please enter a valid budget amount.'); return; }
     setSaving(true); setMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axiosInstance.post(`/api/client-portal/clients/${clientId}/projects`,
         { ...pf, project_name: pf.project_name.trim() || null, total_budget: parseFloat(pf.total_budget) },
         { headers: { Authorization: `Bearer ${token}` } });
@@ -2923,7 +2923,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
     if (isEdit) {
       setSaving(true); setMsg('');
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         await axiosInstance.put(`/api/client-portal/clients/${editClient!.id}`, cf, { headers: { Authorization: `Bearer ${token}` } });
         setMsg('Client updated!'); toast.success('Client Updated!', `"${cf.name}" saved successfully`); onSaved(); setTimeout(() => onClose(), 600);
       } catch (err: any) { setMsg(err.response?.data?.message || 'Failed'); toast.error('Save Failed', err.response?.data?.message || 'Could not update client'); }
@@ -2936,7 +2936,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
   const handleFinalSave = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true); setMsg('');
     try {
-      const token = localStorage.getItem('token'); const h = { Authorization: `Bearer ${token}` };
+      const token = sessionStorage.getItem('token'); const h = { Authorization: `Bearer ${token}` };
       let clientId = savedClientId;
       if (!clientId) {
         const cr = await axiosInstance.post('client-portal/clients', cf, { headers: h });
@@ -2957,7 +2957,7 @@ function ClientModal({ mode, editClient, bioRecords, existingClientNames, namesL
     if (!cf.name.trim() || !cf.id_number.trim()) { setMsg('Required fields missing'); toast.warning('Required Fields', 'Client name and ID number are required.'); return; }
     setSaving(true); setMsg('');
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const cr = await axiosInstance.post('client-portal/clients', cf, { headers: { Authorization: `Bearer ${token}` } });
       setSavedClientId(cr.data.data?.id || cr.data.id);
       setMsg('Client saved!'); onSaved(); setTimeout(() => onClose(), 600);
@@ -3114,7 +3114,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
 
   const refreshProject = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${clientId}/projects/${project.id}`,
         { headers: { Authorization: `Bearer ${token}` } });
       setProject(res.data.data);
@@ -3126,7 +3126,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
   const fetchBudgetHistory = async () => {
     if (budgetHistFetched) return;
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${clientId}/projects/${project.id}/budget-history`,
         { headers: { Authorization: `Bearer ${token}` } });
       setBudgetHistory(asArray(res.data.data ?? res.data));
@@ -3136,7 +3136,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
 
   const refetchBudgetHistory = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${clientId}/projects/${project.id}/budget-history`,
         { headers: { Authorization: `Bearer ${token}` } });
       setBudgetHistory(asArray(res.data.data ?? res.data));
@@ -3152,7 +3152,7 @@ function ProjectRow({ clientId, project: init, seqNum, subNames, onRefresh, pane
     const { type, id } = deleteModal;
     setDeleteModal(d => ({ ...d, loading: true }));
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const h = { headers: { Authorization: `Bearer ${token}` } };
       if (type === 'project') {
         await axiosInstance.delete(`/api/client-portal/clients/${clientId}/projects/${id}`, h);
@@ -3725,7 +3725,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
     const { type, id, name } = deleteModal;
     setDeleteModal(d => ({ ...d, loading: true }));
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const h = { headers: { Authorization: `Bearer ${token}` } };
       if (type === 'client') {
         await axiosInstance.delete(`/api/client-portal/clients/${id}`, h);
@@ -3748,7 +3748,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
     if (fetched) return;
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get(`/api/client-portal/clients/${client.id}/projects`,
         { headers: { Authorization: `Bearer ${token}` } });
       setProjects(asArray(res.data.data));
@@ -3759,7 +3759,7 @@ function ClientRow({ client: init, seqNum, onRefresh, bioRecords, existingClient
 
   const refreshAll = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const [cr, pr] = await Promise.all([
         axiosInstance.get(`/api/client-portal/clients/${client.id}`, { headers: { Authorization: `Bearer ${token}` } }),
         axiosInstance.get(`/api/client-portal/clients/${client.id}/projects`, { headers: { Authorization: `Bearer ${token}` } }),
@@ -4023,7 +4023,7 @@ export default function ClientPortalFull() {
   const loadAll = async () => {
     setFetching(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const h = { headers: { Authorization: `Bearer ${token}` } };
       const [cr, sr] = await Promise.all([
         axiosInstance.get('client-portal/clients', h),
@@ -4038,7 +4038,7 @@ export default function ClientPortalFull() {
   const fetchBio = async () => {
     setNamesLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const res = await axiosInstance.get('client-portal/bio-data', { headers: { Authorization: `Bearer ${token}` } });
       let records: BioRecord[] = res.data.data || res.data.records || (Array.isArray(res.data) ? res.data : []);
       records = records.map(r => ({
@@ -4061,7 +4061,7 @@ export default function ClientPortalFull() {
   };
   const _doDeleteClient = async (id: number, name: string) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       await axiosInstance.delete(`/api/client-portal/clients/${id}`, { headers: { Authorization: `Bearer ${token}` } });
       loadAll();
     } catch (err: any) { toast.error('Action Failed', err.response?.data?.message || 'Something went wrong.'); }

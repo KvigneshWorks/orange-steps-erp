@@ -220,7 +220,7 @@ function SkeletonRow() {
     );
 }
 
-const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authH = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 
 export default function AllAccounts() {
     const [accounts, setAccounts] = useState<AccountRow[]>([]);
@@ -235,7 +235,7 @@ export default function AllAccounts() {
     // pointless failed attempt.
     const currentUserId = useMemo(() => {
         try {
-            const raw = localStorage.getItem('user');
+            const raw = sessionStorage.getItem('user');
             return raw ? JSON.parse(raw)?.id ?? null : null;
         } catch { return null; }
     }, []);

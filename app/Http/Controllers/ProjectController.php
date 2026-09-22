@@ -28,6 +28,8 @@ class ProjectController extends Controller
                 'user_id' => auth()->id() ?? 1,
             ]);
 
+            DashboardController::clearCache();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Project created successfully',

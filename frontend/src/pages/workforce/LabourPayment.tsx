@@ -1229,7 +1229,7 @@ const CSS = `
 .WP-setup-body { font-family:var(--font-body); font-size: 10.5px; color:var(--text-3); margin-bottom:22px; line-height:1.6; }
 `;
 
-const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authHeader = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 const todayStr = () => new Date().toISOString().split('T')[0];
 const fmt = (n: number) =>
   n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });

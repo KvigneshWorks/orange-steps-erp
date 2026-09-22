@@ -185,7 +185,7 @@ function SkeletonRow() {
     );
 }
 
-const authH = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
+const authH = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 
 export default function RecycleBin() {
     const [groups, setGroups] = useState<TrashGroup[]>([]);

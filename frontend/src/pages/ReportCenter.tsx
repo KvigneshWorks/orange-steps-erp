@@ -80,10 +80,10 @@ const ErpLogo = ({ size = 62 }: { size?: number }) => (
 /* ===============================
    AUTH HELPERS
 ================================== */
-const tk = (): string | null => localStorage.getItem('token');
+const tk = (): string | null => sessionStorage.getItem('token');
 const H = (): Record<string, string> => ({ Authorization: `Bearer ${tk()}` });
-const setToken = (t: string) => localStorage.setItem('token', t);
-const clearToken = () => localStorage.removeItem('token');
+const setToken = (t: string) => sessionStorage.setItem('token', t);
+const clearToken = () => sessionStorage.removeItem('token');
 const AUTH_FAIL_EVENT = 'auth:fail';
 const fireAuthFail = () => window.dispatchEvent(new Event(AUTH_FAIL_EVENT));
 interface DaybookEntry {
