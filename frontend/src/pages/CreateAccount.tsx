@@ -307,6 +307,14 @@ export default function CreateAccount() {
 
     const [form, setForm] = useState<FormState>(EMPTY_FORM);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    // Email/Password/Confirm Password start read-only and unlock the instant
+    // they're focused. This form always starts blank -- what looked like an
+    // old email/password already "written" was the browser's own login
+    // autofill kicking in on an Email+Password field pair, which browsers do
+    // even when autocomplete="off" is set on those specific fields. A
+    // read-only field is never auto-filled, so nothing pre-fills anymore.
+    const [unlockedFields, setUnlockedFields] = useState<Set<string>>(new Set());
+    const unlockField = (name: string) => setUnlockedFields(prev => prev.has(name) ? prev : new Set(prev).add(name));
     const [submitting, setSubmitting] = useState(false);
     const [outcome, setOutcome] = useState<Outcome | null>(null);
     const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -489,7 +497,7 @@ export default function CreateAccount() {
                             </div>
 
                             <div className="AS-create-card-body">
-                                <form onSubmit={handleSubmit} noValidate>
+                                <form onSubmit={handleSubmit} noValidate autoComplete="off">
 
                                     <div className="AS-create-section">
                                         <span className="AS-create-section-num">01</span>
@@ -506,7 +514,8 @@ export default function CreateAccount() {
                                         <Field label="Email" error={errors.email}>
                                             <div className="AS-field-ic">
                                                 <span className="AS-field-ic-svg"><Ic d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" sz={13} c="currentColor" sw={1.8} /></span>
-                                                <Input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@example.com" required />
+                                                <Input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@example.com" required
+                                                    readOnly={!unlockedFields.has('email')} onFocus={() => unlockField('email')} />
                                             </div>
                                         </Field>
                                     </div>
@@ -520,7 +529,8 @@ export default function CreateAccount() {
                                         <Field label="Password" error={errors.password}>
                                             <div className="AS-field-ic">
                                                 <span className="AS-field-ic-svg"><Ic d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zM7 11V7a5 5 0 0110 0v4" sz={13} c="currentColor" sw={1.8} /></span>
-                                                <Input type="password" name="password" value={form.password} onChange={handleChange} placeholder="Minimum 8 characters" required minLength={8} />
+                                                <Input type="password" name="password" value={form.password} onChange={handleChange} placeholder="Minimum 8 characters" required minLength={8}
+                                                    autoComplete="new-password" readOnly={!unlockedFields.has('password')} onFocus={() => unlockField('password')} />
                                             </div>
                                             {form.password && (
                                                 <>
@@ -532,7 +542,8 @@ export default function CreateAccount() {
                                         <Field label="Confirm Password" error={errors.password_confirmation}>
                                             <div className="AS-field-ic">
                                                 <span className="AS-field-ic-svg"><Ic d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zM7 11V7a5 5 0 0110 0v4" sz={13} c="currentColor" sw={1.8} /></span>
-                                                <Input type="password" name="password_confirmation" value={form.password_confirmation} onChange={handleChange} placeholder="Re-enter password" required minLength={8} />
+                                                <Input type="password" name="password_confirmation" value={form.password_confirmation} onChange={handleChange} placeholder="Re-enter password" required minLength={8}
+                                                    autoComplete="new-password" readOnly={!unlockedFields.has('password_confirmation')} onFocus={() => unlockField('password_confirmation')} />
                                             </div>
                                             {form.password_confirmation && (
                                                 <div className={`AS-pw-match ${form.password === form.password_confirmation ? 'ok' : 'bad'}`}>

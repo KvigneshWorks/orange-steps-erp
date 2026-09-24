@@ -155,7 +155,7 @@ const NAV_STRUCTURE = [
                     { id: 'master-category', label: 'Category' },
                     { id: 'master-subcategory', label: 'Sub-Category' },
                     { id: 'master-idtype', label: 'ID Type' },
-                    { id: 'master-biodata', label: 'Contacts' },
+                    { id: 'master-biodata', label: 'Bio Data' },
                     { id: 'master-subname', label: 'Associates' },
                 ]
             },
@@ -177,7 +177,7 @@ const NAV_STRUCTURE = [
     {
         section: 'Credit',
         items: [
-            { id: 'txn-credit', label: 'Vendor Payments', badge: null, icon: 'money', children: null },
+            { id: 'txn-credit', label: 'Credit Management', badge: null, icon: 'money', children: null },
         ]
     },
 
@@ -191,7 +191,7 @@ const NAV_STRUCTURE = [
     {
         section: 'Manpower', items: [
             {
-                id: 'hr', label: 'Manpower', badge: null, icon: 'hr', children: [
+                id: 'hr', label: 'Labour Management', badge: null, icon: 'hr', children: [
                     { id: 'workforce', label: 'Worker List' },
                     { id: 'attendance', label: 'Attendance' },
                     { id: 'labour-payment', label: 'Worker Payments' },
@@ -205,7 +205,7 @@ const NAV_STRUCTURE = [
             {
                 id: 'report', label: 'Reports', badge: null, icon: 'report', children: [
                     { id: 'report-daybook', label: 'Cash Book Report' },
-                    { id: 'report-credit', label: 'Vendor Payments Report' },
+                    { id: 'report-credit', label: 'Credit Management Report' },
                     { id: 'report-labour', label: 'Worker Payments Report' },
                     { id: 'report-client', label: 'Client Payments Report' },
                     { id: 'report-pl', label: 'Profit & Loss' },

@@ -192,13 +192,10 @@ const labelForType = (t?: string): string => ({ construction: 'Construction', in
 const labelForStatus = (s?: string): string => ({ active: 'Active', on_hold: 'On Hold', completed: 'Completed' }[s || ''] || s || '—');
 const labelForMode = (m?: string): string => ({ cash: 'Cash', upi: 'UPI', neft: 'NEFT', cheque: 'Cheque', bank_transfer: 'Bank Transfer', other: 'Other' }[m || ''] || m || '—');
 const today = (): string => new Date().toISOString().slice(0, 10);
-// Bounded default for the Cash Book Report's date filter -- was '2000-01-01'
-// (effectively "all time"), which meant every fresh load of this report
-// fetched and processed the daybook's entire history before the user ever
-// touched a date picker. Same class of load-time bug already fixed on
-// Daybook Transactions; this page just hadn't been checked yet. Users can
-// still widen the range with the date pickers, this only changes the
-// starting point.
+// NOTE: every report tab's default range is '2000-01-01' (effectively "all
+// time"), by explicit request -- reports must show the full total unless the
+// user deliberately narrows the date range themselves. startOfMonth() is kept
+// only as a helper in case a future "This Month" quick-range shortcut needs it.
 const startOfMonth = (): string => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
@@ -1283,34 +1280,6 @@ function TDrop({ value, onChange, opts, placeholder = 'All', minWidth = 200, dis
 }
 
 /* ===================================================================
-   CUSTOM CALENDAR DATE PICKER — now the shared components/CalendarDD.tsx,
-   used project-wide. See import at top of file.
-====================================================================== */
-function TPresetDrop({ onApply }: { onApply: (v: string) => void }) {
-    const [val, setVal] = React.useState('');
-    const presetOpts: TDropOpt[] = [
-        { value: 'today', label: 'Today' },
-        { value: 'thismonth', label: 'This Month' },
-        { value: 'last30', label: 'Last 30 Days' },
-        { value: 'last90', label: 'Last 90 Days' },
-        { value: 'thisyear', label: 'This Year' },
-    ];
-
-    return (
-        <TDrop
-            value={val}
-            opts={presetOpts}
-            placeholder="Quick Range"
-            minWidth={150}
-            onChange={v => {
-                setVal(v);
-                if (v) { onApply(v); setTimeout(() => setVal(''), 300); }
-            }}
-        />
-    );
-}
-
-/* ===================================================================
    SINGLE SEARCH DROPDOWN
 ====================================================================== */
 function SearchDD({ opts, value, onChange, placeholder, disabled = false, accent = 'ember' }: {
@@ -1709,9 +1678,9 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     // fetch/filter. The pickers write to the *Draft pair instead, so picking
     // From Date alone never triggers a reload; only clicking "Apply filters"
     // (commitDbFilters) copies the draft dates across.
-    const [fromDate, setFromDate] = useState(startOfMonth());
+    const [fromDate, setFromDate] = useState('2000-01-01');
     const [toDate, setToDate] = useState(today());
-    const [fromDateDraft, setFromDateDraft] = useState(startOfMonth());
+    const [fromDateDraft, setFromDateDraft] = useState('2000-01-01');
     const [toDateDraft, setToDateDraft] = useState(today());
     const [dbFromTouched, setDbFromTouched] = useState(false);
     const [dbToTouched, setDbToTouched] = useState(false);
@@ -1809,13 +1778,11 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const [crPaymentModeFiltersDraft, setCrPaymentModeFiltersDraft] = useState<string[]>([]);
     const [crClientNameFiltersDraft, setCrClientNameFiltersDraft] = useState<string[]>([]);
     const [crSearchPulse, setCrSearchPulse] = useState(false);
-    // Same bounded-default fix as the daybook fromDate/fromDateDraft above --
-    // this drove the Credit report's fetch, which loads every vendor's
-    // credit entries/payments in the applied range: '2000-01-01' meant the
-    // full history, for every vendor, on every fresh load of this tab.
-    const [crDateFrom, setCrDateFrom] = useState(startOfMonth());
+    // Same default as every other report tab -- '2000-01-01' (all time),
+    // matching Client/Labour and giving the correct full total on first load.
+    const [crDateFrom, setCrDateFrom] = useState('2000-01-01');
     const [crDateTo, setCrDateTo] = useState(today());
-    const [crDateFromDraft, setCrDateFromDraft] = useState(startOfMonth());
+    const [crDateFromDraft, setCrDateFromDraft] = useState('2000-01-01');
     const [crDateToDraft, setCrDateToDraft] = useState(today());
     const [crDateFromTouched, setCrDateFromTouched] = useState(false);
     const [crDateToTouched, setCrDateToTouched] = useState(false);
@@ -2408,7 +2375,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         setCrLoading(true); setServerError(false);
         try {
             const token = tk(); if (!token) { setCrVendors([]); return; }
-            const params = { from_date: crDateFrom || startOfMonth(), to_date: crDateTo || today() };
+            const params = { from_date: crDateFrom || '2000-01-01', to_date: crDateTo || today() };
             let summary: CreditSummary | null = null, vendors: CreditVendor[] = [];
 
             try {

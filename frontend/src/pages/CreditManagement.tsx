@@ -1249,8 +1249,8 @@ const CSS = `
 .CM3-billtbl col.c-sno { width: 5%; }
 .CM3-billtbl col.c-client { width: 19%; } .CM3-billtbl col.c-date { width: 9%; }
 .CM3-billtbl col.c-credit { width: 13%; } .CM3-billtbl col.c-paid { width: 12%; }
-.CM3-billtbl col.c-balance { width: 13%; } .CM3-billtbl col.c-status { width: 21%; }
-.CM3-billtbl col.c-acts { width: 8%; }
+.CM3-billtbl col.c-balance { width: 13%; } .CM3-billtbl col.c-status { width: 15%; }
+.CM3-billtbl col.c-acts { width: 14%; }
 .CM3-billtbl thead th {
   /* Same header language as every other table in the app (.ERP-tbl):
      light surface, dark uppercase mono-weight text, ember underline —
@@ -1327,7 +1327,13 @@ const CSS = `
 .CM3-billtbl-status.overdue { color: #D93B55; }
 .CM3-billtbl-status.near    { color: #9A3412; }
 .CM3-billtbl-status.closed  { color: #1E9C6A; }
-.CM3-billtbl-acts { display: flex; gap: 6px; justify-content: flex-end; }
+.CM3-billtbl-acts { display: flex; gap: 5px; justify-content: flex-end; overflow: hidden; }
+/* Compact override for this one narrow table cell only — the shared
+   .ERP-tbtn style (used identically everywhere else) is untouched;
+   this class just tightens the padding/font so Edit+Delete fit inside
+   the Actions column instead of spilling into Status next to it. */
+.CM3-billtbl-acts .ERP-tbtn { padding: 5px 9px; font-size: 8px; }
+.CM3-billtbl-acts .ERP-tbtn + .ERP-tbtn { margin-left: 0; }
 
 /* Custom checkbox to match theme (used in header + row checks) */
 .CM3-billtbl-cb {

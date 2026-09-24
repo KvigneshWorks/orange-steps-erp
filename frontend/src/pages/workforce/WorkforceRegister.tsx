@@ -1055,9 +1055,9 @@ export default function WorkforceRegister() {
                     <div className="ERP-eyebrow">
                         <span className="ERP-eyebrow-line" />
                         <span className="ERP-eyebrow-dot" />
-                        Workforce &middot; Manpower Management
+                        Workforce &middot; Labour Management
                     </div>
-                    <h1 className="ERP-title MD-page-title">Manpower <span className="ERP-title-em">Register</span></h1>
+                    <h1 className="ERP-title MD-page-title">Labour Management <span className="ERP-title-em">Register</span></h1>
                 </div>
             </div>
             {/* ── HEADER END ── */}

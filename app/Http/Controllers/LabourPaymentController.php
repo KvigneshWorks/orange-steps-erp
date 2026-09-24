@@ -628,11 +628,19 @@ class LabourPaymentController extends Controller
                 'created_by'    => Auth::id(),
             ]);
 
+            // Batch-fetch every worker's most recent prior-week balance in one
+            // query instead of one query per worker inside the loop below (was a
+            // real N+1 — flagged in the 2026-09-21 speed pass, fixed here).
+            $workerIds = $records->pluck('worker_id')->all();
+            $prevBalancesByWorker = LabourWeeklyPayment::whereIn('worker_id', $workerIds)
+                ->whereHas('bill', fn ($q) => $q->where('week_end', '<', $weekStart))
+                ->orderByDesc('id')
+                ->get(['worker_id', 'balance_carried'])
+                ->groupBy('worker_id')
+                ->map(fn ($rows) => (float) ($rows->first()->balance_carried ?? 0));
+
             foreach ($records as $rec) {
-                $prevBalance = (float) (LabourWeeklyPayment::where('worker_id', $rec->worker_id)
-                    ->whereHas('bill', fn ($q) => $q->where('week_end', '<', $weekStart))
-                    ->orderByDesc('id')
-                    ->value('balance_carried') ?? 0);
+                $prevBalance = (float) ($prevBalancesByWorker[$rec->worker_id] ?? 0);
 
                 $totalDue = (float) $rec->total_earned + $prevBalance;
 
