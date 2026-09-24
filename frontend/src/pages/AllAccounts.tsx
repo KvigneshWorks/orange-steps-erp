@@ -9,11 +9,6 @@ import { PageHeader, StatCard, TableCard, Field, Input } from '../components/ui'
 import Pagination from '../components/Pagination';
 import RecycleBinDeleteModal from '../components/RecycleBinDeleteModal';
 
-/**
- * "All Accounts" tab in Account Settings — super_admin only. Read-only
- * list of every account in the system (Super Admin / Admin / User).
- */
-
 interface AccountRow {
     id: number;
     name: string;
@@ -44,8 +39,6 @@ const ROLE_CARD: Record<'user' | 'admin' | 'super_admin', { title: string; sub: 
     },
 };
 
-/* Per-filter empty-state icon + colour, matching the same on-brand
-   treatment given to Pending Approvals. */
 const EMPTY_META: Record<'all' | 'super_admin' | 'admin' | 'user', { path: string; c: string; bg: string; bd: string }> = {
     all: { path: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0', c: '#231C14', bg: 'rgba(35,28,20,0.08)', bd: 'rgba(35,28,20,0.20)' },
     super_admin: { path: 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75', c: '#EA580C', bg: 'rgba(232,114,12,.12)', bd: 'rgba(232,114,12,.30)' },
@@ -53,11 +46,6 @@ const EMPTY_META: Record<'all' | 'super_admin' | 'admin' | 'user', { path: strin
     user: { path: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z', c: '#C2410C', bg: 'rgba(194,65,12,.12)', bd: 'rgba(194,65,12,.26)' },
 };
 
-/* Page-scoped only: same premium treatment as Pending Approvals -- one
-   bold / upright / all-caps font everywhere, the table card stretched to
-   fill the full page height, and a livelier, ringed, per-role-coloured
-   empty state. Scoped under .AA-full so it never leaks into any other
-   page that shares the ERP-* / AS-* classes. */
 const AA_FULL_CSS = `
 .AA-full, .AA-full * {
   text-transform: uppercase;
@@ -229,10 +217,6 @@ export default function AllAccounts() {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
     const hasFetched = useRef(false);
-
-    // Who's logged in right now, so we can hide "delete" on your own row --
-    // the backend blocks self-delete too, but hiding it here avoids a
-    // pointless failed attempt.
     const currentUserId = useMemo(() => {
         try {
             const raw = sessionStorage.getItem('user');
@@ -326,7 +310,6 @@ export default function AllAccounts() {
         [accounts, filter]
     );
 
-    // Jump back to page 1 whenever the role filter changes the result set.
     useEffect(() => { setPage(1); }, [filter]);
 
     const totalPages = Math.max(1, Math.ceil(visible.length / perPage));
@@ -342,6 +325,7 @@ export default function AllAccounts() {
             <style>{AS_CSS}</style>
             <style>{AA_FULL_CSS}</style>
 
+            {/* Page Header Start */}
             <div className="ERP-hdr">
                 <div className="ERP-hdr-left">
                     <PageHeader eyebrow="Account Settings" title="All" titleEm="Accounts" />
@@ -360,6 +344,7 @@ export default function AllAccounts() {
                     </svg>
                 </button>
             </div>
+            {/* Page Header End */}
 
             <div className="ERP-divider" />
 
@@ -391,6 +376,7 @@ export default function AllAccounts() {
                     >{chip.label}</button>
                 ))}
             </div>
+            {/* Role Filter Chips End */}
 
             <TableCard title="Accounts" count={loading ? undefined : visible.length}>
                 {loading && (

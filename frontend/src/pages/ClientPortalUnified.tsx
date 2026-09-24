@@ -1720,6 +1720,7 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
             {q ? `${filtered.length} of ${opts.length} matches` : `${opts.length} options`}
           </div>
           {/* Footer Count ENd */}
+
         </div>,
         document.body
       )}
@@ -1727,7 +1728,7 @@ function DD({ opts, val, onChange, placeholder, disabled }: {
   );
 }
 
-/* ═══════════════════════════════════════════
+/* ════════════════════════════════════════
    BioDD — bio record select with search
 ═══════════════════════════════════════════ */
 function BioDD({ options, value, onChange, loading }: {
@@ -1799,6 +1800,7 @@ function BioDD({ options, value, onChange, loading }: {
           <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
+
       {open && createPortal(
         <div ref={panelRef2} style={{
           ...bioPStyle, background: 'var(--white,#faf9f7)', border: '1.5px solid var(--ember-mid,#DB5B1F)', borderRadius: 12,

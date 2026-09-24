@@ -113,7 +113,6 @@ function SearchDD({
                 {open && (
                     <div className="SDD-panel" ref={panelRef}>
 
-                        {/*  */}
                         <div className="SDD-search-wrap">
                             <svg width={13} height={13} viewBox="0 0 24 24" fill="none"
                                 stroke="var(--text-4)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -331,14 +330,9 @@ export default function BioData() {
     const idDetailsFieldRef = useRef<HTMLDivElement>(null);
     const idDetailsInputRef = useRef<HTMLInputElement>(null);
     const categoryFieldRef = useRef<HTMLDivElement>(null);
-
-    // View-table filter state — category filter applies live, but the
-    // name search is manual: it only runs on Enter or clicking the
-    // search icon, not on every keystroke (per explicit request).
     const [filterCategoryId, setFilterCategoryId] = useState('');
     const [nameSearchInput, setNameSearchInput] = useState('');
     const [nameSearchTerm, setNameSearchTerm] = useState('');
-
     const runNameSearch = () => setNameSearchTerm(nameSearchInput.trim());
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') runNameSearch();
@@ -346,7 +340,6 @@ export default function BioData() {
     const resetTableFilters = () => {
         setFilterCategoryId(''); setNameSearchInput(''); setNameSearchTerm('');
     };
-
     const filteredRecords = useMemo(() => {
         return records.filter(rec => {
             const matchesCategory = !filterCategoryId || String(rec.category_id) === filterCategoryId;
@@ -354,7 +347,6 @@ export default function BioData() {
             return matchesCategory && matchesSearch;
         });
     }, [records, filterCategoryId, nameSearchTerm]);
-
     const [mdPage, setMdPage] = useState(1);
     const [mdPerPage, setMdPerPage] = useState(10);
     const mdTotalPages = Math.max(1, Math.ceil(filteredRecords.length / mdPerPage));
@@ -388,14 +380,10 @@ export default function BioData() {
             console.log('📋 bio-data raw response:', r.data);
             console.log('📋 bio-data parsed:', r.data?.data, 'length:', r.data?.data?.length);
             setRecords(Array.isArray(r.data.data) ? r.data.data : []);
-
         } catch (err) {
             console.error('Fetch error:', err);
             if (err.response?.status === 401) {
-                // Token expired or invalid
                 sessionStorage.removeItem('token');
-                // Optionally redirect to login
-                // window.location.href = '/login';
             }
         } finally {
             setFetching(false);
@@ -846,142 +834,142 @@ export default function BioData() {
 
                 {/* ── TABLE CARD START ── */}
                 <div className="ERP-tbl-card MD-tbl-card">
-                        {/* Filter Bar Start */}
-                        <div className="MD-tbl-filter-bar">
-                            <div className="MD-tbl-filter-item" style={{ minWidth: 220 }}>
-                                <span className="MD-tbl-filter-lbl">Filter by Account Head</span>
-                                <SearchDD
-                                    options={[{ value: '', label: 'All Account Heads' }, ...categories.map(c => ({ value: String(c.id), label: c.name }))]}
-                                    value={filterCategoryId}
-                                    onChange={setFilterCategoryId}
-                                    placeholder="All Account Heads"
-                                />
-                            </div>
-                            <div className="MD-tbl-filter-item">
-                                <span className="MD-tbl-filter-lbl">Search by Name</span>
-                                <div className="MD-tbl-search-row">
-                                    <input
-                                        className="MD-tbl-search-input"
-                                        type="text"
-                                        autoComplete="off"
-                                        placeholder="Type a name, then press Enter or tap search..."
-                                        value={nameSearchInput}
-                                        onChange={e => setNameSearchInput(e.target.value)}
-                                        onKeyDown={handleSearchKeyDown}
-                                    />
-                                    <button type="button" className="MD-tbl-search-btn" title="Search" onClick={runNameSearch}>
-                                        <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={14} c="#faf9f7" sw={2.2} />
-                                    </button>
-                                </div>
-                            </div>
-                            {(filterCategoryId || nameSearchTerm) && (
-                                <button type="button" className="MD-tbl-reset-pill" onClick={resetTableFilters}>
-                                    <Ic d="M6 18L18 6M6 6l12 12" sz={10} c="currentColor" sw={2} />
-                                    Clear Filters
-                                </button>
-                            )}
-                        </div>
-                        {/* Filter Bar End */}
-
-                        {/* Fetching Start */}
-                        {fetching ? (
-                            <RunningLoader label="Loading Party Records" />
-                        ) : records.length === 0 ? (
-                            <div className="ERP-empty">
-                                <div className="ERP-empty-icon">
-                                    <Ic d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        sz={26} c="var(--ember)" sw={1.8} />
-                                </div>
-                                <div className="ERP-empty-title">No Records Yet</div>
-                                <div className="ERP-empty-sub">Add the first party master entry using the button above</div>
-                            </div>
-                        ) : filteredRecords.length === 0 ? (
-                            <div className="ERP-empty">
-                                <div className="ERP-empty-icon">
-                                    <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={26} c="var(--ember)" sw={1.8} />
-                                </div>
-                                <div className="ERP-empty-title">No Matching Records</div>
-                                <div className="ERP-empty-sub">Try a different account head or search term</div>
-                            </div>
-                        ) : (
-
-                            <div className="ERP-tbl-scroll">
-                                <table className="ERP-tbl">
-
-                                    {/* Thead Start */}
-                                    <thead>
-                                        <tr>
-                                            <th className="ERP-center" style={{ width: 52 }}>No.</th>
-                                            <th>Name</th>
-                                            <th>Identification Type</th>
-                                            <th>ID Number</th>
-                                            <th>Account Head</th>
-                                            <th>Account Sub-Head</th>
-                                            <th>Address</th>
-                                            <th>Added By</th>
-                                            <th className="ERP-center" style={{ width: 180 }}>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    {/* Thead End */}
-
-                                    {/* Tbody Start */}
-                                    <tbody>
-                                        {pagedRecords.map((rec, i) => (
-                                            <tr key={rec.id}
-                                                style={editId === rec.id ? { background: 'rgba(37,99,235,0.06)' } : {}}>
-                                                <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
-                                                <td className="ERP-t-primary">{rec.name}</td>
-                                                <td>
-                                                    {rec.id_type_name
-                                                        ? <span className="MD-tbl-tag ember">{rec.id_type_name}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td>
-                                                    {rec.id_details
-                                                        ? <span className="MD-tbl-tag muted">{rec.id_details}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td>
-                                                    {rec.category_name
-                                                        ? <span className="MD-tbl-tag info">{rec.category_name}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td>
-                                                    {rec.sub_category_name
-                                                        ? <span className="MD-tbl-tag warn">{rec.sub_category_name}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td>
-                                                    {rec.address
-                                                        ? <span className="ERP-t-desc">{rec.address}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td className="ERP-t-creator">
-                                                    {rec.created_by_name || <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td className="ERP-center ERP-nowrap">
-                                                    <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(rec)}>Edit</button>
-                                                    {canDelete(userRole) && (
-                                                        <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(rec.id, rec.name)}>Delete</button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                        {!fetching && filteredRecords.length > 0 && (
-                            <Pagination
-                                page={mdSafePage}
-                                totalPages={mdTotalPages}
-                                onPageChange={setMdPage}
-                                total={filteredRecords.length}
-                                perPage={mdPerPage}
-                                onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
-                                itemLabel="records"
+                    {/* Filter Bar Start */}
+                    <div className="MD-tbl-filter-bar">
+                        <div className="MD-tbl-filter-item" style={{ minWidth: 220 }}>
+                            <span className="MD-tbl-filter-lbl">Filter by Account Head</span>
+                            <SearchDD
+                                options={[{ value: '', label: 'All Account Heads' }, ...categories.map(c => ({ value: String(c.id), label: c.name }))]}
+                                value={filterCategoryId}
+                                onChange={setFilterCategoryId}
+                                placeholder="All Account Heads"
                             />
+                        </div>
+                        <div className="MD-tbl-filter-item">
+                            <span className="MD-tbl-filter-lbl">Search by Name</span>
+                            <div className="MD-tbl-search-row">
+                                <input
+                                    className="MD-tbl-search-input"
+                                    type="text"
+                                    autoComplete="off"
+                                    placeholder="Type a name, then press Enter or tap search..."
+                                    value={nameSearchInput}
+                                    onChange={e => setNameSearchInput(e.target.value)}
+                                    onKeyDown={handleSearchKeyDown}
+                                />
+                                <button type="button" className="MD-tbl-search-btn" title="Search" onClick={runNameSearch}>
+                                    <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={14} c="#faf9f7" sw={2.2} />
+                                </button>
+                            </div>
+                        </div>
+                        {(filterCategoryId || nameSearchTerm) && (
+                            <button type="button" className="MD-tbl-reset-pill" onClick={resetTableFilters}>
+                                <Ic d="M6 18L18 6M6 6l12 12" sz={10} c="currentColor" sw={2} />
+                                Clear Filters
+                            </button>
                         )}
+                    </div>
+                    {/* Filter Bar End */}
+
+                    {/* Fetching Start */}
+                    {fetching ? (
+                        <RunningLoader label="Loading Party Records" />
+                    ) : records.length === 0 ? (
+                        <div className="ERP-empty">
+                            <div className="ERP-empty-icon">
+                                <Ic d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                    sz={26} c="var(--ember)" sw={1.8} />
+                            </div>
+                            <div className="ERP-empty-title">No Records Yet</div>
+                            <div className="ERP-empty-sub">Add the first party master entry using the button above</div>
+                        </div>
+                    ) : filteredRecords.length === 0 ? (
+                        <div className="ERP-empty">
+                            <div className="ERP-empty-icon">
+                                <Ic d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" sz={26} c="var(--ember)" sw={1.8} />
+                            </div>
+                            <div className="ERP-empty-title">No Matching Records</div>
+                            <div className="ERP-empty-sub">Try a different account head or search term</div>
+                        </div>
+                    ) : (
+
+                        <div className="ERP-tbl-scroll">
+                            <table className="ERP-tbl">
+
+                                {/* Thead Start */}
+                                <thead>
+                                    <tr>
+                                        <th className="ERP-center" style={{ width: 52 }}>No.</th>
+                                        <th>Name</th>
+                                        <th>Identification Type</th>
+                                        <th>ID Number</th>
+                                        <th>Account Head</th>
+                                        <th>Account Sub-Head</th>
+                                        <th>Address</th>
+                                        <th>Added By</th>
+                                        <th className="ERP-center" style={{ width: 180 }}>Actions</th>
+                                    </tr>
+                                </thead>
+                                {/* Thead End */}
+
+                                {/* Tbody Start */}
+                                <tbody>
+                                    {pagedRecords.map((rec, i) => (
+                                        <tr key={rec.id}
+                                            style={editId === rec.id ? { background: 'rgba(37,99,235,0.06)' } : {}}>
+                                            <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
+                                            <td className="ERP-t-primary">{rec.name}</td>
+                                            <td>
+                                                {rec.id_type_name
+                                                    ? <span className="MD-tbl-tag ember">{rec.id_type_name}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td>
+                                                {rec.id_details
+                                                    ? <span className="MD-tbl-tag muted">{rec.id_details}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td>
+                                                {rec.category_name
+                                                    ? <span className="MD-tbl-tag info">{rec.category_name}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td>
+                                                {rec.sub_category_name
+                                                    ? <span className="MD-tbl-tag warn">{rec.sub_category_name}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td>
+                                                {rec.address
+                                                    ? <span className="ERP-t-desc">{rec.address}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td className="ERP-t-creator">
+                                                {rec.created_by_name || <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td className="ERP-center ERP-nowrap">
+                                                <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(rec)}>Edit</button>
+                                                {canDelete(userRole) && (
+                                                    <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(rec.id, rec.name)}>Delete</button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                    {!fetching && filteredRecords.length > 0 && (
+                        <Pagination
+                            page={mdSafePage}
+                            totalPages={mdTotalPages}
+                            onPageChange={setMdPage}
+                            total={filteredRecords.length}
+                            perPage={mdPerPage}
+                            onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
+                            itemLabel="records"
+                        />
+                    )}
                 </div>
             </div>
             <ConfirmDeleteModal
