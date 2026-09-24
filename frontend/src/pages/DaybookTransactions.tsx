@@ -50,10 +50,10 @@ interface EditForm {
 }
 
 const COMPANY = {
-  name: 'WhiteNode Software Solutions',
-  address: '281, GRAND BRENTON 1st Floor, Avinashi Rd, Coimbatore, Tamil Nadu 641004',
-  phone: '+91 94885 42342',
-  email: 'contact@whitenode.in',
+  name: 'OrangeSteps',
+  address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
+  phone: '+91 95667 01640',
+  email: 'info@orangesteps.in',
 };
 
 const PAYMENT_CHIP: Record<string, { color: string; bg: string; border: string; emoji: string }> = {

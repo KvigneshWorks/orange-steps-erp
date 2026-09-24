@@ -42,6 +42,7 @@ interface DDProps {
 
 interface SubCategory {
     id: number; category_id: number; name: string;
+    category_ids?: number[]; category_names?: string[];
     description?: string; additional_field?: string;
     is_active: boolean; created_by_name?: string;
 }
@@ -49,7 +50,7 @@ interface SubCategory {
 interface Category { id: number; name: string; }
 
 interface FormData {
-    category_id: string; name: string; description: string;
+    category_ids: string[]; name: string; description: string;
     additional_field: string; is_active: boolean;
 }
 
@@ -127,13 +128,13 @@ const SkeletonRow = () => (
 export default function SubCategory() {
     const [userRole] = useState<string>(() => getStoredRole());
     const emptyForm = (): FormData => ({
-        category_id: '', name: '', description: '', additional_field: '', is_active: true,
+        category_ids: [], name: '', description: '', additional_field: '', is_active: true,
     });
 
     const [formData, setFormData] = useState<FormData>(emptyForm);
     const [editId, setEditId] = useState<number | null>(null);
     const [deleteModal, setDeleteModal] = useState<{ open: boolean; id: number; name: string; loading: boolean }>({ open: false, id: 0, name: '', loading: false });
-    const [dupModal, setDupModal] = useState<{ open: boolean; fields: { label: string; value: string }[]; pendingData: typeof formData | null }>({ open: false, fields: [], pendingData: null });
+    const [dupModal, setDupModal] = useState<{ open: boolean; fields: { label: string; value: string }[]; pendingData: typeof formData | null; mergeId: number | null }>({ open: false, fields: [], pendingData: null, mergeId: null });
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [syncing, setSyncing] = useState(false);
@@ -231,7 +232,7 @@ export default function SubCategory() {
     const handleEdit = useCallback((sc: SubCategory) => {
         setEditId(sc.id);
         setFormData({
-            category_id: sc.category_id.toString(),
+            category_ids: (sc.category_ids?.length ? sc.category_ids : [sc.category_id]).map(String),
             name: sc.name,
             description: sc.description || '',
             additional_field: sc.additional_field || '',
@@ -276,23 +277,24 @@ export default function SubCategory() {
         }
     }, [deleteModal]);
 
-    const doSaveSub = useCallback(async (data: typeof formData) => {
+    const doSaveSub = useCallback(async (data: typeof formData, targetId: number | null = editId) => {
         setLoading(true);
         setMessage('');
         const originalSubCategories = [...subCategories];
         const originalEditId = editId;
+        const payload = { ...data, category_ids: data.category_ids.map(Number) };
         try {
             const token = sessionStorage.getItem('token');
             const headers = { Authorization: `Bearer ${token}` };
-            if (editId) {
-                const response = await axiosInstance.put(`/api/sub-categories/${editId}`, data, { headers });
+            if (targetId) {
+                const response = await axiosInstance.put(`/api/sub-categories/${targetId}`, payload, { headers });
                 const updatedItem = response.data.data || response.data;
-                setSubCategories(prev => prev.map(s => s.id === editId ? updatedItem : s));
+                setSubCategories(prev => prev.map(s => s.id === targetId ? updatedItem : s));
                 setMessage('Account Sub-Head updated successfully!');
                 toast.success('Account Sub-Head Updated!', `"${data.name}" saved successfully`);
                 setEditId(null);
             } else {
-                const response = await axiosInstance.post('sub-categories', data, { headers });
+                const response = await axiosInstance.post('sub-categories', payload, { headers });
                 const newItem = response.data.data || response.data;
                 setSubCategories(prev => [newItem, ...prev]);
                 setMessage('Account Sub-Head created successfully!');
@@ -318,9 +320,9 @@ export default function SubCategory() {
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.category_id) {
+        if (!formData.category_ids.length) {
             setErrorField('category_id');
-            toast.error('Parent Account Head is required', 'Please fill out this field to continue');
+            toast.error('Parent Account Head is required', 'Please select at least one to continue');
             categoryFieldRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
@@ -334,19 +336,23 @@ export default function SubCategory() {
         }
 
         if (!editId) {
+            // Uniqueness is now global by name (a sub-head can belong to many
+            // account heads), so a duplicate here means "this name already
+            // exists — link it to more heads instead of creating a copy."
             const dup = subCategories.find(s =>
-                s.name.trim().toLowerCase() === formData.name.trim().toLowerCase() &&
-                String(s.category_id) === String(formData.category_id)
+                s.name.trim().toLowerCase() === formData.name.trim().toLowerCase()
             );
             if (dup) {
-                const catName = categories.find(c => c.id === dup.category_id)?.name || String(dup.category_id);
+                const dupCatIds = dup.category_ids?.length ? dup.category_ids : [dup.category_id];
+                const dupCatNames = dupCatIds.map(id => categories.find(cat => cat.id === id)?.name || '—').join(', ');
                 setDupModal({
                     open: true,
                     fields: [
                         { label: 'Name', value: dup.name },
-                        { label: 'Account Head', value: catName },
+                        { label: 'Already linked to', value: dupCatNames || '—' },
                     ],
                     pendingData: { ...formData },
+                    mergeId: dup.id,
                 });
                 return;
             }
@@ -356,14 +362,30 @@ export default function SubCategory() {
     }, [formData, editId, subCategories, categories, doSaveSub]);
 
     const handleDupConfirm = async () => {
-        if (dupModal.pendingData) {
-            setDupModal(d => ({ ...d, open: false }));
-            await doSaveSub(dupModal.pendingData);
+        if (!dupModal.pendingData) return;
+        const { pendingData, mergeId } = dupModal;
+        setDupModal(d => ({ ...d, open: false }));
+        if (mergeId) {
+            // Merge into the existing sub-head instead of trying (and
+            // failing) to create a second one with the same name — this
+            // adds the newly ticked account heads onto whatever it was
+            // already linked to.
+            const existing = subCategories.find(s => s.id === mergeId);
+            const existingIds = existing ? (existing.category_ids?.length ? existing.category_ids : [existing.category_id]) : [];
+            const mergedIds = Array.from(new Set([...existingIds, ...pendingData.category_ids.map(Number)]));
+            await doSaveSub({ ...pendingData, category_ids: mergedIds.map(String) }, mergeId);
+        } else {
+            await doSaveSub(pendingData);
         }
     };
 
     const getCategoryName = useCallback((id: number) =>
         categories.find(c => c.id === id)?.name || '—', [categories]
+    );
+
+    const getCategoryNames = useCallback((ids: number[]) =>
+        ids.length ? ids.map(id => categories.find(c => c.id === id)?.name || '—') : ['—'],
+        [categories]
     );
 
     const activeCount = subCategories.filter(s => s.is_active).length;
@@ -472,18 +494,41 @@ export default function SubCategory() {
 
                                     <div className="ERP-g3">
                                         <div className={'ERP-field' + (errorField === 'category_id' ? ' MD-field-error' : '')} ref={categoryFieldRef}>
-                                            <label className="ERP-label req">Parent Account Head</label>
-                                            <DD
-                                                options={categories.map(c => ({ value: String(c.id), label: c.name }))}
-                                                value={formData.category_id}
-                                                onChange={v => { setFormData(p => ({ ...p, category_id: v })); if (errorField === 'category_id') setErrorField(null); }}
-                                                placeholder="Select Parent Account Head..."
-                                                emptyMsg="No account heads found"
-                                            />
+                                            <label className="ERP-label req">Parent Account Head(s)</label>
+                                            <div className="SC-ms">
+                                                {categories.length === 0
+                                                    ? <span className="SC-ms-empty">No account heads found</span>
+                                                    : categories.map(c => {
+                                                        const idStr = String(c.id);
+                                                        const checked = formData.category_ids.includes(idStr);
+                                                        return (
+                                                            <button
+                                                                type="button"
+                                                                key={c.id}
+                                                                className={`SC-ms-chip${checked ? ' sel' : ''}`}
+                                                                aria-pressed={checked}
+                                                                onClick={() => {
+                                                                    setFormData(p => ({
+                                                                        ...p,
+                                                                        category_ids: checked
+                                                                            ? p.category_ids.filter(v => v !== idStr)
+                                                                            : [...p.category_ids, idStr],
+                                                                    }));
+                                                                    if (errorField === 'category_id') setErrorField(null);
+                                                                }}>
+                                                                <span className="SC-ms-chip-box">
+                                                                    {checked && <Ic d="M5 13l4 4L19 7" sz={10} c="currentColor" sw={3} />}
+                                                                </span>
+                                                                {c.name}
+                                                            </button>
+                                                        );
+                                                    })}
+                                            </div>
+                                            <span className="ERP-hint">Tick every account head this sub-head belongs to</span>
                                             {errorField === 'category_id' && (
                                                 <div className="MD-field-error-msg">
                                                     <Ic d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" sz={11} c="currentColor" sw={2} />
-                                                    Please fill out this field
+                                                    Please select at least one
                                                 </div>
                                             )}
                                         </div>
@@ -571,9 +616,11 @@ export default function SubCategory() {
                                 <div className="MD-preview-row">
                                     <span className="MD-preview-ico"><Ic d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2" sz={13} c="currentColor" sw={2} /></span>
                                     <span className="MD-preview-txt">
-                                        <span className="MD-preview-lbl">Parent Account Head</span>
-                                        <span className={'MD-preview-val' + (formData.category_id ? '' : ' empty')}>
-                                            {formData.category_id ? getCategoryName(Number(formData.category_id)) : 'Not selected yet'}
+                                        <span className="MD-preview-lbl">Parent Account Head(s)</span>
+                                        <span className={'MD-preview-val' + (formData.category_ids.length ? '' : ' empty')}>
+                                            {formData.category_ids.length
+                                                ? formData.category_ids.map(id => getCategoryName(Number(id))).join(', ')
+                                                : 'Not selected yet'}
                                         </span>
                                     </span>
                                 </div>
@@ -661,7 +708,11 @@ export default function SubCategory() {
                                                 <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
                                                 <td className="ERP-t-primary">{sc.name}</td>
                                                 <td>
-                                                    <span className="MD-tbl-tag info">{getCategoryName(sc.category_id)}</span>
+                                                    <div className="SC-tbl-cats">
+                                                        {getCategoryNames(sc.category_ids?.length ? sc.category_ids : [sc.category_id]).map((name, ni) => (
+                                                            <span key={ni} className="MD-tbl-tag info">{name}</span>
+                                                        ))}
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     {sc.description

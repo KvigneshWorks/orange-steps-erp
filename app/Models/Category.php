@@ -40,4 +40,12 @@ class Category extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    /**
+     * All sub-categories linked to this category (many-to-many).
+     */
+    public function subCategories()
+    {
+        return $this->belongsToMany(SubCategory::class, 'category_sub_category');
+    }
 }

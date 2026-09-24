@@ -12,7 +12,7 @@ import Pagination from '../components/Pagination';
 import { getStoredRole, canDelete } from '../utils/roleAccess';
 import CreatorBadge from '../components/CreatorBadge';
 interface Category { id: number; name: string; type?: 'income' | 'expense'; }
-interface SubCategory { id: number; name: string; category_id: number; }
+interface SubCategory { id: number; name: string; category_id: number; category_ids?: number[]; }
 interface BioData {
     id: number; name: string;
     category_id?: number; sub_category_id?: number; category_name?: string;
@@ -2446,7 +2446,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
     });
     const setF = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
     const expCats = categories.filter(c => !c.type || c.type.toLowerCase() === 'expense');
-    const filteredSubs = form.category_id ? subCategories.filter(s => s.category_id === +form.category_id) : [];
+    const filteredSubs = form.category_id ? subCategories.filter(s => s.category_ids?.length ? s.category_ids.includes(+form.category_id) : s.category_id === +form.category_id) : [];
     const expCatIds = new Set(expCats.map(c => c.id));
     const expBioData = bioData.filter(b => b.category_id ? expCatIds.has(b.category_id) : true)
         .filter(b => {
@@ -3622,7 +3622,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
     const expCats = categories.filter(c => !c.type || c.type.toLowerCase() === 'expense');
     const allBioOptions = bioData.map(b => ({ value: String(b.id), label: b.name, sub: b.category_name }));
     const expCatOptions = expCats.map(c => ({ value: String(c.id), label: c.name }));
-    const daybookSubCats = form.daybook_category_id ? subCategories.filter(s => s.category_id === +form.daybook_category_id) : [];
+    const daybookSubCats = form.daybook_category_id ? subCategories.filter(s => s.category_ids?.length ? s.category_ids.includes(+form.daybook_category_id) : s.category_id === +form.daybook_category_id) : [];
     const payModeOptions = PAYMENT_MODES.map(m => ({ value: m, label: m }));
     const selDaybookSub = subCategories.find(s => String(s.id) === form.daybook_sub_category_id);
 

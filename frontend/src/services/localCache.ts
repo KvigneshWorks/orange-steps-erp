@@ -1,7 +1,4 @@
-// Session-scoped: persists across page refreshes within the same tab/browser session,
-// but clears when the tab or browser closes -- these are short-lived (5 min TTL) cached
-// API responses, not data that should survive a full browser restart.
-const TTL = 5 * 60 * 1000; // 5 minutes
+const TTL = 5 * 60 * 1000;
 
 export const localCache = {
   get(key: string): any | null {

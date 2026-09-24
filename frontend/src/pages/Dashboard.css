@@ -622,7 +622,7 @@
 
   /* Bold, uppercase wordmark, same treatment used on the sign-in
      page's brand panel, so the mark reads consistently across the
-     whole product. "WHITE" stays dark/neutral, "NODE" carries the
+     whole product. "ORANGE" stays dark/neutral, "STEPS" carries the
      brand highlight (a shimmering ember gradient with a soft glow
      pulse) so the name keeps its two-tone identity while reading
      as a confident, modern tech wordmark rather than a script. */
@@ -644,14 +644,15 @@
   }
 
   .SB-wordmark-name .w-ss {
-    background: linear-gradient(90deg, #C2410C 0%, #F0834D 45%, #C2410C 100%);
-    background-size: 220% auto;
+    background: linear-gradient(90deg, #C2410C 0%, #F0834D 40%, #FBC9A8 55%, #F0834D 70%, #C2410C 100%);
+    background-size: 250% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     font-size: 15.5px;
     font-weight: 800;
     letter-spacing: 0.6px;
+    animation: ds-brandShine 5s linear infinite;
   }
 
   .SB-wordmark-name .w-er {
@@ -664,9 +665,9 @@
     font-family: var(--font-mono);
     font-size: 9.5px;
     font-weight: 800;
-    letter-spacing: 2.6px;
-    background: linear-gradient(90deg, #9A3412 0%, #C2410C 40%, #C2410C 70%, #9A3412 100%);
-    background-size: 220% auto;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #9A3412 0%, #C2410C 35%, #F0834D 50%, #C2410C 65%, #9A3412 100%);
+    background-size: 250% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -677,6 +678,7 @@
     align-items: center;
     gap: 7px;
     white-space: nowrap;
+    animation: ds-brandShine 5s linear infinite;
   }
 
   .SB-wordmark-sub::after {
@@ -685,6 +687,65 @@
     left: 0; bottom: 0;
     width: 100%; height: 1px;
     background: linear-gradient(90deg, rgba(194,65,12,0.55), transparent);
+  }
+
+  /* Small premium "built by" badge at the very bottom of the sidebar —
+     collapses away with the rest of the wordmark content when the
+     sidebar is collapsed to icon-only. Reuses ds-glow (already used
+     elsewhere in this file for breathing badges) for the dot's pulse,
+     so it matches the app's existing motion language. */
+  .SB-dev-credit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5px;
+    margin: 2px 16px 10px;
+    padding: 5px 10px 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(194,65,12,0.32);
+    background: linear-gradient(135deg, rgba(194,65,12,0.10), rgba(240,131,77,0.06));
+    box-shadow: 0 1px 6px rgba(194,65,12,0.08);
+    white-space: nowrap;
+  }
+
+  .SB-dev-credit-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 6.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9a8f7f;
+  }
+
+  .SB-dev-credit-dot {
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    background: #C2410C;
+    box-shadow: 0 0 4px rgba(194,65,12,0.6);
+    flex-shrink: 0;
+    animation: ds-glow 2s infinite;
+  }
+
+  .SB-dev-credit-brand {
+    font-family: var(--font-body), sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1px;
+    background: linear-gradient(90deg, #9A3412 0%, #C2410C 40%, #F0834D 55%, #C2410C 70%, #9A3412 100%);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: ds-brandShine 5s linear infinite;
+  }
+
+  .SB.collapsed .SB-dev-credit {
+    display: none;
   }
 
   /* ── Collapse toggle — flat & professional. Docked on the boundary line
@@ -5742,7 +5803,10 @@
     .DH-module-ico,
     .DH-hero-glow,
     .DH-proj-fill,
-    .DH-due-dot.urgent {
+    .DH-due-dot.urgent,
+    .SB-dev-credit-dot,
+    .SB-wordmark-name .w-ss,
+    .SB-wordmark-sub {
       animation: none !important;
     }
   }

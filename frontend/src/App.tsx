@@ -54,11 +54,11 @@ function App() {
             }}>
                 <img
                     src={import.meta.env.BASE_URL + 'favicon.png'}
-                    alt="WhiteNode Software Solutions"
+                    alt="OrangeSteps"
                     style={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: 16,
+                        width: 96,
+                        height: 96,
+                        borderRadius: 22,
                         animation: 'wn-boot-pulse 1.4s ease-in-out infinite',
                     }}
                 />

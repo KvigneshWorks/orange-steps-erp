@@ -760,7 +760,7 @@ function Placeholder({ id }: { id: string }) {
             </div>
             <div>
                 <div style={{ fontFamily: "'Instrument Serif',serif", fontSize: 32.5, fontWeight: 600, fontStyle: 'italic', color: '#231C14', marginBottom: 6 }}>{lbl}</div>
-                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#6B5D48', letterSpacing: '3px', textTransform: 'uppercase' }}>Module · WhiteNode</div>
+                <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: '#6B5D48', letterSpacing: '3px', textTransform: 'uppercase' }}>Module · OrangeSteps</div>
             </div>
             <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, letterSpacing: '2.5px', textTransform: 'uppercase', padding: '8px 22px', borderRadius: 8, background: 'rgba(194,65,12,0.08)', color: '#C2410C', border: '1px solid rgba(194,65,12,0.28)' }}>Coming Soon</div>
         </div>
@@ -983,6 +983,7 @@ function DashContent({
         { id: 'client', lbl: 'Accounts Receivable', c: '#1E9C6A', bg: 'rgba(30,156,106,.12)', icon: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /></> },
         { id: 'attendance', lbl: 'Mark Attendance', c: '#EA580C', bg: 'rgba(234,88,12,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
         { id: 'report-daybook', lbl: 'View Insights', c: '#524532', bg: 'rgba(82,69,50,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
+        { id: 'master', }
     ];
 
     return (
@@ -1413,14 +1414,6 @@ function DashContent({
     );
 }
 
-/* ──────────────────────────────────────
-   LABOUR-ONLY DASHBOARD — shown to the 'user' role instead of DashContent.
-   That role's nav/API access is scoped to Manpower Register + Attendance
-   only (see USER_ALLOWED / CheckRole middleware), so this deliberately
-   drops every Accounts Receivable / Cash Book / Credit / Business Insights widget and shows
-   just what's relevant: today's attendance pulse, worker headcount, this
-   month's manpower cost, recent activity, and the two pages they can open.
-───────────────────────────────────────── */
 interface LabourStats { total_workers: number; marked_today: number; present_today: number; month_cost: number; }
 interface LabourActivity {
     id: number; worker_name: string; sub_worker_name: string | null; is_sub_entry: boolean;
@@ -1510,6 +1503,7 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
             {/* Hero Start */}
             <div className="DH-hero">
                 <div className="DH-hero-glow g1" /><div className="DH-hero-glow g2" />
+                {/* Hero Start */}
                 <div className="DH-hero-main">
                     <div>
                         <span className="DH-hero-eyebrow">{today}</span>
@@ -1538,7 +1532,9 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
                         </div>
                     </div>
                 </div>
+                {/* Hero End */}
 
+                {/* ManPower Register Start */}
                 <div className="DH-quick-row">
                     <div className="DH-quick-pill" onClick={() => onNavigate('attendance')}>
                         <div className="DH-quick-ico" style={{ background: 'rgba(194,65,12,.12)' }}>
@@ -1553,6 +1549,8 @@ function LabourDashContent({ userName, onNavigate }: { userName: string; onNavig
                         <span className="DH-quick-lbl">Manpower Register</span>
                     </div>
                 </div>
+                {/* ManPower Register End */}
+
             </div>
             {/* Hero End */}
 
@@ -2173,8 +2171,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const sweepTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const autoCollapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
-    // Sidebar starts collapsed on every fresh login/page load — the user
-    // opens it themselves via the toggle button instead of it defaulting open.
     const [collapsed, setCollapsed] = useState(true);
     const [autoClosing, setAutoClosing] = useState(false);
     const [mobOpen, setMobOpen] = useState(false);
@@ -2292,6 +2288,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             setActiveNav('dashboard');
             return;
         }
+
         if (activeNav === visibleNav) return;
         clearTimeout(transTimer.current!);
         clearTimeout(sweepTimer.current!);
@@ -2453,10 +2450,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         return () => window.removeEventListener('erp:notifications-refresh', onNotifRefresh);
     }, [fetchOverview]);
 
-    /* ── Pending account-approval requests, for the bell — Super Admin
-       only. Polls fast (20s) rather than piggy-backing on the 5-minute
-       dashboard refresh, so a new request from an Admin's "Create
-       Account" page shows up here quickly. */
     const fetchPendingApprovals = useCallback(async () => {
         const tk = sessionStorage.getItem('token');
         if (!tk || getStoredRole() !== 'super_admin') { setPendingApprovals([]); return; }
@@ -2590,14 +2583,14 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
                         <div className="SB-brand">
                             <div className="SB-logo-img-wrap">
-                                <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="WhiteNode Software Solutions Logo" className="SB-logo-img" />
+                                <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="OrangeSteps Logo" className="SB-logo-img" />
                             </div>
                             <div className="SB-wordmark-block">
                                 <div className="SB-wordmark-name">
-                                    <span className="w-te">White</span>
-                                    <span className="w-ss">Node</span>
+                                    <span className="w-te">Orange</span>
+                                    <span className="w-ss">Steps</span>
                                 </div>
-                                <div className="SB-wordmark-sub">Software Solutions</div>
+                                <div className="SB-wordmark-sub">Interiors. Engineered.</div>
                             </div>
                             <button className="SB-close" onClick={() => setMobOpen(false)} aria-label="Close menu">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M6 18L18 6" /></svg>
@@ -2752,6 +2745,14 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                     </button>
                                 </div>
                             )}
+                        </div>
+
+                        <div className="SB-dev-credit">
+                            <div className="SB-dev-credit-label">
+                                <span className="SB-dev-credit-dot" />
+                                <span>Developed&nbsp;by</span>
+                            </div>
+                            <div className="SB-dev-credit-brand">WHITENODE software solutions</div>
                         </div>
 
                     </div>

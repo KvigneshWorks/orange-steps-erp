@@ -12,7 +12,7 @@ import PageOpenIntro from '../components/PageOpenIntro';
 import { getStoredRole, canDelete } from '../utils/roleAccess';
 import CreatorBadge from '../components/CreatorBadge';
 interface Category { id: number; name: string; type: 'income' | 'expense'; }
-interface SubCategory { id: number; name: string; category_id: number; }
+interface SubCategory { id: number; name: string; category_id: number; category_ids?: number[]; }
 interface BioData { id: number; name: string; category_id?: number; sub_category_id?: number | null; }
 interface SubName { id: number; alternate_name: string; bio_data_id: number; }
 
@@ -1714,7 +1714,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
 
     const _triggerEdit = (entry: DaybookEntry, subs: SubCategory[], bios: BioData[], sns: SubName[]) => {
         const pm = PAYMENT_METHODS.find(p => p.id === entry.payment_mode)?.id || 'Cash';
-        const fSub = subs.filter(s => s.category_id === entry.category_id);
+        const fSub = subs.filter(s => s.category_ids?.length ? s.category_ids.includes(entry.category_id) : s.category_id === entry.category_id);
         let fBio = bios.filter(b => !b.category_id || b.category_id === entry.category_id);
         fBio = fBio.length > 0 ? fBio : bios;
         if (entry.sub_category_id) {
@@ -1743,7 +1743,7 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
     useEffect(() => {
         if (form.category_id) {
             const catId = +form.category_id;
-            setFilteredSub(subCategories.filter(s => s.category_id === catId));
+            setFilteredSub(subCategories.filter(s => s.category_ids?.length ? s.category_ids.includes(catId) : s.category_id === catId));
 
             let bios = bioData.filter(b => !b.category_id || b.category_id === catId);
             bios = bios.length > 0 ? bios : bioData;

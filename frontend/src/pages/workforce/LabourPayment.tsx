@@ -151,7 +151,7 @@ const MODE_LABELS: Record<string, string> = {
 };
 
 interface DBCategory { id: number; name: string; type?: string; }
-interface DBSubCategory { id: number; name: string; category_id: number; }
+interface DBSubCategory { id: number; name: string; category_id: number; category_ids?: number[]; }
 interface DBBio { id: number; name: string; category_id?: number; category_name?: string; }
 interface DBSubName { id: number; alternate_name: string; bio_data_id: number; }
 const DB_MODE_MAP: Record<string, string> = {
@@ -1885,11 +1885,11 @@ export default function LabourPayment() {
 
     const workerSubCatId = selectedWorker.worker.sub_category_id;
     let subCatMatch = workerSubCatId
-      ? masterSubs.find(s => s.id === Number(workerSubCatId) && (!labCat || s.category_id === labCat.id))
+      ? masterSubs.find(s => s.id === Number(workerSubCatId) && (!labCat || (s.category_ids?.length ? s.category_ids.includes(labCat.id) : s.category_id === labCat.id)))
       : undefined;
     if (!subCatMatch && selectedWorker.worker.trade) {
       const tradeName = selectedWorker.worker.trade.trim().toLowerCase();
-      subCatMatch = masterSubs.find(s => (!labCat || s.category_id === labCat.id) && s.name.trim().toLowerCase() === tradeName);
+      subCatMatch = masterSubs.find(s => (!labCat || (s.category_ids?.length ? s.category_ids.includes(labCat.id) : s.category_id === labCat.id)) && s.name.trim().toLowerCase() === tradeName);
     }
     setDbSub(subCatMatch ? String(subCatMatch.id) : '');
 
@@ -2291,7 +2291,7 @@ export default function LabourPayment() {
     .filter(c => !c.type || c.type.toLowerCase() === 'expense')
     .map(c => ({ value: String(c.id), label: c.name }));
   const dbSubOptions = dbCat
-    ? masterSubs.filter(s => s.category_id === +dbCat).map(s => ({ value: String(s.id), label: s.name }))
+    ? masterSubs.filter(s => s.category_ids?.length ? s.category_ids.includes(+dbCat) : s.category_id === +dbCat).map(s => ({ value: String(s.id), label: s.name }))
     : [];
 
   const masterSNsForParty = dbParty ? masterSNs.filter(sn => sn.bio_data_id === +dbParty) : [];

@@ -243,11 +243,11 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
 
                     <div className="AS-brand-top">
                         <div className="AS-brand-logo">
-                            <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="WhiteNode Software Solutions" />
+                            <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="OrangeSteps" />
                         </div>
                         <div className="AS-brand-name">
-                            <span className="AS-brand-name-main"><span className="w-te">White</span><span className="w-hl">Node</span></span>
-                            <span className="AS-brand-name-sub">Software Solutions</span>
+                            <span className="AS-brand-name-main"><span className="w-te">Orange</span><span className="w-hl">Steps</span></span>
+                            <span className="AS-brand-name-sub">Interiors. Engineered.</span>
                         </div>
                     </div>
 
@@ -291,7 +291,15 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6" />
                         </svg>
-                        &copy; {year} WhiteNode Software Solutions. All rights reserved.
+                        &copy; {year} OrangeSteps. All rights reserved.
+                    </div>
+
+                    <div className="AS-dev-chip">
+                        <div className="AS-dev-chip-label">
+                            <span className="AS-dev-chip-dot" />
+                            <span>Developed&nbsp;by</span>
+                        </div>
+                        <div className="AS-dev-chip-brand">WhiteNode Software Solutions</div>
                     </div>
                 </aside>
 
@@ -303,11 +311,11 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
 
                         <div className="AS-mobile-brand">
                             <div className="AS-brand-logo">
-                                <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="WhiteNode Software Solutions" />
+                                <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="OrangeSteps" />
                             </div>
                             <div className="AS-brand-name">
-                                <span className="AS-brand-name-main"><span className="w-te">White</span><span className="w-hl">Node</span></span>
-                                <span className="AS-brand-name-sub">Software Solutions</span>
+                                <span className="AS-brand-name-main"><span className="w-te">Orange</span><span className="w-hl">Steps</span></span>
+                                <span className="AS-brand-name-sub">Interiors. Engineered.</span>
                             </div>
                         </div>
 
@@ -317,7 +325,7 @@ export default function Auth({ onLoginSuccess }: AuthProps) {
                                 Welcome <span className="AS-t-accent">back</span>
                                 <span className="AS-form-title-bar" />
                             </h2>
-                            <p className="AS-form-sub">Sign in to access your WhiteNode workspace.</p>
+                            <p className="AS-form-sub">Sign in to access your OrangeSteps workspace.</p>
 
                             <div className="AS-trust-row">
                                 <span className="AS-trust-chip"><LockIcon /> Bank-grade Security</span>

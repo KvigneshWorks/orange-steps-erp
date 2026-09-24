@@ -8,14 +8,14 @@ import { CalendarDD } from '../components/CalendarDD';
 import { markPanelOpen, markPanelClosed, useKeyboardFieldNav, useDropdownTriggerKeyDown, useDropdownPanelArrowNav } from '../utils/keyboardNav';
 
 const COMPANY = {
-    name: 'WhiteNode Software Solutions',
-    fullName: 'WhiteNode Software Solutions',
-    address: '281, GRAND BRENTON 1st Floor, Avinashi Rd, Coimbatore, Tamil Nadu 641004',
-    phone: '+91 94885 42342',
-    email: 'contact@whitenode.in',
-    website: 'www.whitenode.in',
-    tagline: 'Software Solutions',
-    gstin: '',
+    name: 'OrangeSteps',
+    fullName: 'OrangeSteps',
+    address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
+    phone: '+91 95667 01640',
+    email: 'info@orangesteps.in',
+    website: '',
+    tagline: 'ERP Software',
+    gstin: 'GSTIN: 33XXXXX0000X0XX', // placeholder — update with the real GSTIN
     logoPath: import.meta.env.BASE_URL + 'favicon.png',
     logo2Path: import.meta.env.BASE_URL + 'favicon.png',
     logoDarkPath: import.meta.env.BASE_URL + 'favicon.png',
@@ -98,7 +98,7 @@ interface DaybookEntry {
 
 interface BioData { id: number; name: string; category_id?: number; sub_category_id?: number; }
 interface SubName { id: number; alternate_name: string; bio_data_id: number; }
-interface SubCategoryMaster { id: number; name: string; category_id?: number; }
+interface SubCategoryMaster { id: number; name: string; category_id?: number; category_ids?: number[]; }
 interface CategoryOption { id: string; name: string; type?: 'income' | 'expense'; }
 interface DbStats { income?: number; expense?: number; balance?: number; labourUnpaid?: number; creditUnpaid?: number; }
 interface DbFilter { payment_modes: string[]; category_ids: string[]; sub_category_ids: string[]; search: string; bio_data_ids: string[]; sub_name_ids: string[]; client_names: string[]; }
@@ -320,10 +320,10 @@ const drawPdfTextWatermark = (doc: any) => {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(130);
     doc.setTextColor(248, 232, 220);
-    doc.text('W', W / 2, PH / 2 + 40, { align: 'center' });
+    doc.text('O', W / 2, PH / 2 + 40, { align: 'center' });
     doc.setFontSize(18);
     doc.setTextColor(246, 225, 210);
-    doc.text('WhiteNode', W / 2, PH / 2 + 60, { align: 'center' });
+    doc.text('OrangeSteps', W / 2, PH / 2 + 60, { align: 'center' });
 };
 
 const drawPdfLogoBox = (doc: any, x: number, y: number, size: number) => {
@@ -806,7 +806,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
                             id="l-email"
                             type="email"
                             className={`L-input${error ? ' err' : ''}`}
-                            placeholder="you@whitenode.in"
+                            placeholder="you@orangesteps.in"
                             value={email}
                             onChange={e => { setEmail(e.target.value); setError(''); }}
                             autoComplete="email"
@@ -862,7 +862,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 
                 {/* FOOTER START */}
                 <div className="L-footer">
-                    {COMPANY.fullName} · {COMPANY.website}<br />
+                    {COMPANY.fullName}{COMPANY.website ? ` · ${COMPANY.website}` : ''}<br />
                     <span style={{ marginTop: 4, display: 'block', opacity: .7 }}>Your session is encrypted and token-secured</span>
                 </div>
                 {/* FOOTER END */}
@@ -1878,7 +1878,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const crSubCategoryIdOpts: DDOpt[] = React.useMemo(() => {
         if (!crCategoryIdFiltersDraft.length) return [];
         return subCategoryList
-            .filter(sc => crCategoryIdFiltersDraft.includes(String(sc.category_id ?? '')))
+            .filter(sc => sc.category_ids?.length ? sc.category_ids.some(id => crCategoryIdFiltersDraft.includes(String(id))) : crCategoryIdFiltersDraft.includes(String(sc.category_id ?? '')))
             .map(sc => ({ value: normId(sc.id), label: sc.name }))
             .sort((a, b) => a.label.localeCompare(b.label));
     }, [subCategoryList, crCategoryIdFiltersDraft]);

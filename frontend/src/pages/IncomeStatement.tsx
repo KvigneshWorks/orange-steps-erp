@@ -6,13 +6,13 @@ import { CalendarDD } from '../components/CalendarDD';
 import { useKeyboardFieldNav } from '../utils/keyboardNav';
 
 const COMPANY = {
-    fullName: 'WhiteNode Software Solutions',
-    address: '281, GRAND BRENTON 1st Floor, Avinashi Rd, Coimbatore, Tamil Nadu 641004',
-    phone: '+91 94885 42342',
-    email: 'contact@whitenode.in',
-    gstin: 'GSTIN: 00XXXXX0000X0XX',
-    website: 'www.whitenode.in',
-    tagline: 'Software Solutions',
+    fullName: 'OrangeSteps',
+    address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
+    phone: '+91 95667 01640',
+    email: 'info@orangesteps.in',
+    gstin: 'GSTIN: 33XXXXX0000X0XX', // placeholder — update with the real GSTIN
+    website: '',
+    tagline: 'ERP Software',
     logoPath: import.meta.env.BASE_URL + 'favicon.png',
     logo2Path: import.meta.env.BASE_URL + 'favicon.png',
 };

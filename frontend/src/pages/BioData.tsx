@@ -12,7 +12,7 @@ import { markPanelOpen, markPanelClosed, useKeyboardFieldNav, useDropdownTrigger
 import { getStoredRole, canDelete } from '../utils/roleAccess';
 
 interface Category { id: number; name: string; }
-interface SubCategory { id: number; name: string; category_id: number; }
+interface SubCategory { id: number; name: string; category_id: number; category_ids?: number[]; }
 interface IDType { id: number; type_name: string; }
 interface BioRecord {
     id: number; name: string; id_type_id?: number; id_type_name?: string;
@@ -404,7 +404,12 @@ export default function BioData() {
 
     useEffect(() => {
         if (form.category_id) {
-            setFilteredSub(subCategories.filter(sc => sc.category_id === parseInt(form.category_id)));
+            {
+                const catId = parseInt(form.category_id);
+                setFilteredSub(subCategories.filter(sc =>
+                    sc.category_ids?.length ? sc.category_ids.includes(catId) : sc.category_id === catId
+                ));
+            }
         } else {
             setFilteredSub([]);
         }

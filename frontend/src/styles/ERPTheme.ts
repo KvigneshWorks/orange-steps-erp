@@ -2172,5 +2172,88 @@ export const ERP_CSS = `
 @media (max-width: 720px) {
   .ERP-pg { justify-content: center; text-align: center; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   Account Head multi-select (Category ↔ Sub-Category many-to-many)
+   — a self-contained checkbox-chip picker used wherever a sub-head
+   must be linked to more than one account head (currently the Sub
+   Category form's "Parent Account Head(s)" field). Reuses the
+   project's existing ember chip language (see .ERP-dd-chip) rather
+   than inventing a new visual system.
+   ══════════════════════════════════════════════════════════════════ */
+.SC-ms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  min-height: 44px;
+}
+
+.SC-ms-empty {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-4);
+  padding: 4px 2px;
+}
+
+.SC-ms-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
+  background: var(--off-white);
+  border: 1.5px solid var(--border-2);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background .16s ease, border-color .16s ease, color .16s ease, transform .12s ease;
+}
+
+.SC-ms-chip:hover {
+  border-color: var(--ember-border);
+  color: var(--text-1);
+}
+
+.SC-ms-chip:active { transform: scale(0.97); }
+
+.SC-ms-chip.sel {
+  background: var(--ember-ghost);
+  border-color: var(--ember-border);
+  color: var(--ember);
+}
+
+.SC-ms-chip-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-3);
+  background: var(--white);
+  color: var(--white);
+  flex-shrink: 0;
+  transition: background .16s ease, border-color .16s ease;
+}
+
+.SC-ms-chip.sel .SC-ms-chip-box {
+  background: var(--ember);
+  border-color: var(--ember);
+}
+
+/* Table cell showing every account head a sub-head is linked to,
+   as a wrapping row of the existing .MD-tbl-tag chips. */
+.SC-tbl-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 260px;
+}
 `;
 

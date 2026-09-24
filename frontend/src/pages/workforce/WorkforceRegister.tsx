@@ -38,7 +38,7 @@ function getSubPopoverStyle(anchor: { top: number; bottom: number; left: number;
 type PayType = 'daily' | 'weekly' | 'monthly';
 
 interface Category { id: number; name: string; type: 'income' | 'expense'; }
-interface SubCategory { id: number; name: string; category_id: number; }
+interface SubCategory { id: number; name: string; category_id: number; category_ids?: number[]; }
 interface BioData { id: number; name: string; category_id?: number; sub_category_id?: number; sub_name_id?: number; is_active?: boolean; }
 interface SubName { id: number; alternate_name: string; bio_data_id: number; }
 interface WSubName { id: number; worker_id: number; sub_name: string; daily_rate?: number | null; is_active?: boolean; }
@@ -817,7 +817,7 @@ export default function WorkforceRegister() {
     useEffect(() => { loadAll(); }, [loadAll]);
 
     const expenseCats = categories.filter(c => c.type === 'expense');
-    const filteredSubs = subCategories.filter(s => !form.category_id || s.category_id === Number(form.category_id));
+    const filteredSubs = subCategories.filter(s => !form.category_id || (s.category_ids?.length ? s.category_ids.includes(Number(form.category_id)) : s.category_id === Number(form.category_id)));
     const filteredBio = bioData.filter(b => {
         if (!form.category_id) return true;
         if (b.category_id && b.category_id !== Number(form.category_id)) return false;
