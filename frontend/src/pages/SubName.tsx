@@ -517,71 +517,71 @@ export default function SubName() {
 
                 {/* TABLE START */}
                 <div className="ERP-tbl-card MD-tbl-card">
-                        {fetching ? (
-                            <RunningLoader label="Loading Associate Names" />
-                        ) : subNames.length === 0 ? (
-                            <div className="ERP-empty">
-                                <div className="ERP-empty-icon"><Ic d="M7 8h10M7 12h10M7 16h10" sz={26} c="var(--ember-light)" sw={1.8} /></div>
-                                <div className="ERP-empty-title">No Associate Names Yet</div>
-                                <div className="ERP-empty-sub">Add your first associate name using the button above</div>
-                            </div>
-                        ) : (
-                            <div className="ERP-tbl-scroll">
-                                <table className="ERP-tbl">
-                                    <thead>
-                                        <tr>
-                                            <th className="ERP-center" style={{ width: 52 }}>No.</th>
-                                            <th>Party Name</th>
-                                            <th>Alternate Name</th>
-                                            <th>Classification</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th className="ERP-center" style={{ width: 160 }}>Actions</th>
+                    {fetching ? (
+                        <RunningLoader label="Loading Associate Names" />
+                    ) : subNames.length === 0 ? (
+                        <div className="ERP-empty">
+                            <div className="ERP-empty-icon"><Ic d="M7 8h10M7 12h10M7 16h10" sz={26} c="var(--ember-light)" sw={1.8} /></div>
+                            <div className="ERP-empty-title">No Associate Names Yet</div>
+                            <div className="ERP-empty-sub">Add your first associate name using the button above</div>
+                        </div>
+                    ) : (
+                        <div className="ERP-tbl-scroll">
+                            <table className="ERP-tbl">
+                                <thead>
+                                    <tr>
+                                        <th className="ERP-center" style={{ width: 52 }}>No.</th>
+                                        <th>Party Name</th>
+                                        <th>Alternate Name</th>
+                                        <th>Classification</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th className="ERP-center" style={{ width: 160 }}>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {pagedSubNames.map((sn, i) => (
+                                        <tr key={sn.id}>
+                                            <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
+                                            <td><span className="MD-tbl-tag info">{sn.bio_data_name || <span className="ERP-t-null">—</span>}</span></td>
+                                            <td className="ERP-t-primary">{sn.alternate_name}</td>
+                                            <td>
+                                                <span className="MD-tbl-tag warn">{sn.classification}</span>
+                                            </td>
+                                            <td>{sn.description ? <span className="ERP-t-desc">{sn.description}</span> : <span className="ERP-t-null">—</span>}</td>
+                                            <td>
+                                                <span className={`MD-tbl-tag ${sn.is_active ? 'info' : 'muted'}`}>
+                                                    {sn.is_active ? 'Active' : 'Inactive'}
+                                                </span>
+                                            </td>
+                                            <td className="ERP-center ERP-nowrap">
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                                                    <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(sn)}>Edit</button>
+                                                    {canDelete(userRole) ? (
+                                                        <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(sn.id, sn.alternate_name)}>Delete</button>
+                                                    ) : (
+                                                        <CreatorBadge name={sn.created_by_name} />
+                                                    )}
+                                                </div>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {pagedSubNames.map((sn, i) => (
-                                            <tr key={sn.id}>
-                                                <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
-                                                <td><span className="MD-tbl-tag info">{sn.bio_data_name || <span className="ERP-t-null">—</span>}</span></td>
-                                                <td className="ERP-t-primary">{sn.alternate_name}</td>
-                                                <td>
-                                                    <span className="MD-tbl-tag warn">{sn.classification}</span>
-                                                </td>
-                                                <td>{sn.description ? <span className="ERP-t-desc">{sn.description}</span> : <span className="ERP-t-null">—</span>}</td>
-                                                <td>
-                                                    <span className={`MD-tbl-tag ${sn.is_active ? 'info' : 'muted'}`}>
-                                                        {sn.is_active ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </td>
-                                                <td className="ERP-center ERP-nowrap">
-                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                                                        <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(sn)}>Edit</button>
-                                                        {canDelete(userRole) ? (
-                                                            <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(sn.id, sn.alternate_name)}>Delete</button>
-                                                        ) : (
-                                                            <CreatorBadge name={sn.created_by_name} />
-                                                        )}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                        {!fetching && subNames.length > 0 && (
-                            <Pagination
-                                page={mdSafePage}
-                                totalPages={mdTotalPages}
-                                onPageChange={setMdPage}
-                                total={subNames.length}
-                                perPage={mdPerPage}
-                                onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
-                                itemLabel="associate names"
-                            />
-                        )}
-                    </div>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                    {!fetching && subNames.length > 0 && (
+                        <Pagination
+                            page={mdSafePage}
+                            totalPages={mdTotalPages}
+                            onPageChange={setMdPage}
+                            total={subNames.length}
+                            perPage={mdPerPage}
+                            onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
+                            itemLabel="associate names"
+                        />
+                    )}
+                </div>
                 {/* TABLE END */}
             </div>
             <ConfirmDeleteModal
