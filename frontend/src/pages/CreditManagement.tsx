@@ -260,6 +260,7 @@ function SDD({
                 </button>}
             </div>
 
+            {/* Clear Selection Start */}
             <div className="CM3-sdd-list">
                 {value && !q && (
                     <div onClick={() => pick('')} role="option" tabIndex={-1} aria-selected={false} className="CM3-sdd-item CM3-sdd-clear">
@@ -288,12 +289,14 @@ function SDD({
                         );
                     })}
             </div>
+            {/* Clear Selection End */}
 
+            {/* Footer Start */}
             <div className="CM3-sdd-footer">
                 <span>{filtered.length === options.length ? `${options.length} options` : `${filtered.length} of ${options.length}`}</span>
                 {value && <span style={{ color: accent, fontWeight: 800 }}>1 selected</span>}
             </div>
-            
+            {/* Footer End */}
         </div>,
         document.body
     ) : null;
@@ -363,13 +366,6 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
         return () => document.removeEventListener('mousedown', fn);
     }, [open]);
 
-    // The panel is positioned once (on focus) from the field's on-screen rect.
-    // Unlike SDD, this never re-checked itself against scrolling — so scrolling
-    // the modal body while the dropdown was open left the panel stuck at its
-    // stale position, detached from the field ("shows in another place").
-    // Closing on any scroll (capture phase catches scroll on the modal's
-    // internal scroll container too, not just window-level scroll) matches
-    // the same safe behavior SDD already uses elsewhere in this file.
     useEffect(() => {
         if (!open) return;
         const close = () => { setOpen(false); setQ(''); };
@@ -416,9 +412,8 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
             </div>
             {/* Search row */}
 
-            {/* List */}
+            {/* List Start */}
             <div style={{ maxHeight: 200, overflowY: 'auto', overscrollBehavior: 'contain' }}>
-                {/* "Use typed name" option when typing something not in list */}
                 {q.trim() && !options.find(o => o.label.toLowerCase() === q.toLowerCase()) && (
                     <div onClick={() => pick(q.trim())} role="option" tabIndex={-1} aria-selected={false}
                         style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', cursor: 'pointer', borderBottom: '1px solid #F0ECE6', background: '#F5F3EF' }}>
@@ -449,14 +444,14 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                     );
                 })}
             </div>
-            {/* List */}
+            {/* List End */}
 
-            {/* Footer */}
+            {/* Footer Start */}
             <div style={{ padding: '4px 12px', background: '#F5F3EF', borderTop: '1px solid #E8E2D8', fontSize: 8, color: '#8C7C63', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em', display: 'flex', justifyContent: 'space-between' }}>
                 <span>{filtered.length} client{filtered.length !== 1 ? 's' : ''}</span>
                 {value && <span style={{ color: accent, fontWeight: 800 }}>✓ {value}</span>}
             </div>
-            {/* Footer */}
+            {/* Footer End */}
 
         </div>,
         document.body
@@ -465,10 +460,12 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
     return (
         <div ref={wrapRef} style={{ position: 'relative' }}>
             <div style={{ position: 'relative' }}>
-                {/* Person icon */}
+                {/* Person Icon Start */}
                 <div style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: value ? accent : '#8C7C63' }}>
                     <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                 </div>
+                {/* Person Icon End */}
+
                 <input
                     ref={inputRef}
                     type="text"
@@ -480,20 +477,22 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                     autoComplete="off"
                     style={{ paddingLeft: 32, paddingRight: value ? 32 : 12, borderColor: open ? accent : undefined, boxShadow: open ? `0 0 0 3px ${accent}18` : undefined, transition: 'border-color .18s, box-shadow .18s' }}
                 />
-                {/* Clear button */}
+
+                {/* Clear Button Start */}
                 {value && (
                     <button type="button" onClick={clear}
                         style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8C7C63', display: 'flex', padding: 3, borderRadius: 4 }}>
                         <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                     </button>
                 )}
-                {/*  */}
+                {/* Clear Button End */}
             </div>
             {panel}
         </div>
     );
 }
 
+// Css for Credit Management Page Start
 const CSS = `
 /* ── PAGE ── */
 .CM3-page {
@@ -2426,6 +2425,7 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
   font-size: 9px; font-weight: 700; margin-top: 4px;
 }
 `;
+// Css for Credit Management Page End
 
 function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose, onSaved, editVendor, presetCategoryId }: {
     categories: Category[]; subCategories: SubCategory[]; bioData: BioData[]; vendors: Vendor[];
@@ -2438,9 +2438,6 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
     const categoryFieldRef = useRef<HTMLDivElement>(null);
     const bioFieldRef = useRef<HTMLDivElement>(null);
     const [dupModal, setDupModal] = useState<{ open: boolean; fields: { label: string; value: string }[]; pendingPayload: object | null }>({ open: false, fields: [], pendingPayload: null });
-    // Opened from a Category Overview panel — the category is already known from
-    // context, so it's pre-filled and locked instead of asking the user to pick
-    // one again (see Step 0 below).
     const lockedCategory = !editVendor && presetCategoryId != null
         ? categories.find(c => c.id === presetCategoryId) || null
         : null;
@@ -2541,6 +2538,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                 <div className="CM3-mbody">
                     {step === 0 && (
                         <div>
+                            {/* Classification Start */}
                             <div className="CM3-step-head">
                                 <div className="CM3-step-num">01</div>
                                 <div>
@@ -2548,6 +2546,9 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                                     <div className="CM3-step-desc">Choose expense category — Vendor, Manpower, Contractor, Materials, etc.</div>
                                 </div>
                             </div>
+                            {/* Classification End */}
+
+                            {/* Expense Account Head Start */}
                             <div className="CM3-grid1">
                                 {lockedCategory ? (
                                     <div className="CM3-field">
@@ -2574,6 +2575,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                                     disabled={!form.category_id || filteredSubs.length === 0}
                                     emptyMsg="No sub-categories" />
                             </div>
+                            {/* Expense Account Head End */}
                             {selCat && (
                                 <div className="CM3-prev-card" style={{ marginTop: 14 }}>
                                     <div className="CM3-prev-row">
@@ -2593,6 +2595,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
 
                     {step === 1 && (
                         <div>
+                            {/* Name & Client Start */}
                             <div className="CM3-step-head">
                                 <div className="CM3-step-num">02</div>
                                 <div>
@@ -2600,6 +2603,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                                     <div className="CM3-step-desc">Both party name and client are required to create a ledger.</div>
                                 </div>
                             </div>
+                            {/* Name & Client End */}
 
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: '#ecfdf5', border: '1px solid #6ee7b7', borderRadius: 8, marginBottom: 16, fontSize: 10.5 }}>
                                 <Ic n="check" sz={13} c="#10b981" />
@@ -2610,10 +2614,12 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
 
                             <div className="CM3-grid1">
                                 <div>
+                                    {/* Name Start */}
                                     <div className="CM3-notice blue" style={{ marginBottom: 10 }}>
                                         <Ic n="user" sz={13} c="#C2410C" />
                                         <div><strong>{categoryLabel} Name *</strong> — From expense party master under <em>{selCat?.name}</em></div>
                                     </div>
+                                    {/* Name End */}
                                     <div ref={bioFieldRef} className={`CM3-field${errorField === 'bio_data' ? ' err' : ''}`}>
                                         <SDD label={`${categoryLabel} Name`} required
                                             options={expBioData.map(b => ({ value: String(b.id), label: b.name, sub: b.category_name }))}
@@ -2646,6 +2652,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
 
                     {step === 2 && (
                         <div>
+                            {/* Confirm Ledger Start */}
                             <div className="CM3-step-head">
                                 <div className="CM3-step-num">03</div>
                                 <div>
@@ -2653,6 +2660,8 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                                     <div className="CM3-step-desc">Review the details before saving</div>
                                 </div>
                             </div>
+                            {/* Confirm Ledger End */}
+
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                                 {[
                                     { label: 'Account Head', val: `${selCat?.name || '—'}${selSub ? ` › ${selSub.name}` : ''}`, ic: 'tag', color: '#DB5B1F' },
@@ -2671,13 +2680,13 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                             </div>
                         </div>
                     )}
-
                 </div>
 
                 <div className="CM3-mfoot" style={{ justifyContent: 'space-between' }}>
                     <div>
                         {step > 0 && <button className="CM3-btn back icon-only" onClick={() => setStep(s => s - 1)} disabled={saving} title="Back" aria-label="Back"><Ic n="arrow" sz={12} /></button>}
                     </div>
+                    {/* Cancel button Start */}
                     <div style={{ display: 'flex', gap: 8 }}>
                         <button className="CM3-btn ghost" onClick={onClose}>Cancel</button>
                         {step === 0 && <button className="CM3-btn primary" onClick={() => {
@@ -2704,8 +2713,8 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
                             </button>
                         )}
                     </div>
+                    {/* Cancel Button End */}
                 </div>
-
             </div>
         </div>
         , document.body);
@@ -2730,7 +2739,7 @@ function LedgerFormModal({ categories, subCategories, bioData, vendors, onClose,
     );
 }
 
-// ─── CREDIT ENTRY MODAL ───────────────
+// ─── CREDIT ENTRY MODAL ─────────
 function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onSaved }: {
     vendor: Vendor; bioData: BioData[]; categories: Category[];
     editEntry?: CreditEntry;
@@ -2784,11 +2793,6 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
         }
         setErrorField(null);
         setSaving(true); setMsg('');
-        // priority defaults to 'medium' and its SDD dropdown always shows a "Clear
-        // selection" option (since it always has a value) — clicking that sends
-        // priority: '' which the backend's `nullable|Rule::in(...)` rejects with a
-        // 422 (nullable only special-cases null, not empty string). Normalize every
-        // optional field the same way so an accidental clear never breaks the save.
         const payload = {
             ...form,
             bill_number: form.bill_number.trim(),
@@ -2804,10 +2808,8 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                 onSaved();
             } else {
                 await axiosInstance.post(`/api/credit-management/vendors/${vendor.id}/entries`, payload, { headers: authHeader() });
-                // Celebration overlay below is the only success signal — no toast
-                // alongside it (that combo was showing "success" twice).
                 setSaving(false);
-                setCelebrate(true); // plays the same success animation as Repayment, then closes via onSaved()
+                setCelebrate(true);
                 return;
             }
         } catch (e: any) {
@@ -2848,12 +2850,14 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                 </div>
                 <div className="CM3-mbody">
 
+                    {/* Bill Start */}
                     <div className="CM3-notice red">
                         <Ic n="receipt" sz={14} c={CREDIT_COLOR.mid} />
                         <div><strong>Bill</strong> — Records in ledger only. Payments will sync to Cash Book.</div>
                     </div>
+                    {/* Bill End */}
 
-                    {/* ── 01 Bill Details ── */}
+                    {/* ── 01 Bill Details Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">01 — Bill Details</span><div className="CM3-section-rule" /></div>
                     <div className="CM3-grid2">
                         <div className="CM3-field">
@@ -2867,9 +2871,9 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                             {errorField === 'bill_number' && <div className="CM3-field-err-msg">Bill / Invoice No is required</div>}
                         </div>
                     </div>
-                    {/* ── 01 Bill Details ── */}
+                    {/* ── 01 Bill Details End ── */}
 
-                    {/* ── 02 Client Name ── */}
+                    {/* ── 02 Client Name Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">02 — Client / Site Name</span><div className="CM3-section-rule" /></div>
                     <div className="CM3-grid2">
                         <div className={`CM3-field${errorField === 'client_name' ? ' err' : ''}`} style={{ gridColumn: '1/-1' }} ref={clientFieldRef}>
@@ -2883,9 +2887,9 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                             {errorField === 'client_name' && <div className="CM3-field-err-msg">Client / Site Name is required</div>}
                         </div>
                     </div>
-                    {/* ── 02 Client Name ── */}
+                    {/* ── 02 Client Name End ── */}
 
-                    {/* ── 03 Amount & Due ── */}
+                    {/* ── 03 Amount & Due Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">03 — Amount & Due Date</span><div className="CM3-section-rule" /></div>
                     <div className="CM3-grid2">
                         <div className={`CM3-field${errorField === 'credit_amount' ? ' err' : ''}`} ref={amountFieldRef}>
@@ -2899,9 +2903,9 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                             <CalendarDD value={form.due_date} onChange={v => setF('due_date', v)} />
                         </div>
                     </div>
-                    {/* ── 03 Amount & Due ── */}
+                    {/* ── 03 Amount & Due End ── */}
 
-                    {/* ── 04 Priority & Notes ── */}
+                    {/* ── 04 Priority & Notes Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">04 — Priority & Notes</span><div className="CM3-section-rule" /></div>
                     <div className="CM3-grid2">
                         <div className="CM3-field">
@@ -2917,23 +2921,22 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                             <input autoComplete="off" type="text" className="CM3-input" placeholder="Work done / material supplied…" value={form.description} onChange={e => setF('description', e.target.value)} />
                         </div>
                     </div>
-                    {/* ── 04 Priority & Notes ── */}
-
+                    {/* ── 04 Priority & Notes End ── */}
                 </div>
+                {/* Cancel Button Start */}
                 <div className="CM3-mfoot">
                     <button className="CM3-btn ghost" onClick={onClose}>Cancel</button>
                     <button className="CM3-btn credit" onClick={handleSubmit} disabled={saving}>
                         {saving ? <><span className="CM3-spin" /> Saving…</> : <><Ic n={isEdit ? 'edit' : 'receipt'} sz={12} c="#faf9f7" />{isEdit ? ' Update Bill' : ' Add Bill'}</>}
                     </button>
                 </div>
+                {/* Cancel Button End */}
             </div>
         </div>
         , document.body);
 }
 
 const CONFETTI_COLORS = ['#C2410C', '#DB5B1F', '#FBC9A8', '#FDE0CB', '#FBC9A8', '#faf9f7', '#FBC9A8', '#F0834D', '#FDE0CB'];
-// `seed` offsets the pattern so a second burst (rendered with a delay) doesn't
-// look like an identical copy of the first — a fuller, livelier celebration.
 function ConfettiPieces({ seed = 0, count = 22 }: { seed?: number; count?: number }) {
     const pieces = Array.from({ length: count }, (_, i) => {
         const n = i + seed * 7;
@@ -2963,9 +2966,6 @@ function ConfettiPieces({ seed = 0, count = 22 }: { seed?: number; count?: numbe
     );
 }
 
-// Small twinkling sparkle burst layered around the check icon — a second
-// distinct animation language (scale+fade twinkle) so the celebration reads
-// as richer than "confetti + ring" alone.
 function SparklePieces() {
     const sparks = Array.from({ length: 10 }, (_, i) => ({
         id: i,
@@ -2987,23 +2987,14 @@ function SparklePieces() {
     );
 }
 
-// Shared "saved" celebration — same confetti/ring/stamp language as the Bill-Closed
-// celebration in BillAllocateModal (the animation the user pointed to as "already
-// working in Repayment"), generalized with a configurable title/subtitle/amount so
-// it can play consistently for Add Bill and simple Repayment saves too. Auto-dismisses
-// via onDone after `duration`, letting the caller close the modal / refresh data then.
 function SuccessCelebration({ title, sub, amountText, onDone, duration = 1800 }: {
     title: string; sub?: string; amountText?: string; onDone: () => void; duration?: number;
 }) {
-    // Second confetti burst fires a beat after the first — reads as a fuller,
-    // more "alive" celebration than a single flat burst, without adding a
-    // second textual success message.
     const [burstTwo, setBurstTwo] = useState(false);
     useEffect(() => {
         const t = setTimeout(onDone, duration);
         const b = setTimeout(() => setBurstTwo(true), 450);
         return () => { clearTimeout(t); clearTimeout(b); };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <div className="CM3-closed-celebrate CM3-success-ov">
@@ -3026,15 +3017,8 @@ function SuccessCelebration({ title, sub, amountText, onDone, duration = 1800 }:
     );
 }
 
-// client_name is only ever set on a "leftover"/unallocated entry (entry_id: 0) —
-// entries tied to a real bill (entry_id > 0) already inherit their client from that
-// bill server-side, so tagging it here too would be redundant. Without this, a
-// leftover payment made with no bill to allocate against had no client_name at all,
-// so it silently vanished from the Accounts Payable Report whenever it was filtered by Client
-// Name (both the table and the Total Paid stat).
 type AllocPlanEntry = { entry_id: number; amount: number; client_name?: string };
 
-// ── Smart-split types & algorithm ─────────────────────────────────────────
 type SmartSplitRow = { bill: CreditEntry; allocated: number; isClosed: boolean; extraFromRedist: number };
 type SmartSplitResult = { plan: AllocPlanEntry[]; hasRedist: boolean; rows: SmartSplitRow[]; originalPerBill: number; totalSurplus: number };
 
@@ -3042,9 +3026,6 @@ function computeSmartSplit(totalAmount: number, openBills: CreditEntry[]): Smart
     if (!openBills.length) return { plan: [], hasRedist: false, rows: [], originalPerBill: 0, totalSurplus: 0 };
     const allocs = new Map<number, number>();
     const closedSet = new Set<number>();
-    // Whole rupees only throughout — was `Math.round(x * 100) / 100` (paise-level
-    // rounding), which is exactly the kind of intermediate float math that produced
-    // 49,999.9-style artifacts. Rounding to the nearest rupee at every step removes it.
     let remaining = Math.round(totalAmount);
     let uncapped = [...openBills];
     const originalPerBill = Math.round(totalAmount / openBills.length);
@@ -3088,8 +3069,6 @@ function computeSmartSplit(totalAmount: number, openBills: CreditEntry[]): Smart
     const plan = rows.filter(r => r.allocated > 0).map(r => ({ entry_id: r.bill.id, amount: r.allocated }));
     return { plan, hasRedist, rows, originalPerBill, totalSurplus };
 }
-// ─────────────────────────────────────────────────────────────────────────
-
 
 function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirmed, onSkip, onClose }: {
     paymentAmount: number; paymentDate: string;
@@ -3119,8 +3098,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
     const carryOver = selBill ? Math.round(Math.max(0, remaining - selBill.bill_balance)) : 0;
     const isDone = liveOpen.length === 0 || remaining <= 0;
 
-    // Group open bills by client so the picker mirrors the sidebar's
-    // Category → Names drill-down: pick a client first, then pick their bill.
     const [selectedClient, setSelectedClient] = useState<string | null>(null);
     const [clientSearch, setClientSearch] = useState('');
     const clientGroups = (() => {
@@ -3138,13 +3115,10 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
     const filteredClientGroups = clientSearch.trim()
         ? clientGroups.filter(g => g.name.toLowerCase().includes(clientSearch.trim().toLowerCase()))
         : clientGroups;
-
-    // If the selected client's last open bill just closed, pop back to the client list automatically.
     useEffect(() => {
         if (selectedClient && !clientGroups.some(g => g.name === selectedClient)) {
             setSelectedClient(null);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [liveOpen.length]);
 
     const triggerCelebration = (billNum: string, amount: number) => {
@@ -3159,15 +3133,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
         const newPlanEntry: AllocPlanEntry = { entry_id: selected, amount: applyAmount };
         const updatedPlan = [...plan, newPlanEntry];
         setPlan(updatedPlan);
-
-        // Was: every apply — even the very last one — played the 2.3s "BILL
-        // CLOSED!" animation, waited 2.4s, THEN handed off to save, which played
-        // its own "PAYMENT RECORDED!" celebration on top. That showed the user
-        // two success screens back-to-back and made the repayment page feel
-        // stuck for ~4s before it finally returned to the vendor page. Now: the
-        // mini celebration only plays when there's more allocating left to do;
-        // the action that actually finishes the repayment hands off immediately
-        // so the single, richer final celebration is the only success message.
         const isFinalStep = wouldClose ? carryOver <= 0 : true;
         if (wouldClose) {
             setJustClosed(prev => new Set([...prev, selected]));
@@ -3191,15 +3156,12 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
     };
 
     const saving = false;
-    // Running-man intro plays only on entering Open Ledger Account / Add Bill / Record
-    // Repayment — not on the confirm/select-bill steps that follow, so it
-    // doesn't show up again on every step of the repayment-confirm flow.
 
     return createPortal(
         <div className="CM3-alloc-overlay">
             <div className="CM3-alloc-modal" style={{ position: 'relative' }} ref={pageRef}>
 
-                {/* ── BILL CLOSED CELEBRATION ── */}
+                {/* ── BILL CLOSED CELEBRATION START ── */}
                 {celebration.show && (
                     <div className="CM3-closed-celebrate">
                         <ConfettiPieces />
@@ -3223,9 +3185,9 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                         </div>
                     </div>
                 )}
-                {/* ── BILL CLOSED CELEBRATION ── */}
+                {/* ── BILL CLOSED CELEBRATION END ── */}
 
-                {/* ── HEADER ── */}
+                {/* ── HEADER START ── */}
                 <div className="CM3-alloc-hdr">
                     <button className="CM3-alloc-back-fab" onClick={onClose} title="Back" aria-label="Back">
                         <Ic n="arrow" sz={16} />
@@ -3259,9 +3221,9 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                         )}
                     </div>
                 </div>
-                {/* ── HEADER ── */}
+                {/* ── HEADER END ── */}
 
-                {/* ── BODY ── */}
+                {/* ── BODY START ── */}
                 <div className="CM3-alloc-body">
                     {liveOpen.length === 0 && (
                         <div style={{ textAlign: 'center', padding: '32px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
@@ -3270,7 +3232,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                             <div style={{ fontSize: 10.5, color: 'var(--text-4)' }}>No more open bills to allocate</div>
                         </div>
                     )}
-
                     {!selectedClient ? (
                         <>
                             {clientGroups.length > 0 && (
@@ -3283,10 +3244,6 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                             <button onClick={() => setClientSearch('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', lineHeight: 1, padding: 0 }}>✕</button>
                                         )}
                                     </div>
-                                    {/* Total count stays visible regardless of scroll position -- the
-                                        list below has a fixed max-height and scrolls internally, so
-                                        with a long client list this is the only place that still shows
-                                        "how many total" once you've scrolled past the first screenful. */}
                                     <span className="CM3-alloc-client-count">
                                         {filteredClientGroups.length}{clientSearch ? ` of ${clientGroups.length}` : ''} {clientGroups.length === 1 ? 'client' : 'clients'}
                                     </span>
@@ -3300,6 +3257,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                             {filteredClientGroups.length > 0 && (
                                 <div className="CM3-alloc-tbl-wrap">
                                     <table className="CM3-alloc-tbl">
+                                        {/* Table Header Start */}
                                         <thead>
                                             <tr>
                                                 <th>Client Name</th>
@@ -3308,6 +3266,9 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                                 <th></th>
                                             </tr>
                                         </thead>
+                                        {/* Table Body End */}
+
+                                        {/* Tbody Start */}
                                         <tbody>
                                             {filteredClientGroups.map((g, gIdx) => (
                                                 <tr key={g.name}
@@ -3329,6 +3290,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                                 </tr>
                                             ))}
                                         </tbody>
+                                        {/* Tbody End */}
                                     </table>
                                 </div>
                             )}
@@ -3346,7 +3308,7 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                 <table className="CM3-alloc-billtbl">
                                     <thead>
                                         <tr>
-                                            <th></th>
+                                            <th>S.No</th>
                                             <th>Invoice No</th>
                                             <th>Client</th>
                                             <th>Credit Amt</th>
@@ -3417,11 +3379,10 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                             </div>
                         </>
                     )}
-
                 </div>
-                {/* ── BODY ── */}
+                {/* ── BODY END  ── */}
 
-                {/* ── FOOTER ── */}
+                {/* ── FOOTER START ── */}
                 <div className="CM3-alloc-footer">
                     {isDone ? (
                         <button className="CM3-btn payment" style={{ background: 'linear-gradient(135deg,#C2410C,#DB5B1F)', border: 'none' }} onClick={handleConfirm}>
@@ -3430,10 +3391,14 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                         </button>
                     ) : (
                         <>
+                            {/* AUTO SPLIT BUTTON START  */}
                             <button className="CM3-btn ghost" onClick={onSkip}>
                                 <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
                                 Auto-Split Across All Bills
                             </button>
+                            {/* AUTO SPLIT BUTTON END */}
+
+                            {/* SELECT A BILL TO CONTINUE START */}
                             <button className="CM3-btn payment" style={{ background: selected ? 'linear-gradient(135deg,#C2410C,#DB5B1F)' : 'rgba(154,52,18,0.35)', border: 'none', cursor: selected ? 'pointer' : 'default' }}
                                 onClick={handleApply} disabled={!selected}>
                                 {!selected
@@ -3449,12 +3414,12 @@ function BillAllocateModal({ paymentAmount, paymentDate, entries, onPlanConfirme
                                         : <>Apply {fmt(applyAmount)} to Bill</>
                                 }
                             </button>
+                            {/* SELECT A BILL TO CONTINUE END */}
                         </>
                     )}
                 </div>
-                {/* ── FOOTER ── */}
+                {/* ── FOOTER END  ── */}
             </div>
-
         </div>,
         document.body
     );
@@ -3472,18 +3437,29 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
         <div className="CM3-alloc-overlay">
             <div className="CM3-alloc-modal" style={{ maxWidth: 540 }}>
 
-                {/* Header */}
+                {/* HEADER START */}
                 <div className="CM3-alloc-hdr">
+
+                    {/* Cancel Button Start */}
                     <button className="CM3-alloc-close" onClick={onCancel} title="Cancel">
                         <span className="CM3-alloc-close-ic"><Ic n="arrow" sz={11} /></span> Cancel
                     </button>
+                    {/* Cancel Button End */}
+
+                    {/* Smart redistribution Preview Start */}
                     <div className="CM3-alloc-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="#C2410C" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
                         Smart Redistribution Preview
                     </div>
+                    {/* Smart redistribution Preview End */}
+
+                    {/* Smart Redistribution Subtitle Start */}
                     <div className="CM3-alloc-sub">
                         {smallBills.length} bill{smallBills.length > 1 ? 's are' : ' is'} smaller than the equal share — surplus redistributed automatically
                     </div>
+                    {/* Smart Redistribution Subtitle End */}
+
+                    {/* Equal Share Start */}
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
                         <span className="CM3-alloc-chip teal">
                             <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
@@ -3496,9 +3472,11 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                             </span>
                         )}
                     </div>
+                    {/* Equal Share End */}
                 </div>
+                {/* HEADER END */}
 
-                {/* Info banner */}
+                {/* INFO BANNER START */}
                 <div style={{ margin: '0 16px 4px', padding: '10px 14px', background: '#FDE0CB', border: '1px solid #FDE0CB', borderRadius: 8, fontSize: 10.5, color: '#9A3412', lineHeight: 1.6 }}>
                     <strong>{smallBills.map(r => r.bill.client_name || r.bill.description || `Bill #${r.bill.id}`).join(', ')}</strong>
                     {smallBills.length > 1 ? ' are' : ' is'} smaller than the equal share of <strong>{fmt(result.originalPerBill)}</strong>.
@@ -3506,14 +3484,16 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                         <> The surplus of <strong>{fmt(result.totalSurplus)}</strong> has been redistributed equally to the remaining {bigBills.length} bill{bigBills.length !== 1 ? 's' : ''}.</>
                     )}
                 </div>
+                {/* INFO BANNER END */}
 
-                {/* Bill rows */}
+                {/* BILL ROWS START  */}
                 <div className="CM3-alloc-body" style={{ maxHeight: 340 }}>
                     {result.rows.map((row, i) => (
                         <div key={row.bill.id}
                             className={`CM3-alloc-bill${row.isClosed ? ' will-close' : ' will-partial'}`}
                             style={{ cursor: 'default', gap: 12 }}>
-                            {/* Status icon */}
+
+                            {/* Status icon Start */}
                             <div style={{
                                 width: 30, height: 30, borderRadius: 8, flexShrink: 0,
                                 background: row.isClosed ? '#d1fae5' : '#FBC9A8',
@@ -3524,7 +3504,9 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                             }}>
                                 {row.isClosed ? '✓' : String(i + 1).padStart(2, '0')}
                             </div>
-                            {/* Bill info */}
+                            {/* Status Icon END */}
+
+                            {/* Bill info Start */}
                             <div className="CM3-alloc-info" style={{ flex: 1 }}>
                                 <div style={{ fontWeight: 800, fontSize: 11.5, color: 'var(--text-1,#231C14)', marginBottom: 3 }}>
                                     {row.bill.client_name || row.bill.description || `Bill #${row.bill.id}`}
@@ -3551,7 +3533,9 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                                     </div>
                                 }
                             </div>
-                            {/* Amount */}
+                            {/* Bill Info End */}
+
+                            {/* Amount Start */}
                             <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 84 }}>
                                 <div style={{ fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#6B5D48', marginBottom: 4 }}>Allocated</div>
                                 <div style={{
@@ -3559,17 +3543,21 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                                     color: row.isClosed ? '#1E9C6A' : '#C2410C',
                                 }}>{fmt(row.allocated)}</div>
                             </div>
+                            {/* Amount End */}
                         </div>
                     ))}
 
-                    {/* Total */}
+                    {/* Total Start */}
                     <div style={{ margin: '10px 0 0', padding: '10px 16px', background: '#F0ECE6', borderRadius: 8, border: '1px solid #E3DDD3', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#524532' }}>TOTAL ALLOCATED</span>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 17.5, fontWeight: 800, color: '#231C14' }}>{fmt(totalAmount)}</span>
                     </div>
-                </div>
+                    {/* Total End */}
 
-                {/* Footer */}
+                </div>
+                {/* INFO BILLS END */}
+
+                {/* Footer Start  */}
                 <div className="CM3-alloc-footer">
                     <button className="CM3-btn ghost" onClick={onCancel}>Cancel — Go Back</button>
                     <button className="CM3-btn payment"
@@ -3578,7 +3566,7 @@ function SmartSplitPreviewModal({ totalAmount, result, onConfirm, onCancel }: {
                         ✓ Confirm &amp; Save Smart Split
                     </button>
                 </div>
-
+                {/* Footer End */}
             </div>
         </div>,
         document.body
@@ -3631,8 +3619,6 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
     const daybookSubCats = form.daybook_category_id ? subCategories.filter(s => s.category_ids?.length ? s.category_ids.includes(+form.daybook_category_id) : s.category_id === +form.daybook_category_id) : [];
     const payModeOptions = PAYMENT_MODES.map(m => ({ value: m, label: m }));
     const selDaybookSub = subCategories.find(s => String(s.id) === form.daybook_sub_category_id);
-
-    // Derive preview client name from open bills
     const openBillClients = [...new Set(
         (vendorEntries ?? []).filter(e => !e.is_paid && e.client_name).map(e => e.client_name!)
     )];
@@ -3688,28 +3674,20 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
         }
     };
 
-    // ── Step 2: Save after user confirms allocation plan ─────────────
     const handleConfirmedSave = async (plan: AllocPlanEntry[]) => {
         setSaving(true); setMsg('');
         const H = authHeader();
         const totalAmount = Math.round(+form.amount_paid);
         try {
-            // Track every saved payment so we can sync each one separately to daybook
             type SavedPayment = { paymentId: number; amount: number; entryId: number | null };
             const savedPayments: SavedPayment[] = [];
 
             if (plan.length === 0) {
-                // Equal distribution across all open bills
                 const openBills = vendorEntries?.filter(e => !e.is_paid) ?? [];
                 if (openBills.length > 0) {
-                    // Whole-rupee split: floor division + give the last bill the exact
-                    // remainder, so the allocations always sum to totalAmount precisely.
-                    // (The old `.toFixed(2)` version parsed/re-parsed floats on every bill,
-                    // which is what produced 49,999.9-style artifacts on round entries.)
                     const perBill = Math.floor(totalAmount / openBills.length);
                     for (let i = 0; i < openBills.length; i++) {
                         const bill = openBills[i];
-                        // Last bill gets remainder to avoid rounding loss
                         const allocAmt = i === openBills.length - 1
                             ? Math.round(totalAmount - perBill * (openBills.length - 1))
                             : perBill;
@@ -3723,10 +3701,6 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         if (pid) savedPayments.push({ paymentId: pid, amount: allocCapped, entryId: bill.id });
                     }
                 } else {
-                    // No open bills to allocate against at all — best-effort tag with the
-                    // vendor's client if every bill they've ever raised names the same
-                    // single client, so this payment doesn't vanish from the Credit
-                    // Report's Paid column when filtered by that Client Name.
                     const distinctClients = new Set((vendorEntries || []).map(e => (e.client_name || '').trim()).filter(Boolean));
                     const soleVendorClient = distinctClients.size === 1 ? [...distinctClients][0] : undefined;
                     const pmRes = await axiosInstance.post(`credit-management/vendors/${vendor.id}/payments`, {
@@ -3738,8 +3712,6 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                     if (pid) savedPayments.push({ paymentId: pid, amount: totalAmount, entryId: null });
                 }
             } else {
-                // Save one payment per allocation entry. alloc.client_name is only set on
-                // the leftover/unallocated entry (entry_id 0) — see AllocPlanEntry.
                 for (const alloc of plan) {
                     const pmRes = await axiosInstance.post(`credit-management/vendors/${vendor.id}/payments`, {
                         payment_date: form.payment_date, amount_paid: alloc.amount,
@@ -3752,10 +3724,8 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                 }
             }
 
-            // Sync daybook — one entry PER payment allocation (not one total)
             let daybookSynced = false;
             if (form.sync_to_daybook && savedPayments.length > 0) {
-                // Auto-generate timestamp for narration
                 const nowStr = new Date().toLocaleString('en-IN', {
                     day: '2-digit', month: 'short', year: 'numeric',
                     hour: '2-digit', minute: '2-digit', hour12: true,
@@ -3765,13 +3735,12 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         const billEntry = sp.entryId ? vendorEntries?.find(e => e.id === sp.entryId) : null;
                         const billClientName = billEntry?.client_name ?? null;
                         const billPart = billClientName || (sp.entryId ? `Bill #${sp.entryId}` : 'General');
-                        // Auto-narration with date & time; user-typed narration overrides only for single payment
                         const narration = (form.daybook_narration && savedPayments.length === 1)
                             ? form.daybook_narration
                             : `Payment — ${vendor.party_name} | ${billPart} | ₹${sp.amount.toLocaleString('en-IN')} | ${nowStr}`;
                         const daybookPayload: Record<string, any> = {
                             transaction_date: form.payment_date,
-                            amount: sp.amount,                  // ← per-allocation amount, not total
+                            amount: sp.amount,
                             payment_mode: form.payment_mode,
                             category_id: +form.daybook_category_id,
                             bio_data_id: +form.daybook_bio_data_id,
@@ -3781,7 +3750,6 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         if (form.daybook_sub_category_id) daybookPayload.sub_category_id = +form.daybook_sub_category_id;
                         const dbRes = await axiosInstance.post('daybook', daybookPayload, { headers: H });
                         const dbEntryId = dbRes.data.entry?.id;
-                        // Link THIS payment to ITS daybook entry
                         if (dbEntryId) {
                             try { await axiosInstance.put(`credit-management/payments/${sp.paymentId}`, { daybook_entry_id: dbEntryId }, { headers: H }); } catch { }
                         }
@@ -3793,12 +3761,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                 }
             }
             setSaving(false);
-            // Let the sidebar's payment-reminder bell drop this vendor's entry
-            // immediately instead of waiting for its 5-minute auto-refresh.
             window.dispatchEvent(new Event('erp:notifications-refresh'));
-            // The celebration overlay below is now the ONLY success signal — no
-            // toast alongside it. Showing both a toast AND the full-screen
-            // celebration for the same event was the "success message twice" bug.
             setCelebrate({
                 show: true,
                 amountText: `${fmt(totalAmount)}${daybookSynced ? ' · Synced to Cash Book' : ''}`,
@@ -3819,6 +3782,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         onDone={() => onSaved({ daybook_synced: celebrate.daybookSynced })}
                     />
                 )}
+
                 <div className="CM3-mhdr payment-top">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div className="CM3-mhdr-ic">
@@ -3856,12 +3820,14 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                     )}
                     {/* Edit Mode: original record snapshot End */}
 
+                    {/* Cash Book Start */}
                     <div className="CM3-notice teal">
                         <Ic n="sync" sz={13} c={PAYMENT_COLOR.primary} />
                         {isEdit
                             ? <div><strong>Editing repayment details</strong> — Cash Book sync settings are locked once recorded; only date, amount, mode, reference & notes can be updated here.</div>
                             : <div><strong>Auto-syncs to Cash Book</strong> — category, sub-category, party & client auto-filled from ledger profile</div>}
                     </div>
+                    {/* Cash Book End */}
 
                     {/* ── 01 Payment Details Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">01 — Payment Details</span><div className="CM3-section-rule" /></div>

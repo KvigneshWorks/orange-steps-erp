@@ -127,7 +127,6 @@ const EMPTY: FormData = {
 export default function SubName() {
     const [userRole] = useState<string>(() => getStoredRole());
     const [formData, setFormData] = useState<FormData>(EMPTY);
-
     const [subNames, setSubNames] = useState<SubName[]>([]);
     const [bioDataList, setBioDataList] = useState<BioData[]>([]);
     const [deleteModal, setDeleteModal] = useState<{ open: boolean; id: number; name: string; loading: boolean }>({ open: false, id: 0, name: '', loading: false });
@@ -273,6 +272,7 @@ export default function SubName() {
     const handleDelete = (id: number, name: string) => {
         setDeleteModal({ open: true, id: id, name: name, loading: false });
     };
+
     const confirmDelete = async () => {
         const { id, name } = deleteModal;
         setDeleteModal(d => ({ ...d, loading: true }));
@@ -330,7 +330,7 @@ export default function SubName() {
                 </div>
                 {/* STATS END */}
 
-                {/* TOOLBAR */}
+                {/* TOOLBAR START*/}
                 <div className="MD-toolbar-bar">
                     <div className="MD-toolbar-count"><b>{subNames.length}</b> Associate Name{subNames.length === 1 ? '' : 's'}</div>
                     <button className="MD-add-btn" onClick={() => { setFormData(EMPTY); setEditId(null); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -338,6 +338,7 @@ export default function SubName() {
                         Add Associate Name
                     </button>
                 </div>
+                {/* TOOLBAR END */}
 
                 {/* FORM START */}
                 {formOpen && (
@@ -346,6 +347,7 @@ export default function SubName() {
                             <div className="ERP-form-topbar" />
                             <div className="ERP-form-body">
 
+                                {/* Add Associate Name Form Start */}
                                 <div className="ERP-form-hdr MD-form-hdr">
                                     <div className="ERP-form-icon-wrap MD-form-icon-wrap">
                                         <Ic d="M7 8h10M7 12h10M7 16h6" sz={18} c="#fff" sw={1.8} />
@@ -354,6 +356,8 @@ export default function SubName() {
                                         <div className="ERP-form-title MD-form-title">{editId ? 'Edit Associate Name' : 'Add New Associate Name'}</div>
                                     </div>
                                 </div>
+                                {/* Add Associate Name Form End */}
+
                                 <div className="MD-form-divider" />
 
                                 {/* Form Start */}
@@ -364,6 +368,7 @@ export default function SubName() {
                                     </div>
 
                                     <div className="ERP-g2">
+                                        {/* Party Record Field Start */}
                                         <div className={'ERP-field' + (errorField === 'bio_data_id' ? ' MD-field-error' : '')} ref={bioDataFieldRef}>
                                             <label className="ERP-label req">Party Record</label>
                                             <DD
@@ -379,7 +384,9 @@ export default function SubName() {
                                                 </div>
                                             )}
                                         </div>
+                                        {/* Party Record Field End */}
 
+                                        {/* Please Fill Out this Field Start */}
                                         <div className={'ERP-field' + (errorField === 'alternate_name' ? ' MD-field-error' : '')} ref={altNameFieldRef}>
                                             <label className="ERP-label req">Alternate / Associate Name</label>
                                             <input
@@ -399,14 +406,18 @@ export default function SubName() {
                                                 </div>
                                             )}
                                         </div>
+                                        {/* Please Fill Out this Field End */}
                                     </div>
 
+                                    {/* Classification Section Start */}
                                     <div className="ERP-section">
                                         <span className="ERP-section-tag">02 — Classification</span>
                                         <div className="ERP-section-rule" />
                                     </div>
+                                    {/* Classification Section End */}
 
                                     <div className="ERP-g2">
+                                        {/* Classification Field Start */}
                                         <div className="ERP-field">
                                             <label className="ERP-label ">Classification <span className="ERP-label-opt">(Optional)</span></label>
                                             <input
@@ -419,6 +430,9 @@ export default function SubName() {
                                                 placeholder="e.g., Tier-1, Premium, Standard, VIP"
                                             />
                                         </div>
+                                        {/* Classification Field End */}
+
+                                        {/* Optional Start */}
                                         <div className="ERP-field">
                                             <label className="ERP-label">
                                                 Description <span className="ERP-label-opt">(Optional)</span>
@@ -433,9 +447,12 @@ export default function SubName() {
                                                 placeholder="Additional notes or remarks..."
                                             />
                                         </div>
+                                        {/* Optional End */}
                                     </div>
 
+                                    {/* Associate Name Form Buttons Start */}
                                     <div className="ERP-btn-row">
+                                        {/* Updating Button Start */}
                                         <button type="submit" className="ERP-btn primary" disabled={loading}>
                                             {loading ? (
                                                 <><span className="ERP-spinner" /> {editId ? 'Updating...' : 'Creating...'}</>
@@ -445,6 +462,9 @@ export default function SubName() {
                                                 </>
                                             )}
                                         </button>
+                                        {/* Updating Button End */}
+
+                                        {/* Cancel Button Start */}
                                         <button
                                             type="button"
                                             className="ERP-btn secondary"
@@ -457,7 +477,9 @@ export default function SubName() {
                                         >
                                             Cancel
                                         </button>
+                                        {/* Cancel Button End */}
                                     </div>
+                                    {/* Associate Name Form Buttons End */}
 
                                 </form>
                                 {/* FORM END */}

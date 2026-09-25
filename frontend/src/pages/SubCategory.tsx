@@ -336,9 +336,7 @@ export default function SubCategory() {
         }
 
         if (!editId) {
-            // Uniqueness is now global by name (a sub-head can belong to many
-            // account heads), so a duplicate here means "this name already
-            // exists — link it to more heads instead of creating a copy."
+
             const dup = subCategories.find(s =>
                 s.name.trim().toLowerCase() === formData.name.trim().toLowerCase()
             );
@@ -673,83 +671,83 @@ export default function SubCategory() {
                 {/* TABLE with skeleton Loader Start */}
                 <div className="ERP-tbl-card MD-tbl-card">
 
-                        {fetching ? (
-                            <RunningLoader label="Loading Account Sub-Heads" />
-                        ) : subCategories.length === 0 ? (
-                            <div className="ERP-empty">
-                                <div className="ERP-empty-icon">
-                                    <Ic d="M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" sz={26} c="var(--ember-light)" sw={1.8} />
-                                </div>
-                                <div className="ERP-empty-title">No Account Sub-Heads Yet</div>
-                                <div className="ERP-empty-sub">Add the first account sub-head using the button above</div>
+                    {fetching ? (
+                        <RunningLoader label="Loading Account Sub-Heads" />
+                    ) : subCategories.length === 0 ? (
+                        <div className="ERP-empty">
+                            <div className="ERP-empty-icon">
+                                <Ic d="M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" sz={26} c="var(--ember-light)" sw={1.8} />
                             </div>
-                        ) : (
-                            <div className="ERP-tbl-scroll">
-                                <table className="ERP-tbl">
-                                    <thead>
-                                        <tr>
-                                            <th className="ERP-center" style={{ width: 52 }}>SNo.</th>
-                                            <th>Name</th>
-                                            <th>Parent Account Head</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th>Created By</th>
-                                            <th className="ERP-center" style={{ width: 180 }}>Actions</th>
-                                        </tr>
-                                    </thead>
+                            <div className="ERP-empty-title">No Account Sub-Heads Yet</div>
+                            <div className="ERP-empty-sub">Add the first account sub-head using the button above</div>
+                        </div>
+                    ) : (
+                        <div className="ERP-tbl-scroll">
+                            <table className="ERP-tbl">
+                                <thead>
+                                    <tr>
+                                        <th className="ERP-center" style={{ width: 52 }}>SNo.</th>
+                                        <th>Name</th>
+                                        <th>Parent Account Head</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Created By</th>
+                                        <th className="ERP-center" style={{ width: 180 }}>Actions</th>
+                                    </tr>
+                                </thead>
 
-                                    <tbody>
-                                        {pagedSubCategories.map((sc, i) => (
-                                            <tr key={sc.id}
-                                                style={editId === sc.id ? {
-                                                    background: 'rgba(37,99,235,0.06)',
-                                                    outline: '2px solid rgba(37,99,235,0.3)',
-                                                } : {}}>
-                                                <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
-                                                <td className="ERP-t-primary">{sc.name}</td>
-                                                <td>
-                                                    <div className="SC-tbl-cats">
-                                                        {getCategoryNames(sc.category_ids?.length ? sc.category_ids : [sc.category_id]).map((name, ni) => (
-                                                            <span key={ni} className="MD-tbl-tag info">{name}</span>
-                                                        ))}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    {sc.description
-                                                        ? <span className="ERP-t-desc">{sc.description}</span>
-                                                        : <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td>
-                                                    <span className={`MD-tbl-tag ${sc.is_active ? 'info' : 'muted'}`}>
-                                                        {sc.is_active ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </td>
-                                                <td className="ERP-t-creator">
-                                                    {sc.created_by_name || <span className="ERP-t-null">—</span>}
-                                                </td>
-                                                <td className="ERP-center ERP-nowrap">
-                                                    <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(sc)}>Edit</button>
-                                                    {canDelete(userRole) && (
-                                                        <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(sc.id, sc.name)}>Delete</button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                        {!fetching && subCategories.length > 0 && (
-                            <Pagination
-                                page={mdSafePage}
-                                totalPages={mdTotalPages}
-                                onPageChange={setMdPage}
-                                total={subCategories.length}
-                                perPage={mdPerPage}
-                                onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
-                                itemLabel="account sub-heads"
-                            />
-                        )}
+                                <tbody>
+                                    {pagedSubCategories.map((sc, i) => (
+                                        <tr key={sc.id}
+                                            style={editId === sc.id ? {
+                                                background: 'rgba(37,99,235,0.06)',
+                                                outline: '2px solid rgba(37,99,235,0.3)',
+                                            } : {}}>
+                                            <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
+                                            <td className="ERP-t-primary">{sc.name}</td>
+                                            <td>
+                                                <div className="SC-tbl-cats">
+                                                    {getCategoryNames(sc.category_ids?.length ? sc.category_ids : [sc.category_id]).map((name, ni) => (
+                                                        <span key={ni} className="MD-tbl-tag info">{name}</span>
+                                                    ))}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {sc.description
+                                                    ? <span className="ERP-t-desc">{sc.description}</span>
+                                                    : <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td>
+                                                <span className={`MD-tbl-tag ${sc.is_active ? 'info' : 'muted'}`}>
+                                                    {sc.is_active ? 'Active' : 'Inactive'}
+                                                </span>
+                                            </td>
+                                            <td className="ERP-t-creator">
+                                                {sc.created_by_name || <span className="ERP-t-null">—</span>}
+                                            </td>
+                                            <td className="ERP-center ERP-nowrap">
+                                                <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(sc)}>Edit</button>
+                                                {canDelete(userRole) && (
+                                                    <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(sc.id, sc.name)}>Delete</button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                    {!fetching && subCategories.length > 0 && (
+                        <Pagination
+                            page={mdSafePage}
+                            totalPages={mdTotalPages}
+                            onPageChange={setMdPage}
+                            total={subCategories.length}
+                            perPage={mdPerPage}
+                            onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
+                            itemLabel="account sub-heads"
+                        />
+                    )}
                 </div>
             </div>
             {/* TABLE END */}

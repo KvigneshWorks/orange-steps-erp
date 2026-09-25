@@ -2585,6 +2585,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                             <div className="SB-logo-img-wrap">
                                 <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="OrangeSteps Logo" className="SB-logo-img" />
                             </div>
+                            {/* SideBar Heading Start */}
                             <div className="SB-wordmark-block">
                                 <div className="SB-wordmark-name">
                                     <span className="w-te">Orange</span>
@@ -2592,9 +2593,13 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                 </div>
                                 <div className="SB-wordmark-sub">Interiors. Engineered.</div>
                             </div>
+                            {/* SideBar Heading End */}
+
+                            {/* Close Button Start */}
                             <button className="SB-close" onClick={() => setMobOpen(false)} aria-label="Close menu">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M6 18L18 6" /></svg>
                             </button>
+                            {/* Close Button End */}
                         </div>
 
                         <nav className="SB-nav">
@@ -2707,6 +2712,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                             <span className="SB-ur">{userRole || 'User'}</span>
                                         </div>
                                     </div>
+                                    {/* Online Start */}
                                     <div className="SB-status">
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                             <div className="SB-dot" />
@@ -2714,6 +2720,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                         </div>
                                         <span className="SB-clock" ref={clockRef} />
                                     </div>
+                                    {/* Online End */}
                                     {lastSession && (
                                         <div className="SB-lastlogin">
                                             <span className="SB-lastlogin-lbl">Last Login</span>
@@ -2730,6 +2737,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                             </span>
                                         </div>
                                     )}
+                                    {/* Change Password Button Start */}
                                     <button className="SB-changepass" onClick={() => setShowChangePassword(true)}>
                                         <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                                             <rect x="5" y="11" width="14" height="9" rx="2" />
@@ -2737,16 +2745,21 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                         </svg>
                                         <span className="SB-cp-txt">Change Password</span>
                                     </button>
+                                    {/* Change Password Button End */}
+
+                                    {/* Sign Out Button Start */}
                                     <button className="SB-logout" onClick={handleLogout}>
                                         <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                         </svg>
                                         <span className="SB-lo-txt">Sign Out</span>
                                     </button>
+                                    {/* Sign Out Button End */}
                                 </div>
                             )}
                         </div>
 
+                        {/* Promotion Start */}
                         <div className="SB-dev-credit">
                             <div className="SB-dev-credit-label">
                                 <span className="SB-dev-credit-dot" />
@@ -2754,6 +2767,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                             </div>
                             <div className="SB-dev-credit-brand">WHITENODE software solutions</div>
                         </div>
+                        {/* Promotion End */}
 
                     </div>
                 </aside>

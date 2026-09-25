@@ -52,10 +52,6 @@ function SkeletonRow() {
 
 const authH = () => ({ Authorization: `Bearer ${sessionStorage.getItem('token')}` });
 
-/* Page-scoped only: every font on the Pending Approvals page rendered
-   uppercase + bolder, per explicit request. Scoped under .PA-allcaps so it
-   never leaks into any other page even though the underlying classes
-   (ERP-*, AS-*) are shared globally. */
 const PA_ALLCAPS_CSS = `
 .PA-allcaps, .PA-allcaps * {
   text-transform: uppercase;
@@ -76,9 +72,6 @@ const PA_ALLCAPS_CSS = `
 }
 `;
 
-/* Per-filter empty-state icon + colour -- gives "No Pending Requests" /
-   "No Approved Requests Yet" / etc. a distinct, on-brand icon instead of
-   reusing one generic checkmark for every state. */
 const EMPTY_META: Record<'pending' | 'approved' | 'rejected' | 'all', { path: string; c: string; bg: string; bd: string }> = {
     pending: { path: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', c: '#F0834D', bg: 'rgba(240,131,77,0.12)', bd: 'rgba(240,131,77,0.30)' },
     approved: { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', c: '#1E9C6A', bg: 'rgba(30,156,106,0.12)', bd: 'rgba(30,156,106,0.28)' },
@@ -86,12 +79,7 @@ const EMPTY_META: Record<'pending' | 'approved' | 'rejected' | 'all', { path: st
     all: { path: 'M5 5h14l3 7v7a2 2 0 01-2 2H4a2 2 0 01-2-2v-7l3-7z M22 12h-6l-2 3h-4l-2-3H2', c: '#231C14', bg: 'rgba(35,28,20,0.08)', bd: 'rgba(35,28,20,0.20)' },
 };
 
-/* Page-scoped only: full-page layout (the card now fills whatever height
-   the page has instead of sitting short above a lot of empty warm-white
-   space), a de-duplicated / animated empty state with per-filter icon
-   rings, and a couple of small entrance touches. Scoped under
-   .PA-allcaps so none of it leaks into any other page that shares the
-   ERP-* / AS-* classes. */
+
 const PA_FULL_CSS = `
 .PA-allcaps.ERP-page { display: flex; flex-direction: column; }
 .PA-allcaps .ERP-card { flex: 1; min-height: 0; }
@@ -133,13 +121,11 @@ export default function PendingApprovals() {
         } catch {
             toast.error('Load Failed', 'Could not load approval requests');
         } finally { setLoading(false); }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter]);
 
     useEffect(() => {
         if (!hasFetched.current) { hasFetched.current = true; loadRequests(filter); return; }
         loadRequests(filter);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter]);
 
     useEffect(() => { setPage(1); }, [filter]);
@@ -199,7 +185,7 @@ export default function PendingApprovals() {
             <style>{PA_ALLCAPS_CSS}</style>
             <style>{PA_FULL_CSS}</style>
 
-            {/* ── HEADER ── */}
+            {/* ── HEADER START ── */}
             <div className="ERP-hdr">
                 <div className="ERP-hdr-left">
                     <PageHeader eyebrow="Account Settings" title="Pending" titleEm="Approvals" />
@@ -220,10 +206,11 @@ export default function PendingApprovals() {
                     </button>
                 </div>
             </div>
+            {/* HEADER END */}
 
             <div className="ERP-divider" />
 
-            {/* ── STATS ── */}
+            {/* ── STATS START ── */}
             <div className="ERP-stats">
                 {stats.map((s, i) => (
                     <div
@@ -238,6 +225,7 @@ export default function PendingApprovals() {
                     </div>
                 ))}
             </div>
+            {/* STATS END */}
 
             {/* ── FILTER CHIPS ── */}
             <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', margin: '0 0 20px' }}>
@@ -260,6 +248,7 @@ export default function PendingApprovals() {
                     >{chip.label}</button>
                 ))}
             </div>
+            {/* FILTER CHIPS END */}
 
             {/* ── TABLE CARD ── */}
             <div className="ERP-card">
@@ -314,109 +303,112 @@ export default function PendingApprovals() {
                     const safePage = Math.min(page, totalPages);
                     const pagedRequests = requests.slice((safePage - 1) * perPage, safePage * perPage);
                     return (
-                    <>
-                    <div className="ERP-tbl-scroll">
-                        <table className="ERP-tbl">
-                            <thead>
-                                <tr>
-                                    <th className="ERP-center" style={{ width: 44 }}>No.</th>
-                                    <th>Requester</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Requested</th>
-                                    <th>Expires</th>
-                                    <th className="ERP-center" style={{ width: 190 }}>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <AnimatePresence mode="popLayout">
-                                    {pagedRequests.map((req, i) => {
-                                        const expired = isExpired(req);
-                                        const effectiveStatus = expired ? 'expired' : req.status;
-                                        const initials = req.name.trim().slice(0, 2).toUpperCase() || '??';
-                                        const aKey = `a-${req.id}`;
-                                        const flash = flashRow?.id === req.id ? flashRow.kind : null;
-                                        const canDecide = req.status === 'pending' && !expired && !flash;
-                                        return (
-                                            <motion.tr
-                                                key={req.id}
-                                                layout
-                                                initial={false}
-                                                exit={{ opacity: 0, x: 24, transition: { duration: 0.22, ease: 'easeIn' } }}
-                                                className={flash === 'ok' ? 'AS-row-flash-ok' : flash === 'bad' ? 'AS-row-flash-bad' : ''}
-                                            >
-                                                <td className="ERP-t-num ERP-center">{(safePage - 1) * perPage + i + 1}</td>
-                                                <td>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                                                        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(35,28,20,.06)', color: '#231C14', border: '1px solid rgba(35,28,20,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>{initials}</div>
-                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                                            <span className="ERP-t-primary">{req.name}</span>
-                                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{req.email}</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span className={`AS-role ${req.role}`}>{ROLE_LABEL[req.role] || req.role}</span>
-                                                </td>
-                                                <td>
-                                                    <span className={`AS-pill ${effectiveStatus}`}>
-                                                        <span className="AS-pill-dot" />
-                                                        {effectiveStatus === 'expired' ? 'Expired' : effectiveStatus === 'pending' ? 'Pending' : effectiveStatus === 'approved' ? 'Approved' : 'Rejected'}
-                                                    </span>
-                                                    {req.status === 'rejected' && req.reject_reason && (
-                                                        <div style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)', marginTop: 4, maxWidth: 180 }}>“{req.reject_reason}”</div>
-                                                    )}
-                                                </td>
-                                                <td>
-                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{fmtDate(req.created_at)}</span>
-                                                </td>
-                                                <td>
-                                                    <span style={{ fontSize: 9.5, color: expired ? '#D93B55' : 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>
-                                                        {req.status === 'pending' ? fmtDate(req.expires_at) : '—'}
-                                                    </span>
-                                                </td>
-                                                <td className="ERP-center ERP-nowrap">
-                                                    {canDecide ? (
-                                                        <span className="AS-act-cell">
-                                                            <button className="AS-act approve" disabled={!!busy} onClick={() => doApprove(req)}>
-                                                                {busy === aKey
-                                                                    ? <span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} />
-                                                                    : 'Approve'}
-                                                            </button>
-                                                            <button className="AS-act reject" disabled={!!busy} onClick={() => openRejectModal(req)}>
-                                                                Reject
-                                                            </button>
-                                                        </span>
-                                                    ) : (
-                                                        <span style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)' }}>
-                                                            {req.decided_by ? `by ${req.decided_by}` : '—'}
-                                                        </span>
-                                                    )}
-                                                </td>
-                                            </motion.tr>
-                                        );
-                                    })}
-                                </AnimatePresence>
-                            </tbody>
-                        </table>
-                    </div>
-                    {requests.length > 0 && (
-                        <Pagination
-                            page={safePage}
-                            totalPages={totalPages}
-                            onPageChange={setPage}
-                            total={requests.length}
-                            perPage={perPage}
-                            onPerPageChange={(n) => { setPerPage(n); setPage(1); }}
-                            itemLabel="requests"
-                        />
-                    )}
-                    </>
+                        <>
+                            <div className="ERP-tbl-scroll">
+                                <table className="ERP-tbl">
+
+                                    <thead>
+                                        <tr>
+                                            <th className="ERP-center" style={{ width: 44 }}>No.</th>
+                                            <th>Requester</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Requested</th>
+                                            <th>Expires</th>
+                                            <th className="ERP-center" style={{ width: 190 }}>Actions</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <AnimatePresence mode="popLayout">
+                                            {pagedRequests.map((req, i) => {
+                                                const expired = isExpired(req);
+                                                const effectiveStatus = expired ? 'expired' : req.status;
+                                                const initials = req.name.trim().slice(0, 2).toUpperCase() || '??';
+                                                const aKey = `a-${req.id}`;
+                                                const flash = flashRow?.id === req.id ? flashRow.kind : null;
+                                                const canDecide = req.status === 'pending' && !expired && !flash;
+                                                return (
+                                                    <motion.tr
+                                                        key={req.id}
+                                                        layout
+                                                        initial={false}
+                                                        exit={{ opacity: 0, x: 24, transition: { duration: 0.22, ease: 'easeIn' } }}
+                                                        className={flash === 'ok' ? 'AS-row-flash-ok' : flash === 'bad' ? 'AS-row-flash-bad' : ''}
+                                                    >
+                                                        <td className="ERP-t-num ERP-center">{(safePage - 1) * perPage + i + 1}</td>
+                                                        <td>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                                                                <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(35,28,20,.06)', color: '#231C14', border: '1px solid rgba(35,28,20,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>{initials}</div>
+                                                                <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                                                    <span className="ERP-t-primary">{req.name}</span>
+                                                                    <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{req.email}</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <span className={`AS-role ${req.role}`}>{ROLE_LABEL[req.role] || req.role}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span className={`AS-pill ${effectiveStatus}`}>
+                                                                <span className="AS-pill-dot" />
+                                                                {effectiveStatus === 'expired' ? 'Expired' : effectiveStatus === 'pending' ? 'Pending' : effectiveStatus === 'approved' ? 'Approved' : 'Rejected'}
+                                                            </span>
+                                                            {req.status === 'rejected' && req.reject_reason && (
+                                                                <div style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)', marginTop: 4, maxWidth: 180 }}>“{req.reject_reason}”</div>
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            <span style={{ fontSize: 9.5, color: 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>{fmtDate(req.created_at)}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span style={{ fontSize: 9.5, color: expired ? '#D93B55' : 'var(--text-4,#6B5D48)', fontFamily: "'JetBrains Mono',monospace" }}>
+                                                                {req.status === 'pending' ? fmtDate(req.expires_at) : '—'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="ERP-center ERP-nowrap">
+                                                            {canDecide ? (
+                                                                <span className="AS-act-cell">
+                                                                    <button className="AS-act approve" disabled={!!busy} onClick={() => doApprove(req)}>
+                                                                        {busy === aKey
+                                                                            ? <span style={{ width: 8, height: 8, borderRadius: '50%', border: '2px solid currentColor', borderTopColor: 'transparent', display: 'inline-block', animation: 'erp-spin .6s linear infinite' }} />
+                                                                            : 'Approve'}
+                                                                    </button>
+                                                                    <button className="AS-act reject" disabled={!!busy} onClick={() => openRejectModal(req)}>
+                                                                        Reject
+                                                                    </button>
+                                                                </span>
+                                                            ) : (
+                                                                <span style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)' }}>
+                                                                    {req.decided_by ? `by ${req.decided_by}` : '—'}
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                    </motion.tr>
+                                                );
+                                            })}
+                                        </AnimatePresence>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {requests.length > 0 && (
+                                <Pagination
+                                    page={safePage}
+                                    totalPages={totalPages}
+                                    onPageChange={setPage}
+                                    total={requests.length}
+                                    perPage={perPage}
+                                    onPerPageChange={(n) => { setPerPage(n); setPage(1); }}
+                                    itemLabel="requests"
+                                />
+                            )}
+                        </>
                     );
                 })()}
             </div>
+            {/* TABLE END */}
 
-            {/* ── Reject reason modal ── */}
+            {/* ── REJECT REASON MODAL START ── */}
             <AnimatePresence>
                 {rejectModal.open && (
                     <motion.div
@@ -459,6 +451,7 @@ export default function PendingApprovals() {
                     </motion.div>
                 )}
             </AnimatePresence>
+            {/* REJECT REASON MODAL END */}
         </div>
     );
 }

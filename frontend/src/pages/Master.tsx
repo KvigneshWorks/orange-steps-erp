@@ -589,81 +589,81 @@ export default function Master() {
             {/* TABLE START */}
             <div className="ERP-tbl-card MD-tbl-card">
 
-                    {fetching ? (
-                        <RunningLoader label="Loading Account Heads" />
-                    ) : categories.length === 0 ? (
-                        <div className="ERP-empty">
-                            <div className="ERP-empty-icon">
-                                <Ic d="M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" sz={26} c="var(--ember-light)" sw={1.8} />
-                            </div>
-                            <div className="ERP-empty-title">No Account Heads Yet</div>
-                            <div className="ERP-empty-sub">Add the first account head using the button above</div>
+                {fetching ? (
+                    <RunningLoader label="Loading Account Heads" />
+                ) : categories.length === 0 ? (
+                    <div className="ERP-empty">
+                        <div className="ERP-empty-icon">
+                            <Ic d="M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" sz={26} c="var(--ember-light)" sw={1.8} />
                         </div>
-                    ) : (
-                        <div className="ERP-tbl-scroll">
-                            <table className="ERP-tbl">
-                                <thead>
-                                    <tr>
-                                        <th className="ERP-center" style={{ width: 52 }}>No.</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Type</th>
-                                        <th>Status</th>
-                                        <th>Created By</th>
-                                        <th className="ERP-center" style={{ width: 180 }}>Actions</th>
+                        <div className="ERP-empty-title">No Account Heads Yet</div>
+                        <div className="ERP-empty-sub">Add the first account head using the button above</div>
+                    </div>
+                ) : (
+                    <div className="ERP-tbl-scroll">
+                        <table className="ERP-tbl">
+                            <thead>
+                                <tr>
+                                    <th className="ERP-center" style={{ width: 52 }}>No.</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th className="ERP-center" style={{ width: 180 }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pagedCategories.map((cat, i) => (
+                                    <tr key={cat.id}
+                                        style={editId === cat.id ? {
+                                            background: 'rgba(37,99,235,0.06)',
+                                            outline: '2px solid rgba(37,99,235,0.3)',
+                                        } : {}}>
+                                        <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
+                                        <td className="ERP-t-primary">{cat.name}</td>
+                                        <td>{cat.description
+                                            ? <span className="ERP-t-desc">{cat.description}</span>
+                                            : <span className="ERP-t-null">—</span>}
+                                        </td>
+                                        <td>
+                                            <span className={`MD-tbl-tag ${cat.type === 'income' ? 'success' : 'danger'}`}>
+                                                {cat.type === 'income' ? 'Income' : 'Expense'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`MD-tbl-tag ${cat.is_active ? 'info' : 'muted'}`}>
+                                                {cat.is_active ? 'Active' : 'Inactive'}
+                                            </span>
+                                        </td>
+                                        <td className="ERP-t-creator">
+                                            {cat.created_by_name || <span className="ERP-t-null">—</span>}
+                                        </td>
+                                        <td className="ERP-center ERP-nowrap">
+                                            <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(cat)}>Edit</button>
+                                            {canDelete(userRole) && (
+                                                <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(cat.id, cat.name)}>Delete</button>
+                                            )}
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {pagedCategories.map((cat, i) => (
-                                        <tr key={cat.id}
-                                            style={editId === cat.id ? {
-                                                background: 'rgba(37,99,235,0.06)',
-                                                outline: '2px solid rgba(37,99,235,0.3)',
-                                            } : {}}>
-                                            <td className="ERP-t-num ERP-center">{(mdSafePage - 1) * mdPerPage + i + 1}</td>
-                                            <td className="ERP-t-primary">{cat.name}</td>
-                                            <td>{cat.description
-                                                ? <span className="ERP-t-desc">{cat.description}</span>
-                                                : <span className="ERP-t-null">—</span>}
-                                            </td>
-                                            <td>
-                                                <span className={`MD-tbl-tag ${cat.type === 'income' ? 'success' : 'danger'}`}>
-                                                    {cat.type === 'income' ? 'Income' : 'Expense'}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span className={`MD-tbl-tag ${cat.is_active ? 'info' : 'muted'}`}>
-                                                    {cat.is_active ? 'Active' : 'Inactive'}
-                                                </span>
-                                            </td>
-                                            <td className="ERP-t-creator">
-                                                {cat.created_by_name || <span className="ERP-t-null">—</span>}
-                                            </td>
-                                            <td className="ERP-center ERP-nowrap">
-                                                <button className="MD-act-ico edit" title="Edit" onClick={() => handleEdit(cat)}>Edit</button>
-                                                {canDelete(userRole) && (
-                                                    <button className="MD-act-ico delete" title="Delete" onClick={() => handleDelete(cat.id, cat.name)}>Delete</button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
-                    {!fetching && categories.length > 0 && (
-                        <Pagination
-                            page={mdSafePage}
-                            totalPages={mdTotalPages}
-                            onPageChange={setMdPage}
-                            total={categories.length}
-                            perPage={mdPerPage}
-                            onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
-                            itemLabel="account heads"
-                        />
-                    )}
-                </div>
+                {!fetching && categories.length > 0 && (
+                    <Pagination
+                        page={mdSafePage}
+                        totalPages={mdTotalPages}
+                        onPageChange={setMdPage}
+                        total={categories.length}
+                        perPage={mdPerPage}
+                        onPerPageChange={n => { setMdPerPage(n); setMdPage(1); }}
+                        itemLabel="account heads"
+                    />
+                )}
+            </div>
             {/* TABLE END */}
             <ConfirmDeleteModal
                 open={deleteModal.open}

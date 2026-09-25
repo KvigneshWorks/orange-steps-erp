@@ -52,7 +52,7 @@ interface EditForm {
 const COMPANY = {
   name: 'OrangeSteps',
   address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
-  phone: '+91 95667 01640',
+  phone: '+91 95667-01640',
   email: 'info@orangesteps.in',
 };
 
@@ -215,7 +215,7 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, lab
     if (!open) computeStyle();
     setOpen(o => !o);
   };
-  
+
   const pick = (v: string) => { onChange(v); setOpen(false); setQuery(''); };
   const panel = open ? createPortal(
     <div ref={panelRef} className="SDD-panel" style={panelStyle}>
@@ -4482,13 +4482,9 @@ function EditModal({
   const isCr = entryType === 'income';
   const typeClass = isCr ? 'cr' : 'dr';
   const availSub = form.category_id ? subCats.filter(s => s.category_id === +form.category_id) : subCats;
-  // Party Name options narrow to the selected Account Head, same relation the
-  // filter sidebar already uses (bio_data.category_id) -- a party with no
-  // category_id set stays visible regardless, so older/uncategorized entries
-  // aren't hidden.
   const availBio = form.category_id
-      ? bioData.filter(b => !b.category_id || b.category_id === +form.category_id)
-      : bioData;
+    ? bioData.filter(b => !b.category_id || b.category_id === +form.category_id)
+    : bioData;
   const availSubNames = form.bio_data_id ? subNames.filter(s => s.bio_data_id === +form.bio_data_id) : subNames;
   const parsedAmount = parseFloat(form.amount) || 0;
 

@@ -8,10 +8,10 @@ import { useKeyboardFieldNav } from '../utils/keyboardNav';
 const COMPANY = {
     fullName: 'OrangeSteps',
     address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
-    phone: '+91 95667 01640',
+    phone: '+91 95667-01640',
     email: 'info@orangesteps.in',
-    gstin: 'GSTIN: 33XXXXX0000X0XX', // placeholder — update with the real GSTIN
-    website: '',
+    gstin: 'GSTIN: 33XXXXX0000X0XX',
+    website: 'https://orangesteps.in',
     tagline: 'ERP Software',
     logoPath: import.meta.env.BASE_URL + 'favicon.png',
     logo2Path: import.meta.env.BASE_URL + 'favicon.png',
@@ -26,15 +26,6 @@ interface ISData { date_range: { from: string; to: string }; summary: Summary; c
 const fmt = (n: number) => '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtShort = (n: number) => { if (Math.abs(n) >= 10000000) return `₹${(n / 10000000).toFixed(2)} Cr`; if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(2)} L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)} K`; return fmt(n); };
 const fmtPDF = (n: number) => `Rs. ${n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-// jsPDF's standard Helvetica font has no real glyph or width metric for
-// anything outside its base WinAnsi set — ₹, arrows, em/en-dashes, middle
-// dots, curly quotes, emoji, etc. all fall back to a guessed width for
-// wrapping while the character itself renders wrong (or as a stray wrong
-// glyph), and that mismatch is what makes autoTable's narration column
-// run past its border. Rather than special-case every character that
-// might show up, common ones get mapped to a plain ASCII equivalent
-// first, then anything else outside printable ASCII is stripped entirely
-// — mirrors ReportCenter.tsx's pdfSafe()/pdfSanitize().
 const isPdfSafe = (text: string | undefined | null): string => {
     if (!text) return '-';
     return String(text)
@@ -48,6 +39,7 @@ const isPdfSafe = (text: string | undefined | null): string => {
         .replace(/[^\x20-\x7E]/g, '')
         .replace(/\s{2,}/g, ' ').trim() || '-';
 };
+
 const fmtDate = (d: string) => { if (!d) return '—'; try { const dt = new Date(d + 'T00:00:00'); return dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return d; } };
 const MODE_COLOR: Record<string, string> = { cash: '#1e9c6a', Cash: '#1e9c6a', upi: '#DB5B1F', UPI: '#DB5B1F', bank_transfer: '#C2410C', 'Bank Transfer': '#C2410C', cheque: '#9A3412', Cheque: '#9A3412', neft: '#DB5B1F', NEFT: '#DB5B1F', other: '#6B5D48', Others: '#6B5D48' };
 const ErpLogo = ({ size = 62 }: { size?: number }) => (
@@ -131,10 +123,6 @@ const isBuildPdfHeader = async (
     doc.setFillColor(203, 54, 9); doc.rect(0, 2.5, 3, 37.5, 'F');
     doc.setFillColor(255, 235, 215); doc.rect(3, 2.5, W - 3, 37.5, 'F');
     doc.setDrawColor(220, 130, 70); doc.setLineWidth(0.3); doc.line(0, 40, W, 40);
-    // Same two-line lockup as the app/other reports: brand name once
-    // ("WHITENODE"), "SOFTWARE SOLUTIONS" as its own tag underneath —
-    // fullName also contains that tagline, so printing it in full here
-    // would duplicate it right below.
     doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(150, 60, 20); doc.text(COMPANY.fullName.replace(/\s*Software Solutions\s*$/i, '').toUpperCase(), 37, 16);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(170, 90, 40); doc.text(COMPANY.tagline.toUpperCase(), 37, 23);
     doc.setFontSize(6.5); doc.setTextColor(160, 100, 60); doc.text(COMPANY.address, 37, 29.5);
@@ -204,7 +192,6 @@ async function exportIncomePDF(data: ISData, fromDate: string, toDate: string) {
         `Period: ${fmtDate(fromDate)} – ${fmtDate(toDate)}`,
         `${s.payment_count + s.daybook_entry_count} entries`
     );
-
     let curY = startY;
     doc.setFillColor(255, 248, 240); doc.rect(8, curY, W - 16, 30, 'F');
     doc.setDrawColor(220, 140, 80); doc.setLineWidth(0.3); doc.rect(8, curY, W - 16, 30);
@@ -671,7 +658,7 @@ export default function IncomeStatement() {
                     <div className="IS-chart-wrap">
                         {/* Monthly Breaken Start */}
                         <div className="IS-chart-hdr">
-                            
+
                             <div>
                                 {/* Monthly Breakdown Start */}
                                 <div className="IS-chart-title-txt">

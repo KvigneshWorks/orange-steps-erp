@@ -4,15 +4,6 @@ import { AS_CSS } from './AccountSettingsTheme';
 import { Ic } from '../components/Icon';
 import { PageHeader } from '../components/ui';
 
-/**
- * "Roles & Permissions" tab in Account Settings — super_admin only.
- * A read-only reference screen: it does not configure anything, it just
- * explains what each role can currently do. The actual rules live in
- * app/Http/Middleware/CheckRole.php (backend) and Dashboard.tsx's
- * ADMIN_ALLOWED / USER_ALLOWED sets (frontend nav) — this page is
- * documentation of that behavior, not a control panel for it.
- */
-
 const RP_CSS = `
 .RP-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 @media (max-width:900px) { .RP-grid { grid-template-columns:1fr; } }
@@ -33,14 +24,6 @@ const RP_CSS = `
 .RP-item svg { flex-shrink:0; margin-top:2px; }
 `;
 
-/* Premium visual pass -- kept deliberately restrained after feedback
-   that the earlier spinning/shimmering/3D-flip version felt gimmicky
-   rather than professional. Everything below is a ONE-TIME entrance
-   (fade + slight rise, staggered per card/row) plus a confident,
-   role-tinted hover state. Nothing loops or animates at rest --
-   no spinning rings, no shine sweeps, no breathing icons, no
-   perpetually shimmering text -- because a read-only reference page
-   should feel calm and considered, not busy. */
 const RP_PREMIUM_CSS = `
 @keyframes rp-card-in {
   from { opacity: 0; transform: translateY(18px); }
@@ -212,9 +195,6 @@ function CapIcon({ allowed, color, delay = 0 }: { allowed: boolean; color: strin
     );
 }
 
-/** Counts up 0 -> target once, after startDelay -- the "Allowed" /
- * "Restricted" badges tick up live instead of just appearing, which is
- * the bit of genuinely-live motion on an otherwise static reference page. */
 function useCountUp(target: number, duration = 700, startDelay = 0) {
     const [n, setN] = useState(0);
     useEffect(() => {
@@ -232,7 +212,6 @@ function useCountUp(target: number, duration = 700, startDelay = 0) {
             raf = requestAnimationFrame(step);
         }, startDelay * 1000);
         return () => { clearTimeout(timer); if (raf) cancelAnimationFrame(raf); };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [target, duration, startDelay]);
     return n;
 }

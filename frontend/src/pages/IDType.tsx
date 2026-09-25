@@ -258,20 +258,14 @@ export default function IDType() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // ✅ Optimistic delete with rollback
     const handleDelete = (id: number, type_name: string) => {
         setDeleteModal({ open: true, id: id, name: type_name, loading: false });
     };
     const confirmDelete = async () => {
         const { id, name } = deleteModal;
         setDeleteModal(d => ({ ...d, loading: true }));
-
-        // Save original for rollback
         const originalIdTypes = [...idTypes];
-
-        // Optimistic delete - remove immediately
         setIdTypes(prev => prev.filter(t => t.id !== id));
-
         setSubmitting(true);
         const token = sessionStorage.getItem('token');
         try {
@@ -325,6 +319,7 @@ export default function IDType() {
                         Syncing…
                     </div>
                 )}
+                {/* ── Silent sync badge ── */}
 
                 {/* HEADER START */}
                 <PageHeader
@@ -348,7 +343,7 @@ export default function IDType() {
                 </div>
                 {/* STATS END */}
 
-                {/* TOOLBAR */}
+                {/* TOOLBAR START */}
                 <div className="MD-toolbar-bar">
                     <div className="MD-toolbar-count"><b>{idTypes.length}</b> Identification Type{idTypes.length === 1 ? '' : 's'}</div>
                     <button className="MD-add-btn" onClick={() => { resetForm(); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -356,132 +351,153 @@ export default function IDType() {
                         Add Identification Type
                     </button>
                 </div>
+                {/* TOOLBAR END */}
 
                 {/* FORM START */}
                 {formOpen && (
-                <div className="MD-create-grid MD-inline-form">
-                <FormCard
-                    variant="md"
-                    icon={<Ic d={editingId
-                        ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-                        : 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0'}
-                        sz={18} c="#faf9f7" sw={1.8} />}
-                    title={editingId ? 'Edit Identification Type' : 'Add New Identification Type'}
-                    headerExtra={editingId && (
-                        <button type="button" className="MD-cancel-pill" onClick={resetForm}>
-                            <Ic d="M6 18L18 6M6 6l12 12" sz={10} c="currentColor" sw={2} />
-                            Cancel Edit
-                        </button>
-                    )}
-                >
-                        <form onSubmit={handleSubmit} noValidate>
-                            <div className="ERP-section MD-first-section">
-                                <span className="ERP-section-tag">01 — Type Details</span>
-                                <div className="ERP-section-rule" />
-                            </div>
+                    <div className="MD-create-grid MD-inline-form">
+                        <FormCard
+                            variant="md"
+                            icon={<Ic d={editingId
+                                ? 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+                                : 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0'}
+                                sz={18} c="#faf9f7" sw={1.8} />}
+                            title={editingId ? 'Edit Identification Type' : 'Add New Identification Type'}
+                            headerExtra={editingId && (
+                                <button type="button" className="MD-cancel-pill" onClick={resetForm}>
+                                    <Ic d="M6 18L18 6M6 6l12 12" sz={10} c="currentColor" sw={2} />
+                                    Cancel Edit
+                                </button>
+                            )}
+                        >
+                            <form onSubmit={handleSubmit} noValidate>
+                                <div className="ERP-section MD-first-section">
+                                    <span className="ERP-section-tag">01 — Type Details</span>
+                                    <div className="ERP-section-rule" />
+                                </div>
 
-                            <div className="ERP-g2">
-                                <div className={'ERP-field' + (errorField === 'type_name' ? ' MD-field-error' : '')} ref={typeNameFieldRef}>
-                                    <label className="ERP-label req">Identification Type Name</label>
-                                    <Input ref={typeNameInputRef} type="text" name="type_name"
-                                        value={formData.type_name} onChange={handleChange}
-                                        placeholder="e.g., Voter ID, Passport" />
-                                    {errorField === 'type_name' && (
-                                        <div className="MD-field-error-msg">
-                                            <Ic d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" sz={11} c="currentColor" sw={2} />
-                                            Please fill out this field
-                                        </div>
+                                <div className="ERP-g2">
+                                    {/* PLEASE Fill OUT This Field START */}
+                                    <div className={'ERP-field' + (errorField === 'type_name' ? ' MD-field-error' : '')} ref={typeNameFieldRef}>
+                                        <label className="ERP-label req">Identification Type Name</label>
+                                        <Input ref={typeNameInputRef} type="text" name="type_name"
+                                            value={formData.type_name} onChange={handleChange}
+                                            placeholder="e.g., Voter ID, Passport" />
+                                        {errorField === 'type_name' && (
+                                            <div className="MD-field-error-msg">
+                                                <Ic d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" sz={11} c="currentColor" sw={2} />
+                                                Please fill out this field
+                                            </div>
+                                        )}
+                                    </div>
+                                    {/* PLEASE FIll OUT This Field END */}
+
+                                    {/* FORMAT PATTERN START */}
+                                    <div className="ERP-field">
+                                        <label className="ERP-label">Format Pattern</label>
+                                        <Input type="text" name="format_pattern"
+                                            value={formData.format_pattern} onChange={handleChange}
+                                            placeholder="e.g., 10 Alphanumeric characters" />
+                                        <span className="ERP-hint">Format reference information only</span>
+                                    </div>
+                                    {/* FORMAT PATTERN END */}
+                                </div>
+
+                                {/* Additional Info Start */}
+                                <div className="ERP-section">
+                                    <span className="ERP-section-tag">02 — Additional Info</span>
+                                    <div className="ERP-section-rule" />
+                                </div>
+                                {/* Additional Info End */}
+
+                                {/* Description Start */}
+                                <div className="ERP-g1">
+                                    <div className="ERP-field">
+                                        <label className="ERP-label">
+                                            Description
+                                            <span className="ERP-label-opt">(optional)</span>
+                                        </label>
+                                        <Textarea name="description"
+                                            value={formData.description} onChange={handleChange}
+                                            placeholder="Describe this Identification type and its usage context..." />
+                                    </div>
+                                </div>
+                                {/* Description End */}
+
+                                {/* Identification Type Name Start */}
+                                <div className="ERP-req-note">
+                                    <span className="ERP-req-star">*</span>
+                                    Identification Type Name is required
+                                </div>
+                                {/* Identification Type Name End */}
+
+                                <div className="ERP-btn-row">
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        loading={submitting}
+                                        loadingText={editingId ? 'Updating...' : 'Creating...'}
+                                        icon={<Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} />}
+                                    >
+                                        {editingId ? 'Update Identification Type' : 'Create Identification Type'}
+                                    </Button>
+                                    {(editingId || formData.type_name.trim()) && (
+                                        <Button type="button" variant="secondary" onClick={resetForm} disabled={submitting}>
+                                            Cancel
+                                        </Button>
                                     )}
                                 </div>
-                                <div className="ERP-field">
-                                    <label className="ERP-label">Format Pattern</label>
-                                    <Input type="text" name="format_pattern"
-                                        value={formData.format_pattern} onChange={handleChange}
-                                        placeholder="e.g., 10 Alphanumeric characters" />
-                                    <span className="ERP-hint">Format reference information only</span>
+
+                            </form>
+                        </FormCard>
+
+                        {/* LIVE PREVIEW START */}
+                        <div className="MD-preview-card">
+                            <div className="MD-preview-head">
+                                <span className="MD-preview-head-dot" />
+                                <span className="MD-preview-head-txt">Live Preview</span>
+                            </div>
+                            <div className="MD-preview-body">
+                                {/* TYPE NAME START */}
+                                <div className="MD-preview-row">
+                                    <span className="MD-preview-ico"><Ic d="M7 8h10M7 12h10M7 16h6" sz={13} c="currentColor" sw={2} /></span>
+                                    <span className="MD-preview-txt">
+                                        <span className="MD-preview-lbl">Type Name</span>
+                                        <span className={'MD-preview-val' + (formData.type_name.trim() ? '' : ' empty')}>
+                                            {formData.type_name.trim() || 'Not entered yet'}
+                                        </span>
+                                    </span>
                                 </div>
-                            </div>
+                                {/* TYPE NAME END */}
 
-                            <div className="ERP-section">
-                                <span className="ERP-section-tag">02 — Additional Info</span>
-                                <div className="ERP-section-rule" />
-                            </div>
-
-                            <div className="ERP-g1">
-                                <div className="ERP-field">
-                                    <label className="ERP-label">
-                                        Description
-                                        <span className="ERP-label-opt">(optional)</span>
-                                    </label>
-                                    <Textarea name="description"
-                                        value={formData.description} onChange={handleChange}
-                                        placeholder="Describe this Identification type and its usage context..." />
+                                {/* FORMAT PATTERN START */}
+                                <div className="MD-preview-row">
+                                    <span className="MD-preview-ico"><Ic d="M4 6h16M4 12h16M4 18h7" sz={13} c="currentColor" sw={2} /></span>
+                                    <span className="MD-preview-txt">
+                                        <span className="MD-preview-lbl">Format Pattern</span>
+                                        <span className={'MD-preview-val' + (formData.format_pattern.trim() ? '' : ' empty')}>
+                                            {formData.format_pattern.trim() || 'None'}
+                                        </span>
+                                    </span>
                                 </div>
+                                {/* FORMAT PATTERN END */}
+
+                                {/* DESCRIPTION START */}
+                                <div className="MD-preview-row">
+                                    <span className="MD-preview-ico"><Ic d="M4 6h16M4 12h16M4 18h7" sz={13} c="currentColor" sw={2} /></span>
+                                    <span className="MD-preview-txt">
+                                        <span className="MD-preview-lbl">Description</span>
+                                        <span className={'MD-preview-val' + (formData.description.trim() ? '' : ' empty')}>
+                                            {formData.description.trim() || 'No description'}
+                                        </span>
+                                    </span>
+                                </div>
+                                {/* DESCRIPTION END */}
                             </div>
-
-                            <div className="ERP-req-note">
-                                <span className="ERP-req-star">*</span>
-                                Identification Type Name is required
-                            </div>
-
-                            <div className="ERP-btn-row">
-                                <Button
-                                    type="submit"
-                                    variant="primary"
-                                    loading={submitting}
-                                    loadingText={editingId ? 'Updating...' : 'Creating...'}
-                                    icon={<Ic d="M5 13l4 4L19 7" sz={13} c="#faf9f7" sw={2.2} />}
-                                >
-                                    {editingId ? 'Update Identification Type' : 'Create Identification Type'}
-                                </Button>
-                                {(editingId || formData.type_name.trim()) && (
-                                    <Button type="button" variant="secondary" onClick={resetForm} disabled={submitting}>
-                                        Cancel
-                                    </Button>
-                                )}
-                            </div>
-
-                        </form>
-                </FormCard>
-
-                {/* LIVE PREVIEW — right side */}
-                <div className="MD-preview-card">
-                    <div className="MD-preview-head">
-                        <span className="MD-preview-head-dot" />
-                        <span className="MD-preview-head-txt">Live Preview</span>
+                            <div className="MD-preview-foot">Updates live as you type</div>
+                        </div>
+                        {/* LIVE PREVIEW END */}
                     </div>
-                    <div className="MD-preview-body">
-                        <div className="MD-preview-row">
-                            <span className="MD-preview-ico"><Ic d="M7 8h10M7 12h10M7 16h6" sz={13} c="currentColor" sw={2} /></span>
-                            <span className="MD-preview-txt">
-                                <span className="MD-preview-lbl">Type Name</span>
-                                <span className={'MD-preview-val' + (formData.type_name.trim() ? '' : ' empty')}>
-                                    {formData.type_name.trim() || 'Not entered yet'}
-                                </span>
-                            </span>
-                        </div>
-                        <div className="MD-preview-row">
-                            <span className="MD-preview-ico"><Ic d="M4 6h16M4 12h16M4 18h7" sz={13} c="currentColor" sw={2} /></span>
-                            <span className="MD-preview-txt">
-                                <span className="MD-preview-lbl">Format Pattern</span>
-                                <span className={'MD-preview-val' + (formData.format_pattern.trim() ? '' : ' empty')}>
-                                    {formData.format_pattern.trim() || 'None'}
-                                </span>
-                            </span>
-                        </div>
-                        <div className="MD-preview-row">
-                            <span className="MD-preview-ico"><Ic d="M4 6h16M4 12h16M4 18h7" sz={13} c="currentColor" sw={2} /></span>
-                            <span className="MD-preview-txt">
-                                <span className="MD-preview-lbl">Description</span>
-                                <span className={'MD-preview-val' + (formData.description.trim() ? '' : ' empty')}>
-                                    {formData.description.trim() || 'No description'}
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="MD-preview-foot">Updates live as you type</div>
-                </div>
-                </div>
                 )}
                 {/* FORM END */}
 

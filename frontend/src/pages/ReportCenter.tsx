@@ -11,11 +11,11 @@ const COMPANY = {
     name: 'OrangeSteps',
     fullName: 'OrangeSteps',
     address: 'GRAND BRENTON - 281, Avinashi Rd, Periyar Nagar, Coimbatore, Tamil Nadu 641004',
-    phone: '+91 95667 01640',
+    phone: '+91 95667-01640',
     email: 'info@orangesteps.in',
-    website: '',
+    website: 'https://www.orangesteps.in',
     tagline: 'ERP Software',
-    gstin: 'GSTIN: 33XXXXX0000X0XX', // placeholder — update with the real GSTIN
+    gstin: 'GSTIN: 33XXXXX0000X0XX',
     logoPath: import.meta.env.BASE_URL + 'favicon.png',
     logo2Path: import.meta.env.BASE_URL + 'favicon.png',
     logoDarkPath: import.meta.env.BASE_URL + 'favicon.png',
@@ -145,19 +145,6 @@ const fmtINR_PDF = (n: number | string | undefined | null): string => {
     return `${neg}Rs. ${formatted}`;
 };
 
-// jsPDF's built-in Helvetica font has no real glyph or width metric for
-// anything outside its base WinAnsi set — arrows, em/en-dashes, middle
-// dots, curly quotes, emoji, and the like all fall back to some generic
-// placeholder width for wrapping purposes while the character itself
-// either fails to render or gets drawn as a wrong, differently-sized
-// substitute glyph (we've seen an arrow print as a stray "f", for
-// example). That mismatch between the guessed width and what actually
-// gets drawn is what makes autoTable wrap in the wrong place and send
-// text past its column. Rather than special-case every character that
-// might show up, this maps the common, "meant to be read" ones to a
-// plain ASCII equivalent first, then strips anything else outside
-// printable ASCII entirely — so nothing unsupported ever reaches jsPDF
-// again, regardless of which exact character it turns out to be.
 const pdfSanitize = (s: string): string => s
     .replace(/[‒–—―−]/g, '-')
     .replace(/[·•‧]/g, '-')
@@ -192,10 +179,6 @@ const labelForType = (t?: string): string => ({ construction: 'Construction', in
 const labelForStatus = (s?: string): string => ({ active: 'Active', on_hold: 'On Hold', completed: 'Completed' }[s || ''] || s || '—');
 const labelForMode = (m?: string): string => ({ cash: 'Cash', upi: 'UPI', neft: 'NEFT', cheque: 'Cheque', bank_transfer: 'Bank Transfer', other: 'Other' }[m || ''] || m || '—');
 const today = (): string => new Date().toISOString().slice(0, 10);
-// NOTE: every report tab's default range is '2000-01-01' (effectively "all
-// time"), by explicit request -- reports must show the full total unless the
-// user deliberately narrows the date range themselves. startOfMonth() is kept
-// only as a helper in case a future "This Month" quick-range shortcut needs it.
 const startOfMonth = (): string => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
@@ -348,10 +331,6 @@ const drawContinuationHeader = (doc: any, _logo: string, _watermark: string, tit
 
 const buildPdfHeader = async (
     doc: any, rightTag: string,
-    // No longer rendered — every report PDF used to show a "REPORT /
-    // PERIOD / CLIENT / CATEGORY ..." filter-summary row here, which is
-    // exactly what's been removed. The param is kept (unused) so none
-    // of the ~6 call sites building these arrays need to change.
     _emphasis: { label: string; value: string }[]
 ): Promise<{ startY: number; logo: string; watermark: string; watermarkRatio: number }> => {
     const [logo, wm] = await Promise.all([getLogoBase64(), getLogo2Base64()]);
@@ -364,10 +343,6 @@ const buildPdfHeader = async (
     doc.setFillColor(...PDF_COLORS.offWhite); doc.rect(0, 1.2, W, 23.8, 'F');
     doc.setFillColor(...PDF_COLORS.ember); doc.rect(0, 1.2, 1.6, 23.8, 'F');
     doc.setDrawColor(...PDF_COLORS.emberPale); doc.setLineWidth(0.3); doc.line(0, 25, W, 25);
-    // Same two-line lockup the app itself uses (WHITENODE, bold caps, with
-    // NODE highlighted in ember / a SOFTWARE SOLUTIONS tag underneath) —
-    // the name row only ever prints "WHITENODE"; the tagline appears
-    // exactly once, as the tag underneath it.
     const nameParts = COMPANY.fullName.match(/^(White)(Node)/i);
     doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
     if (nameParts) {
@@ -388,13 +363,6 @@ const buildPdfHeader = async (
     doc.text(COMPANY.email, W - 10, 11.5, { align: 'right' });
     doc.text(COMPANY.phone, W - 10, 16, { align: 'right' });
     doc.text(COMPANY.website, W - 10, 20.5, { align: 'right' });
-
-    // The filter-summary block (REPORT / PERIOD / CLIENT / CATEGORY / …)
-    // and the record-count badge (e.g. "2 records") that used to fill this
-    // space have both been removed — "Generated:" is the only thing left
-    // below the divider, which is why the header now ends much sooner
-    // (startY below) than it used to. rightTag is kept as an unused param
-    // so none of the call sites need to change.
     void rightTag;
     doc.setFont('helvetica', 'normal'); doc.setFontSize(6); doc.setTextColor(...PDF_COLORS.text3);
     doc.text(`Generated: ${new Date().toLocaleString('en-IN')}`, W - 10, 30, { align: 'right' });
@@ -1563,17 +1531,14 @@ const MODE_COLORS: Record<string, string> = {
     Cash: '#1E9C6A', UPI: '#DB5B1F', NEFT: '#9A3412', Cheque: '#C2410C',
     'Bank Transfer': '#A6491D', Others: '#6B5D48',
 };
+
 const modeColor = (mode: string) => MODE_COLORS[mode] || '#6B5D48';
 
-// ── PDF exports: draw a real per-mode icon badge instead of spelling the
-// mode out as plain text — mirrors the on-screen ModeIcon/MODE_ICON_NAME
-// treatment (small colored rounded chip + glyph) so the exported "Cash
-// Book" / "Client Debit" / "Accounts Payable" PDFs read the same way the
-// live table does, not as cramped letters wrapping inside a narrow column.
 const MODE_COLORS_RGB: Record<string, [number, number, number]> = {
     Cash: [30, 156, 106], UPI: [40, 112, 204], NEFT: [196, 126, 10],
     Cheque: [155, 69, 204], 'Bank Transfer': [8, 145, 178], Others: [107, 107, 107],
 };
+
 const pdfTint = (rgb: [number, number, number], amt: number): [number, number, number] =>
     [rgb[0], rgb[1], rgb[2]].map(c => Math.round(c + (255 - c) * amt)) as [number, number, number];
 
@@ -1588,24 +1553,20 @@ function drawModeBadge(doc: any, mode: string, cx: number, cy: number) {
     doc.setDrawColor(bd[0], bd[1], bd[2]);
     doc.setLineWidth(0.15);
     doc.roundedRect(cx - half, cy - half, half * 2, half * 2, 0.8, 0.8, 'FD');
-
     doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
     doc.setFillColor(rgb[0], rgb[1], rgb[2]);
     doc.setLineWidth(0.26);
 
     switch (key) {
         case 'Cash':
-            // banknote outline with a coin in the middle
             doc.roundedRect(cx - 1.5, cy - 1.05, 3, 2.1, 0.35, 0.35, 'S');
             doc.circle(cx, cy, 0.5, 'S');
             break;
         case 'UPI':
-            // phone outline with a home-bar
             doc.roundedRect(cx - 0.9, cy - 1.5, 1.8, 3, 0.35, 0.35, 'S');
             doc.line(cx - 0.35, cy + 0.95, cx + 0.35, cy + 0.95);
             break;
         case 'NEFT':
-            // bank building: roof + columns + base
             doc.triangle(cx - 1.5, cy - 0.35, cx + 1.5, cy - 0.35, cx, cy - 1.55, 'S');
             doc.line(cx - 1.5, cy - 0.35, cx - 1.5, cy + 1.25);
             doc.line(cx - 0.6, cy - 0.05, cx - 0.6, cy + 1.05);
@@ -1614,13 +1575,11 @@ function drawModeBadge(doc: any, mode: string, cx: number, cy: number) {
             doc.line(cx - 1.7, cy + 1.25, cx + 1.7, cy + 1.25);
             break;
         case 'Cheque':
-            // document with two ruled lines
             doc.roundedRect(cx - 1.6, cy - 1.2, 3.2, 2.4, 0.3, 0.3, 'S');
             doc.line(cx - 0.95, cy - 0.35, cx + 0.95, cy - 0.35);
             doc.line(cx - 0.95, cy + 0.35, cx + 0.35, cy + 0.35);
             break;
         case 'Bank Transfer':
-            // two opposing arrows
             doc.line(cx - 1.6, cy - 0.55, cx + 1.1, cy - 0.55);
             doc.line(cx + 0.4, cy - 1.15, cx + 1.3, cy - 0.55);
             doc.line(cx + 0.4, cy + 0.05, cx + 1.3, cy - 0.55);
@@ -1629,7 +1588,6 @@ function drawModeBadge(doc: any, mode: string, cx: number, cy: number) {
             doc.line(cx - 0.4, cy - 0.05, cx - 1.3, cy + 0.55);
             break;
         default:
-            // ellipsis — Others / unrecognized mode
             doc.circle(cx - 1, cy, 0.35, 'F');
             doc.circle(cx, cy, 0.35, 'F');
             doc.circle(cx + 1, cy, 0.35, 'F');
@@ -1650,12 +1608,10 @@ const STAT_ICON_PATHS: Record<string, string> = {
     more: 'M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z',
 };
 
-// Mode column icon lookup — "realistic" per-mode icon instead of the
-// spelled-out Pill label, which wraps letter-by-letter in this table's
-// narrow Mode column at small widths.
 const MODE_ICON_NAME: Record<string, string> = {
     Cash: 'cash', UPI: 'mobile', NEFT: 'bank', Cheque: 'document', 'Bank Transfer': 'transfer', Others: 'more',
 };
+
 const ModeIcon = ({ mode }: { mode: string }) => {
     if (!mode || mode === '—') return <span className="T-tbl-null">—</span>;
     const color = modeColor(mode);
@@ -1674,28 +1630,14 @@ const StatIcon = ({ name, color, size = 17 }: { name: string; color: string; siz
 
 function ReportDashboard({ onLogout, section }: { onLogout: () => void; section: ReportSection }) {
     const hdrAccent = T_ACCENT[section];
-    // fromDate/toDate are the APPLIED range — only these drive the actual
-    // fetch/filter. The pickers write to the *Draft pair instead, so picking
-    // From Date alone never triggers a reload; only clicking "Apply filters"
-    // (commitDbFilters) copies the draft dates across.
     const [fromDate, setFromDate] = useState('2000-01-01');
     const [toDate, setToDate] = useState(today());
     const [fromDateDraft, setFromDateDraft] = useState('2000-01-01');
     const [toDateDraft, setToDateDraft] = useState(today());
     const [dbFromTouched, setDbFromTouched] = useState(false);
     const [dbToTouched, setDbToTouched] = useState(false);
-    // True once the user has picked both dates and clicked Filter — a date
-    // range on its own is now enough to show entries (matching Cash Book
-    // Transactions), it doesn't also require a Category/Client/etc. pick.
     const [dbDateApplied, setDbDateApplied] = useState(false);
     const [logoError, setLogoError] = useState(false);
-    // Set whenever a fetch fails at the network level (no HTTP response came
-    // back at all — timeout / connection refused), as opposed to the backend
-    // responding with an error status. That distinction matters here: it
-    // means the API server itself is unreachable (XAMPP/Apache or MySQL
-    // down, wrong proxy target, etc.), not a bug in a particular report —
-    // previously this failed completely silently (console.error only), so
-    // the whole page just looked broken/empty with no explanation.
     const [serverError, setServerError] = useState(false);
     const flagServerError = (e: any) => { if (!e?.response) setServerError(true); };
     const [dbEntries, setDbEntries] = useState<DaybookEntry[]>([]);
@@ -1743,12 +1685,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const [dbPdfLoading, setDbPdfLoading] = useState(false);
     const [dbVisibleCols, setDbVisibleCols] = useState<Set<string>>(new Set(DB_COLUMNS.map(c => c.key)));
     const [dbPerPage, setDbPerPage] = useState(25);
-    // Pagination for Credit/Client/Manpower — same client-side slice-and-page
-    // pattern Cash Book already uses (dbPage/dbPerPage above), so all 4
-    // report sections behave identically instead of only Cash Book paginating.
-    // Each section now also gets its own adjustable rows-per-page (matching
-    // Cash Book's "Per Page" selector), instead of being locked to a shared
-    // fixed constant.
     const [crPage, setCrPage] = useState(1);
     const [cpPage, setCpPage] = useState(1);
     const [lbPage, setLbPage] = useState(1);
@@ -1756,9 +1692,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const [crPerPage, setCrPerPage] = useState(25);
     const [cpPerPage, setCpPerPage] = useState(25);
     const [lbPerPage, setLbPerPage] = useState(25);
-    // Same 0/negative/NaN guard as Cash Book's safeDbPerPage (defined further
-    // below, near dbEntries) — declared early here since totalCrPages etc.
-    // (right after this) need it before that point in the component body.
     const safeCrPerPage = crPerPage > 0 ? crPerPage : 25;
     const safeCpPerPage = cpPerPage > 0 ? cpPerPage : 25;
     const safeLbPerPage = lbPerPage > 0 ? lbPerPage : 25;
@@ -1778,8 +1711,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const [crPaymentModeFiltersDraft, setCrPaymentModeFiltersDraft] = useState<string[]>([]);
     const [crClientNameFiltersDraft, setCrClientNameFiltersDraft] = useState<string[]>([]);
     const [crSearchPulse, setCrSearchPulse] = useState(false);
-    // Same default as every other report tab -- '2000-01-01' (all time),
-    // matching Client/Labour and giving the correct full total on first load.
     const [crDateFrom, setCrDateFrom] = useState('2000-01-01');
     const [crDateTo, setCrDateTo] = useState(today());
     const [crDateFromDraft, setCrDateFromDraft] = useState('2000-01-01');
@@ -1830,7 +1761,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const availSubNames = dbFilterDraft.bio_data_ids.length > 0
         ? subNameList.filter(s => { const sid = normId(s.bio_data_id); if (dbFilterDraft.bio_data_ids.includes(sid)) return true; const bioName = bioLabelMap[sid]; if (bioName && dbFilterDraft.bio_data_ids.includes(normId(bioName))) return true; return false; })
         : [];
-
     const subNameOpts: DDOpt[] = availSubNames.map(s => ({ value: normId(s.id), label: s.alternate_name }));
     const crNonLabourVendors = React.useMemo(() => crVendors.filter(v => (v.category_name || '').trim().toLowerCase() !== 'labour'), [crVendors]);
     const crCategoryIdOpts: DDOpt[] = React.useMemo(() => {
@@ -1841,7 +1771,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         });
         return out.sort((a, b) => a.label.localeCompare(b.label));
     }, [crNonLabourVendors]);
-
     const crSubCategoryIdOpts: DDOpt[] = React.useMemo(() => {
         if (!crCategoryIdFiltersDraft.length) return [];
         return subCategoryList
@@ -1849,7 +1778,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
             .map(sc => ({ value: normId(sc.id), label: sc.name }))
             .sort((a, b) => a.label.localeCompare(b.label));
     }, [subCategoryList, crCategoryIdFiltersDraft]);
-
     const crVendorNameOpts: DDOpt[] = React.useMemo(() => {
         if (!crCategoryIdFiltersDraft.length) return [];
         const seen = new Set<string>();
@@ -1859,7 +1787,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
             .filter(v => v.party_name && !seen.has(v.party_name) && seen.add(v.party_name))
             .map(v => ({ value: v.party_name!, label: v.party_name! }));
     }, [crNonLabourVendors, crCategoryIdFiltersDraft, crSubCategoryIdFiltersDraft]);
-
     const cpTypeOpts: DDOpt[] = React.useMemo(() => {
         const seen = new Set<string>(); const out: DDOpt[] = [];
         cpProjects.forEach(p => {
@@ -1903,6 +1830,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
             const t = (nm || '').trim();
             if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push({ value: t, label: label || t }); }
         };
+
         bioDataList.forEach(b => {
             const catId = b.category_id != null ? String(b.category_id) : '';
             const isIncome = !!catId && (catTypeMap[catId] === 'income' || entryCatTypeMap[catId] === 'income');
@@ -1914,16 +1842,7 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
                 if (snm) add(snm, `${snm} (${nm})`);
             });
         });
-        // Client Name filtering isn't limited to registered income bio_data
-        // records — clientDebitRows/labourAsDaybookRows/creditAsDaybookRows
-        // all also match against the client_name typed directly on a Cash Book
-        // entry, a Wage Disbursement session's per-client allocation, or a
-        // Accounts Payable bill/payment (e.g. "which client's site was this
-        // labour/credit expense for"). Previously those names only got added
-        // as a last-resort fallback when bioDataList produced NOTHING, so any
-        // client that already had a real income bio_data record (even a
-        // totally different one) silently hid every name that only ever
-        // showed up on the expense side. Always fold all of them in instead.
+
         dbAllEntries.forEach(e => add(e.client_name));
         laborSessions.forEach(s => (s.clients || []).forEach(c => add(c.client_name)));
         crVendors.forEach(v => {
@@ -1933,10 +1852,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         return out.sort((a, b) => a.label.localeCompare(b.label));
     }, [bioDataList, subNameList, catTypeMap, entryCatTypeMap, dbAllEntries, laborSessions, crVendors]);
     const dbExpenseCategoryOpts: TDropOpt[] = React.useMemo(() => {
-        // Prefer the full Master Category list (all expense categories, whether
-        // or not any daybook entry has been recorded against them yet). Fall
-        // back to deriving options from existing entries only if master data
-        // hasn't loaded, so the dropdown never sits empty in the meantime.
         if (dbCategories.length) {
             return dbCategories
                 .filter(c => c.type === 'expense')
@@ -1960,12 +1875,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
     const labourAsDaybookRows: DaybookEntry[] = React.useMemo(() => {
         const rows: DaybookEntry[] = [];
         laborSessions.forEach((s, si) => {
-            // s.paid_at is a full datetime ("2026-08-22T09:15:00...") while
-            // fromDate/toDate are plain dates — comparing them un-normalized
-            // made every payment made "today" compare as later than toDate
-            // (the datetime string is lexicographically longer/greater), so
-            // it silently failed the toDate check and vanished from the
-            // Manpower source entirely. Compare date-only on both sides.
             const paidAt = (s.paid_at || '').slice(0, 10);
             if (fromDate && paidAt < fromDate) return;
             if (toDate && paidAt > toDate) return;
@@ -1995,10 +1904,6 @@ function ReportDashboard({ onLogout, section }: { onLogout: () => void; section:
         return rows;
     }, [laborSessions, fromDate, toDate]);
     const creditAsDaybookRows: DaybookEntry[] = React.useMemo(() => {
-        // Matches labourAsDaybookRows: this represents money that's actually
-        // left the business, so it's built from PAYMENTS (amount_paid), not
-        // from the raw bill amount (credit_amount), which may be partly or
-        // fully unpaid.
         const rows: DaybookEntry[] = [];
         crVendors.forEach((v, vi) => {
             const vEntries = (v.entries || []) as CreditEntry[];

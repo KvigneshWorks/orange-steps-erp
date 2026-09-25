@@ -46,16 +46,6 @@ interface OverallStats {
     totalEntries: number;
     creditByMode: PaymentBreakdown[];
     debitByMode: PaymentBreakdown[];
-    /* Cash vs. Bank split, in two flavours — "Cash" mode is its own
-       bucket, every other mode (UPI, NEFT, Cheque, Bank Transfer,
-       Others) merges into "Bank" since they all settle to a bank
-       account:
-       - debitCash / debitBank: split of Total Debit only — these two
-         always add up to totalDebit (e.g. totalDebit 10k = debitCash 7k
-         + debitBank 3k).
-       - cashHolding / bankHolding: split of Net Balance — net
-         (credit − debit) per bucket; these two always add up to
-         netBalance. */
     debitCash: number;
     debitBank: number;
     cashHolding: number;
@@ -154,13 +144,11 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, emp
         <>
             <div className="DB-SDD-root" ref={ref} data-disabled={disabled}>
                 {label && (
-                    // Label Start
                     <label className="ERP-label">
                         {label}
                         {required && <span className="DB-SDD-req">*</span>}
                         {!required && <span className="DB-SDD-opt">optional</span>}
                     </label>
-                    // Label End
                 )}
 
                 {/* Button Start */}
@@ -234,7 +222,6 @@ function SearchDD({ options, value, onChange, placeholder, disabled = false, emp
                     </div>
                 )}
                 {/* Open End */}
-
             </div>
         </>
     );
@@ -1625,9 +1612,6 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
     useEffect(() => {
         setOverallStats(computeOverallStats(allEntries, categories));
     }, [allEntries, categories]);
-    // Defensive: allEntries can momentarily hold a non-array value if an
-    // API response ever comes back malformed (see loaders below) -- spreading
-    // a non-array here used to crash the whole page ("X is not iterable").
     const recentEntries = (Array.isArray(allEntries) ? [...allEntries] : []).sort((a, b) => b.id - a.id).slice(0, 15);
     const recentEntryKey = recentEntries.map(e => e.id).join(',');
 
@@ -1748,9 +1732,6 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
             let bios = bioData.filter(b => !b.category_id || b.category_id === catId);
             bios = bios.length > 0 ? bios : bioData;
 
-            // Narrow further to the chosen Sub Category — a Labour category with
-            // Carpenter/Electrician sub-categories should only offer party names
-            // that actually belong to the sub-category picked, not every labour name.
             if (form.sub_category_id) {
                 const subId = +form.sub_category_id;
                 bios = bios.filter(b => b.sub_category_id === subId);
