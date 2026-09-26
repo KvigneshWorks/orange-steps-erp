@@ -310,7 +310,6 @@ function SDD({
                         {label}{required && <span className="CM3-req">*</span>}
                     </div>
                 )}
-
                 {/* Button Start */}
                 <button type="button" ref={triggerRef} onClick={handleToggle} onKeyDown={onTriggerKeyDown}
                     className={`CM3-sdd-trigger${open ? ' open' : ''}${sel ? ' has-val' : ''}`}
@@ -397,7 +396,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
     const panel = open ? createPortal(
         <div ref={panelRef} style={{ ...panelStyle, background: '#faf9f7', border: `1.5px solid ${accent}30`, boxShadow: '0 8px 28px rgba(0,0,0,0.10)', overflow: 'hidden' }}>
 
-            {/* Search row */}
+            {/* Search Row Start */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid #E8E2D8', background: '#F5F3EF' }}>
                 <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#8C7C63" strokeWidth={2} strokeLinecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                 <input autoComplete="off"
@@ -411,9 +410,9 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 </button>}
             </div>
-            {/* Search row */}
+            {/* Search row End */}
 
-            {/* List Start */}
+            {/* List Start Start */}
             <div style={{ maxHeight: 200, overflowY: 'auto', overscrollBehavior: 'contain' }}>
                 {q.trim() && !options.find(o => o.label.toLowerCase() === q.toLowerCase()) && (
                     <div onClick={() => pick(q.trim())} role="option" tabIndex={-1} aria-selected={false}
@@ -445,7 +444,7 @@ function ClientPicker({ value, onChange, options, placeholder, accent = PAYMENT_
                     );
                 })}
             </div>
-            {/* List End */}
+            {/* List Start End */}
 
             {/* Footer Start */}
             <div style={{ padding: '4px 12px', background: '#F5F3EF', borderTop: '1px solid #E8E2D8', fontSize: 8, color: '#8C7C63', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em', display: 'flex', justifyContent: 'space-between' }}>
