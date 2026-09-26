@@ -187,6 +187,7 @@ function SDD({
         o.label.toLowerCase().includes(q.toLowerCase()) ||
         (o.sub || '').toLowerCase().includes(q.toLowerCase())
     );
+
     const sel = options.find(o => o.value === value);
 
     useEffect(() => {
