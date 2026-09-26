@@ -406,6 +406,7 @@ export default function AllAccounts() {
 
                 {!loading && visible.length > 0 && (
                     <div className="ERP-tbl-scroll">
+                        {/* Table Start */}
                         <table className="ERP-tbl">
                             <thead>
                                 <tr>
@@ -447,6 +448,7 @@ export default function AllAccounts() {
                                 })}
                             </tbody>
                         </table>
+                        {/* Table End */}
                     </div>
                 )}
 
@@ -486,6 +488,7 @@ export default function AllAccounts() {
                             <div className="AS-modal-sub">Update this account's name, email, or role. Changes apply immediately.</div>
 
                             <div className="AA-edit-fields">
+                                {/* Full Name Start */}
                                 <Field label="Name" error={editModal.errors.name}>
                                     <Input
                                         value={editModal.name}
@@ -493,6 +496,9 @@ export default function AllAccounts() {
                                         placeholder="Full name"
                                     />
                                 </Field>
+                                {/* Full Name End */}
+
+                                {/* Company Name Start */}
                                 <Field label="Email" error={editModal.errors.email}>
                                     <Input
                                         type="email"
@@ -501,6 +507,9 @@ export default function AllAccounts() {
                                         placeholder="name@company.com"
                                     />
                                 </Field>
+                                {/* Company Name End */}
+
+                                {/* Role Start */}
                                 <div>
                                     <div className="AA-edit-roles-label">Role</div>
                                     <div className="AS-role-cards">
@@ -528,24 +537,23 @@ export default function AllAccounts() {
                                     </div>
                                     {editModal.errors.role && <div className="MD-field-error-msg">{editModal.errors.role}</div>}
                                 </div>
+                                {/* Role End */}
                             </div>
 
+                            {/* Cancel Start */}
                             <div className="AS-modal-actions">
                                 <button className="AS-modal-btn cancel" disabled={editModal.loading} onClick={closeEdit}>Cancel</button>
                                 <button className="AS-modal-btn save" disabled={editModal.loading} onClick={saveEdit}>
                                     {editModal.loading ? 'Saving…' : 'Save Changes'}
                                 </button>
                             </div>
+                            {/* Cancel End */}
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* ── Delete Account modal — genuine permanent delete from the
-                 database, not the app's usual move-to-Recycle-Bin pattern,
-                 per explicit request. Backend refuses (and this dialog
-                 warns up front) if the account has ever created real
-                 business records. ── */}
+            {/* Delete Forever Start */}
             <RecycleBinDeleteModal
                 open={deleteModal.open}
                 title="Delete Account"
@@ -557,6 +565,7 @@ export default function AllAccounts() {
                 onCancel={closeDelete}
                 loading={deleteModal.loading}
             />
+            {/* Delete Forever End */}
         </div>
     );
 }
