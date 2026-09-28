@@ -532,6 +532,18 @@ const CSS = `
 .CP-clicard-bal.red  { color: #D93B55; }
 .CP-clicard-bal.grey { color: var(--text-4); }
 
+/* Quick edit/delete — client sidebar cards, no need to open the client's detail panel first */
+.CP-clicard-footright { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.CP-vqa-row { display: flex; align-items: center; gap: 4px; }
+.CP-vqa {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white,#faf9f7); border: 1.3px solid var(--border,#E8E2D8);
+  color: var(--text-4,#6B5D48); cursor: pointer; transition: all 0.14s;
+}
+.CP-vqa:hover { border-color: #FBC9A8; background: #FDE0CB; color: #DB5B1F; transform: translateY(-1px); }
+.CP-vqa.del:hover { border-color: #F3B4BE; background: #fef2f2; color: #D93B55; }
+
 /* ── CLICK HINT CHEVRON ── */
 .CP-clicard-hint {
   position: absolute; right: 9px; top: 50%;
@@ -4221,9 +4233,19 @@ export default function ClientPortalFull() {
                           <div className="CP-clicard-bar-wrap">
                             <div className="CP-clicard-bar-fill" style={{ width: `${pct}%` }} />
                           </div>
-                          <span className={`CP-clicard-bal ${cli.total_balance > 0 ? 'red' : 'grey'}`}>
-                            {fmt(cli.total_balance > 0 ? cli.total_balance : cli.total_collected)}
-                          </span>
+                          <div className="CP-clicard-footright">
+                            <span className={`CP-clicard-bal ${cli.total_balance > 0 ? 'red' : 'grey'}`}>
+                              {fmt(cli.total_balance > 0 ? cli.total_balance : cli.total_collected)}
+                            </span>
+                            <div className="CP-vqa-row">
+                              <button className="CP-vqa" title="Edit client" onClick={(e) => { e.stopPropagation(); setModal({ type: 'edit', client: cli }); }}>
+                                <Ic n="edit" s={10} c="currentColor" />
+                              </button>
+                              <button className="CP-vqa del" title="Delete client" onClick={(e) => { e.stopPropagation(); handleDeleteClient(cli.id, cli.name); }}>
+                                <Ic n="trash" s={10} c="currentColor" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         {/* Bouncing chevron hint — icon only */}
                         {!isActive && (

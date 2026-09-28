@@ -284,7 +284,7 @@ const CSS = `
   75%{transform:translateY(-2px) scale(1.005);}
   100%{opacity:1;transform:translateY(0) scale(1);}
 }
-.WR-tabs-bar{display:inline-flex;border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--white);margin-bottom:20px;animation:wr-in .3s .05s ease both;}
+.WR-tabs-bar{display:inline-flex;border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--white);animation:wr-in .3s .05s ease both;}
 .WR-tab{display:flex;align-items:center;gap:7px;padding:9px 18px;font-family:var(--font-mono);font-size: 8.5px;font-weight: 800;letter-spacing:1.3px;text-transform:uppercase;color:var(--text-3);cursor:pointer;border:none;border-right:1.5px solid var(--border);transition:background .16s ease,color .16s ease,transform .16s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;background:var(--white);}
 .WR-tab:last-child{border-right:none;}
 .WR-tab:hover{color:var(--ember);background:var(--ember-ghost);transform:translateY(-1px);}
@@ -1224,6 +1224,27 @@ export default function AttendanceManagement() {
           </div>
           <h1 className="ERP-title MD-page-title">Attendance <span className="ERP-title-em">Register</span></h1>
         </div>
+        <div className="ERP-hdr-right">
+          {/* PAGE TABS START */}
+          <div className="WR-tabs-bar">
+            <button
+              className={'WR-tab' + (pageTab === 'record' ? ' active' : '')}
+              onClick={() => setPageTab('record')}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
+              Record Attendance
+            </button>
+            <button
+              className={'WR-tab' + (pageTab === 'view' ? ' active' : '')}
+              onClick={() => setPageTab('view')}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+              View Attendance
+              <span className="WR-tab-badge">{viewRecords.length}</span>
+            </button>
+          </div>
+          {/* ── PAGE TABS END ── */}
+        </div>
       </div>
       <div className="ERP-divider" />
       {/* ── HEADER END ── */}
@@ -1237,26 +1258,6 @@ export default function AttendanceManagement() {
         onCancel={() => setDeleteModal({ open: false, id: null })}
       />
       {/* DELETE MODAL */}
-
-      {/* PAGE TABS START */}
-      <div className="WR-tabs-bar">
-        <button
-          className={'WR-tab' + (pageTab === 'record' ? ' active' : '')}
-          onClick={() => setPageTab('record')}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
-          Record Attendance
-        </button>
-        <button
-          className={'WR-tab' + (pageTab === 'view' ? ' active' : '')}
-          onClick={() => setPageTab('view')}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-          View Attendance
-          <span className="WR-tab-badge">{viewRecords.length}</span>
-        </button>
-      </div>
-      {/* ── PAGE TABS END ── */}
 
       {pageTab === 'record' && (
         <div className="AT-record-wrap">

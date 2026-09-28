@@ -346,9 +346,40 @@ function SessIcon({ type, size = 12, color = 'currentColor' }: { type: string; s
     }
 }
 /* ──────────────────────────────────────
+   SCROLL-INTO-VIEW REVEAL
+   Toggles visibility both ways — animates in when a section scrolls
+   into view (top-to-bottom OR bottom-to-top), animates out again when
+   it leaves. No will-change (a Chromium sub-pixel-overflow bug from an
+   earlier pass caused a spurious native scrollbar alongside .CC's own
+   custom one — see project notes). `.CC` stays the single scroll
+   surface; this never adds its own scroll container.
+───────────────────────────────────────── */
+function Reveal({ children, delay = 0 }: { children: React.ReactNode | ((visible: boolean) => React.ReactNode); delay?: number }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        if (typeof IntersectionObserver === 'undefined') { setVisible(true); return; }
+        const obs = new IntersectionObserver(
+            ([entry]) => setVisible(entry.isIntersecting),
+            { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} className={`DH-reveal ${visible ? 'in' : ''}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
+            {typeof children === 'function' ? children(visible) : children}
+        </div>
+    );
+}
+/* ──────────────────────────────────────
    ANIMATED COUNTER
 ───────────────────────────────────────── */
-function AnimCounter({ target, duration = 1200 }: { target: string; duration?: number }) {
+function AnimCounter({ target, duration = 1200, delay = 0 }: { target: string; duration?: number; delay?: number }) {
     const num = parseFloat(target.replace(/[^0-9.]/g, '')) || 0;
     const isNum = !isNaN(num) && target !== '';
     const [display, setDisplay] = useState(0);
@@ -357,6 +388,7 @@ function AnimCounter({ target, duration = 1200 }: { target: string; duration?: n
     useEffect(() => {
         if (!isNum) return;
         t0.current = null;
+        let cancelled = false;
         const step = (ts: number) => {
             if (!t0.current) t0.current = ts;
             const p = Math.min((ts - t0.current) / duration, 1);
@@ -364,11 +396,80 @@ function AnimCounter({ target, duration = 1200 }: { target: string; duration?: n
             setDisplay(Math.round(num * e * 10) / 10);
             if (p < 1) raf.current = requestAnimationFrame(step);
         };
-        raf.current = requestAnimationFrame(step);
-        return () => cancelAnimationFrame(raf.current);
-    }, [target]);
+        const timer = window.setTimeout(() => {
+            if (!cancelled) raf.current = requestAnimationFrame(step);
+        }, delay);
+        return () => { cancelled = true; window.clearTimeout(timer); cancelAnimationFrame(raf.current); };
+    }, [target, duration, delay]);
     if (!isNum) return <>{target}</>;
     return <>{Number.isInteger(display) ? display : display.toFixed(1)}</>;
+}
+/* ──────────────────────────────────────
+   TYPEWRITER TEXT — fast letter-by-letter reveal
+   (used for the sidebar profile name/designation)
+───────────────────────────────────────── */
+function TypeText({ text, speed = 32, startDelay = 0, className, showCursor = true }: { text: string; speed?: number; startDelay?: number; className?: string; showCursor?: boolean }) {
+    const [count, setCount] = useState(0);
+    const [done, setDone] = useState(false);
+    const reduceMotion = useRef(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    useEffect(() => {
+        if (reduceMotion.current) { setCount(text.length); setDone(true); return; }
+        setCount(0);
+        setDone(false);
+        let i = 0;
+        let stepTimer: ReturnType<typeof setTimeout>;
+        const startTimer = setTimeout(() => {
+            const tick = () => {
+                i++;
+                setCount(i);
+                if (i >= text.length) { setDone(true); return; }
+                stepTimer = setTimeout(tick, speed);
+            };
+            tick();
+        }, startDelay);
+        return () => { clearTimeout(startTimer); clearTimeout(stepTimer); };
+    }, [text, speed, startDelay]);
+    return (
+        <span className={className}>
+            {text.slice(0, count)}
+            {showCursor && !done && <span className="TT-cursor" />}
+        </span>
+    );
+}
+/* One continuous fast type-out across styled segments — e.g. "Mr. Santhosh" + " — " + "Managing Director" typed as a single flowing line, each part keeping its own color/weight. */
+function TypeLine({ segments, speed = 26, startDelay = 0 }: { segments: { text: string; className?: string }[]; speed?: number; startDelay?: number }) {
+    const fullText = segments.map(s => s.text).join('');
+    const [count, setCount] = useState(0);
+    const [done, setDone] = useState(false);
+    const reduceMotion = useRef(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    useEffect(() => {
+        if (reduceMotion.current) { setCount(fullText.length); setDone(true); return; }
+        setCount(0);
+        setDone(false);
+        let i = 0;
+        let stepTimer: ReturnType<typeof setTimeout>;
+        const startTimer = setTimeout(() => {
+            const tick = () => {
+                i++;
+                setCount(i);
+                if (i >= fullText.length) { setDone(true); return; }
+                stepTimer = setTimeout(tick, speed);
+            };
+            tick();
+        }, startDelay);
+        return () => { clearTimeout(startTimer); clearTimeout(stepTimer); };
+    }, [fullText, speed, startDelay]);
+    let remaining = count;
+    return (
+        <>
+            {segments.map((seg, i) => {
+                const show = Math.max(0, Math.min(seg.text.length, remaining));
+                remaining -= seg.text.length;
+                return <span key={i} className={seg.className}>{seg.text.slice(0, show)}</span>;
+            })}
+            {!done && <span className="TT-cursor" />}
+        </>
+    );
 }
 /* ──────────────────────────────────────
    MONTHLY COLLECTION TREND
@@ -424,6 +525,39 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
     const [totPre, totNum, totSuf] = fmtParts(totalCollected);
     const avgPct = Math.min(Math.max((avgVal / maxVal) * 100, 0), 100);
 
+    // ── Smooth Catmull-Rom spline through the monthly points ──────────
+    // Sampled densely so the same point array drives the visible curve,
+    // the area fill, and the traveling "comet" dot's motion — all three
+    // stay perfectly in sync since they read the exact same samples.
+    const rawPts = data.map((d, i) => ({
+        x: (i / Math.max(data.length - 1, 1)) * 100,
+        y: 100 - Math.max((d.collected / maxVal) * 100, 4),
+    }));
+    const SEG_STEPS = 14;
+    const curvePts: { x: number; y: number }[] = [];
+    for (let i = 0; i < rawPts.length - 1; i++) {
+        const p0 = rawPts[Math.max(i - 1, 0)];
+        const p1 = rawPts[i];
+        const p2 = rawPts[i + 1];
+        const p3 = rawPts[Math.min(i + 2, rawPts.length - 1)];
+        const isLast = i === rawPts.length - 2;
+        for (let s = 0; s <= (isLast ? SEG_STEPS : SEG_STEPS - 1); s++) {
+            const tt = s / SEG_STEPS;
+            const tt2 = tt * tt;
+            const tt3 = tt2 * tt;
+            const x = 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * tt + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * tt3);
+            const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * tt + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * tt3);
+            curvePts.push({ x, y });
+        }
+    }
+    const curveLinePts = curvePts.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
+    const curveAreaPts = `0,100 ${curveLinePts} 100,100`;
+    const cometStops = curvePts.map((p, i) => {
+        const pct = ((i / (curvePts.length - 1)) * 100).toFixed(2);
+        return `${pct}%{left:${p.x.toFixed(2)}%;bottom:${(100 - p.y).toFixed(2)}%;}`;
+    }).join('');
+    const N = data.length;
+
     return (
         <div className="CH-v2" onMouseLeave={() => setHovered(null)}>
             <div className="CH-aurora a1" />
@@ -466,32 +600,71 @@ function MonthlyRevenueChart({ data, loading }: { data: MonthlyData[]; loading?:
             </div>
             {/* Hero End */}
 
-            {/* Floating Gradient Bar Start */}
-            <div className="CH-bars">
-                <div className="CH-avg-line" style={{ bottom: `${avgPct}%` }}>
-                    <span className="CH-avg-tag">AVG {fmt(avgVal)}</span>
-                </div>
-                {data.map((d, i) => {
-                    const isCurrent = i === currentMonthIdx;
-                    const isHov = hovered === i;
-                    const pct = Math.max((d.collected / maxVal) * 100, 3);
-                    return (
-                        <div key={i} className="CH-bar-col" onMouseEnter={() => setHovered(i)}>
-                            <div className="CH-bar-track">
-                                <div
-                                    className={`CH-bar ${isCurrent ? 'current' : ''} ${isHov ? 'hov' : ''}`}
-                                    style={{ height: `${pct}%`, animationDelay: `${0.15 + i * 0.07}s` }}
-                                >
-                                    {isHov && <div className="CH-bar-tooltip">{fmt(d.collected)}</div>}
-                                    {isCurrent && <span className="CH-bar-glow-dot" />}
-                                </div>
-                            </div>
-                            <span className={`CH-bar-lbl ${isCurrent ? 'current' : ''}`}>{d.month_label}</span>
+            {/* Premium Smooth Line Chart Start */}
+            <div className="CH-line-chart">
+                <style>{`@keyframes ch-comet-path {${cometStops}}`}</style>
+                <div className="CH-line-plot">
+                    <div className="CH-avg-line" style={{ bottom: `${avgPct}%` }}>
+                        <span className="CH-avg-tag">AVG {fmt(avgVal)}</span>
+                    </div>
+
+                    {rawPts.map((p, i) => (
+                        <span key={`grid-${i}`} className="CH-line-grid" style={{ left: `${p.x}%` }} />
+                    ))}
+
+                    <svg className="CH-line-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="chLineFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="rgba(194,65,12,0.26)" />
+                                <stop offset="100%" stopColor="rgba(194,65,12,0)" />
+                            </linearGradient>
+                        </defs>
+                        <polygon className="CH-line-area" points={curveAreaPts} fill="url(#chLineFill)" />
+                        <polyline className="CH-line-path" points={curveLinePts} fill="none" />
+                    </svg>
+
+                    <span className="CH-line-comet" />
+
+                    {rawPts.map((p, i) => {
+                        const isCurrent = i === currentMonthIdx;
+                        const isHov = hovered === i;
+                        return (
+                            <span
+                                key={`pt-${i}`}
+                                className={`CH-line-point ${isCurrent ? 'current' : ''} ${isHov ? 'hov' : ''}`}
+                                style={{ left: `${p.x}%`, bottom: `${100 - p.y}%`, animationDelay: `${0.9 + i * 0.06}s` }}
+                            >
+                                {isCurrent && <span className="CH-line-ping" />}
+                            </span>
+                        );
+                    })}
+
+                    {hovered !== null && rawPts[hovered] && (
+                        <div
+                            className="CH-line-tooltip"
+                            style={{ left: `${rawPts[hovered].x}%`, bottom: `calc(${100 - rawPts[hovered].y}% + 14px)` }}
+                        >
+                            {fmt(data[hovered].collected)}
                         </div>
-                    );
-                })}
+                    )}
+
+                    {rawPts.map((p, i) => (
+                        <span
+                            key={`hz-${i}`}
+                            className="CH-line-hitzone"
+                            onMouseEnter={() => setHovered(i)}
+                            style={{ left: `${(i / N) * 100}%`, width: `${100 / N}%` }}
+                        />
+                    ))}
+                </div>
+
+                {rawPts.map((p, i) => (
+                    <span key={`lbl-${i}`} className={`CH-line-lbl ${i === currentMonthIdx ? 'current' : ''}`} style={{ left: `${p.x}%` }}>
+                        {data[i].month_label}
+                    </span>
+                ))}
             </div>
-            {/* Floating Gradient Bar Chart End */}
+            {/* Premium Smooth Line Chart End */}
         </div>
     );
 }
@@ -872,7 +1045,7 @@ function DashContent({
             dir: 'up' as const,
             sub: 'added in Accounts Receivable',
             c: '#C2410C', bg: 'rgba(194,65,12,.09)', d: 0,
-            iconPath: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></>,
+            iconPath: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" /></>,
         },
         {
             lbl: 'Total Budget',
@@ -881,7 +1054,7 @@ function DashContent({
             dir: 'up' as const,
             sub: 'in ₹ Lakhs',
             c: '#F0834D', bg: 'rgba(194,65,12,.09)', d: 0.08,
-            iconPath: <><circle cx="12" cy="12" r="9" /><path d="M8 12h8M12 8v8" /></>,
+            iconPath: <><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></>,
         },
         {
             lbl: 'Total Collected',
@@ -890,7 +1063,7 @@ function DashContent({
             dir: 'up' as const,
             sub: 'in ₹ Lakhs',
             c: '#1E9C6A', bg: 'rgba(30,156,106,.09)', d: 0.16,
-            iconPath: <path d="M5 13l4 4L19 7" />,
+            iconPath: <><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></>,
         },
         {
             lbl: 'Balance Due',
@@ -901,7 +1074,7 @@ function DashContent({
             dir: 'down' as const,
             sub: 'in ₹ Lakhs',
             c: '#D93B55', bg: 'rgba(217,59,85,.09)', d: 0.24,
-            iconPath: <><circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" /></>,
+            iconPath: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
         },
         {
             lbl: 'Total Clients',
@@ -910,7 +1083,7 @@ function DashContent({
             dir: 'up' as const,
             sub: 'registered clients',
             c: '#EA580C', bg: 'rgba(234,88,12,.09)', d: 0.32,
-            iconPath: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /><path d="M16 11l2 2 4-4" /></>,
+            iconPath: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
         },
         {
             lbl: 'Team Members',
@@ -919,7 +1092,7 @@ function DashContent({
             dir: 'up' as const,
             sub: 'active users',
             c: '#524532', bg: 'rgba(82,69,50,.07)', d: 0.40,
-            iconPath: <><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></>,
+            iconPath: <><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></>,
         },
     ];
 
@@ -1058,7 +1231,7 @@ function DashContent({
 
                 <div className="DH-quick-row">
                     {QUICK_ACTIONS.map((a, i) => (
-                        <div key={a.id} className="DH-quick-pill" style={{ animationDelay: `${i * 0.05}s` }} onClick={() => onNavigate(a.id)}>
+                        <div key={a.id} className="DH-quick-pill" style={{ animationDelay: `${i * 0.22}s` }} onClick={() => onNavigate(a.id)}>
                             <div className="DH-quick-ico" style={{ background: a.bg }}>
                                 <svg width="13" height="13" fill="none" stroke={a.c} strokeWidth="2.2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">{a.icon}</svg>
                             </div>
@@ -1074,19 +1247,23 @@ function DashContent({
                 ? <div className="DH-kpi-grid">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="SK" style={{ height: 132, borderRadius: 18 }} />)}</div>
                 : <div className="DH-kpi-grid">
                     {CARDS.map((s, idx) => (
-                        <div className="DH-kpi-tile" key={s.lbl} style={{ '--tile-c': s.c, animationDelay: `${s.d}s` } as React.CSSProperties} onMouseMove={tilt3D} onMouseLeave={resetTilt3D}>
-                            <div className="DH-kpi-badge" style={{ background: s.bg }}>
-                                <svg width="18" height="18" fill="none" stroke={s.c} strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">{s.iconPath}</svg>
-                            </div>
-                            <div className="DH-kpi-val" style={{ color: s.c }}>
-                                <AnimCounter target={s.val} duration={900 + idx * 100} />{s.sub.includes('Lakh') ? 'L' : ''}
-                            </div>
-                            <div className="DH-kpi-lbl">{s.lbl}</div>
-                            <span className={`DH-kpi-delta ${s.dir}`}>
-                                <svg width="8" height="8" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ transform: s.dir === 'up' ? 'none' : 'rotate(180deg)' }}><path d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
-                                {s.dt}
-                            </span>
-                        </div>
+                        <Reveal key={s.lbl} delay={idx * 90}>
+                            {(visible) => (
+                                <div className={`DH-kpi-tile${visible ? ' kpi-land' : ''}`} style={{ '--tile-c': s.c } as React.CSSProperties} onMouseMove={tilt3D} onMouseLeave={resetTilt3D}>
+                                    <div className="DH-kpi-badge" style={{ background: s.bg }}>
+                                        <svg width="18" height="18" fill="none" stroke={s.c} strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">{s.iconPath}</svg>
+                                    </div>
+                                    <div className="DH-kpi-val" style={{ color: s.c }}>
+                                        <AnimCounter target={visible ? s.val : '0'} duration={900 + idx * 100} delay={idx * 90} />{s.sub.includes('Lakh') ? 'L' : ''}
+                                    </div>
+                                    <div className="DH-kpi-lbl">{s.lbl}</div>
+                                    <span className={`DH-kpi-delta ${s.dir}`}>
+                                        <svg width="8" height="8" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ transform: s.dir === 'up' ? 'none' : 'rotate(180deg)' }}><path d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                                        {s.dt}
+                                    </span>
+                                </div>
+                            )}
+                        </Reveal>
                     ))}
                 </div>
             }
@@ -1103,6 +1280,7 @@ function DashContent({
             {(loading && monthlyLoading && typeDistLoading)
                 ? <div className="DH-chart-row"><div className="SK" style={{ height: 300, borderRadius: 20 }} /><div className="SK" style={{ height: 300, borderRadius: 20 }} /></div>
                 : <div className="DH-chart-row">
+                    <Reveal delay={0}>
                     <div className="DH-panel" onMouseMove={tilt3D} onMouseLeave={resetTilt3D}>
                         <div className="DH-panel-hd">
                             <div>
@@ -1116,7 +1294,9 @@ function DashContent({
                         </div>
                         <MonthlyRevenueChart data={monthlyRevenue} loading={monthlyLoading} />
                     </div>
+                    </Reveal>
 
+                    <Reveal delay={140}>
                     <div className="DH-panel" onMouseMove={tilt3D} onMouseLeave={resetTilt3D}>
                         <div className="DH-panel-hd">
                             <div>
@@ -1127,6 +1307,7 @@ function DashContent({
                         </div>
                         <ProjectTypesChart data={typeDist} loading={typeDistLoading} />
                     </div>
+                    </Reveal>
                 </div>
             }
             {/* Charts End */}
@@ -1137,6 +1318,7 @@ function DashContent({
                 : <div className="DH-pulse-row">
 
                     {/* Business Health Start */}
+                    <Reveal delay={0}>
                     <div className="DH-panel" onMouseMove={tilt3D} onMouseLeave={resetTilt3D}>
                         <div className="DH-panel-hd">
                             <div>
@@ -1191,9 +1373,11 @@ function DashContent({
                             </>
                         )}
                     </div>
+                    </Reveal>
                     {/* Business Health End */}
 
                     {/* Recent Projects Start */}
+                    <Reveal delay={140}>
                     <div className="DH-panel">
                         <div className="DH-panel-hd">
                             <div>
@@ -1245,6 +1429,7 @@ function DashContent({
                             )}
                         </div>
                     </div>
+                    </Reveal>
                     {/* Recent Projects End */}
                 </div>
             }
@@ -1252,6 +1437,7 @@ function DashContent({
 
             {/* Dues & Alerts Start */}
             <div className="DH-dues-row">
+                <Reveal delay={0}>
                 <div className="DH-panel">
                     <div className="DH-panel-hd">
                         <div className="DH-panel-tt" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1290,7 +1476,9 @@ function DashContent({
                         })}
                     </div>
                 </div>
+                </Reveal>
 
+                <Reveal delay={140}>
                 <div className="DH-panel">
                     <div className="DH-panel-hd">
                         <div className="DH-panel-tt" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1329,10 +1517,12 @@ function DashContent({
                         })}
                     </div>
                 </div>
+                </Reveal>
             </div>
             {/* Dues & Alerts End */}
 
             {/* Module Command Grid Start */}
+            <Reveal>
             <SectionHeader
                 accent="#C2410C"
                 icon={<svg width="20" height="20" fill="none" stroke="#C2410C" strokeWidth="1.7" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 17.5h7M17.5 14v7" /></svg>}
@@ -1377,9 +1567,11 @@ function DashContent({
                     </div>
                 ))}
             </div>
+            </Reveal>
             {/* Module Command Grid End */}
 
             {/* Workflow Rail Start */}
+            <Reveal>
             <div className="DH-panel DH-flow-panel">
                 <div className="DH-panel-hd">
                     <div className="PC-hd-ico">
@@ -1436,6 +1628,7 @@ function DashContent({
                     ))}
                 </div>
             </div>
+            </Reveal>
             {/* Workflow Rail End */}
 
             <div style={{ height: 20 }} />
@@ -2069,6 +2262,8 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
 
             {/* Workflow Rail Start */}
             <div className="DH-panel DH-flow-panel">
+
+                {/* Studio Workflow Connects Start */}
                 <div className="DH-panel-hd">
                     <div className="PC-hd-ico">
                         <svg width="19" height="19" fill="none" stroke="var(--d-or)" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" /></svg>
@@ -2078,6 +2273,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                         <div className="DH-panel-sb">One continuous flow, from data entry to reporting</div>
                     </div>
                 </div>
+                {/* Studio Workflow Connects End */}
 
                 <div className="DH-flow-rail">
                     {[
@@ -2357,10 +2553,24 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         return () => window.removeEventListener('resize', onResize);
     }, []);
 
+    // Lock native document scroll for the whole time the Dashboard shell
+    // is mounted (it effectively never unmounts during a session) — `.CC`
+    // is the single intended scroll surface (custom orange scrollbar);
+    // without this, any tiny sub-pixel overflow can make the browser's
+    // own scrollbar appear alongside it. This is a superset of what the
+    // old mobOpen-driven effect wanted (stop background scroll while the
+    // mobile menu overlay is open), so it replaces that effect rather
+    // than running alongside it.
     useEffect(() => {
-        document.body.style.overflow = mobOpen ? 'hidden' : '';
-        return () => { document.body.style.overflow = ''; };
-    }, [mobOpen]);
+        const prevBody = document.body.style.overflow;
+        const prevHtml = document.documentElement.style.overflow;
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = prevBody;
+            document.documentElement.style.overflow = prevHtml;
+        };
+    }, []);
 
     const hasFetched = useRef(false);
 
@@ -2581,6 +2791,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const userName = user?.name || '';
     const userRole = user?.role || '';
     const initial = userName ? userName.charAt(0).toUpperCase() : '?';
+    const roleLabel = userRole === 'super_admin' ? 'Managing Director' : userRole === 'admin' ? 'Admin' : userRole === 'user' ? 'Staff' : (userRole || 'User');
+    const profileDisplayName = userRole === 'super_admin' && userName ? `Mr. ${userName}` : userName;
     const tkAll = [...TK_ITEMS, ...TK_ITEMS];
     const urgentCount = notifications.filter(n => n.days_until_due <= 7).length;
     const overdueCount = notifications.filter(n => n.days_until_due <= 0).length;
@@ -2612,6 +2824,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                             <div className="SB-logo-img-wrap">
                                 <img src={import.meta.env.BASE_URL + 'favicon.png'} alt="OrangeSteps Logo" className="SB-logo-img" />
                             </div>
+
                             {/* SideBar Heading Start */}
                             <div className="SB-wordmark-block">
                                 <div className="SB-wordmark-name">
@@ -2730,10 +2943,23 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                 <div className="SB-foot-pop">
                                     <div className="SB-user">
                                         <div className="SB-user-info">
-                                            <span className="SB-un">{userName || <span style={{ opacity: .3, fontStyle: 'italic' }}>Loading…</span>}</span>
-                                            <span className="SB-ur">{userRole || 'User'}</span>
+                                            {profileDisplayName ? (
+                                                <div className="SB-title-line">
+                                                    <TypeLine
+                                                        speed={22}
+                                                        segments={[
+                                                            { text: profileDisplayName, className: 'SB-un' },
+                                                            { text: ' — ', className: 'SB-title-sep' },
+                                                            { text: roleLabel, className: 'SB-ur' },
+                                                        ]}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <span className="SB-un" style={{ opacity: .3, fontStyle: 'italic' }}>Loading…</span>
+                                            )}
                                         </div>
                                     </div>
+
                                     {/* Online Start */}
                                     <div className="SB-status">
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -2743,6 +2969,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                         <span className="SB-clock" ref={clockRef} />
                                     </div>
                                     {/* Online End */}
+
                                     {lastSession && (
                                         <div className="SB-lastlogin">
                                             <span className="SB-lastlogin-lbl">Last Login</span>
@@ -2759,6 +2986,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                             </span>
                                         </div>
                                     )}
+
                                     {/* Change Password Button Start */}
                                     <button className="SB-changepass" onClick={() => setShowChangePassword(true)}>
                                         <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -2777,6 +3005,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                         <span className="SB-lo-txt">Sign Out</span>
                                     </button>
                                     {/* Sign Out Button End */}
+
                                 </div>
                             )}
                         </div>

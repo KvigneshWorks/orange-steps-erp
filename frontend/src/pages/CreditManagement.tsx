@@ -918,6 +918,18 @@ const CSS = `
 .CM3-vbal-new.red  { color: #D93B55; }
 .CM3-vbal-new.grey { color: var(--text-4,#6B5D48); }
 
+/* Quick edit/delete — sidebar vendor cards + Linked Ledgers rows, no need to open the vendor detail panel first */
+.CM3-vcard-topright { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.CM3-vqa-row { display: flex; align-items: center; gap: 4px; }
+.CM3-vqa {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white,#faf9f7); border: 1.3px solid var(--border,#E8E2D8);
+  color: var(--text-4,#6B5D48); cursor: pointer; transition: all 0.14s;
+}
+.CM3-vqa:hover { border-color: #FBC9A8; background: #FDE0CB; color: #DB5B1F; transform: translateY(-1px); }
+.CM3-vqa.del:hover { border-color: #F3B4BE; background: #fef2f2; color: #D93B55; }
+
 /* ERP-stat grid spacing */
 .CM3-page .ERP-stats { margin-bottom: 20px; }
 .CM3-vitem-actions { display:none; }
@@ -984,6 +996,7 @@ const CSS = `
     border: 1.5px solid var(--border,#E8E2D8);
 }
 .CM3-act.ghost:hover { border-color: var(--ember-border,#D98255); background: var(--off-white,#F5F3EF); transform: translateY(-1px); }
+.CM3-act.ghost.danger:hover { border-color: #F3B4BE; background: #fef2f2; color: #D93B55; }
 
 /* ── BAL STRIP — light tones ── */
 .CM3-bal-strip { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1.5px solid var(--border,#E8E2D8); }
@@ -1687,6 +1700,16 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 }
 .CM3-mclose:active { transform: rotate(90deg) scale(0.9); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
+/* Compact header variant — Add/Edit Bill modal only. The full-size .CM3-mhdr
+   (used by Open Ledger Account / Record Payment) is untouched; this trims
+   padding and shrinks the title/subtitle so the header stops eating space
+   that the form fields should have, while keeping the vendor context line. */
+.CM3-mhdr-tight { padding: 11px 16px; }
+.CM3-mhdr-tight .CM3-mhdr-ic { width: 32px; height: 32px; border-radius: 9px; }
+.CM3-mhdr-tight .CM3-mtitle { font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.6px; }
+.CM3-mhdr-tight .CM3-msub { font-size: 8.5px; margin-top: 2px; }
+.CM3-mhdr-tight .CM3-mclose { width: 32px; height: 32px; border-radius: 9px; }
+
 /* ── DIALOG BODY ── */
 .CM3-mbody {
     flex: 1; overflow-y: auto; overflow-x: hidden;
@@ -1718,17 +1741,19 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-label {
     font-family: var(--font-mono,'JetBrains Mono',monospace);
     font-size: 10.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-    color: #231C14; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+    color: #231C14; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
 }
 .CM3-label .req { color: var(--error,#D93B55); }
 .CM3-input {
-    width: 100%; padding: 10px 13px; background: var(--white,#faf9f7);
-    border: 1.5px solid var(--border,#D2C7B8); border-radius: var(--r-md,10px);
+    width: 100%; padding: 12px 14px; background: var(--white,#faf9f7);
+    border: 1.6px solid var(--border,#D2C7B8); border-radius: var(--r-md,10px);
     font-family: var(--font-body,'Space Grotesk',sans-serif);
-    font-size: 13px; font-weight: 800; color: #231C14;
+    font-size: 13.5px; font-weight: 800; color: #231C14;
+    box-shadow: 0 1px 2px rgba(35,28,20,0.03);
     transition: border-color 0.18s, box-shadow 0.18s; outline: none; box-sizing: border-box;
 }
-.CM3-input:focus { border-color: var(--ember-mid,#DB5B1F); box-shadow: 0 0 0 3px var(--ember-ghost,rgba(219,91,31,0.10)); }
+.CM3-input:hover { border-color: #C7B8A2; }
+.CM3-input:focus { border-color: var(--ember-mid,#DB5B1F); box-shadow: 0 0 0 3.5px var(--ember-ghost,rgba(219,91,31,0.12)); }
 .CM3-input::placeholder { color: #6B5D48; font-style: normal; font-weight: 700; }
 /* Category locked to context (opened from a Category Overview panel) — shown
    read-only instead of the usual dropdown, since it isn't selectable here. */
@@ -1884,6 +1909,11 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 }
 .CM3-section-rule { flex: 1; height: 1px; background: var(--border,#E8E2D8); }
 .CM3-section-sep { height: 1px; background: var(--border,#E8E2D8); margin: 14px 0; }
+/* The first section tag right inside a dialog body doesn't need its own
+   18px top margin on top of .CM3-mbody's padding — that stacked gap was
+   pushing the real fields (01 — Bill Details, etc.) down for no reason.
+   Only the FIRST section in the body loses the margin; later ones keep it. */
+.CM3-mbody > .CM3-section:first-child { margin-top: 2px; }
 
 /* ── PREVIEW / CONFIRM CARDS ── */
 .CM3-prev-card { background: #FDE0CB; border: 1.5px solid #FDE0CB; border-radius: 10px; padding: 12px 16px; margin-top: 12px; }
@@ -1937,6 +1967,21 @@ thead .CM3-billtbl-cb:checked::after { border-color: #C2410C; }
 .CM3-db-box .CM3-input { min-height: 28px; padding: 5px 9px; font-size: 10px; }
 .CM3-db-hint { font-size: 8px; color: ${PAYMENT_COLOR.primary}; margin-top: 2px; font-weight: 700; }
 .CM3-db-client-box { display: flex; align-items: center; gap: 5px; padding: 5px 8px; background: rgba(0,0,0,0.03); border: 1.5px solid var(--bd,#D2C7B8); border-radius: 7px; min-height: 26px; }
+
+/* Collapsed-by-default disclosure for the Cash Book mapping fields — everything
+   in there is already auto-filled, so it stays closed until the user asks to see
+   or override it, keeping "01 — Payment Details" the thing that's actually visible. */
+.CM3-db-expand {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 7px 2px; background: none; border: none; cursor: pointer;
+  font-family: var(--font-mono,'JetBrains Mono',monospace);
+  color: ${PAYMENT_COLOR.primary}; transition: opacity 0.15s;
+}
+.CM3-db-expand:hover { opacity: 0.75; }
+.CM3-db-expand-txt { font-size: 8.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+.CM3-db-expand-sum { font-weight: 600; text-transform: none; letter-spacing: 0; color: #6B5D48; margin-left: 4px; }
+.CM3-db-expand-chev { flex-shrink: 0; transition: transform 0.2s; }
+.CM3-db-expand-chev.open { transform: rotate(180deg); }
 
 /* ── PAYMENT DETAILS (01) ──
    Was bumped bigger than the rest of the form in an earlier pass; per the
@@ -2831,13 +2876,13 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                         onDone={onSaved}
                     />
                 )}
-                <div className="CM3-mhdr credit-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="CM3-mhdr credit-top CM3-mhdr-tight">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                         <div className="CM3-mhdr-ic">
-                            <Ic n="receipt" sz={17} c="#C2410C" />
+                            <Ic n="receipt" sz={13} c="#C2410C" />
                         </div>
                         <div>
-                            <div className="CM3-mtitle">{isEdit ? 'Edit Bill' : 'Add Bill'}</div>
+                            <div className="CM3-mtitle">{isEdit ? 'EDIT BILL' : 'ADD BILL'}</div>
                             <div className="CM3-msub">
                                 <span className="CM3-msub-tag">
                                     ({vendor.party_name} · {vendor.category_name}{vendor.sub_category_name ? ` › ${vendor.sub_category_name}` : ''})
@@ -2846,16 +2891,9 @@ function CreditEntryModal({ vendor, bioData, categories, editEntry, onClose, onS
                             </div>
                         </div>
                     </div>
-                    <button className="CM3-mclose" onClick={onClose} title="Close" aria-label="Close"><Ic n="x" sz={18} /></button>
+                    <button className="CM3-mclose" onClick={onClose} title="Close" aria-label="Close"><Ic n="x" sz={16} /></button>
                 </div>
                 <div className="CM3-mbody">
-
-                    {/* Bill Start */}
-                    <div className="CM3-notice red">
-                        <Ic n="receipt" sz={14} c={CREDIT_COLOR.mid} />
-                        <div><strong>Bill</strong> — Records in ledger only. Payments will sync to Cash Book.</div>
-                    </div>
-                    {/* Bill End */}
 
                     {/* ── 01 Bill Details Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">01 — Bill Details</span><div className="CM3-section-rule" /></div>
@@ -3589,6 +3627,10 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
     const [showAllocModal, setShowAllocModal] = useState(false);
     const [redistData, setRedistData] = useState<{ show: boolean; result: SmartSplitResult | null }>({ show: false, result: null });
     const [celebrate, setCelebrate] = useState<{ show: boolean; amountText: string; sub: string; daybookSynced: boolean } | null>(null);
+    // Cash Book mapping fields (Party/Account Head/Sub-Head/Client/Narration) are all
+    // auto-filled already — keep them collapsed by default so "01 — Payment Details"
+    // stays the thing the user actually sees first; only open on request.
+    const [showDbDetails, setShowDbDetails] = useState(false);
     const autoCategory = String(vendor.category_id || '');
     const autoSubCategory = String(vendor.sub_category_id || '');
     const matchedBio = bioData.find(b => b.name.toLowerCase().trim() === vendor.party_name.toLowerCase().trim());
@@ -3639,14 +3681,16 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
         if (!isEdit && form.sync_to_daybook) {
             if (!form.daybook_bio_data_id) {
                 setErrorField('daybook_bio_data_id');
+                setShowDbDetails(true);
                 toast.error('Party Required', 'Select a Party Name to sync with Cash Book.');
-                daybookPartyFieldRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => daybookPartyFieldRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
                 return;
             }
             if (!form.daybook_category_id) {
                 setErrorField('daybook_category_id');
+                setShowDbDetails(true);
                 toast.error('Account Head Required', 'Select an Account Head to sync with Cash Book.');
-                daybookCategoryFieldRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => daybookCategoryFieldRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
                 return;
             }
         }
@@ -3783,20 +3827,14 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                     />
                 )}
 
-                <div className="CM3-mhdr payment-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="CM3-mhdr payment-top CM3-mhdr-tight">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                         <div className="CM3-mhdr-ic">
-                            <Ic n="cash" sz={17} c="#C2410C" />
+                            <Ic n="cash" sz={13} c="#C2410C" />
                         </div>
-                        <div>
-                            <div className="CM3-mtitle">{isEdit ? 'Edit Payment' : 'Record Payment'}</div>
-                            <div className="CM3-msub" style={{ color: '#C2410C', fontSize: 11.5, fontWeight: 800 }}>
-                                {vendor.party_name} · {vendor.category_name}{vendor.sub_category_name ? ` › ${vendor.sub_category_name}` : ''}
-                                {isEdit ? ` · Editing payment #${editPayment?.id}` : ` · Outstanding: ${fmt(vendor.balance)}`}
-                            </div>
-                        </div>
+                        <div className="CM3-mtitle">{isEdit ? 'EDIT PAYMENT' : 'RECORD PAYMENT'}</div>
                     </div>
-                    <button className="CM3-mclose" onClick={onClose} title="Close" aria-label="Close"><Ic n="x" sz={18} /></button>
+                    <button className="CM3-mclose" onClick={onClose} title="Close" aria-label="Close"><Ic n="x" sz={16} /></button>
                 </div>
 
                 <div className="CM3-mbody">
@@ -3819,15 +3857,6 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                         </div>
                     )}
                     {/* Edit Mode: original record snapshot End */}
-
-                    {/* Cash Book Start */}
-                    <div className="CM3-notice teal">
-                        <Ic n="sync" sz={13} c={PAYMENT_COLOR.primary} />
-                        {isEdit
-                            ? <div><strong>Editing repayment details</strong> — Cash Book sync settings are locked once recorded; only date, amount, mode, reference & notes can be updated here.</div>
-                            : <div><strong>Auto-syncs to Cash Book</strong> — category, sub-category, party & client auto-filled from ledger profile</div>}
-                    </div>
-                    {/* Cash Book End */}
 
                     {/* ── 01 Payment Details Start ── */}
                     <div className="CM3-section"><span className="CM3-section-tag">01 — Payment Details</span><div className="CM3-section-rule" /></div>
@@ -3890,7 +3919,20 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                             </label>
                             {form.sync_to_daybook && (
                                 <div style={{ marginTop: 10 }}>
-                                    <div className="CM3-db-grid">
+                                    {/* Collapsed by default — mapping is already auto-filled; open only on request */}
+                                    <button type="button" className="CM3-db-expand" onClick={() => setShowDbDetails(o => !o)}>
+                                        <span className="CM3-db-expand-txt">
+                                            {showDbDetails ? 'Hide Cash Book mapping' : 'View Cash Book mapping'}
+                                            {!showDbDetails && (
+                                                <span className="CM3-db-expand-sum">
+                                                    {matchedBio ? ` · ${matchedBio.name}` : ''}{vendor.category_name ? ` → ${vendor.category_name}` : ''}
+                                                </span>
+                                            )}
+                                        </span>
+                                        <svg className={`CM3-db-expand-chev${showDbDetails ? ' open' : ''}`} width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                                    </button>
+                                    {showDbDetails && (
+                                    <div className="CM3-db-grid" style={{ marginTop: 8 }}>
                                         <div className={`CM3-field${errorField === 'daybook_bio_data_id' ? ' err' : ''}`} ref={daybookPartyFieldRef}>
                                             <SDD label="Party Name in Cash Book" required accent={PAYMENT_COLOR.primary}
                                                 options={allBioOptions} value={form.daybook_bio_data_id}
@@ -3938,6 +3980,7 @@ function PaymentModal({ vendor, bioData, categories, subCategories, editPayment,
                                                 placeholder="Narration for daybook entry…" />
                                         </div>
                                     </div>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -4026,6 +4069,7 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
     useEffect(() => { loadDetail(); }, [loadDetail]);
     const handleDelEntry = (id: number) => { setDeleteModal({ open: true, type: "entry", id, name: "this credit entry", loading: false }); };
     const handleDelPayment = (id: number) => { setDeleteModal({ open: true, type: "payment", id, name: "this payment", loading: false }); };
+    const handleDelVendor = () => { setDeleteModal({ open: true, type: "vendor", id: vendor.id, name: vendor.party_name, loading: false }); };
 
     if (loading) return (
         <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -4124,6 +4168,14 @@ function VendorDetail({ vendor, onReload, onVendorDeleted, bioData, categories, 
                             <Ic n="edit" sz={13} c="currentColor" /> Edit
                         </button>
                         {/* Edit End */}
+
+                        {/* Delete Start */}
+                        {canDelete(userRole) && (
+                            <button className="CM3-act ghost danger" onClick={handleDelVendor}>
+                                <Ic n="trash" sz={13} c="currentColor" /> Delete
+                            </button>
+                        )}
+                        {/* Delete End */}
 
                     </div>
                     {/* Button End */}
@@ -4675,6 +4727,11 @@ export default function CreditManagement() {
     // one they're already looking at.
     const [newLedgerCatId, setNewLedgerCatId] = useState<number | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<{ id: number | null; name: string } | null>(null);
+    // Quick edit/delete for a vendor row straight from the sidebar list or the
+    // Category Overview "Linked Ledgers" list — no need to open the full detail panel first.
+    const [editVendorTarget, setEditVendorTarget] = useState<Vendor | null>(null);
+    const [deleteVendorTarget, setDeleteVendorTarget] = useState<{ id: number; name: string } | null>(null);
+    const [deletingVendor, setDeletingVendor] = useState(false);
     const erpPageRef = useRef<HTMLDivElement>(null);
     useKeyboardFieldNav(erpPageRef);
 
@@ -4697,6 +4754,22 @@ export default function CreditManagement() {
     }, []);
 
     useEffect(() => { load(); }, [load]);
+
+    const confirmDeleteVendor = async () => {
+        if (!deleteVendorTarget) return;
+        setDeletingVendor(true);
+        try {
+            await axiosInstance.delete(`credit-management/vendors/${deleteVendorTarget.id}`, { headers: authHeader() });
+            toast.warning('Vendor Deleted', `"${deleteVendorTarget.name}" removed successfully`);
+            if (selectedVendor?.id === deleteVendorTarget.id) setSelectedVendor(null);
+            setDeleteVendorTarget(null);
+            load(true);
+        } catch {
+            toast.error('Failed to delete');
+        } finally {
+            setDeletingVendor(false);
+        }
+    };
 
     const filtered = vendors.filter(v => {
         const q = search.toLowerCase();
@@ -4949,8 +5022,20 @@ export default function CreditManagement() {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className={`CM3-vbal-new${v.balance > 0 ? ' red' : ' grey'}`}>
-                                                    {fmt(v.balance)}
+                                                <div className="CM3-vcard-topright">
+                                                    <div className={`CM3-vbal-new${v.balance > 0 ? ' red' : ' grey'}`}>
+                                                        {fmt(v.balance)}
+                                                    </div>
+                                                    <div className="CM3-vqa-row">
+                                                        <button className="CM3-vqa" title="Edit vendor" onClick={(e) => { e.stopPropagation(); setEditVendorTarget(v); }}>
+                                                            <Ic n="edit" sz={10} c="currentColor" />
+                                                        </button>
+                                                        {canDelete(userRole) && (
+                                                            <button className="CM3-vqa del" title="Delete vendor" onClick={(e) => { e.stopPropagation(); setDeleteVendorTarget({ id: v.id, name: v.party_name }); }}>
+                                                                <Ic n="trash" sz={10} c="currentColor" />
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                             {/* Top Row: Avatar + Info + Balance End */}
@@ -5059,6 +5144,16 @@ export default function CreditManagement() {
                                                 <span className="CM3-catsum-row-bal">{fmt(v.balance)}</span>
                                                 <span className="CM3-catsum-row-bal-lbl">Outstanding</span>
                                             </div>
+                                            <div className="CM3-vqa-row">
+                                                <button className="CM3-vqa" title="Edit vendor" onClick={(e) => { e.stopPropagation(); setEditVendorTarget(v); }}>
+                                                    <Ic n="edit" sz={10} c="currentColor" />
+                                                </button>
+                                                {canDelete(userRole) && (
+                                                    <button className="CM3-vqa del" title="Delete vendor" onClick={(e) => { e.stopPropagation(); setDeleteVendorTarget({ id: v.id, name: v.party_name }); }}>
+                                                        <Ic n="trash" sz={10} c="currentColor" />
+                                                    </button>
+                                                )}
+                                            </div>
                                             <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} style={{ color: 'var(--text-4)', flexShrink: 0 }}><path d="m9 18 6-6-6-6" /></svg>
                                         </div>
                                     );
@@ -5096,6 +5191,37 @@ export default function CreditManagement() {
                 />
             )}
             {/* New Ledger Modal End */}
+
+            {/* Quick Edit Vendor Modal Start */}
+            {editVendorTarget && (
+                <LedgerFormModal
+                    categories={categories}
+                    subCategories={subCategories}
+                    bioData={bioData}
+                    vendors={vendors}
+                    editVendor={editVendorTarget}
+                    onClose={() => setEditVendorTarget(null)}
+                    onSaved={() => {
+                        setEditVendorTarget(null);
+                        load(true);
+                        if (selectedVendor?.id === editVendorTarget.id) setSelectedVendor(null);
+                    }}
+                />
+            )}
+            {/* Quick Edit Vendor Modal End */}
+
+            {/* Quick Delete Vendor Modal Start */}
+            {deleteVendorTarget && (
+                <ConfirmDeleteModal
+                    open={true}
+                    title="Delete Vendor?"
+                    description={`This will permanently remove ${deleteVendorTarget.name} and cannot be undone.`}
+                    loading={deletingVendor}
+                    onCancel={() => setDeleteVendorTarget(null)}
+                    onConfirm={confirmDeleteVendor}
+                />
+            )}
+            {/* Quick Delete Vendor Modal End */}
         </div>
     );
 }

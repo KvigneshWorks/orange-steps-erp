@@ -314,15 +314,16 @@ const CSS = `
 
 /* ── PAGE-LEVEL TABS: Workers / All Payments — same flat bordered
    segmented-control UI used on the Register/Attendance pages ── */
-.LP-view-tabs { display:inline-flex; border:1.5px solid var(--border); border-radius:var(--r-lg); overflow:hidden; background:var(--white); margin-bottom:20px; animation:lp-hero-in .3s .05s ease both; }
+.LP-view-tabs { display:inline-flex; border:1.5px solid var(--border); border-radius:var(--r-lg); overflow:hidden; background:var(--white); animation:lp-hero-in .3s .05s ease both; }
 .LP-view-tab {
-  display:flex; align-items:center; gap:8px; padding:14px 28px; font-family:var(--font-mono); font-size: 10px;
-  font-weight: 800; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-3); cursor:pointer;
-  border:none; border-right:1.5px solid var(--border); transition:background .16s ease, color .16s ease;
+  display:flex; align-items:center; gap:7px; padding:9px 18px; font-family:var(--font-mono); font-size: 8.5px;
+  font-weight: 800; letter-spacing:1.3px; text-transform:uppercase; color:var(--text-3); cursor:pointer;
+  border:none; border-right:1.5px solid var(--border); transition:background .16s ease, color .16s ease, transform .16s cubic-bezier(.34,1.56,.64,1);
   white-space:nowrap; background:var(--white);
 }
 .LP-view-tab:last-child { border-right:none; }
-.LP-view-tab:hover { color:var(--ember); background:var(--ember-ghost); }
+.LP-view-tab:hover { color:var(--ember); background:var(--ember-ghost); transform:translateY(-1px); }
+.LP-view-tab:active { transform:translateY(0) scale(.96); }
 .LP-view-tab.active { color:#faf9f7; background:var(--ember); }
 .LP-view-tab-badge { padding:2px 8px; border-radius:100px; font-size: 8px; font-weight: 800; background:var(--ember-ghost); color:var(--ember); border:1px solid var(--ember-border); }
 .LP-view-tab.active .LP-view-tab-badge { background:rgba(255,255,255,.25); color:#faf9f7; border-color:rgba(255,255,255,.4); }
@@ -357,7 +358,8 @@ const CSS = `
    cell color with only the primary Name column staying accent-orange.
    Scoped to Wage Disbursement's view-page tables only, never touches the
    shared .ERP-tbl base elsewhere. ── */
-.LP-orange-tbl th { background: var(--surface-2, #E8E2D8) !important; color: var(--text-3, #3A3024) !important; border-bottom: 2px solid var(--ember, #C2410C) !important; }
+.LP-orange-tbl.LP-compact thead tr { background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%) !important; border-bottom: none !important; }
+.LP-orange-tbl th { background: linear-gradient(135deg, #DB5B1F 0%, #C2410C 100%) !important; color: #fff !important; border-bottom: none !important; border-right: none !important; }
 .LP-orange-tbl.LP-compact th { font-size: 8px !important; font-weight: 800 !important; letter-spacing: 2.5px !important; padding: 12px 16px !important; }
 .LP-orange-tbl.LP-compact td { padding: 13px 16px; text-transform: uppercase; letter-spacing: .25px; }
 @keyframes lp-row-in { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
@@ -2336,6 +2338,29 @@ export default function LabourPayment() {
             </div>
             <h1 className="ERP-title MD-page-title">Wage <span className="ERP-title-em">Disbursements</span></h1>
           </div>
+          {!selectedWorker && !needsSetup && (
+            <div className="ERP-hdr-right">
+              {/* ── PAGE TABS — Workers / All Payments ── */}
+              <div className="LP-view-tabs">
+                <button
+                  className={'LP-view-tab' + (pageTab === 'workers' ? ' active' : '')}
+                  onClick={() => setPageTab('workers')}
+                >
+                  <Ico n="labour" s={13} c="currentColor" />
+                  Workers
+                </button>
+                <button
+                  className={'LP-view-tab' + (pageTab === 'payments' ? ' active' : '')}
+                  onClick={() => setPageTab('payments')}
+                >
+                  <Ico n="history" s={13} c="currentColor" />
+                  All Payments
+                  {sessionsSummary && <span className="LP-view-tab-badge">{sessionsSummary.sessions_count}</span>}
+                </button>
+              </div>
+              {/* ── PAGE TABS END ── */}
+            </div>
+          )}
         </div>
         <div className="ERP-divider" />
         {/* ── HEADER END ── */}
@@ -3590,26 +3615,6 @@ export default function LabourPayment() {
         {/* ── WORKER LIST VIEW ──────── */}
         {!selectedWorker && !needsSetup && (
           <>
-            {/* ── PAGE TABS — Workers / All Payments ── */}
-            <div className="LP-view-tabs">
-              <button
-                className={'LP-view-tab' + (pageTab === 'workers' ? ' active' : '')}
-                onClick={() => setPageTab('workers')}
-              >
-                <Ico n="labour" s={13} c="currentColor" />
-                Workers
-              </button>
-              <button
-                className={'LP-view-tab' + (pageTab === 'payments' ? ' active' : '')}
-                onClick={() => setPageTab('payments')}
-              >
-                <Ico n="history" s={13} c="currentColor" />
-                All Payments
-                {sessionsSummary && <span className="LP-view-tab-badge">{sessionsSummary.sessions_count}</span>}
-              </button>
-            </div>
-            {/* ── PAGE TABS END ── */}
-
             {pageTab === 'workers' && (
               <>
                 {/* ── STAT CARDS (same UI as Cash Book create page) ── */}

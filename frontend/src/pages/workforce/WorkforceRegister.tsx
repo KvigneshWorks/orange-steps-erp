@@ -343,7 +343,7 @@ const CSS = `
 /* TABS — flat, bordered segmented control (same clean language as the
    All/Active/Inactive filter below), not a gradient pill. Active segment is
    one solid flat color, no shadow/glow — neat and professional. */
-.WR-tabs-bar{display:inline-flex;border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--white);margin-bottom:20px;animation:wr-in .3s .05s ease both;}
+.WR-tabs-bar{display:inline-flex;border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--white);animation:wr-in .3s .05s ease both;}
 .WR-tab{display:flex;align-items:center;gap:7px;padding:9px 18px;font-family:var(--font-mono);font-size: 8.5px;font-weight: 800;letter-spacing:1.3px;text-transform:uppercase;color:var(--text-3);cursor:pointer;border:none;border-right:1.5px solid var(--border);transition:background .16s ease,color .16s ease,transform .16s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;background:var(--white);}
 .WR-tab:last-child{border-right:none;}
 .WR-tab:hover{color:var(--ember);background:var(--ember-ghost);transform:translateY(-1px);}
@@ -528,8 +528,8 @@ const CSS = `
 /* Header/row typography, spacing, hover and stagger-entrance now match the
    app-wide .ERP-tbl standard exactly, so this table reads identically to
    every other list view in the software. */
-.WR-table thead tr{background:var(--surface-2,#E8E2D8);}
-.WR-table th{font-family:var(--font-mono);font-size:8px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-3,#3A3024);padding:12px 16px;white-space:nowrap;text-align:left;border-bottom:2px solid var(--ember,#C2410C);position:sticky;top:0;z-index:10;background:var(--surface-2,#E8E2D8);}
+.WR-table thead tr{background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%);}
+.WR-table th{font-family:var(--font-mono);font-size:8px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#fff;padding:12px 16px;white-space:nowrap;text-align:left;border-bottom:none;position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#DB5B1F 0%,#C2410C 100%);}
 .WR-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--text-2);vertical-align:middle;}
 .WR-table tr:last-child td{border-bottom:none;}
 .WR-table tbody tr{transition:background .15s, box-shadow .15s;animation:erp-stagger-in .4s cubic-bezier(.22,1,.36,1) both;}
@@ -1059,6 +1059,22 @@ export default function WorkforceRegister() {
                     </div>
                     <h1 className="ERP-title MD-page-title">Labour Management <span className="ERP-title-em">Register</span></h1>
                 </div>
+                <div className="ERP-hdr-right">
+                    {/* TABS START */}
+                    <div className="WR-tabs-bar">
+                        <button className={'WR-tab' + (activeTab === 'register' ? ' active' : '')} onClick={() => { if (!editId) { setForm(BLANK()); setSubChips([]); setRemovedSubIds([]); } setActiveTab('register'); }}>
+                            <Ic n="plus" s={13} c="currentColor" />
+                            {editId ? 'Edit Worker' : 'Register Worker'}
+                            {editId && <span className="WR-tab-badge">Editing #{editId}</span>}
+                        </button>
+                        <button className={'WR-tab' + (activeTab === 'workers' ? ' active' : '')} onClick={() => { cancelEdit(); setActiveTab('workers'); }}>
+                            <Ic n="workers" s={13} c="currentColor" />
+                            Workers
+                            <span className="WR-tab-badge">{workers.length}</span>
+                        </button>
+                    </div>
+                    {/* TABS END  */}
+                </div>
             </div>
             {/* ── HEADER END ── */}
 
@@ -1088,21 +1104,6 @@ export default function WorkforceRegister() {
                 </div>
             </div>
             {/* ── STAT CARDS END ── */}
-
-            {/* TABS START */}
-            <div className="WR-tabs-bar">
-                <button className={'WR-tab' + (activeTab === 'register' ? ' active' : '')} onClick={() => { if (!editId) { setForm(BLANK()); setSubChips([]); setRemovedSubIds([]); } setActiveTab('register'); }}>
-                    <Ic n="plus" s={13} c="currentColor" />
-                    {editId ? 'Edit Worker' : 'Register Worker'}
-                    {editId && <span className="WR-tab-badge">Editing #{editId}</span>}
-                </button>
-                <button className={'WR-tab' + (activeTab === 'workers' ? ' active' : '')} onClick={() => { cancelEdit(); setActiveTab('workers'); }}>
-                    <Ic n="workers" s={13} c="currentColor" />
-                    Workers
-                    <span className="WR-tab-badge">{workers.length}</span>
-                </button>
-            </div>
-            {/* TABS END  */}
 
             {/* ── TAB: REGISTER ── */}
             {activeTab === 'register' && (
