@@ -553,6 +553,12 @@ export default function BioData() {
                         </div>
                         <h1 className="ERP-title MD-page-title">Party <span className="ERP-title-em">Master</span></h1>
                     </div>
+                    <div className="ERP-hdr-right">
+                        <button className="MD-add-btn" onClick={() => { handleReset(); setFormOpen(true); formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
+                            <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
+                            Add Party Master
+                        </button>
+                    </div>
                 </div>
                 {/* HEADER END */}
 
@@ -569,15 +575,6 @@ export default function BioData() {
                     ))}
                 </div>
                 {/* STATS CARD END */}
-
-                {/* TOOLBAR */}
-                <div className="MD-toolbar-bar">
-                    <div className="MD-toolbar-count"><b>{records.length}</b> Party Master record{records.length === 1 ? '' : 's'}</div>
-                    <button className="MD-add-btn" onClick={() => { handleReset(); setFormOpen(true); formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
-                        <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
-                        Add Party Master
-                    </button>
-                </div>
 
                 {/* ── FORM CARD START ── */}
                 {formOpen && (

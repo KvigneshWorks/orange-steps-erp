@@ -112,7 +112,7 @@ export const ERP_CSS = `
 .ERP-stagger > *:nth-child(8) { animation-delay: 0.38s; }
 
 .ERP-page {
-  padding: 32px 36px;
+  padding: 12px 28px;
   background: var(--surface);
   color: var(--text-1);
   font-family: var(--font-body);
@@ -136,10 +136,23 @@ export const ERP_CSS = `
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   animation: erp-slide-up 0.5s cubic-bezier(0.22,1,0.36,1) both;
   position: relative;
   z-index: 1;
+}
+
+/* Right-hand slot inside .ERP-hdr — a primary action (e.g. an "Add …"
+   button) sitting on the same row as the eyebrow/title, instead of its
+   own isolated strip lower on the page. .ERP-hdr already lays its
+   children out with justify-content:space-between, so this just needs
+   to not shrink and to nudge down slightly to optically align with the
+   two-line title block next to it. */
+.ERP-hdr-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
 }
 
 .ERP-eyebrow {
@@ -152,7 +165,7 @@ export const ERP_CSS = `
   letter-spacing: 3.5px;
   color: var(--ember);
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
 }
 
 .ERP-eyebrow-line {
@@ -178,7 +191,7 @@ export const ERP_CSS = `
   color: var(--grey);
   letter-spacing: -0.5px;
   line-height: 1.2;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .ERP-title-em {
@@ -228,14 +241,14 @@ export const ERP_CSS = `
 .ERP-divider {
   height: 1px;
   background: var(--border);
-  margin-bottom: 28px;
+  margin-bottom: 10px;
 }
 
 .ERP-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 10px;
   position: relative;
   z-index: 1;
 }
@@ -248,7 +261,7 @@ export const ERP_CSS = `
   background: linear-gradient(165deg, var(--white) 0%, var(--off-white) 100%);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  padding: 12px 13px 10px;
+  padding: 9px 12px 8px;
   position: relative;
   overflow: hidden;
   cursor: default;
@@ -358,7 +371,7 @@ export const ERP_CSS = `
   border: 1px solid var(--border);
   border-radius: var(--r-xl);
   overflow: visible;            /* ← was: hidden — changed to fix dropdown clipping */
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   box-shadow: var(--sh-card);
   /* No mount animation here: an element with a transform/opacity animation
      (even one that already finished) is pinned into its own stacking
@@ -381,7 +394,7 @@ export const ERP_CSS = `
 }
 
 .ERP-form-body {
-  padding: 26px 30px 24px;
+  padding: 18px 26px 20px;
   overflow: visible;            /* ← ensure dropdowns can escape */
 }
 
@@ -389,8 +402,8 @@ export const ERP_CSS = `
   display: flex;
   align-items: center;
   gap: 16px;
-  padding-bottom: 20px;
-  margin-bottom: 22px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -434,7 +447,7 @@ export const ERP_CSS = `
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 24px 0 18px;
+  margin: 14px 0 10px;
   position: relative;
   z-index: auto;
 }
@@ -507,6 +520,7 @@ export const ERP_CSS = `
 @media (max-width: 640px) {
   .ERP-hdr { flex-direction: column; align-items: flex-start; gap: 14px; }
   .ERP-status-badge { margin-top: 0; }
+  .ERP-hdr-right { padding-top: 0; }
 }
 @media (max-width: 400px) {
   .ERP-subtitle { font-size: 9.5px; }
@@ -1495,7 +1509,7 @@ export const ERP_CSS = `
    icon) opens the form inline, above the table, instead of hiding the
    list behind a separate tab.
 ══════════════════════════════════════════════════════════════════ */
-.MD-toolbar-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; animation: erp-slide-up .3s .05s ease both; }
+.MD-toolbar-bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 10px; animation: erp-slide-up .3s .05s ease both; }
 .MD-toolbar-count { font-family: var(--font-mono); font-size: 8.5px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; color: var(--text-2); }
 .MD-toolbar-count b { color: var(--ember); font-size: 11px; }
 .MD-add-btn {
@@ -1601,7 +1615,7 @@ export const ERP_CSS = `
 /* Hides the "01 —" section-rule line that sits directly beneath
    .MD-form-hdr so only one divider line shows between the header and
    the first field group (the header's own underline). */
-.MD-first-section.ERP-section { margin-top: 4px; }
+.MD-first-section.ERP-section { margin-top: 0; }
 .MD-first-section .ERP-section-rule { display: none; }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -2254,6 +2268,242 @@ export const ERP_CSS = `
   flex-wrap: wrap;
   gap: 5px;
   max-width: 260px;
+}
+
+/* ── MultiSearchDD — searchable, portal-rendered multi-select dropdown
+   (components/MultiSearchDD.tsx). Same trigger/panel pattern already used
+   for the Daybook income-name filter, shared here for reuse. ── */
+.SDD-root {
+  width: 100%;
+}
+.SDD-root[data-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.SDD-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  min-height: 44px;
+  outline: none;
+}
+.SDD-trigger:hover {
+  border-color: var(--border-2);
+  background: var(--off-white);
+}
+.SDD-trigger.open {
+  border-color: var(--ember-mid);
+  box-shadow: 0 0 0 3px var(--ember-ghost);
+}
+.SDD-trigger.has-value {
+  border-color: var(--ember-border);
+}
+.SDD-content {
+  flex: 1;
+  min-width: 0;
+}
+.SDD-selected {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.SDD-ph {
+  font-size: 9.5px;
+  color: var(--text-4);
+  font-style: italic;
+}
+.SDD-chevron {
+  color: var(--text-4);
+  transition: transform 0.2s, color 0.18s;
+  flex-shrink: 0;
+  display: flex;
+}
+.SDD-chevron.open {
+  transform: rotate(180deg);
+  color: var(--ember);
+}
+.SDD-panel {
+  background: var(--white);
+  border: 1.5px solid var(--ember-mid);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: sdd-drop 0.14s cubic-bezier(0.34,1.1,0.64,1) both;
+}
+@keyframes sdd-drop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.SDD-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--off-white);
+}
+.SDD-search {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 10px;
+  color: var(--text-1);
+}
+.SDD-search::placeholder {
+  color: var(--text-4);
+}
+.SDD-clr {
+  background: none;
+  border: none;
+  padding: 3px;
+  cursor: pointer;
+  color: var(--text-4);
+  display: flex;
+  transition: color 0.15s;
+}
+.SDD-clr:hover {
+  color: var(--error);
+}
+.SDD-list {
+  max-height: 210px;
+  overflow-y: auto;
+  padding: 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #DB5B1F rgba(203,213,225,0.18);
+}
+.SDD-list::-webkit-scrollbar {
+  width: 5px;
+}
+.SDD-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.SDD-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #F0834D 0%, #DB5B1F 45%, #C2410C 100%);
+  border-radius: 99px;
+  border: none;
+}
+.SDD-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FBC9A8 0%, #DB5B1F 42%, #C2410C 100%);
+  box-shadow: 0 0 8px rgba(59,130,246,0.5);
+}
+.SDD-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  font-size: 10.5px;
+  color: var(--text-2);
+}
+.SDD-item:hover {
+  background: var(--ember-ghost);
+  color: var(--text-1);
+}
+.SDD-item.sel {
+  background: var(--ember-ghost);
+  color: var(--ember);
+  font-weight: 700;
+}
+.SDD-empty {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 16px 14px;
+  font-size: 9.5px;
+  color: var(--text-4);
+}
+.SDD-footer {
+  padding: 6px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-4);
+  text-align: right;
+  background: var(--off-white);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+.SDD-multi-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--off-white);
+}
+.SDD-multi-actions button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ember);
+  cursor: pointer;
+}
+.SDD-multi-actions button:hover { text-decoration: underline; }
+.SDD-multi-actions span { color: var(--text-4); font-size: 9px; }
+.SDD-multi-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  color: var(--ember) !important;
+  background: var(--ember-ghost);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.SDD-multi-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.SDD-multi-item-lbl { flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.SDD-checkbox {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-2);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.SDD-multi-item:hover .SDD-checkbox { border-color: var(--ember); transform: scale(1.08); }
+.SDD-checkbox.on {
+  background: var(--ember);
+  border-color: var(--ember);
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+}
+.SDD-multi-badge {
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 100px;
+  background: var(--ember);
+  color: #faf9f7;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 `;
 

@@ -8,6 +8,7 @@ import { ERP_CSS } from './ERPTheme';
 import { CalendarDD } from '../components/CalendarDD';
 import { markPanelOpen, markPanelClosed, useKeyboardFieldNav, useDropdownTriggerKeyDown, useDropdownPanelArrowNav } from '../utils/keyboardNav';
 import PageOpenIntro from '../components/PageOpenIntro';
+import Pagination from '../components/Pagination';
 
 const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 
@@ -4011,6 +4012,8 @@ export default function ClientPortalFull() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [fetching, setFetching] = useState(true);
   const [search, setSearch] = useState('');
+  const [clientPage, setClientPage] = useState(1);
+  const [clientPerPage, setClientPerPage] = useState(10);
   const [spinning, setSpinning] = useState(false);
   const [bioRecords, setBioRecords] = useState<BioRecord[]>([]);
   const [namesLoading, setNamesLoading] = useState(false);
@@ -4074,6 +4077,10 @@ export default function ClientPortalFull() {
     (c.id_number || '').includes(search)
   );
 
+  const clientTotalPages = Math.max(1, Math.ceil(filtered.length / clientPerPage));
+  const clientSafePage = Math.min(clientPage, clientTotalPages);
+  const pagedClients = filtered.slice((clientSafePage - 1) * clientPerPage, clientSafePage * clientPerPage);
+
   const STAT_CARDS = summary ? [
     { icon: 'users', label: 'Total Clients', num: summary.total_clients, prefix: '', color: 'var(--ember,#C2410C)', ac: 'linear-gradient(180deg,#C2410C 0%,transparent 100%)', iconBg: 'rgba(154,52,18,0.09)', iconBd: 'rgba(154,52,18,0.2)', foot: `${summary.total_projects} active projects` },
     { icon: 'bldg', label: 'Active Projects', num: summary.total_projects, prefix: '', color: 'var(--amber,#DB5B1F)', ac: 'linear-gradient(180deg,#DB5B1F 0%,transparent 100%)', iconBg: 'rgba(219,91,31,0.09)', iconBd: 'rgba(219,91,31,0.2)', foot: 'across all clients' },
@@ -4107,6 +4114,9 @@ export default function ClientPortalFull() {
             </div>
             <div className="ERP-hdr-right">
               <button className="CP-btn-header-add" onClick={() => setModal({ type: 'add' })}>
+                <span className="CP-btn-header-add-ic">
+                  <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+                </span>
                 Add Client
               </button>
             </div>
@@ -4184,7 +4194,7 @@ export default function ClientPortalFull() {
                     <div className="CP-empty-ttl" style={{ fontSize: 14 }}>No clients</div>
                     <div className="CP-empty-sub">{search ? 'Try another name' : 'Add your first client'}</div>
                   </div>
-                  : filtered.map((cli, idx) => {
+                  : pagedClients.map((cli, idx) => {
                     const pct = cli.total_budget > 0 ? Math.round((cli.total_collected / cli.total_budget) * 100) : 0;
                     const isActive = selectedClientId === cli.id;
                     return (
@@ -4226,6 +4236,18 @@ export default function ClientPortalFull() {
                   })}
             </div>
             {/* CLIENT LIST END */}
+            {filtered.length > 0 && (
+              <Pagination
+                page={clientSafePage}
+                totalPages={clientTotalPages}
+                onPageChange={setClientPage}
+                total={filtered.length}
+                perPage={clientPerPage}
+                onPerPageChange={n => { setClientPerPage(n); setClientPage(1); }}
+                perPageOptions={[5, 10, 15, 25]}
+                itemLabel="clients"
+              />
+            )}
           </div>
           {/* LEFT SIDEBAR END */}
 

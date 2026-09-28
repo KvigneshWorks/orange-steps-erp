@@ -306,7 +306,8 @@ export default function PendingApprovals() {
                         <>
                             <div className="ERP-tbl-scroll">
                                 <table className="ERP-tbl">
-
+                                    
+                                    {/* Thead Start */}
                                     <thead>
                                         <tr>
                                             <th className="ERP-center" style={{ width: 44 }}>No.</th>
@@ -318,7 +319,9 @@ export default function PendingApprovals() {
                                             <th className="ERP-center" style={{ width: 190 }}>Actions</th>
                                         </tr>
                                     </thead>
+                                    {/* Thead End */}
 
+                                    {/* T body Start */}
                                     <tbody>
                                         <AnimatePresence mode="popLayout">
                                             {pagedRequests.map((req, i) => {
@@ -378,10 +381,19 @@ export default function PendingApprovals() {
                                                                         Reject
                                                                     </button>
                                                                 </span>
-                                                            ) : (
-                                                                <span style={{ fontSize: 9, color: 'var(--text-4,#8C7C63)' }}>
-                                                                    {req.decided_by ? `by ${req.decided_by}` : '—'}
+                                                            ) : req.decided_by ? (
+                                                                <span className="AS-act-note">
+                                                                    <Ic d={req.status === 'approved' ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M6 18L18 6M6 6l12 12'}
+                                                                        sz={10} c={req.status === 'approved' ? '#1E9C6A' : '#D93B55'} sw={2.2} />
+                                                                    by {req.decided_by}
                                                                 </span>
+                                                            ) : expired ? (
+                                                                <span className="AS-act-note expired" title="This request's decision window has closed — ask the requester to submit Create Account again for a fresh one.">
+                                                                    <Ic d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" sz={10} c="#6B5D48" sw={2.2} />
+                                                                    Expired — resend needed
+                                                                </span>
+                                                            ) : (
+                                                                <span className="AS-act-note">—</span>
                                                             )}
                                                         </td>
                                                     </motion.tr>
@@ -389,6 +401,7 @@ export default function PendingApprovals() {
                                             })}
                                         </AnimatePresence>
                                     </tbody>
+                                    {/* Tbody End */}
                                 </table>
                             </div>
                             {requests.length > 0 && (

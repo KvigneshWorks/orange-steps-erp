@@ -149,11 +149,11 @@ function BinFxIcon({ kind }: { kind: 'restore' | 'delete' }) {
     );
 }
 
-/* ── Types ───── */
+/* ── Types Start ───── */
 interface TrashRecord { id: number; name: string; subtitle: string; deleted_at: string; deleted_raw: string; deleted_date?: string; deleted_time?: string; deleted_by_name?: string; }
 interface TrashGroup { key: string; label: string; count: number; records: TrashRecord[]; }
 
-/* ── Module colours ────────────────── */
+/* ── Module colours ──── */
 const MOD: Record<string, { dot: string; bg: string; color: string; border: string; icon: string }> = {
     categories: { dot: '#C2410C', bg: '#FBC9A8', color: '#C2410C', border: '#FBC9A8', icon: 'M3 7h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' },
     sub_categories: { dot: '#9A3412', bg: '#FDE0CB', color: '#9A3412', border: '#FDE0CB', icon: 'M4 6h16M4 10h16M4 14h10' },
@@ -172,7 +172,7 @@ const MOD: Record<string, { dot: string; bg: string; color: string; border: stri
 
 const fallback = { dot: '#6B5D48', bg: '#F5F3EF', color: '#6B5D48', border: '#D2C7B8', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8' };
 
-/* ── Skeleton row ────────── */
+/* ── Skeleton Row Start ────────── */
 function SkeletonRow() {
     return (
         <tr>
@@ -274,8 +274,10 @@ export default function RecycleBin() {
             <style>{ERP_CSS}</style>
             <style>{RB_CSS}</style>
 
-            {/* ── HEADER ── */}
+            {/* ── HEADER START ── */}
             <div className="ERP-hdr">
+
+                {/* Maintenance Start */}
                 <div className="ERP-hdr-left">
                     <div className="ERP-eyebrow">
                         <span className="ERP-eyebrow-line" />
@@ -284,6 +286,9 @@ export default function RecycleBin() {
                     </div>
                     <h1 className="ERP-title MD-page-title">Deletion <span className="ERP-title-em">Log</span></h1>
                 </div>
+                {/* Maintenance End */}
+
+                {/* Refresh Start */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <button
                         className={`ERP-refresh-btn${loading ? ' spin' : ''}`}
@@ -299,11 +304,14 @@ export default function RecycleBin() {
                         </svg>
                     </button>
                 </div>
+                {/* Refresh End */}
+
             </div>
+            {/* HEADER END */}
 
             <div className="ERP-divider" />
 
-            {/* ── STATS ── */}
+            {/* ── STATS START ── */}
             <div className="ERP-stats">
                 {[
                     { path: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16', label: 'Total Deleted', val: total, c: '#C2410C', bg: 'rgba(37,99,235,0.09)', bd: 'rgba(37,99,235,0.24)' },
@@ -325,8 +333,9 @@ export default function RecycleBin() {
                     </div>
                 ))}
             </div>
+            {/* ── STATS END ── */}
 
-            {/* ── FILTER CHIPS ── */}
+            {/* ── FILTER CHIPS START ── */}
             {!loading && groups.length > 0 && (
                 <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', margin: '0 0 20px' }}>
                     {[{ key: 'all', label: `All (${total})` }, ...groups.map(g => ({ key: g.key, label: `${g.label} (${g.count})` }))].map((chip, i) => (
@@ -344,10 +353,12 @@ export default function RecycleBin() {
                     ))}
                 </div>
             )}
+            {/* ── FILTER CHIPS END ── */}
 
-            {/* ── TABLE CARD ── */}
+            {/* ── TABLE CARD ── ── */}
             <div className="ERP-card">
                 <div className="ERP-card-topbar" />
+                {/* Deleted Records Start */}
                 <div className="ERP-card-hdr">
                     <div className="ERP-card-hdr-left">
                         <div className="ERP-card-icon-wrap">
@@ -361,8 +372,9 @@ export default function RecycleBin() {
                         </div>
                     </div>
                 </div>
+                {/* Deleted Records End */}
 
-                {/* Skeleton */}
+                {/* Skeleton Start  */}
                 {loading && (
                     <div className="ERP-tbl-scroll">
                         <table className="ERP-tbl">
@@ -373,8 +385,9 @@ export default function RecycleBin() {
                         </table>
                     </div>
                 )}
+                {/* Skeleton End */}
 
-                {/* Empty */}
+                {/* Empty Start */}
                 {!loading && groups.length === 0 && (
                     <div className="ERP-empty">
                         <div className="ERP-empty-icon RB-float">
@@ -384,6 +397,7 @@ export default function RecycleBin() {
                         <div className="ERP-empty-sub">Deleted records from all modules will appear here</div>
                     </div>
                 )}
+                {/* Empty End */}
 
                 {/* Groups → table rows */}
                 <AnimatePresence mode="popLayout">
@@ -403,7 +417,7 @@ export default function RecycleBin() {
                                 className="RB-group"
                                 style={{ '--rb-c': mc.color, '--rb-bg': mc.bg, '--rb-bd': mc.border, animationDelay: `${gi * 0.05}s` } as CSSProperties}
                             >
-                                {/* Group header */}
+                                {/* Group Header Start */}
                                 <div className="RB-group-hdr">
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                                         <span className="RB-group-dot" />
@@ -424,8 +438,9 @@ export default function RecycleBin() {
                                         </button>
                                     </div>
                                 </div>
+                                {/* Group Header End */}
 
-                                {/* Records table */}
+                                {/* Records Table Start */}
                                 <div className="ERP-tbl-scroll">
                                     <table className="ERP-tbl">
                                         <thead>
@@ -495,6 +510,7 @@ export default function RecycleBin() {
                                         </tbody>
                                     </table>
                                 </div>
+                                {/* Records Table End */}
                                 {group.records.length > 0 && (
                                     <div className="RB-group-pgn">
                                         <Pagination
@@ -508,13 +524,14 @@ export default function RecycleBin() {
                                         />
                                     </div>
                                 )}
+                                {/* Records Table End */}
                             </motion.div>
                         );
                     })}
                 </AnimatePresence>
             </div>
 
-            {/* ── Bin success FX overlay ── */}
+            {/* ── Bin success FIX overlay ── */}
             <AnimatePresence>
                 {binFx.show && (
                     <motion.div
@@ -546,6 +563,7 @@ export default function RecycleBin() {
                     </motion.div>
                 )}
             </AnimatePresence>
+            {/* ── Bin success FIX overlay ── */}
 
             {/* ── Confirm Delete Modal ── */}
             <RecycleBinDeleteModal
@@ -558,6 +576,7 @@ export default function RecycleBin() {
                 onCancel={() => setDeleteModal({ open: false, type: '', id: null, label: '', all: false, loading: false })}
                 loading={deleteModal.loading}
             />
+            {/* ── Confirm Delete Modal ── */}
         </div>
     );
 }

@@ -327,6 +327,12 @@ export default function IDType() {
                     title="Identification Type"
                     titleEm="Management"
                     titleClassName="MD-page-title"
+                    right={
+                        <button className="MD-add-btn" onClick={() => { resetForm(); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                            <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
+                            Add Identification Type
+                        </button>
+                    }
                 />
                 {/* HEADER END */}
 
@@ -342,16 +348,6 @@ export default function IDType() {
                     ))}
                 </div>
                 {/* STATS END */}
-
-                {/* TOOLBAR START */}
-                <div className="MD-toolbar-bar">
-                    <div className="MD-toolbar-count"><b>{idTypes.length}</b> Identification Type{idTypes.length === 1 ? '' : 's'}</div>
-                    <button className="MD-add-btn" onClick={() => { resetForm(); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                        <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
-                        Add Identification Type
-                    </button>
-                </div>
-                {/* TOOLBAR END */}
 
                 {/* FORM START */}
                 {formOpen && (

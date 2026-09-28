@@ -310,6 +310,12 @@ export default function SubName() {
                         </div>
                         <h1 className="ERP-title MD-page-title">Associate <span className="ERP-title-em">Names</span></h1>
                     </div>
+                    <div className="ERP-hdr-right">
+                        <button className="MD-add-btn" onClick={() => { setFormData(EMPTY); setEditId(null); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                            <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
+                            Add Associate Name
+                        </button>
+                    </div>
                 </div>
                 {/* HEADER END  */}
 
@@ -329,16 +335,6 @@ export default function SubName() {
                     ))}
                 </div>
                 {/* STATS END */}
-
-                {/* TOOLBAR START*/}
-                <div className="MD-toolbar-bar">
-                    <div className="MD-toolbar-count"><b>{subNames.length}</b> Associate Name{subNames.length === 1 ? '' : 's'}</div>
-                    <button className="MD-add-btn" onClick={() => { setFormData(EMPTY); setEditId(null); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                        <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
-                        Add Associate Name
-                    </button>
-                </div>
-                {/* TOOLBAR END */}
 
                 {/* FORM START */}
                 {formOpen && (

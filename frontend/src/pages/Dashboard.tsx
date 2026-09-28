@@ -300,6 +300,35 @@ function NavIcon({ type, active = false }: { type: string; active?: boolean }) {
     }
 }
 /* ──────────────────────────────────────
+   SUB-NAV ICONS — one per sidebar sub-link, matched to its actual name
+   instead of a generic arrow, so every open section reads at a glance.
+───────────────────────────────────────── */
+function SubNavIcon({ id }: { id: string }) {
+    const s = { width: 9, height: 9, viewBox: '0 0 24 24', fill: 'none' as const, stroke: 'currentColor', strokeWidth: 2.3, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+    switch (id) {
+        case 'master-category': return <svg {...s}><path d="M20 12.5l-8.5 8.5a2 2 0 01-2.8 0l-6.2-6.2a2 2 0 010-2.8L11 3h7a2 2 0 012 2v7.5z" /><circle cx="14.5" cy="8.5" r="1.5" /></svg>;
+        case 'master-subcategory': return <svg {...s}><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5M2 12l10 5 10-5" /></svg>;
+        case 'master-idtype': return <svg {...s}><rect x="2" y="5" width="20" height="14" rx="2" /><circle cx="8" cy="12" r="2" /><path d="M14 10h6M14 14h4" /></svg>;
+        case 'master-biodata': return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><path d="M14 2v6h6" /><circle cx="11" cy="14" r="2" /><path d="M8 19c0-1.66 1.34-3 3-3s3 1.34 3 3" /></svg>;
+        case 'master-subname': return <svg {...s}><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /><path d="M16.5 4.5a3.5 3.5 0 010 6.5M21 20c0-2.9-2-5.2-4.5-5.9" /></svg>;
+        case 'txn-daybook': return <svg {...s}><circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" /></svg>;
+        case 'txn-history': return <svg {...s}><path d="M3 3v6h6M21 12a9 9 0 10-2.6 6.3" /><path d="M12 7v5l3.5 2" /></svg>;
+        case 'workforce': return <svg {...s}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" /></svg>;
+        case 'attendance': return <svg {...s}><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /><path d="M8.5 14l2 2 4-4" /></svg>;
+        case 'labour-payment': return <svg {...s}><rect x="2" y="6" width="20" height="13" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="14.5" r="1.5" /></svg>;
+        case 'report-daybook': return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><path d="M14 2v6h6" /><path d="M8 13h5M8 17h8" /></svg>;
+        case 'report-credit': return <svg {...s}><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /><path d="M6 15h4" /></svg>;
+        case 'report-labour': return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><path d="M14 2v6h6" /><circle cx="10" cy="13.5" r="1.8" /><path d="M8 18c0-1.38 .9-2.5 2-2.5s2 1.12 2 2.5" /></svg>;
+        case 'report-client': return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><path d="M14 2v6h6" /><circle cx="9.5" cy="13" r="1.6" /><path d="M7.3 17.5c0-1.24 1-2.2 2.2-2.2s2.2 .96 2.2 2.2" /></svg>;
+        case 'report-pl': return <svg {...s}><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></svg>;
+        case 'create-account': return <svg {...s}><circle cx="9" cy="8" r="3.5" /><path d="M2 20c0-3.31 2.69-6 6-6h2c.7 0 1.37.12 2 .35" /><path d="M18 9v6M15 12h6" /></svg>;
+        case 'pending-approvals': return <svg {...s}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>;
+        case 'all-accounts': return <svg {...s}><circle cx="7.5" cy="7.5" r="2.8" /><circle cx="16.5" cy="7.5" r="2.8" /><path d="M2 20c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5M11 20c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" /></svg>;
+        case 'roles-permissions': return <svg {...s}><path d="M12 2l8 3.5v6c0 5-3.4 8.7-8 10.5-4.6-1.8-8-5.5-8-10.5v-6L12 2z" /><path d="M9 12l2 2 4-4" /></svg>;
+        default: return <svg {...s}><path d="M9 5l7 7-7 7" /></svg>;
+    }
+}
+/* ──────────────────────────────────────
    SESSION ICON
 ───────────────────────────────────────── */
 function SessIcon({ type, size = 12, color = 'currentColor' }: { type: string; size?: number; color?: string }) {
@@ -983,7 +1012,7 @@ function DashContent({
         { id: 'client', lbl: 'Accounts Receivable', c: '#1E9C6A', bg: 'rgba(30,156,106,.12)', icon: <><circle cx="9" cy="7" r="3.5" /><path d="M3 20c0-3.31 2.69-6 6-6s6 2.69 6 6" /></> },
         { id: 'attendance', lbl: 'Mark Attendance', c: '#EA580C', bg: 'rgba(234,88,12,.12)', icon: <><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M3 9h18M8 2v4M16 2v4" /></> },
         { id: 'report-daybook', lbl: 'View Insights', c: '#524532', bg: 'rgba(82,69,50,.1)', icon: <><path d="M4 19V5a2 2 0 012-2h8l6 6v10a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M14 3v6h6" /></> },
-        { id: 'master', }
+        { id: 'master', lbl: 'Core Records', c: '#C2410C', bg: 'rgba(194,65,12,.12)', icon: <><ellipse cx="12" cy="5" rx="8" ry="2.5" /><path d="M4 5v5c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5V5" /><path d="M4 10v5c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5v-5" /><path d="M4 15v4c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5v-4" /></>, },
     ];
 
     return (
@@ -1920,6 +1949,7 @@ function AdminDashContent({ userName, onNavigate }: { userName: string; onNaviga
                             {markedPct}% marked
                         </span>
                     </div>
+
                     <div className="DH-gauge-row">
                         {PROGRESS_GAUGES.map((k, i) => {
                             const r = 27, circ = 2 * Math.PI * r, pct = Math.min(Math.max(k.val, 0), 100);
@@ -2170,7 +2200,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     const transTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const sweepTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const autoCollapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
     const [collapsed, setCollapsed] = useState(true);
     const [autoClosing, setAutoClosing] = useState(false);
     const [mobOpen, setMobOpen] = useState(false);
@@ -2530,11 +2559,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    const toggleMenu = (id: string) => setOpenMenus(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
     const navClick = (item: any) => {
         if (item.children) {
-            if (!collapsed) { toggleMenu(item.id); }
-            else { setCollapsed(false); setTimeout(() => toggleMenu(item.id), 500); }
+            if (collapsed) setCollapsed(false);
         } else {
             setActiveNav(item.id);
             setMobOpen(false);
@@ -2608,7 +2635,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                     {sec.items.map(item => (
                                         <div key={item.id}>
                                             <div
-                                                className={`SB-item ${activeNav === item.id ? 'active' : ''} ${item.children && openMenus.has(item.id) ? 'open' : ''}`}
+                                                className={`SB-item ${activeNav === item.id ? 'active' : ''} ${item.children ? 'open' : ''}`}
                                                 onClick={() => navClick(item)}
                                                 role="button" tabIndex={0}
                                                 onKeyDown={e => e.key === 'Enter' && navClick(item)}
@@ -2623,22 +2650,17 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                                     {item.id === 'client' && urgentCount > 0
                                                         ? <span className="SB-badge" style={{ background: 'rgba(217,59,85,.12)', color: '#D93B55', borderColor: 'rgba(217,59,85,.28)' }}>{urgentCount} DUE</span>
                                                         : item.badge && <span className="SB-badge">{item.badge}</span>}
-                                                    {item.children && (
-                                                        <span className="SB-xp">
-                                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-                                                        </span>
-                                                    )}
                                                 </div>
                                                 <span className="SB-tooltip">{item.label}</span>
                                             </div>
                                             {item.children && (
-                                                <div className={`SB-sub ${openMenus.has(item.id) ? 'open' : ''}`}>
+                                                <div className="SB-sub open">
                                                     {item.children.map((c: { id: string; label: string }) => (
                                                         <div key={c.id}
                                                             className={`SB-sub-item ${activeNav === c.id ? 'active' : ''}`}
                                                             onClick={() => { setActiveNav(c.id); setMobOpen(false); startAutoCollapse(); }}>
                                                             <span className="SB-sub-icon">
-                                                                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg>
+                                                                <SubNavIcon id={c.id} />
                                                             </span>
                                                             <span className="SB-sub-txt">{c.label}</span>
                                                         </div>

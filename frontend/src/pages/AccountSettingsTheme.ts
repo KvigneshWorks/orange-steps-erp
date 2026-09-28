@@ -107,6 +107,21 @@ export const AS_CSS = `
 }
 .AS-act:disabled { opacity:.5; cursor:not-allowed; animation:none; }
 .AS-act + .AS-act { margin-left: 6px; }
+
+/* ── Non-actionable Actions-cell note: "by <name>" for an already-decided
+   request, or "Expired — resend needed" for one whose window lapsed before
+   anyone decided. Replaces a bare "—" so it reads as an intentional state
+   instead of a missing/broken button. ── */
+.AS-act-note {
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:var(--font-body); font-size:9px; font-weight:700; letter-spacing:.02em;
+  color:var(--text-4,#8C7C63);
+}
+.AS-act-note.expired {
+  padding:5px 10px; border-radius:8px;
+  background:rgba(107,93,72,.08); color:#6B5D48; border:1.3px solid rgba(107,93,72,.22);
+  text-transform:uppercase; font-size:8.5px; letter-spacing:.045em; cursor:help;
+}
 @keyframes as-act-pulse-ok  { 0%,100% { box-shadow:0 0 0 0 rgba(30,156,106,0); }  50% { box-shadow:0 0 0 5px rgba(30,156,106,.16); } }
 @keyframes as-act-pulse-bad { 0%,100% { box-shadow:0 0 0 0 rgba(217,59,85,0); }   50% { box-shadow:0 0 0 5px rgba(217,59,85,.14); } }
 

@@ -368,6 +368,12 @@ export default function Master() {
                     </div>
                     <h1 className="ERP-title MD-page-title">Account <span className="ERP-title-em">Heads</span></h1>
                 </div>
+                <div className="ERP-hdr-right">
+                    <button className="MD-add-btn" onClick={() => { setEditId(null); setFormData({ name: '', description: '', type: 'expense', is_active: true }); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                        <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
+                        Add Account Head
+                    </button>
+                </div>
             </div>
             {/* HEADER END  */}
 
@@ -389,15 +395,6 @@ export default function Master() {
                 ))}
             </div>
             {/* STATS END */}
-
-            {/* TOOLBAR */}
-            <div className="MD-toolbar-bar">
-                <div className="MD-toolbar-count"><b>{categories.length}</b> Account Head{categories.length === 1 ? '' : 's'}</div>
-                <button className="MD-add-btn" onClick={() => { setEditId(null); setFormData({ name: '', description: '', type: 'expense', is_active: true }); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                    <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
-                    Add Account Head
-                </button>
-            </div>
 
             {/* FORM START */}
             {formOpen && (

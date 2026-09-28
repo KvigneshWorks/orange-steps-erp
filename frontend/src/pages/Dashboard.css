@@ -1036,25 +1036,6 @@
     flex-shrink: 0;
   }
 
-  .SB-xp {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.04);
-    color: #C2410C;
-    font-size: 11px;
-  }
-
-  .SB-item.open .SB-xp {
-    transform: rotate(180deg);
-    background: rgba(194,65,12, 0.12);
-    color: var(--d-or);
-  }
-
   /* ── Tooltip (collapsed mode) ── */
   .SB-tooltip {
     position: absolute;
@@ -1158,7 +1139,7 @@
   .SB-sub-item.active .SB-sub-icon {
     background: var(--d-or);
     color: #faf9f7;
-    transform: rotate(90deg);
+    transform: scale(1.08);
     box-shadow: 0 2px 8px rgba(194,65,12, 0.42);
   }
 

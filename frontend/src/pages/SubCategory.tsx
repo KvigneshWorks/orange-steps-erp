@@ -7,6 +7,7 @@ import { toast } from '../services/toast';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Ic } from '../components/Icon';
 import { ERP_CSS } from './ERPTheme';
+import MultiSearchDD from '../components/MultiSearchDD';
 import { markPanelOpen, markPanelClosed, useKeyboardFieldNav, useDropdownTriggerKeyDown, useDropdownPanelArrowNav } from '../utils/keyboardNav';
 import { getStoredRole, canDelete } from '../utils/roleAccess';
 
@@ -426,6 +427,12 @@ export default function SubCategory() {
                         </div>
                         <h1 className="ERP-title MD-page-title">Account <span className="ERP-title-em">Sub-Heads</span></h1>
                     </div>
+                    <div className="ERP-hdr-right">
+                        <button className="MD-add-btn" onClick={() => { setEditId(null); setFormData(emptyForm()); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                            <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
+                            Add Account Sub-Head
+                        </button>
+                    </div>
                 </div>
                 {/* HEADER END */}
 
@@ -444,15 +451,6 @@ export default function SubCategory() {
                             <div className="ERP-stat-val">{val}</div>
                         </div>
                     ))}
-                </div>
-
-                {/* TOOLBAR */}
-                <div className="MD-toolbar-bar">
-                    <div className="MD-toolbar-count"><b>{subCategories.length}</b> Account Sub-Head{subCategories.length === 1 ? '' : 's'}</div>
-                    <button className="MD-add-btn" onClick={() => { setEditId(null); setFormData(emptyForm()); setFormOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                        <Ic d="M12 4v16m-8-8h16" sz={11} c="currentColor" sw={2} />
-                        Add Account Sub-Head
-                    </button>
                 </div>
                 {/* STATS - Using Memorized Values End */}
 
@@ -492,37 +490,18 @@ export default function SubCategory() {
 
                                     <div className="ERP-g3">
                                         <div className={'ERP-field' + (errorField === 'category_id' ? ' MD-field-error' : '')} ref={categoryFieldRef}>
-                                            <label className="ERP-label req">Parent Account Head(s)</label>
-                                            <div className="SC-ms">
-                                                {categories.length === 0
-                                                    ? <span className="SC-ms-empty">No account heads found</span>
-                                                    : categories.map(c => {
-                                                        const idStr = String(c.id);
-                                                        const checked = formData.category_ids.includes(idStr);
-                                                        return (
-                                                            <button
-                                                                type="button"
-                                                                key={c.id}
-                                                                className={`SC-ms-chip${checked ? ' sel' : ''}`}
-                                                                aria-pressed={checked}
-                                                                onClick={() => {
-                                                                    setFormData(p => ({
-                                                                        ...p,
-                                                                        category_ids: checked
-                                                                            ? p.category_ids.filter(v => v !== idStr)
-                                                                            : [...p.category_ids, idStr],
-                                                                    }));
-                                                                    if (errorField === 'category_id') setErrorField(null);
-                                                                }}>
-                                                                <span className="SC-ms-chip-box">
-                                                                    {checked && <Ic d="M5 13l4 4L19 7" sz={10} c="currentColor" sw={3} />}
-                                                                </span>
-                                                                {c.name}
-                                                            </button>
-                                                        );
-                                                    })}
-                                            </div>
-                                            <span className="ERP-hint">Tick every account head this sub-head belongs to</span>
+                                            <MultiSearchDD
+                                                label="Parent Account Head(s)"
+                                                placeholder={categories.length === 0 ? 'No account heads found' : 'Select account head(s)'}
+                                                emptyMsg="No account heads found"
+                                                disabled={categories.length === 0}
+                                                options={categories.map(c => ({ value: String(c.id), label: c.name }))}
+                                                value={formData.category_ids}
+                                                onChange={vals => {
+                                                    setFormData(p => ({ ...p, category_ids: vals }));
+                                                    if (errorField === 'category_id') setErrorField(null);
+                                                }}
+                                            />
                                             {errorField === 'category_id' && (
                                                 <div className="MD-field-error-msg">
                                                     <Ic d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" sz={11} c="currentColor" sw={2} />
