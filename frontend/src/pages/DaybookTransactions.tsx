@@ -864,30 +864,102 @@ const TX_CSS = `
    so this wins on this page only — every other page keeps the default. */
 .ERP-page { padding-left: 16px; padding-right: 16px; }
 
-/* Report-style fused card: a Report-Center-matching header bar (icon +
-   title + badge + actions) owns the top border/radius, .T-date-bar and
-   .T-filterpanel are plain mid-stack segments (side borders only, no
-   radius of their own — each layer's own bottom border is the divider),
+/* Report-style fused card: .T-date-bar — now a single consolidated
+   toolbar (Date Range + Recently Added + Export PDF; the old separate
+   "Transaction Ledger / Live View" header bar and the Today/Week/Month/
+   Quarter/Year quick-pick row are both gone) — owns the top border/
+   radius, .T-filterpanel is a plain mid-stack segment (side borders only,
+   no radius of its own — each layer's own bottom border is the divider),
    and .TX-toolbar/.TX-tbl-wrap/.TX-empty-card close it off with the
    bottom radius, exactly matching how ReportCenter.tsx nests everything
    inside one .T-card. Kept as separate fused pieces rather than one real
    .T-card wrapper because .T-card's own 36px side margin + full-radius
    border don't fit this page's edge-to-edge layout (see .TX-empty-card
    comment below for the same reasoning). */
-.T-card-head.TX-fused-head {
-  border: 1.5px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  border-radius: var(--r-xl) var(--r-xl) 0 0;
-}
 .T-date-bar {
-  border-left: 1.5px solid var(--border);
-  border-right: 1.5px solid var(--border);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 16px 22px;
+  gap: 16px;
+  background: linear-gradient(135deg, #faf9f7, var(--ember-ghost, #FBC9A8));
+}
+/* Icon-badge treatment for the "Date Range" label — matches the boxed-icon
+   language used for section headers elsewhere in the app (.T-card-icon),
+   instead of a bare mono-text line with an inline icon. */
+.T-date-bar-lbl {
+  gap: 8px;
+}
+.T-date-bar-ic {
+  width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--white,#faf9f7); border: 1.5px solid var(--ember-border);
+  color: var(--ember); box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+/* Date-range pill — a touch more premium than the shared default: lifts
+   and deepens its shadow on hover instead of sitting flat. */
+.T-date-range {
+  border-radius: 100px;
+  background: linear-gradient(135deg, #faf9f7, var(--white,#ffffff));
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.T-date-range:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.09);
+}
+/* Separator between From/To — a small circular arrow badge instead of a
+   plain vertical divider line, reading as "from → to" at a glance. */
+.T-date-sep {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ember-ghost); color: var(--ember);
+  border: 1px solid var(--ember-border);
+}
+/* Day-span chip — quick read on how wide the selected window is. */
+.TX-daterange-span {
+  display: inline-flex; align-items: center;
+  padding: 6px 12px; border-radius: 100px;
+  background: var(--white,#faf9f7); border: 1.5px solid var(--border);
+  font-family: var(--mono); font-size: 8.5px; font-weight: 800;
+  letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-3);
+  white-space: nowrap;
+}
+.TX-ledger-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+@media (max-width: 900px) {
+  .TX-daterange-span { display: none; }
 }
 .T-filterpanel {
   border-left: 1.5px solid var(--border);
   border-right: 1.5px solid var(--border);
   border-radius: 0;
   margin-bottom: 0;
+  padding: 16px 22px 14px;
+}
+.T-filterpanel-hd { margin-bottom: 12px; }
+/* Compact + evenly-stretched filter grid. auto-fit means every row's
+   fields always share the full width equally, however many fields this
+   panel ends up with — the old fixed repeat(4, ...) plus a grid-column-
+   pinned actions cell (see the JSX comment above .TX-filter-actions) is
+   what could leave a gap; auto-fit removes that failure mode entirely. */
+.T-ffield-grid {
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 12px;
+  margin-bottom: 0;
+}
+/* Filter / Reset — now a dedicated row under the field grid (see the JSX
+   comment where .T-ffield-grid closes) instead of a grid cell, with a
+   divider line separating it from the fields above. */
+.TX-filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
 }
 .TX-toolbar {
   padding: 10px 22px;
@@ -5426,16 +5498,43 @@ export default function DaybookTransactions() {
         </div>
         {/* ── Stats End ── */}
 
-        {/* ── Ledger Card Header (matches ReportCenter's module card head) Start ── */}
-        <div className="T-card-head TX-fused-head">
-          <div className="T-card-head-left">
-            <div className="T-card-icon T-card-icon-db">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="19" cy="17" r="3.2" /><path d="M21.2 19.2L23 21" /></svg>
-            </div>
-            <span className="T-card-title">Transaction Ledger</span>
-            <span className="T-card-badge T-card-badge-db">Live View</span>
+        {/* ── Ledger Toolbar Start — a single consolidated row: Date Range on
+             the left, Recently Added + Export PDF on the right. Replaces the
+             old two-row layout (a "Transaction Ledger / Live View" header
+             bar above a separate Today/Week/Month/Quarter/Year quick-pick
+             row) with one professional toolbar; the date pickers are now
+             the most prominent thing in it instead of being a secondary
+             row below a mostly-decorative header. ── */}
+        <div className="T-date-bar">
+          <div className="T-date-bar-lbl">
+            <span className="T-date-bar-ic"><Icon name="calendar" size={12} /></span>
+            Date Range
           </div>
-          <div className="T-card-head-right">
+
+          {/* Date Range Start */}
+          <div className="T-date-range">
+            <div className="T-date-field">
+              <CalendarDD value={fromDate} max={toDate}
+                onChange={v => { setFromDate(v); setQuickPick(''); }} />
+            </div>
+            <div className="T-date-sep">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </div>
+            <div className="T-date-field">
+              <CalendarDD value={toDate} min={fromDate}
+                onChange={v => { setToDate(v); setQuickPick(''); }} />
+            </div>
+          </div>
+          {/* Date Range End */}
+
+          {/* Span chip — a quick read on how wide the selected window is,
+              without having to work it out from the two dates by eye. */}
+          <span className="TX-daterange-span">
+            {Math.max(1, Math.round((new Date(toDate).getTime() - new Date(fromDate).getTime()) / 86400000) + 1)} Days
+          </span>
+
+          {/* Actions Start */}
+          <div className="TX-ledger-actions">
             <button
               className={`TX-recent-btn${recentMode ? ' active' : ''}`}
               onClick={handleViewRecent}
@@ -5449,38 +5548,10 @@ export default function DaybookTransactions() {
               Export PDF
             </button>
           </div>
-        </div>
-        {/* ── Ledger Card Header End ── */}
-
-        {/* ── Date Range Bar Start ── */}
-        <div className="T-date-bar">
-          <div className="T-date-bar-lbl"><Icon name="calendar" size={11} color="currentColor" /> Date Range</div>
-
-          {/* Date Range Start */}
-          <div className="T-date-range">
-            <div className="T-date-field">
-              <CalendarDD value={fromDate} max={toDate}
-                onChange={v => { setFromDate(v); setQuickPick(''); }} />
-            </div>
-            <div className="T-date-sep" />
-            <div className="T-date-field">
-              <CalendarDD value={toDate} min={fromDate}
-                onChange={v => { setToDate(v); setQuickPick(''); }} />
-            </div>
-          </div>
-          {/* Date Range End */}
-
-          {/* Button Start */}
-          <div className="TX-quick-picks">
-            {QUICK_PICKS.map(qp => (
-              <button key={qp.key} className={`TX-qp${quickPick === qp.key ? ' active' : ''}`}
-                onClick={() => handleQuickPick(qp.key)}>{qp.label}</button>
-            ))}
-          </div>
-          {/* Button End */}
+          {/* Actions End */}
 
         </div>
-        {/* ── Date Range Bar End ── */}
+        {/* ── Ledger Toolbar End ── */}
 
         {/* ── Filter Panel ── */}
         <div className="T-filterpanel animate-scale">
@@ -5590,31 +5661,33 @@ export default function DaybookTransactions() {
             </div>
             {/* Income Party Filter */}
 
-            <div className="T-ffield T-actions-col">
-              <span className="T-ffield-lbl">&nbsp;</span>
-              <div className="T-actions-row">
-                <button type="button" className="T-stack-btn T-stack-search" onClick={applyFilters} title="Apply the selected filters to the table" aria-label="Apply filters">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 4h18l-7 8.5V19l-4 2v-8.5L3 4z" /></svg>
-                  <span>Filter</span>
-                </button>
-                <button type="button" className="T-stack-btn T-stack-reset" onClick={() => {
-                  setSearch(''); setCatFilter([]); setSubCatFilter([]);
-                  setBioFilter([]); setSubNameFilter([]);
-                  setPayFilter([]); setTypeFilter([]);
-                  setNameBioIds([]); setSelectedSubNamesPerBio({}); setNameFilterActive(false);
-                  setAppliedFilters({ cat: [], subCat: [], bio: [], subName: [], pay: [], type: [] });
-                  if (recentMode) {
-                    setRecentMode(false);
-                    setFromDate(''); setToDate(''); setQuickPick('');
-                    setAppliedFromDate(''); setAppliedToDate('');
-                    setSortCol('transaction_date'); setSortDir('desc');
-                  }
-                }} title="Reset all filters" aria-label="Reset all filters">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12a8 8 0 1 1-2.343-5.657" /><path d="M20 4v5h-5" /></svg>
-                  <span>Reset</span>
-                </button>
-              </div>
-            </div>
+          </div>
+          {/* ── Field grid End — Filter/Reset now live in their own row
+                 below, not as a grid cell, so they can never land under a
+                 half-empty row again no matter how many fields this panel
+                 ends up with. ── */}
+
+          <div className="TX-filter-actions">
+            <button type="button" className="T-stack-btn T-stack-search" onClick={applyFilters} title="Apply the selected filters to the table" aria-label="Apply filters">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 4h18l-7 8.5V19l-4 2v-8.5L3 4z" /></svg>
+              <span>Filter</span>
+            </button>
+            <button type="button" className="T-stack-btn T-stack-reset" onClick={() => {
+              setSearch(''); setCatFilter([]); setSubCatFilter([]);
+              setBioFilter([]); setSubNameFilter([]);
+              setPayFilter([]); setTypeFilter([]);
+              setNameBioIds([]); setSelectedSubNamesPerBio({}); setNameFilterActive(false);
+              setAppliedFilters({ cat: [], subCat: [], bio: [], subName: [], pay: [], type: [] });
+              if (recentMode) {
+                setRecentMode(false);
+                setFromDate(''); setToDate(''); setQuickPick('');
+                setAppliedFromDate(''); setAppliedToDate('');
+                setSortCol('transaction_date'); setSortDir('desc');
+              }
+            }} title="Reset all filters" aria-label="Reset all filters">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12a8 8 0 1 1-2.343-5.657" /><path d="M20 4v5h-5" /></svg>
+              <span>Reset</span>
+            </button>
           </div>
 
           {activeFilters.length > 0 && (

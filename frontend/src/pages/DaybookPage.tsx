@@ -1893,6 +1893,13 @@ export default function Daybook({ onNavigate }: { onNavigate?: (navId: string) =
             }
 
             handleReset();
+            // Jump back to the top of the page on every successful save (add
+            // or edit) so the form is ready to go for the next entry without
+            // the user having to scroll up manually. .ERP-page itself doesn't
+            // scroll — the real scroll container is Dashboard's .CC pane —
+            // so scrollIntoView (which finds that ancestor on its own) is used
+            // instead of window.scrollTo, matching this file's own pattern.
+            erpPageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             memCache.delete?.('daybook?date=' + form.transaction_date);
             setTimeout(() => loadEntries(viewDate), 800);
             setTimeout(async () => {
