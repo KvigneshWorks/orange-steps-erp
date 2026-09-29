@@ -1270,13 +1270,12 @@ const CSS = `
 .CM3-billtbl col.c-balance { width: 13%; } .CM3-billtbl col.c-status { width: 15%; }
 .CM3-billtbl col.c-acts { width: 14%; }
 .CM3-billtbl thead th {
-  /* Same header language as every other table in the app (.ERP-tbl):
-     light surface, dark uppercase mono-weight text, ember underline —
-     instead of this table's previous solid-orange/white-text header. */
-  background: var(--surface-2,#E8E2D8); color: var(--text-3,#524532);
+  /* Solid ember-gradient header, same treatment as BillAllocateModal's
+     client/bill tables (Select Client / Select Bill). */
+  background: linear-gradient(135deg, #C2410C, #DB5B1F); color: #faf9f7;
   font-size: 8px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
   padding: 11px 9px; text-align: left; white-space: nowrap;
-  border-bottom: 2px solid var(--ember,#C2410C);
+  box-shadow: 0 3px 8px rgba(154,52,18,0.22);
   position: sticky; top: 0; z-index: 2;
 }
 .CM3-billtbl thead th:first-child { border-top-left-radius: 12px; }
